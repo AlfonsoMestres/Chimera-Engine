@@ -20,6 +20,9 @@ public:
 
 public:
 	ImGuiIO io;
+	bool showAboutMenu = false;
+	bool showHardwareMenu = false;
+	bool requestedExit = false;
 };
 
 #endif
