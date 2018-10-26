@@ -49,7 +49,7 @@ update_status ModuleEditor::PreUpdate() {
 update_status ModuleEditor::Update()
 {
 
-	ImGui::ShowDemoWindow();
+	// ImGui::ShowDemoWindow();
 	ShowMenuBar();
 
 	if (showAboutMenu) {
