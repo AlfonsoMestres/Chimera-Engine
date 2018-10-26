@@ -32,31 +32,9 @@ bool ModuleRenderExercise::Init()
         0.0f,  1.0f, 0.0f
 	};
 
-	// Our basic camera position and angle
-	math::float3 target(0.0f, 0.0f, 0.0f);
-	math::float3 eye(0.0f, 0.0f, 4.0f);
-	math::float3 up(0.0f, 1.0f, 0.0f);
-
-	math::float4x4 transform = ModuleRenderExercise::ProjectionMatrix() * ModuleRenderExercise::LookAt(target, eye, up);
-
-	// Calculate new vertex position given a transform matrix - https://gamedev.stackexchange.com/a/28251
-	math::float4 vertexA(vboData[0], vboData[1], vboData[2], 1);
-	math::float4 vertexB(vboData[3], vboData[4], vboData[5], 1);
-	math::float4 vertexC(vboData[6], vboData[7], vboData[8], 1);
-
-	math::float4 vertATrans = transform * vertexA;
-	math::float4 vertBTrans = transform * vertexB;
-	math::float4 vertCTrans = transform * vertexC;
-
-	float vboTrans[] = {
-		vertATrans.x / vertATrans.w, vertATrans.y / vertATrans.w, vertATrans.z / vertATrans.w,
-		vertBTrans.x / vertBTrans.w, vertBTrans.y / vertBTrans.w, vertBTrans.z / vertBTrans.w,
-		vertCTrans.x / vertCTrans.w, vertCTrans.y / vertCTrans.w, vertCTrans.z / vertCTrans.w
-	};
-
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vboTrans), vboTrans, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vboData), vboData, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     return vbo;
@@ -80,15 +58,24 @@ update_status ModuleRenderExercise::Update()
 	//Use shaders loadeds in program
 	glUseProgram(program);
 
-	//Uniforms
 
-	// Fragment Coloring - This could be inside a ImgUI to edit manually
+	//Uniforms - This could be inside a ImgUI to edit manually
+
+	// Fragment shader coloring
 	int fragUnifLocation = glGetUniformLocation(program, "newColor");
 	float color[4] = { 0.5f, 1.0f, 0.0f, 1.0f };
 	glUniform4fv(fragUnifLocation, 1, color);
 
-	// TODO: Vertex
+	// Vertex shader to GPU
+	math::float3 target(0.0f, 0.0f, 0.0f); // Our basic camera position and angle
+	math::float3 eye(0.0f, 0.0f, 7.0f);
+	math::float3 up(0.0f, 1.0f, 0.0f);
+	math::float4x4 Model(math::float4x4::identity); // Not moving anything
 	
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &Model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &LookAt(target, eye, up)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &ProjectionMatrix()[0][0]);
+
 
 	// Draw every GL_TRIANGLE that starts at vec[0] and you can find 3 of them
     glDrawArrays(GL_TRIANGLES, 0, 3); 
@@ -115,7 +102,6 @@ math::float4x4 ModuleRenderExercise::ProjectionMatrix()
 {
 	math::float4x4 projectMatrix;
 	projectMatrix = frustum.ProjectionMatrix();
-	/*projectMatrix.Transpose();*/ // Ric way
 
 	return projectMatrix;
 }
