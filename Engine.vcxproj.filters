@@ -142,6 +142,9 @@
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleShader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -342,6 +345,9 @@
     <ClInclude Include="ModuleEditor.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleShader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -359,5 +365,16 @@
     <Filter Include="Utils\ImgUi">
       <UniqueIdentifier>{054ba271-c24c-4950-931a-36af0608bd19}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\Shaders">
+      <UniqueIdentifier>{5c71df1d-1bbc-45f5-a292-79b5cbb5e0ce}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="default.fs">
+      <Filter>Utils\Shaders</Filter>
+    </None>
+    <None Include="default.vs">
+      <Filter>Utils\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
