@@ -41,7 +41,7 @@ bool ModuleRender::Init()
 	glEnable(GL_TEXTURE_2D);
 
 	glClearDepth(1.0f);
-	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.f);
 
     int width, height;
     SDL_GetWindowSize(App->window->window, &width, &height);

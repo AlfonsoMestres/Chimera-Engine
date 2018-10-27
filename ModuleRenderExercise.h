@@ -15,17 +15,14 @@ public:
 	bool            Init    ();
 	update_status   Update  ();
 	bool            CleanUp ();
-	math::float4x4	LookAt(math::float3& target, math::float3& eye, math::float3& up);
-	math::float4x4	ProjectionMatrix();
-	void			InitFrustum();
-	char*			LoadShader(const char* shaderName);
+	void			DrawReferenceGround();
+	void			DrawReferenceAxis();
 
 public:
 	math::float3 target;
 	math::float3 eye;
 	math::float3 up;
-	float cameraSpeed = 0.5f;
-	Frustum frustum;
+
 
 private:
     unsigned vbo        = 0;

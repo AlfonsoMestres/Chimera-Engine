@@ -114,6 +114,10 @@ static void ShowHardware() {
 	ImGui::End();
 }
 
+void ModuleEditor::HandleInputs(SDL_Event& event) {
+	ImGui_ImplSDL2_ProcessEvent(&event);
+}
+
 // Called before quitting
 bool ModuleEditor::CleanUp()
 {

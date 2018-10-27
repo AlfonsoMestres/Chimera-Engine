@@ -145,12 +145,12 @@
     <ClCompile Include="ModuleShader.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleCamera.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Globals.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Module.h">
@@ -347,6 +347,15 @@
     </ClInclude>
     <ClInclude Include="ModuleShader.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCamera.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
