@@ -21,4 +21,5 @@ public:
 
 public:
 	void* context;
+	float bgColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 };

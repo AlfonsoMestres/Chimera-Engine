@@ -70,15 +70,11 @@ update_status ModuleRenderExercise::Update()
 	glUniform4fv(fragUnifLocation, 1, color);
 
 	// Vertex shader to GPU
-	//math::float3 target(0.0f, 0.0f, 0.0f); // Our basic camera position and angle
-	//math::float3 eye(5.0f, 4.0f, 7.0f);
-	//math::float3 up(0.0f, 1.0f, 0.0f);
 	math::float4x4 Model(math::float4x4::identity); // Not moving anything
 	
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &Model[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->target, App->camera->eye, App->camera->up)[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
-
 
 	// Draw every GL_TRIANGLE that starts at vec[0] and you can find 3 of them
     glDrawArrays(GL_TRIANGLES, 0, 3); 

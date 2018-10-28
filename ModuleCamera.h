@@ -39,15 +39,18 @@ public:
 ;	math::float4x4	LookAt(math::float3& target, math::float3& eye, math::float3& up);
 	math::float4x4	ProjectionMatrix();
 	void			InitFrustum();
-	void			MouseUpdate(math::float2& mouseNewPosition);
+	void			MouseUpdate(int mouseXpos, int mouseYpos);
 	void			SetFOV();
 	void			MoveCamera(CameraMovement cameraSide);
-	void			RotateCamera(CameraRotation cameraSide);
+	void			RotateCamera(CameraRotation cameraRotation);
 
 public:
-	math::float2 oldMousePos;
 	Frustum frustum;
 	float cameraSpeed = 0.5f;
+	float rotationSpeed = 0.8f;
+
+	float screenRatio = SCREEN_WIDTH / SCREEN_HEIGHT;
+
 	// Camera rotations
 	float pitch;
 	float yaw;

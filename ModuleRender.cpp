@@ -41,7 +41,6 @@ bool ModuleRender::Init()
 	glEnable(GL_TEXTURE_2D);
 
 	glClearDepth(1.0f);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.f);
 
     int width, height;
     SDL_GetWindowSize(App->window->window, &width, &height);
@@ -52,6 +51,7 @@ bool ModuleRender::Init()
 
 update_status ModuleRender::PreUpdate()
 {
+	glClearColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3]);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	return UPDATE_CONTINUE;
