@@ -8,8 +8,8 @@ ModuleCamera::ModuleCamera() {
 	cameraFront = math::float3(0.0f, 0.0f, -1.0f);
 	cameraUp = math::float3(0.0f, 1.0f, 0.0f);
 
-	cameraSpeed = 20.0f;
-	rotationSpeed = 50.0f;
+	cameraSpeed = 17.0f;
+	rotationSpeed = 65.0f;
 	mouseSensitivity = 0.5f;
 
 	yaw = -90.0f;
@@ -141,7 +141,7 @@ void ModuleCamera::RotateCamera() {
 }
 
 math::float4x4 ModuleCamera::LookAt(math::float3& cameraPos, math::float3& cameraFront, math::float3& cameraUp) {
-	math::float3 f(cameraFront - cameraPos); f.Normalize();
+	math::float3 f(cameraFront); f.Normalize();
 	math::float3 s(f.Cross(cameraUp)); s.Normalize();
 	math::float3 u(s.Cross(f));
 
@@ -198,8 +198,8 @@ void ModuleCamera::MouseUpdate(int mouseXpos, int mouseYpos)
 		firstMouse = false;
 	}
 
-	float xoffset = mouseXpos - lastX;
-	float yoffset = lastY - mouseYpos;
+	int xoffset = mouseXpos - lastX;
+	int yoffset = lastY - mouseYpos;
 	lastX = mouseXpos;
 	lastY = mouseYpos;
 

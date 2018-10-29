@@ -78,5 +78,5 @@ void Application::Tick()
 	float ticksNow = SDL_GetTicks();
 	deltaTime = (ticksNow - lastTickTime)/1000;
 	lastTickTime = ticksNow;
-	LOG("%f", deltaTime);
+	FPS = 60 * (-1 * deltaTime);
 }

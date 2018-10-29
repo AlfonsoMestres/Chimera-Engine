@@ -50,8 +50,6 @@ update_status ModuleEditor::PreUpdate() {
 
 update_status ModuleEditor::Update()
 {
-
-	ImGui::ShowDemoWindow();
 	ShowMenuBar();
 
 	if (showAboutMenu) {
@@ -128,14 +126,17 @@ static void ShowHardware() {
 static void ShowSceneConfig() {
 	ImGui::Begin("Camera", &App->editor->showSceneConfig);
 	ImGui::InputFloat("ms", &App->deltaTime);
+	ImGui::InputInt("FPS", &App->FPS, 0, 0);
 	float forward[3] = { App->camera->cameraFront.x, App->camera->cameraFront.y, App->camera->cameraFront.z };
 	ImGui::InputFloat3("Front", forward, "%.3f");
 	float up[3] = { App->camera->cameraUp.x, App->camera->cameraUp.y, App->camera->cameraUp.z };
 	ImGui::InputFloat3("Up", up, "%.3f");
 	float eye[3] = { App->camera->cameraPos.x, App->camera->cameraPos.y, App->camera->cameraPos.z };
 	ImGui::InputFloat3("Position", eye, "%.3f");
+	ImGui::Separator();
 	ImGui::SliderFloat("Mov Speed", &App->camera->cameraSpeed, 0.0f, 100.0f);
 	ImGui::SliderFloat("Rot Speed", &App->camera->rotationSpeed, 0.0f, 100.0f);
+	ImGui::SliderFloat("Mouse Sens", &App->camera->mouseSensitivity, 0.0f, 1.0f);
 	ImGui::Separator();
 	ImGui::SliderFloat("Near Plane", &App->camera->frustum.nearPlaneDistance, 0.1f, App->camera->frustum.farPlaneDistance);
 	ImGui::SliderFloat("Far Plane", &App->camera->frustum.farPlaneDistance, 0.1f, 1000.0f);

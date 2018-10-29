@@ -62,8 +62,8 @@ public:
 
 	// Mouse 
 	bool firstMouse = true;
-	float lastX = SCREEN_WIDTH / 2;
-	float lastY = SCREEN_HEIGHT / 2;
+	int lastX = SCREEN_WIDTH / 2;
+	int lastY = SCREEN_HEIGHT / 2;
 
 };
 

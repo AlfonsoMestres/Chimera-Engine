@@ -37,6 +37,7 @@ public:
 
 	float lastTickTime = 0;
 	float deltaTime = 0;
+	int FPS = 60 * deltaTime;
 
 private:
 
