@@ -26,7 +26,9 @@ public:
 
 private:
     unsigned vbo        = 0;
-	GLuint program		= GL_FALSE;
+	GLuint progDefault  = GL_FALSE;
+	GLuint progTexture  = GL_FALSE;
+	GLuint texture0		= 0;
 
 };
 

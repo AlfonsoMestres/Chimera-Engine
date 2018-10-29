@@ -6,5 +6,5 @@ uniform vec4 newColor;
 
 void main()
 {
-    color = newColor;
+    color =  newColor;
 }

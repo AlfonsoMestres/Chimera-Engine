@@ -385,5 +385,11 @@
     <None Include="default.vs">
       <Filter>Utils\Shaders</Filter>
     </None>
+    <None Include="texture.fs">
+      <Filter>Utils\Shaders</Filter>
+    </None>
+    <None Include="texture.vs">
+      <Filter>Utils\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
