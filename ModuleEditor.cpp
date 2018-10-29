@@ -127,15 +127,15 @@ static void ShowHardware() {
 
 static void ShowSceneConfig() {
 	ImGui::Begin("Camera", &App->editor->showSceneConfig);
-
-	float forward[3] = { App->camera->forw.x, App->camera->forw.y, App->camera->forw.z };
+	ImGui::InputFloat("ms", &App->deltaTime);
+	float forward[3] = { App->camera->cameraFront.x, App->camera->cameraFront.y, App->camera->cameraFront.z };
 	ImGui::InputFloat3("Front", forward, "%.3f");
-	float up[3] = { App->camera->upw.x, App->camera->upw.y, App->camera->upw.z };
+	float up[3] = { App->camera->cameraUp.x, App->camera->cameraUp.y, App->camera->cameraUp.z };
 	ImGui::InputFloat3("Up", up, "%.3f");
-	float eye[3] = { App->camera->eye.x, App->camera->eye.y, App->camera->eye.z };
+	float eye[3] = { App->camera->cameraPos.x, App->camera->cameraPos.y, App->camera->cameraPos.z };
 	ImGui::InputFloat3("Position", eye, "%.3f");
-	ImGui::SliderFloat("Mov Speed", &App->camera->cameraSpeed, 0.25f, 3.0f);
-	ImGui::SliderFloat("Rot Speed", &App->camera->rotationSpeed, 0.25f, 2.0f);
+	ImGui::SliderFloat("Mov Speed", &App->camera->cameraSpeed, 0.0f, 100.0f);
+	ImGui::SliderFloat("Rot Speed", &App->camera->rotationSpeed, 0.0f, 100.0f);
 	ImGui::Separator();
 	ImGui::SliderFloat("Near Plane", &App->camera->frustum.nearPlaneDistance, 0.1f, App->camera->frustum.farPlaneDistance);
 	ImGui::SliderFloat("Far Plane", &App->camera->frustum.farPlaneDistance, 0.1f, 1000.0f);

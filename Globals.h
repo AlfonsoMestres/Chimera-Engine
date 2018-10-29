@@ -34,8 +34,9 @@ enum update_status
 		 }\
 	 }
 
-// Transform degrees to rads
-#define degreesToRadians(x) x*(3.141592f/180.0f)
+// Transforms
+#define radiansToDegrees(x) ((x*180.0f)/3.141592f)
+#define degreesToRadians(x) ((x*3.141592f)/180.0f)
 
 // Configuration -----------
 #define SCREEN_WIDTH 640

@@ -21,10 +21,8 @@ enum CameraMovement {
 };
 
 enum CameraRotation {
-	PositivePitch,
-	NegativePitch,
-	PositiveYaw,
-	NegativeYaw
+	Pitch,
+	Yaw
 };
 
 public:
@@ -33,21 +31,23 @@ public:
 	~ModuleCamera();
 
 	bool Init();
-	update_status PreUpdate();
-	update_status Update();
-	bool CleanUp();
-;	math::float4x4	LookAt(math::float3& target, math::float3& eye, math::float3& up);
+	update_status	PreUpdate();
+	update_status	Update();
+	bool			CleanUp();
 	math::float4x4	ProjectionMatrix();
+;	math::float4x4	LookAt(math::float3& cameraPos, math::float3& cameraFront, math::float3& cameraUp);
 	void			InitFrustum();
 	void			MouseUpdate(int mouseXpos, int mouseYpos);
 	void			SetFOV();
 	void			MoveCamera(CameraMovement cameraSide);
-	void			RotateCamera(CameraRotation cameraRotation);
+	void			RotateCamera();
 
 public:
 	Frustum frustum;
-	float cameraSpeed = 0.5f;
-	float rotationSpeed = 0.8f;
+	float cameraSpeed;
+	float rotationSpeed;
+	float mouseSensitivity;
+	float fov;
 
 	float screenRatio = SCREEN_WIDTH / SCREEN_HEIGHT;
 
@@ -56,12 +56,9 @@ public:
 	float yaw;
 
 	// Camera states
-	math::float3& target = math::float3(0.0f, 0.0f, 0.0f);
-	math::float3& eye = math::float3(0.0f, 0.0f, 0.0f);
-	math::float3& up = math::float3(0.0f, 0.0f, 0.0f);
-	math::float3 forw;
-	math::float3 sidew;
-	math::float3 upw;
+	math::float3 cameraPos;
+	math::float3 cameraFront;
+	math::float3 cameraUp;
 
 	// Mouse 
 	bool firstMouse = true;

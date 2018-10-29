@@ -4,11 +4,17 @@
 #include "ModuleCamera.h"
 
 ModuleCamera::ModuleCamera() {
-	target = math::float3(0.0f, 0.0f, 0.0f);
-	eye = math::float3(2.0f, 2.0f, 2.0f);
-	up = math::float3(0.0f, 1.0f, 0.0f);
-	pitch = -45.0f; // store the pitch so we can clamp correctly
-	yaw = 0.0f;
+	cameraPos = math::float3(0.0f, 0.0f, 3.0f);
+	cameraFront = math::float3(0.0f, 0.0f, -1.0f);
+	cameraUp = math::float3(0.0f, 1.0f, 0.0f);
+
+	cameraSpeed = 20.0f;
+	rotationSpeed = 50.0f;
+	mouseSensitivity = 0.5f;
+
+	yaw = -90.0f;
+	pitch = 0.0f; 
+	fov = 45.0f;
 }
 
 // Destructor
@@ -39,42 +45,42 @@ update_status ModuleCamera::PreUpdate()
 	} else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) {
 		MoveCamera(Backwards);
 	} else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) {
-		RotateCamera(NegativePitch);
+		pitch += rotationSpeed * App->deltaTime;
+		RotateCamera();
 	} else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) {
-		RotateCamera(PositivePitch);
+		pitch -= rotationSpeed * App->deltaTime;
+		RotateCamera();
 	} else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) {
-		RotateCamera(PositiveYaw);
+		yaw -= rotationSpeed * App->deltaTime;
+		RotateCamera();
 	} else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) {
-		RotateCamera(NegativeYaw);
-	}
+		yaw += rotationSpeed * App->deltaTime;
+		RotateCamera();
+	} 
 
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_DOWN) {
-		// Right
 		cameraSpeed = cameraSpeed * 3;
+		rotationSpeed = rotationSpeed * 3;
 	} else if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_UP) {
 		cameraSpeed = cameraSpeed / 3;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_DOWN) {
-		MouseUpdate(App->input->GetMousePosition().x, App->input->GetMousePosition().y);
+		rotationSpeed = rotationSpeed / 3;
 	}
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
-		LOG("ENTERED MOVING CAMERA");
-		SDL_ShowCursor(SDL_DISABLE);
+		// TODO: Blinking problem
+		/*SDL_ShowCursor(SDL_DISABLE);*/
+		MouseUpdate(App->input->GetMousePosition().x, App->input->GetMousePosition().y);
 	} else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
-		LOG("LEAVING MOVING CAMERA");
-		SDL_ShowCursor(SDL_ENABLE);
+		// SDL_ShowCursor(SDL_ENABLE);
 	} else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
-		LOG("LOOKING AROUND WITH CAMERA");
-		SDL_ShowCursor(SDL_DISABLE);
+		// SDL_ShowCursor(SDL_DISABLE);
 	} else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP) {
-		LOG("LEAVING LOOKING AROUND WITH CAMERA");
-		SDL_ShowCursor(SDL_ENABLE);
+		// LOG("LEAVING LOOKING AROUND WITH CAMERA");
+		// SDL_ShowCursor(SDL_ENABLE);
 	} else if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN) {
-		LOG("ZOOMING WITH CAMERA");
+		// LOG("ZOOMING WITH CAMERA");
 	} else if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_UP) {
-		LOG("LEAVING WITH CAMERA");
+		// LOG("LEAVING WITH CAMERA");
 	}
 
 	return UPDATE_CONTINUE;
@@ -93,109 +99,65 @@ bool ModuleCamera::CleanUp()
 	return true;
 }
 
-
-math::float4x4 ModuleCamera::ProjectionMatrix()
-{
-	math::float4x4 projectMatrix;
-	projectMatrix = frustum.ProjectionMatrix();
-
-	return projectMatrix;
-}
-
 void ModuleCamera::MoveCamera(CameraMovement cameraSide) {
+
+	float normCameraSpeed = cameraSpeed * App->deltaTime;
+
 	switch (cameraSide) {
 		case Upwards:
-			// Because we want to go to the Y axis, even if we did a pitch
-			eye += math::float3(0.0f, 1.0f, 0.0f) * cameraSpeed;
-			target += math::float3(0.0f, 1.0f, 0.0f) * cameraSpeed;
+			cameraPos += cameraUp * normCameraSpeed;
 			break;
 		case Downwards:
-			eye -= math::float3(0.0f, 1.0f, 0.0f) * cameraSpeed;
-			target -= math::float3(0.0f, 1.0f, 0.0f) * cameraSpeed;
+			cameraPos -= cameraUp * normCameraSpeed;
 			break;
 		case Left:
-			eye -= sidew * cameraSpeed;
-			target -= sidew * cameraSpeed;
+			cameraPos += cameraUp.Cross(cameraFront).Normalized() * normCameraSpeed;
 			break;
 		case Right:
-			eye += sidew * cameraSpeed;
-			target += sidew * cameraSpeed;
+			cameraPos -= cameraUp.Cross(cameraFront).Normalized() * normCameraSpeed;
 			break;
 		case Forward:
-			eye += forw * cameraSpeed;
-			target += forw * cameraSpeed;
+			cameraPos += normCameraSpeed * cameraFront;
 			break;
 		case Backwards:
-			eye -= forw * cameraSpeed;
-			target -= forw * cameraSpeed;
+			cameraPos -= normCameraSpeed * cameraFront;
 			break;
 	}
 }
 
-void ModuleCamera::RotateCamera(CameraRotation cameraRotation) {
-	math::float3 direction;
+void ModuleCamera::RotateCamera() {
 
 	if (pitch > 89.0f)
 		pitch = 89.0f;
 	if (pitch < -89.0f)
 		pitch = -89.0f;
+	
+	math::float3 rotation;
+	rotation.x = SDL_cosf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
+	rotation.y = SDL_sinf(degreesToRadians(pitch));
+	rotation.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
+	cameraFront = rotation.Normalized();
 
-	LOG("%f", pitch);
-
-	switch (cameraRotation) {
-	case PositivePitch:
-		pitch += rotationSpeed;
-		forw.y = SDL_sin(degreesToRadians(pitch));
-		forw.x = SDL_cos(degreesToRadians(pitch));
-		forw.z = SDL_cos(degreesToRadians(pitch));
-		forw.Normalize();
-		target += forw * cameraSpeed;
-		break;
-	case NegativePitch:
-		pitch -= rotationSpeed;
-		forw.y = SDL_sin(degreesToRadians(pitch));
-		forw.x = SDL_cos(degreesToRadians(pitch));
-		forw.z = SDL_cos(degreesToRadians(pitch));
-		forw.Normalize();
-		target -= forw * cameraSpeed;
-		break;
-	// TODO: Check yaw
-	case PositiveYaw:
-		yaw += rotationSpeed;
-		forw.y = SDL_cos(degreesToRadians(pitch)) * SDL_cos(degreesToRadians(yaw));
-		forw.x = SDL_sin(degreesToRadians(pitch));
-		forw.z = SDL_cos(degreesToRadians(pitch)) * SDL_sin(degreesToRadians(yaw));
-		forw.Normalize();
-		target += forw * cameraSpeed;
-		eye += forw * cameraSpeed;
-		break;
-	case NegativeYaw:
-		yaw -= rotationSpeed;
-		forw.y = SDL_cos(degreesToRadians(pitch)) * SDL_cos(degreesToRadians(yaw));
-		forw.x = SDL_sin(degreesToRadians(pitch));
-		forw.z = SDL_cos(degreesToRadians(pitch)) * SDL_sin(degreesToRadians(yaw));
-		forw.Normalize();
-		target -= forw * cameraSpeed;
-		eye -= forw * cameraSpeed;
-		break;
-	}
 }
 
-math::float4x4 ModuleCamera::LookAt(math::float3& target, math::float3& eye, math::float3& up)
-{
+math::float4x4 ModuleCamera::LookAt(math::float3& cameraPos, math::float3& cameraFront, math::float3& cameraUp) {
+	math::float3 f(cameraFront - cameraPos); f.Normalize();
+	math::float3 s(f.Cross(cameraUp)); s.Normalize();
+	math::float3 u(s.Cross(f));
+
 	math::float4x4 matrix;
-
-	forw = math::float3(target - eye); forw.Normalize();
-	sidew = math::float3(forw.Cross(up)); sidew.Normalize();
-	upw = math::float3(sidew.Cross(forw));
-
-	matrix[0][0] = sidew.x; matrix[0][1] = sidew.y; matrix[0][2] = sidew.z;
-	matrix[1][0] = upw.x; matrix[1][1] = upw.y; matrix[1][2] = upw.z;
-	matrix[2][0] = -forw.x; matrix[2][1] = -forw.y; matrix[2][2] = -forw.z;
-	matrix[0][3] = -sidew.Dot(eye); matrix[1][3] = -upw.Dot(eye); matrix[2][3] = forw.Dot(eye);
+	matrix[0][0] = s.x; matrix[0][1] = s.y; matrix[0][2] = s.z;
+	matrix[1][0] = u.x; matrix[1][1] = u.y; matrix[1][2] = u.z;
+	matrix[2][0] = -f.x; matrix[2][1] = -f.y; matrix[2][2] = -f.z;
+	matrix[0][3] = -s.Dot(cameraPos); matrix[1][3] = -u.Dot(cameraPos); matrix[2][3] = f.Dot(cameraPos);
 	matrix[3][0] = 0.0f; matrix[3][1] = 0.0f; matrix[3][2] = 0.0f; matrix[3][3] = 1.0f;
 
 	return matrix;
+}
+
+math::float4x4 ModuleCamera::ProjectionMatrix()
+{
+	return frustum.ProjectionMatrix();
 }
 
 void ModuleCamera::InitFrustum() {
@@ -241,9 +203,9 @@ void ModuleCamera::MouseUpdate(int mouseXpos, int mouseYpos)
 	lastX = mouseXpos;
 	lastY = mouseYpos;
 
-	float sensitivity = 0.05;
-	xoffset *= sensitivity;
-	yoffset *= sensitivity;
+	
+	xoffset *= mouseSensitivity;
+	yoffset *= mouseSensitivity;
 
 	yaw += xoffset;
 	pitch += yoffset;
@@ -254,8 +216,8 @@ void ModuleCamera::MouseUpdate(int mouseXpos, int mouseYpos)
 		pitch = -89.0f;
 
 	math::float3 front;
-	front.x = SDL_cosf(yaw) * SDL_cosf(pitch);
-	front.y = SDL_sinf(pitch);
-	front.z = SDL_sinf(yaw) * SDL_cosf(pitch);
-	forw = front.Normalized();
+	front.x = SDL_cosf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
+	front.y = SDL_sinf(degreesToRadians(pitch));
+	front.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
+	cameraFront = front.Normalized();
 }

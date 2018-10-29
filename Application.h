@@ -23,6 +23,7 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+	void Tick();
 
 public:
 	ModuleRender* renderer = nullptr;
@@ -33,6 +34,9 @@ public:
 	ModuleInput* input = nullptr;
     ModuleRenderExercise* exercise = nullptr;
 	ModuleShader* shader = nullptr;
+
+	float lastTickTime = 0;
+	float deltaTime = 0;
 
 private:
 
