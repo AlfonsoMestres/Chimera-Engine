@@ -38,7 +38,8 @@ public:
 ;	math::float4x4	LookAt(math::float3& cameraPos, math::float3& cameraFront, math::float3& cameraUp);
 	void			InitFrustum();
 	void			MouseUpdate(int mouseXpos, int mouseYpos);
-	void			SetFOV();
+	void			SetHorizontalFOV(bool increasing);
+	void			SetVerticalFOV(bool increasing);
 	void			MoveCamera(CameraMovement cameraSide);
 	void			RotateCamera();
 
@@ -49,7 +50,12 @@ public:
 	float mouseSensitivity;
 	float fov;
 
-	float screenRatio = SCREEN_WIDTH / SCREEN_HEIGHT;
+	int screenWidth = SCREEN_WIDTH;
+	int screenHeight = SCREEN_HEIGHT;
+	float screenRatio = screenWidth / screenHeight;
+
+	float fovY = 45.0f;
+	float fovX = 45.0f;
 
 	// Camera rotations
 	float pitch;
@@ -62,8 +68,8 @@ public:
 
 	// Mouse 
 	bool firstMouse = true;
-	int lastX = SCREEN_WIDTH / 2;
-	int lastY = SCREEN_HEIGHT / 2;
+	int lastX = 0;
+	int lastY = 0;
 
 };
 

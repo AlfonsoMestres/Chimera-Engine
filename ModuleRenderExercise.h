@@ -22,13 +22,12 @@ public:
 	math::float3 target;
 	math::float3 eye;
 	math::float3 up;
-
+	GLuint texture0		= 0;
 
 private:
     unsigned vbo        = 0;
 	GLuint progDefault  = GL_FALSE;
 	GLuint progTexture  = GL_FALSE;
-	GLuint texture0		= 0;
 
 };
 

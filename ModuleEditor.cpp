@@ -1,15 +1,21 @@
 ﻿#include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
-#include "ModuleEditor.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "ModuleTextures.h"
+#include "ModuleRenderExercise.h"
+#include "ModuleEditor.h"
+#include "GL/glew.h"
 #include "SDL.h"
 
 static void ShowMenuBar();
 static void ShowAbout();
 static void ShowHardware();
 static void ShowSceneConfig();
+static void ShowTextureConfig();
+static void PrintTextureParams(const char* currentTexture);
+static void PrintMipMapOption(const char* currentTexture);
 
 ModuleEditor::ModuleEditor()
 {
@@ -50,6 +56,8 @@ update_status ModuleEditor::PreUpdate() {
 
 update_status ModuleEditor::Update()
 {
+	
+	ImGui::ShowDemoWindow();
 	ShowMenuBar();
 
 	if (showAboutMenu) {
@@ -64,12 +72,30 @@ update_status ModuleEditor::Update()
 		ShowSceneConfig();
 	}
 
+	if (showTextureConfig) {
+		ShowTextureConfig();
+	}
+
 	if (requestedExit)
 		return UPDATE_STOP;
 
 	return UPDATE_CONTINUE;
 }
 
+void ModuleEditor::HandleInputs(SDL_Event& event) {
+	ImGui_ImplSDL2_ProcessEvent(&event);
+}
+
+// Called before quitting
+bool ModuleEditor::CleanUp()
+{
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+	return true;
+}
+
+// General menu options
 static void ShowMenuBar() {
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
@@ -79,6 +105,7 @@ static void ShowMenuBar() {
 
 		if (ImGui::BeginMenu("Scene")) {
 			if (ImGui::MenuItem("Configuration")) { App->editor->showSceneConfig = true; }
+			if (ImGui::MenuItem("Textures")) { App->editor->showTextureConfig = true; }
 			ImGui::EndMenu();
 		}
 
@@ -95,6 +122,7 @@ static void ShowMenuBar() {
 	ImGui::EndMainMenuBar();
 }
 
+// About
 static void ShowAbout() {
 	
 	const char* MITLicense = "Copyright 2018 - QTEngine \n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions";
@@ -116,6 +144,7 @@ static void ShowAbout() {
 	ImGui::End();
 }
 
+// Hardware
 static void ShowHardware() {
 	ImGui::Begin("Hardware specs", &App->editor->showHardwareMenu);
 	ImGui::Text("CPU Count: "); ImGui::SameLine(); ImGui::TextColored(ImVec4(0.8f, 0.5f, 1.0f, 1.0f), "%d", SDL_GetCPUCount());
@@ -123,6 +152,7 @@ static void ShowHardware() {
 	ImGui::End();
 }
 
+// Scene config
 static void ShowSceneConfig() {
 	ImGui::Begin("Camera", &App->editor->showSceneConfig);
 	ImGui::InputFloat("ms", &App->deltaTime);
@@ -149,15 +179,132 @@ static void ShowSceneConfig() {
 	ImGui::End();
 }
 
-void ModuleEditor::HandleInputs(SDL_Event& event) {
-	ImGui_ImplSDL2_ProcessEvent(&event);
+//Texture config
+static void ShowTextureConfig() {
+	ImGui::Begin("Textures", &App->editor->showTextureConfig);
+	const char* items[] = { "./textures/Lenna.png", "./textures/Lennin.dds", "./textures/Lolnope.jpg", "./textures/Lolyes.gif" };
+	static const char* current_item = items[0];
+	if (ImGui::BeginCombo("Available textures", current_item, ImGuiComboFlags_NoArrowButton))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
+		{
+			bool is_selected = (current_item == items[n]);
+			if (ImGui::Selectable(items[n], is_selected)) {
+				current_item = items[n];
+				App->textures->ReloadTexture(items[n], App->exercise->texture0);
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::Separator();
+	ImGui::Text(App->textures->imgFormat); ImGui::SameLine(); ImGui::Text("Format");
+	ImGui::InputInt("Width", &App->textures->imgWidth, 0, 0);
+	ImGui::InputInt("Height", &App->textures->imgHeight, 0, 0);
+	ImGui::InputInt("Pixel depth", &App->textures->imgPixelDepth, 0, 0);
+	ImGui::Separator();
+	PrintMipMapOption(current_item);
+	ImGui::Separator();
+	PrintTextureParams(current_item);
+	ImGui::End();
 }
 
-// Called before quitting
-bool ModuleEditor::CleanUp()
-{
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
-	return true;
+// Texture functions
+static void PrintTextureParams(const char* currentTexture) {
+	// Wrap methods
+	const char* wrapMethods[] = { "GL_TEXTURE_WRAP_R", "GL_TEXTURE_WRAP_S", "GL_TEXTURE_WRAP_T"};
+	const int wrapMethodsValues[] = { GL_TEXTURE_WRAP_R, GL_TEXTURE_WRAP_S, GL_TEXTURE_WRAP_T };
+	static const char* currentWrap = wrapMethods[0];
+	if (ImGui::BeginCombo("Wrap methods", currentWrap, ImGuiComboFlags_NoArrowButton))
+	{
+		for (int wr = 0; wr < IM_ARRAYSIZE(wrapMethods); wr++)
+		{
+			bool wrapSelected = (currentWrap == wrapMethods[wr]);
+			if (ImGui::Selectable(wrapMethods[wr], wrapSelected)) {
+				currentWrap = wrapMethods[wr];
+				App->textures->SetNewParameter(currentTexture, App->exercise->texture0, App->textures->textFilter, App->textures->resizeMethod, wrapMethodsValues[wr], App->textures->clampMethod);
+			}
+			if (wrapSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::Separator(); 
+	// Resize methods
+	const char* resizeMethods[] = { "Linear", "Nearest" };
+	const int resizeMethodsValues[] = { GL_LINEAR, GL_NEAREST };
+	static const char* currentResize = resizeMethods[0];
+	if (ImGui::BeginCombo("Resize methods", currentResize, ImGuiComboFlags_NoArrowButton))
+	{
+		for (int rs = 0; rs < IM_ARRAYSIZE(resizeMethods); rs++)
+		{
+			bool resizeSelected = (currentResize == resizeMethods[rs]);
+			if (ImGui::Selectable(resizeMethods[rs], resizeSelected)) {
+				currentResize = resizeMethods[rs];
+				App->textures->SetNewParameter(currentTexture, App->exercise->texture0, App->textures->textFilter, resizeMethodsValues[rs], App->textures->wrapMethod, App->textures->clampMethod);
+			}
+			if (resizeSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::Separator();
+	// Clamp methods
+	const char* clampMethods[] = { "GL_CLAMP", "GL_CLAMP_TO_BORDER", "GL_REPEAT", "GL_MIRRORED_REPEAT" };
+	const int clampMethodsValues[] = { GL_CLAMP, GL_CLAMP_TO_BORDER, GL_REPEAT, GL_MIRRORED_REPEAT };
+	static const char* currentClamp = clampMethods[0];
+	if (ImGui::BeginCombo("Clamp methods", currentClamp, ImGuiComboFlags_NoArrowButton))
+	{
+		for (int cl = 0; cl < IM_ARRAYSIZE(clampMethods); cl++)
+		{
+			bool clampSelected = (currentClamp == clampMethods[cl]);
+			if (ImGui::Selectable(clampMethods[cl], clampSelected)) {
+				currentClamp = clampMethods[cl];
+				App->textures->SetNewParameter(currentTexture, App->exercise->texture0, App->textures->textFilter, App->textures->resizeMethod, App->textures->wrapMethod, clampMethodsValues[cl]);
+			}
+			if (clampSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::Separator(); 
+	// Texture filter methods
+	const char* filterMethods[] = { "GL_TEXTURE_MIN_FILTER", "GL_TEXTURE_MAG_FILTER" };
+	const int filterMethodsValues[] = { GL_TEXTURE_MIN_FILTER, GL_TEXTURE_MAG_FILTER };
+	static const char* currentFilter = filterMethods[0];
+	if (ImGui::BeginCombo("Filter methods", currentFilter, ImGuiComboFlags_NoArrowButton))
+	{
+		for (int fl = 0; fl < IM_ARRAYSIZE(filterMethods); fl++)
+		{
+			bool filterSelected = (currentFilter == filterMethods[fl]);
+			if (ImGui::Selectable(filterMethods[fl], filterSelected)) {
+				currentFilter = filterMethods[fl];
+				App->textures->SetNewParameter(currentTexture, App->exercise->texture0, filterMethodsValues[fl], App->textures->resizeMethod, App->textures->wrapMethod, App->textures->clampMethod);
+			}
+			if (filterSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+}
+
+static void PrintMipMapOption(const char* currentTexture) {
+	const char* mipMapState[] = { "Disabled", "Enabled" };
+	bool valueMipMapValue[] = { false, true };
+	static const char* currentMMState = mipMapState[0];
+	if (ImGui::BeginCombo("MipMap", currentMMState, ImGuiComboFlags_NoArrowButton))
+	{
+		for (int mm = 0; mm < IM_ARRAYSIZE(mipMapState); mm++)
+		{
+			bool is_selected = (currentMMState == mipMapState[mm]);
+			if (ImGui::Selectable(mipMapState[mm], is_selected)) {
+				currentMMState = mipMapState[mm];
+				App->textures->SwitchMipMaps(currentTexture, App->exercise->texture0, valueMipMapValue[mm]);
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
 }

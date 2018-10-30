@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleWindow.h"
 #include "ModuleCamera.h"
 
 ModuleCamera::ModuleCamera() {
@@ -68,7 +69,7 @@ update_status ModuleCamera::PreUpdate()
 
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
 		// TODO: Blinking problem
-		/*SDL_ShowCursor(SDL_DISABLE);*/
+		SDL_ShowCursor(SDL_DISABLE);
 		MouseUpdate(App->input->GetMousePosition().x, App->input->GetMousePosition().y);
 	} else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
 		// SDL_ShowCursor(SDL_ENABLE);
@@ -167,26 +168,41 @@ void ModuleCamera::InitFrustum() {
 	frustum.up = float3::unitY;
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 100.0f;
-	frustum.verticalFov = math::pi / 4.0f;					   // TODO: Change this to -1 * instead
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * screenRatio);
+	frustum.verticalFov = degreesToRadians(fovY);					   // TODO: Change this to -1 * instead
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (screenWidth / screenHeight));
 }
+// TODO: try this
+void ModuleCamera::SetHorizontalFOV(bool increasing) {
+	if (increasing)
+		fovX++;
+	else
+		fovX--;
 
-//void ModuleCamera::ChangeScreenRatio(int screenWidth, int screenHeight) {
-//	screenRatio = screenWidth / screenHeight;
-//}
 
-void ModuleCamera::SetFOV() {
-//	halfwidth = tan(horizontal_angle / 2);
-//	halfheight = tan(vertical_angle / 2);
-//	if (halfwidth / halfheight > aspect_ratio) {
-//		// use horizontal angle to set fovy
-//		fovy = 2 * atan(halfwidth / aspect_ratio);
-//	}
-//	else {
-//		// use vertical angle to set fovy
-//		fovy = vertical_angle;
-//	}
-//	fovy = fovy * 180 / PI;
+	if (fovX >= 45) {
+		fovX = 45.0f;
+	} else if (fovX <= 0.0f) {
+		fovX = 0.0f;
+	}
+
+	frustum.horizontalFov = degreesToRadians(fovX);
+	frustum.verticalFov = frustum.horizontalFov / (screenWidth / screenHeight);
+}
+// TODO: try this
+void ModuleCamera::SetVerticalFOV(bool increasing) {
+	if (increasing)
+		fovY++;
+	else
+		fovY--;
+
+	if (fovY >= 45) {
+		fovY = 45.0f;
+	} else if (fovY <= 0.0f) {
+		fovY = 0.0f;
+	}
+
+	frustum.verticalFov = degreesToRadians(fovY);
+	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.horizontalFov / (screenWidth / screenHeight) * 2));
 }
 
 void ModuleCamera::MouseUpdate(int mouseXpos, int mouseYpos) 

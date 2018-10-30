@@ -16,7 +16,7 @@ ModuleRenderExercise::~ModuleRenderExercise()
 bool ModuleRenderExercise::Init()
 {
 	// Handle texture loader
-	texture0 = App->textures->Load("Lenna.png");
+	texture0 = App->textures->Load("./textures/Lenna.png");
 
 	if (texture0 == -1) {
 		LOG("Error: Texture cannot be loaded");
@@ -38,7 +38,6 @@ bool ModuleRenderExercise::Init()
 		LOG("Error: Program cannot be compiled");
 		return false;
 	}
-
 
 	// Triangle exercise
     float vboData[] = {
@@ -82,7 +81,8 @@ update_status ModuleRenderExercise::Update()
             );
 
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * 6));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * 6));
+
 	//Printing Colors with default shader
 
 	glUseProgram(progDefault);
@@ -117,7 +117,6 @@ update_status ModuleRenderExercise::Update()
 	glUniformMatrix4fv(glGetUniformLocation(progTexture, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cameraPos, App->camera->cameraFront, App->camera->cameraUp)[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(progTexture, "model"), 1, GL_TRUE, &Model[0][0]);
 
-	
 	// Draw every GL_TRIANGLE that starts at vec[0] and you can find 6 of them
     glDrawArrays(GL_TRIANGLES, 0, 6); 
 
@@ -130,10 +129,13 @@ update_status ModuleRenderExercise::Update()
 
 bool ModuleRenderExercise::CleanUp()
 {
-    if(vbo != 0)
-    {
+    if(vbo != 0) {
         glDeleteBuffers(1, &vbo);
     }
+
+	if (texture0 != 0) {
+		glDeleteTextures(1, &texture0);
+	}
 
 	return true;
 }
@@ -192,3 +194,4 @@ void ModuleRenderExercise::DrawReferenceAxis() {
 
 	glLineWidth(1.0f);
 }
+

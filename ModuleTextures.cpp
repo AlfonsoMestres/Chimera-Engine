@@ -2,11 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
-
-#include "SDL_image/include/SDL_image.h"
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
-
-using namespace std;
 
 ModuleTextures::ModuleTextures()
 {
@@ -22,6 +18,12 @@ bool ModuleTextures::Init()
 {
 	LOG("Init Image library");
 	bool ret = true;
+
+	// Default filters
+	textFilter = GL_TEXTURE_MIN_FILTER;
+	resizeMethod = GL_LINEAR;
+	wrapMethod = GL_TEXTURE_WRAP_S;
+	clampMethod = GL_CLAMP;
 
 	ilInit();
 	iluInit();
@@ -41,6 +43,7 @@ bool ModuleTextures::CleanUp()
 // Load new texture from file path
 GLuint const ModuleTextures::Load(const char* path)
 {
+	currentPathLoaded = path;
 	ILboolean success;
 	ILuint imageID;				// Create an image ID as a ULuint
 	GLuint textureID;			// Create a texture ID as a GLuint
@@ -59,6 +62,21 @@ GLuint const ModuleTextures::Load(const char* path)
 		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 		{
 			iluFlipImage();
+		}
+		
+		imgWidth = ImageInfo.Width;
+		imgHeight = ImageInfo.Height;
+		imgPixelDepth = ImageInfo.Depth;
+		
+		switch (ImageInfo.Format)
+		{
+			case IL_COLOUR_INDEX: imgFormat = "Colour_index"; break;
+			case IL_RGB: imgFormat = "RGB"; break;
+			case IL_RGBA: imgFormat = "RGBA"; break;
+			case IL_BGR: imgFormat = "BGR"; break;
+			case IL_BGRA: imgFormat = "BGRA"; break;
+			case IL_LUMINANCE: imgFormat = "Luminance"; break;
+			default: imgFormat = "Not handled"; break;
 		}
 
 		// Convert the image into a suitable format to work with
@@ -79,14 +97,6 @@ GLuint const ModuleTextures::Load(const char* path)
 		// Bind the texture to a name
 		glBindTexture(GL_TEXTURE_2D, textureID);
 
-		// Set texture clamping method
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-		/*glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);*/
-
-		// Set texture interpolation method to use linear interpolation (no MIPMAPS)
-		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
 		// Specify the texture specification
 		glTexImage2D(GL_TEXTURE_2D, 				// Type of texture
 			0,				// Pyramid level (for mip-mapping) - 0 is the top level
@@ -98,9 +108,21 @@ GLuint const ModuleTextures::Load(const char* path)
 			GL_UNSIGNED_BYTE,		// Image data type
 			ilGetData());			// The actual image data itself
 
+		glTexParameteri(GL_TEXTURE_2D, wrapMethod, clampMethod);
+
+		// MipMap is overriding the texture and the resize methods
+		if (generateMipMaps) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+			glGenerateMipmap(GL_TEXTURE_2D);
+			glGenerateTextureMipmap(textureID);
+		} else {
+			glTexParameteri(GL_TEXTURE_2D, textFilter, resizeMethod);
+		}
+
 	}
 	else {
 		LOG("Error: Image loading error");
+		LOG(iluErrorString(ilGetError()));
 		return -1;
 	}
 
@@ -109,4 +131,34 @@ GLuint const ModuleTextures::Load(const char* path)
 	LOG("Texture loaded correctly");
 
 	return textureID; // Return the GLuint to the texture so you can use it!
+}
+
+// Path to new texture and Gluint from the texture that we would like to override
+void ModuleTextures::ReloadTexture(const char* newPath, GLuint& texture) {
+	if (texture != 0) {
+		glDeleteTextures(1, &texture);
+	}
+
+	texture = Load(newPath);
+
+	if (texture == -1) {
+		LOG("Error: Texture cannot be loaded");
+	}
+
+}
+
+void ModuleTextures::SwitchMipMaps(const char* newPath, GLuint& texture, bool state) {
+	generateMipMaps = state;
+
+	ReloadTexture(newPath, texture);
+}
+
+void ModuleTextures::SetNewParameter(const char* newPath, GLuint& texture, GLuint newTextFilter, GLuint newResizeMethod, GLuint newWrapMethod, GLuint newClampMethod) {
+
+	textFilter = newTextFilter;
+	resizeMethod = newResizeMethod;
+	wrapMethod = newWrapMethod;
+	clampMethod = newClampMethod;
+
+	ReloadTexture(newPath, texture);
 }
