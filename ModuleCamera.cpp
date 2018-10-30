@@ -169,40 +169,27 @@ void ModuleCamera::InitFrustum() {
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 100.0f;
 	frustum.verticalFov = degreesToRadians(fovY);					   // TODO: Change this to -1 * instead
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (screenWidth / screenHeight));
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (float)(screenWidth / screenHeight));
 }
 // TODO: try this
-void ModuleCamera::SetHorizontalFOV(bool increasing) {
-	if (increasing)
-		fovX++;
-	else
-		fovX--;
-
-
-	if (fovX >= 45) {
-		fovX = 45.0f;
-	} else if (fovX <= 0.0f) {
-		fovX = 0.0f;
-	}
-
-	frustum.horizontalFov = degreesToRadians(fovX);
+void ModuleCamera::SetHorizontalFOV(float& fovXDegrees) {
+	fovX = fovXDegrees;
+	frustum.horizontalFov = degreesToRadians(fovXDegrees);
 	frustum.verticalFov = frustum.horizontalFov / (screenWidth / screenHeight);
 }
 // TODO: try this
-void ModuleCamera::SetVerticalFOV(bool increasing) {
-	if (increasing)
-		fovY++;
-	else
-		fovY--;
-
-	if (fovY >= 45) {
-		fovY = 45.0f;
-	} else if (fovY <= 0.0f) {
-		fovY = 0.0f;
-	}
-
-	frustum.verticalFov = degreesToRadians(fovY);
+void ModuleCamera::SetVerticalFOV(float& fovYDegrees) {
+	fovY = fovYDegrees;
+	frustum.verticalFov = degreesToRadians(fovYDegrees);
 	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.horizontalFov / (screenWidth / screenHeight) * 2));
+}
+
+void ModuleCamera::SetScreenNewScreenSize(float& newWidth, float& newHeight) {
+	screenWidth = newWidth;
+	screenHeight = newHeight;
+	screenRatio = (float)(screenWidth / screenHeight);
+	frustum.verticalFov = degreesToRadians(fovY);
+	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.horizontalFov / screenRatio * 2));
 }
 
 void ModuleCamera::MouseUpdate(int mouseXpos, int mouseYpos) 

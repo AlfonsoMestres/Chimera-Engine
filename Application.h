@@ -37,7 +37,9 @@ public:
 
 	float lastTickTime = 0;
 	float deltaTime = 0;
-	int FPS = 60 * deltaTime;
+	int FPS = 0;
+	int frameCounter = 0;
+	float auxTimer = 0;
 
 private:
 

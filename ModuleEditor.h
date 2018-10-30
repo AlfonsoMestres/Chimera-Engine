@@ -6,6 +6,7 @@
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
+#include <vector>
 
 class ModuleEditor : public Module
 {
@@ -26,6 +27,8 @@ public:
 	bool requestedExit = false;
 	bool showSceneConfig = false;
 	bool showTextureConfig = false;
+	std::vector<float> fps_log;
+	std::vector<float> ms_log;
 
 };
 
