@@ -44,6 +44,7 @@ public:
 	void			SetHorizontalFOV(float& fovXDegrees);
 	void			SetVerticalFOV(float& fovYDegrees);
 	void			Zooming(bool positive);
+	void			FocusObject(math::float3 objectCenterPos);
 
 public:
 	Frustum frustum;
@@ -73,6 +74,9 @@ public:
 	bool firstMouse = true;
 	int lastX = 0;
 	int lastY = 0;
+
+	// Center
+	math::float3 sceneCenter = math::float3(0.0f, 0.0f, 0.0f);
 
 };
 

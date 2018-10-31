@@ -191,6 +191,9 @@ static void ShowSceneConfig(std::vector<float> fps, std::vector<float> ms) {
 		ImGui::InputFloat3("Up", up, "%.3f");
 		float eye[3] = { App->camera->cameraPos.x, App->camera->cameraPos.y, App->camera->cameraPos.z };
 		ImGui::InputFloat3("Position", eye, "%.3f");
+		ImGui::Separator();
+		ImGui::InputFloat("Pitch", &App->camera->pitch, 0, 0, 0);
+		ImGui::InputFloat("Yaw", &App->camera->yaw, 0, 0, 0);
 	}
 	if (ImGui::CollapsingHeader("Camera config")) {
 		ImGui::SliderFloat("Mov Speed", &App->camera->cameraSpeed, 0.0f, 100.0f);
