@@ -27,6 +27,8 @@ public:
 	bool requestedExit = false;
 	bool showSceneConfig = false;
 	bool showTextureConfig = false;
+	bool showConsole = false;
+	bool showZoomMagnifier = false;
 	std::vector<float> fps_log;
 	std::vector<float> ms_log;
 

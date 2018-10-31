@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
+#include "ModuleEditor.h"
 #include "ModuleCamera.h"
 
 ModuleCamera::ModuleCamera() {
@@ -67,6 +68,8 @@ update_status ModuleCamera::PreUpdate()
 		rotationSpeed = rotationSpeed / 3;
 	}
 
+	// TODO:  ImGui::IsMouseHoveringAnyWindow(), issue clicking on imgui changing camera
+	// https://github.com/ocornut/imgui/issues/52
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
 		// TODO: Blinking problem
 		SDL_ShowCursor(SDL_DISABLE);
@@ -75,11 +78,10 @@ update_status ModuleCamera::PreUpdate()
 		// SDL_ShowCursor(SDL_ENABLE);
 	} else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 		// SDL_ShowCursor(SDL_DISABLE);
-	} else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_UP) {
-		// LOG("LEAVING LOOKING AROUND WITH CAMERA");
-		// SDL_ShowCursor(SDL_ENABLE);
-	} else if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN) {
-		// LOG("ZOOMING WITH CAMERA");
+	} else if (App->input->GetMouseWheelUsed() == KEY_UP) {
+		Zooming(true);
+	} else if (App->input->GetMouseWheelUsed() == KEY_DOWN) {
+		Zooming(false);
 	} else if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_UP) {
 		// LOG("LEAVING WITH CAMERA");
 	}
@@ -134,9 +136,9 @@ void ModuleCamera::RotateCamera() {
 		pitch = -89.0f;
 	
 	math::float3 rotation;
-	rotation.x = SDL_cosf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
-	rotation.y = SDL_sinf(degreesToRadians(pitch));
-	rotation.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
+	rotation.x = SDL_cosf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+	rotation.y = SDL_sinf(math::DegToRad(pitch));
+	rotation.z = SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
 	cameraFront = rotation.Normalized();
 
 }
@@ -168,28 +170,28 @@ void ModuleCamera::InitFrustum() {
 	frustum.up = float3::unitY;
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 100.0f;
-	frustum.verticalFov = degreesToRadians(fovY);					   // TODO: Change this to -1 * instead
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (float)(screenWidth / screenHeight));
+	SetVerticalFOV(fovY);
 }
-// TODO: try this
+// TODO: Set fovs not working 100% times
 void ModuleCamera::SetHorizontalFOV(float& fovXDegrees) {
 	fovX = fovXDegrees;
-	frustum.horizontalFov = degreesToRadians(fovXDegrees);
-	frustum.verticalFov = frustum.horizontalFov / (screenWidth / screenHeight);
-}
-// TODO: try this
-void ModuleCamera::SetVerticalFOV(float& fovYDegrees) {
-	fovY = fovYDegrees;
-	frustum.verticalFov = degreesToRadians(fovYDegrees);
-	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.horizontalFov / (screenWidth / screenHeight) * 2));
+	frustum.horizontalFov = math::DegToRad(fovX);
+	frustum.verticalFov = 2.0f * atanf(tanf(frustum.horizontalFov * 0.5) * (screenHeight / screenWidth));
 }
 
-void ModuleCamera::SetScreenNewScreenSize(float& newWidth, float& newHeight) {
+void ModuleCamera::SetVerticalFOV(float& fovYDegrees) {
+	fovY = fovYDegrees;
+	frustum.verticalFov = math::DegToRad(fovY);
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (screenWidth / screenHeight));
+}
+
+void ModuleCamera::SetScreenNewScreenSize(float newWidth, float newHeight) {
 	screenWidth = newWidth;
 	screenHeight = newHeight;
 	screenRatio = (float)(screenWidth / screenHeight);
-	frustum.verticalFov = degreesToRadians(fovY);
-	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.horizontalFov / screenRatio * 2));
+
+	SetHorizontalFOV(fovX);
+	SetVerticalFOV(fovY);
 }
 
 void ModuleCamera::MouseUpdate(int mouseXpos, int mouseYpos) 
@@ -219,8 +221,31 @@ void ModuleCamera::MouseUpdate(int mouseXpos, int mouseYpos)
 		pitch = -89.0f;
 
 	math::float3 front;
-	front.x = SDL_cosf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
-	front.y = SDL_sinf(degreesToRadians(pitch));
-	front.z = SDL_sinf(degreesToRadians(yaw)) * SDL_cosf(degreesToRadians(pitch));
+	front.x = SDL_cosf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+	front.y = SDL_sinf(math::DegToRad(pitch));
+	front.z = SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
 	cameraFront = front.Normalized();
+}
+
+void ModuleCamera::Zooming(bool positive) {
+	if(positive)
+		fovX += 10.0;
+	else
+		fovX -= 10.0;
+	
+	if (fovX > 100.0f) {
+		fovX = 100.0f;
+	} else if (fovX < 0.0f) {
+		fovX = 0.0f;
+	}
+
+	zoomValue = 45.0f / fovX;
+
+	SetHorizontalFOV(fovX);
+
+	if(zoomValue != 1.0f)
+		App->editor->showZoomMagnifier = true;
+	else 
+		App->editor->showZoomMagnifier = false;
+
 }

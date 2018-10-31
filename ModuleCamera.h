@@ -38,11 +38,12 @@ public:
 ;	math::float4x4	LookAt(math::float3& cameraPos, math::float3& cameraFront, math::float3& cameraUp);
 	void			InitFrustum();
 	void			MouseUpdate(int mouseXpos, int mouseYpos);
-	void			SetHorizontalFOV(float& fovXDegrees);
-	void			SetVerticalFOV(float& fovYDegrees);
-	void			SetScreenNewScreenSize(float& newWidth, float& newHeight);
+	void			SetScreenNewScreenSize(float newWidth, float newHeight);
 	void			MoveCamera(CameraMovement cameraSide);
 	void			RotateCamera();
+	void			SetHorizontalFOV(float& fovXDegrees);
+	void			SetVerticalFOV(float& fovYDegrees);
+	void			Zooming(bool positive);
 
 public:
 	Frustum frustum;
@@ -57,6 +58,7 @@ public:
 
 	float fovY = 45.0f;
 	float fovX = 45.0f;
+	float zoomValue = 0.0f;
 
 	// Camera rotations
 	float pitch;

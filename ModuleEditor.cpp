@@ -14,6 +14,8 @@ static void ShowAbout();
 static void ShowHardware();
 static void ShowSceneConfig(std::vector<float> fps, std::vector<float> ms);
 static void ShowTextureConfig();
+static void ShowConsole();
+static void ShowZoomMagnifier();
 static void PrintTextureParams(const char* currentTexture);
 static void PrintMipMapOption(const char* currentTexture);
 
@@ -85,6 +87,14 @@ update_status ModuleEditor::Update()
 		ShowTextureConfig();
 	}
 
+	if (showConsole) {
+		ShowConsole();
+	}
+
+	if (showZoomMagnifier) {
+		ShowZoomMagnifier();
+	}
+
 	if (requestedExit)
 		return UPDATE_STOP;
 
@@ -119,6 +129,7 @@ static void ShowMenuBar() {
 		}
 
 		if (ImGui::BeginMenu("Tools")) {
+			if (ImGui::MenuItem("Console")) { App->editor->showConsole = true; }
 			if (ImGui::MenuItem("Hardware")) { App->editor->showHardwareMenu = true; }
 			ImGui::EndMenu();
 		}
@@ -134,7 +145,7 @@ static void ShowMenuBar() {
 // About
 static void ShowAbout() {
 	
-	const char* MITLicense = "Copyright 2018 - QTEngine \n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions";
+	const char* MITLicense = "Copyright 2018 - Chimera Engine \n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the 'Software'), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions";
 
 	ImGui::Begin("About", &App->editor->showAboutMenu);
 
@@ -145,6 +156,7 @@ static void ShowAbout() {
 	if (ImGui::MenuItem("SDL v2.0.8")) { ShellExecute(0, 0, "https://www.libsdl.org/index.php", 0, 0, SW_SHOW); }
 	if (ImGui::MenuItem("Glew v2.1.0")) { ShellExecute(0, 0, "http://glew.sourceforge.net/", 0, 0, SW_SHOW); }
 	if (ImGui::MenuItem("ImGui v1.66")) { ShellExecute(0, 0, "https://github.com/ocornut/imgui/tree/docking", 0, 0, SW_SHOW); }
+	if (ImGui::MenuItem("Devil v1.8.0")) { ShellExecute(0, 0, "http://openil.sourceforge.net/", 0, 0, SW_SHOW); }
 	ImGui::Separator();
 	ImGui::Text("Authors:");
 	if (ImGui::MenuItem("Alfonso Mestres")) { ShellExecute(0, 0, "https://github.com/AlfonsoMestres/", 0, 0, SW_SHOW); }
@@ -155,7 +167,7 @@ static void ShowAbout() {
 
 // Hardware
 static void ShowHardware() {
-	ImGui::Begin("Hardware specs", &App->editor->showHardwareMenu);
+	ImGui::Begin("Hardware specs", &App->editor->showHardwareMenu, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("CPU Count: "); ImGui::SameLine(); ImGui::TextColored(ImVec4(0.8f, 0.5f, 1.0f, 1.0f), "%d", SDL_GetCPUCount());
 	ImGui::Text("System RAM: "); ImGui::SameLine(); ImGui::TextColored(ImVec4(0.8f, 0.5f, 1.0f, 1.0f), "%d", SDL_GetSystemRAM());
 	ImGui::End();
@@ -189,7 +201,8 @@ static void ShowSceneConfig(std::vector<float> fps, std::vector<float> ms) {
 		if (ImGui::IsItemEdited()) {
 			App->camera->SetHorizontalFOV(App->camera->fovX);
 		}
-		fovYEdited = ImGui::SliderFloat("Vertical. Fov", &App->camera->fovX, 1.0f, 45.0f, "%.00f", 1.0f);
+		// TODO: Not working properly
+		fovYEdited = ImGui::SliderFloat("Vertical. Fov", &App->camera->fovY, 1.0f, 45.0f, "%.00f", 1.0f);
 		if (ImGui::IsItemEdited()) {
 			App->camera->SetVerticalFOV(App->camera->fovY);
 		}
@@ -331,4 +344,15 @@ static void PrintMipMapOption(const char* currentTexture) {
 		}
 		ImGui::EndCombo();
 	}
+}
+
+static void ShowConsole() {
+	// CONSOLE("Console", &App->editor->showConsole);
+}
+
+static void ShowZoomMagnifier() {
+	ImGuiWindowFlags zommingFlags = ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoDocking;
+	ImGui::Begin("Zooming", &App->editor->showHardwareMenu, zommingFlags);
+	ImGui::InputFloat("Zoom value", &App->camera->zoomValue, 0, 0, 2);
+	ImGui::End();
 }

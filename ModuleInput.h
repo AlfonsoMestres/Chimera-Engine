@@ -55,6 +55,10 @@ public:
 		return mouse_buttons[id - 1];
 	}
 
+	KeyState GetMouseWheelUsed() const {
+		return mouse_wheel;
+	}
+
 	// Check for window events last frame
 	bool GetWindowEvent(EventWindow code) const;
 
@@ -66,6 +70,7 @@ private:
 	bool		windowEvents[WE_COUNT];
 	KeyState*	keyboard;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
+	KeyState	mouse_wheel;
 	iPoint mouse_motion;
 	iPoint mouse;
 };

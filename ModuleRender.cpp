@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleEditor.h"
+#include "ModuleCamera.h"
 #include "ModuleWindow.h"
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -94,5 +95,6 @@ bool ModuleRender::CleanUp()
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
     glViewport(0, 0, width, height); 
+	App->camera->SetScreenNewScreenSize(width, height);
 }
 

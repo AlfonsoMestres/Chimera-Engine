@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleRender.h"
 #include "ModuleEditor.h"
 #include "ModuleInput.h"
 #include "SDL.h"
@@ -79,6 +80,8 @@ update_status ModuleInput::PreUpdate()
 			mouse_buttons[i] = KEY_IDLE;
 	}
 
+	mouse_wheel = KEY_IDLE;
+
 	/* Loop until there are no events left on the queue */
 	while (SDL_PollEvent(&event) != 0)
 	{
@@ -106,10 +109,6 @@ update_status ModuleInput::PreUpdate()
 			case SDL_WINDOWEVENT_RESTORED:
 				windowEvents[WE_SHOW] = true;
 				break;
-			case SDL_WINDOWEVENT_RESIZED:
-			case SDL_WINDOWEVENT_SIZE_CHANGED:
-				LOG("Window size changed to width %d and heigh %d", event.window.data1, event.window.data2);
-				break;
 			}
 			break;
 
@@ -126,6 +125,13 @@ update_status ModuleInput::PreUpdate()
 			mouse_motion.y = event.motion.yrel / SCREEN_SIZE;
 			mouse.x = event.motion.x / SCREEN_SIZE;
 			mouse.y = event.motion.y / SCREEN_SIZE;
+			break;
+		case SDL_MOUSEWHEEL:
+			if (event.wheel.y > 0) {
+				mouse_wheel = KEY_UP;
+			} else if (event.wheel.y < 0) {
+				mouse_wheel = KEY_DOWN;
+			}
 			break;
 		}
 	}
