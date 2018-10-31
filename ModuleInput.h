@@ -1,8 +1,8 @@
 #ifndef __MODULEINPUT_H__
 #define __MODULEINPUT_H__
+
 #include "Module.h"
 #include "Point.h"
-
 #include "SDL_scancode.h"
 
 #define NUM_MOUSE_BUTTONS 5
@@ -25,18 +25,13 @@ enum KeyState
 
 class ModuleInput : public Module
 {
+
 public:
-	
+
 	ModuleInput();
 
 	// Destructor
 	virtual ~ModuleInput();
-
-	// Called before render is available
-	bool Init();
-
-	// Called before the first frame
-	bool Start();
 
 	// Called each loop iteration
 	update_status PreUpdate();
@@ -44,19 +39,16 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	// Check key states (includes mouse and joy buttons)
+	// Check key states from keyboard
 	KeyState GetKey(int id) const
 	{
 		return keyboard[id];
 	}
 
+	// Check mouse key states
 	KeyState GetMouseButtonDown(int id) const
 	{
 		return mouse_buttons[id - 1];
-	}
-
-	KeyState GetMouseWheelUsed() const {
-		return mouse_wheel;
 	}
 
 	// Check for window events last frame
@@ -70,9 +62,8 @@ private:
 	bool		windowEvents[WE_COUNT];
 	KeyState*	keyboard;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
-	KeyState	mouse_wheel;
-	iPoint mouse_motion;
-	iPoint mouse;
+	iPoint		mouse_motion;
+	iPoint		mouse;
 };
 
-#endif
+#endif // __MODULEINPUT_H__
