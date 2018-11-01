@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "Point.h"
 #include "MathGeoLib.h"
 #include "GL/glew.h"
 #include "SDL.h"
@@ -32,18 +33,26 @@ public:
 
 	bool Init();
 	update_status	PreUpdate();
-	update_status	Update();
 	bool			CleanUp();
+
+	// Render
 	math::float4x4	ProjectionMatrix();
 ;	math::float4x4	LookAt(math::float3& cameraPos, math::float3& cameraFront, math::float3& cameraUp);
 	void			InitFrustum();
-	void			MouseUpdate(int mouseXpos, int mouseYpos);
-	void			SetScreenNewScreenSize(float newWidth, float newHeight);
+
+	// Movement
+	void			CameraMovementKeyboard();
+	void			CameraMovementMouse();
+	void			MouseUpdate(const iPoint& mousePosition);
+
+	//Helper
+	void			SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight);
 	void			MoveCamera(CameraMovement cameraSide);
-	void			RotateCamera();
+	void			RotateCamera(CameraMovement cameraSide);
 	void			SetHorizontalFOV(float& fovXDegrees);
 	void			SetVerticalFOV(float& fovYDegrees);
 	void			Zooming(bool positive);
+	void			FocusObject(math::float3& objectCenterPos);
 
 public:
 	Frustum frustum;
@@ -52,8 +61,8 @@ public:
 	float mouseSensitivity;
 	float fov;
 
-	float screenWidth = SCREEN_WIDTH;
-	float screenHeight = SCREEN_HEIGHT;
+	unsigned screenWidth = SCREEN_WIDTH;
+	unsigned screenHeight = SCREEN_HEIGHT;
 	float screenRatio = screenWidth / screenHeight;
 
 	float fovY = 45.0f;
@@ -73,6 +82,9 @@ public:
 	bool firstMouse = true;
 	int lastX = 0;
 	int lastY = 0;
+
+	// Center
+	math::float3 sceneCenter = math::float3(0.0f, 0.0f, 0.0f);
 
 };
 

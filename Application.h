@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __APPLICATION_H__
+#define __APPLICATION_H__
 
 #include<list>
 #include "Globals.h"
@@ -35,16 +36,17 @@ public:
     ModuleRenderExercise* exercise = nullptr;
 	ModuleShader* shader = nullptr;
 
-	float lastTickTime = 0;
-	float deltaTime = 0;
-	int FPS = 0;
+	float lastTickTime = 0.0f;
+	float deltaTime = 0.0f;
+	float auxTimer = 0.0f;
 	int frameCounter = 0;
-	float auxTimer = 0;
+	int FPS = 0;
 
 private:
-
 	std::list<Module*> modules;
 
 };
 
 extern Application* App;
+
+#endif
