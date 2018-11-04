@@ -37,7 +37,7 @@ public:
 
 	// Render
 	math::float4x4	ProjectionMatrix();
-;	math::float4x4	LookAt(math::float3& cameraPos, math::float3& cameraFront, math::float3& cameraUp);
+;	void			LookAt(math::float3& cameraPos, math::float3& cameraFront);
 	void			InitFrustum();
 
 	// Movement
@@ -53,6 +53,7 @@ public:
 	void			SetVerticalFOV(float& fovYDegrees);
 	void			Zooming(bool positive);
 	void			FocusObject(math::float3& objectCenterPos);
+	void			UpdatePitchYaw();
 
 public:
 	Frustum frustum;
@@ -76,7 +77,12 @@ public:
 	// Camera states
 	math::float3 cameraPos;
 	math::float3 cameraFront;
-	math::float3 cameraUp;
+
+	//ViewMatrix info
+	math::float4x4 viewMatrix;
+	math::float3 front;
+	math::float3 side;
+	math::float3 up;
 
 	// Mouse 
 	bool firstMouse = true;

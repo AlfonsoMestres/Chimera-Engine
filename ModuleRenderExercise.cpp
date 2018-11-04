@@ -102,8 +102,7 @@ update_status ModuleRenderExercise::Update()
 	math::float4x4 Model(math::float4x4::identity); // Not moving anything
 	
 	glUniformMatrix4fv(glGetUniformLocation(progDefault, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
-	// We are using the vector front pointing to our target instead of target - cameraPos so we can manage easily with vectors
-	glUniformMatrix4fv(glGetUniformLocation(progDefault, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cameraPos,App->camera->cameraFront,App->camera->cameraUp)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(progDefault, "view"), 1, GL_TRUE, &App->camera->viewMatrix[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(progDefault, "model"), 1, GL_TRUE, &Model[0][0]);
 
 	// Printing texture with texture shader
@@ -114,7 +113,7 @@ update_status ModuleRenderExercise::Update()
 	glUniform1i(glGetUniformLocation(progTexture, "texture0"), 0);
 
 	glUniformMatrix4fv(glGetUniformLocation(progTexture, "proj"), 1, GL_TRUE, &App->camera->ProjectionMatrix()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(progTexture, "view"), 1, GL_TRUE, &App->camera->LookAt(App->camera->cameraPos, App->camera->cameraFront, App->camera->cameraUp)[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(progTexture, "view"), 1, GL_TRUE, &App->camera->viewMatrix[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(progTexture, "model"), 1, GL_TRUE, &Model[0][0]);
 
 	// Draw every GL_TRIANGLE that starts at vec[0] and you can find 6 of them

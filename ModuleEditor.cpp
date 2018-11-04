@@ -187,7 +187,7 @@ static void ShowSceneConfig(std::vector<float> fps, std::vector<float> ms) {
 	if (ImGui::CollapsingHeader("Camera position")) {
 		float forward[3] = { App->camera->cameraFront.x, App->camera->cameraFront.y, App->camera->cameraFront.z };
 		ImGui::InputFloat3("Front", forward, "%.3f");
-		float up[3] = { App->camera->cameraUp.x, App->camera->cameraUp.y, App->camera->cameraUp.z };
+		float up[3] = { App->camera->up.x, App->camera->up.y, App->camera->up.z };
 		ImGui::InputFloat3("Up", up, "%.3f");
 		float eye[3] = { App->camera->cameraPos.x, App->camera->cameraPos.y, App->camera->cameraPos.z };
 		ImGui::InputFloat3("Position", eye, "%.3f");
