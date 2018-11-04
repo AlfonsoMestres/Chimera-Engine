@@ -6,7 +6,7 @@
 #include "ModuleCamera.h"
 
 ModuleCamera::ModuleCamera() {
-	cameraPos = math::float3(0.0f, 0.0f, 1.0f);
+	cameraPos = math::float3(0.0f, 0.0f, 6.0f);
 	cameraFront = math::float3(0.0f, 0.0f, -1.0f);
 	cameraUp = math::float3(0.0f, 1.0f, 0.0f);
 
@@ -110,7 +110,16 @@ void ModuleCamera::RotateCameraKeyBoard(CameraMovement cameraSide) {
 
 	math::float3 rotation;
 	if (orbiting) {
-		// TODO: implement this
+		/*math::Quat rotacion = math::Quat::RotateY(math::DegToRad(normRotationSpeed));
+		math::float3 puntoARotar = cameraPos - ((cameraFront) * 3);
+		puntoARotar = rotacion * puntoARotar;
+		cameraPos = puntoARotar + ((cameraFront) * 3);
+		LookAt(cameraPos, cameraFront, cameraUp);*/
+		math::float3 cameraTarget = cameraPos + cameraFront * 5;
+		cameraPos.x = cameraPos.x + 5 * SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+		cameraPos.y = cameraPos.y + 5 * SDL_sinf(math::DegToRad(pitch));
+		cameraPos.z = cameraPos.z + 5 * -SDL_cosf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+		cameraFront = (cameraPos - cameraTarget).Normalized();
 	} else {
 		rotation.x = SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
 		rotation.y = SDL_sinf(math::DegToRad(pitch));
@@ -143,19 +152,23 @@ void ModuleCamera::RotateCameraMouse(const iPoint& mousePosition) {
 
 	math::float3 rotation;
 	if (orbiting) {
-		// TODO: implement this
+		math::float3 cameraTarget = cameraPos + cameraFront * 5;
+		cameraPos.x = cameraPos.x + 5 * SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+		cameraPos.y = cameraPos.y + 5 * SDL_sinf(math::DegToRad(pitch));
+		cameraPos.z = cameraPos.z + 5 * -SDL_cosf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+		cameraFront = (cameraPos - cameraTarget).Normalized();
 	} else {
 		rotation.x = SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
 		rotation.y = SDL_sinf(math::DegToRad(pitch));
 		rotation.z = -SDL_cosf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
-		cameraFront = rotation;
+		cameraFront = rotation.Normalized();
 	}
 }
 
 math::float4x4 ModuleCamera::LookAt(math::float3& cameraPos, math::float3& cameraFront, math::float3& cameraUp) {
 	math::float3 f(cameraFront.Normalized());
 	math::float3 s(f.Cross(cameraUp)); s.Normalize();
-	math::float3 u(s.Cross(f));
+	math::float3 u(s.Cross(f)); // TODO: cameraUp not updating to editor
 
 	math::float4x4 matrix;
 	matrix[0][0] = s.x; matrix[0][1] = s.y; matrix[0][2] = s.z;
