@@ -8,7 +8,6 @@
 #include "GL/glew.h"
 #include "SDL.h"
 
-
 class ModuleCamera : public Module
 {
 
@@ -39,28 +38,29 @@ public:
 	math::float4x4	ProjectionMatrix();
 ;	void			LookAt(math::float3& cameraPos, math::float3& cameraFront);
 	void			InitFrustum();
+	void			UpdatePitchYaw();
 
 	// Movement
 	void			CameraMovementKeyboard();
 	void			CameraMovementMouse();
-	void			MouseUpdate(const iPoint& mousePosition);
+	void			RotateCameraKeyBoard(CameraMovement cameraSide);
+	void			RotateCameraMouse(const iPoint& mousePosition);
+	void			MoveCamera(CameraMovement cameraSide);
 
 	//Helper
 	void			SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight);
-	void			MoveCamera(CameraMovement cameraSide);
-	void			RotateCamera(CameraMovement cameraSide);
+	void			FocusObject(math::float3& objectCenterPos);
 	void			SetHorizontalFOV(float& fovXDegrees);
 	void			SetVerticalFOV(float& fovYDegrees);
-	void			Zooming(bool positive);
-	void			FocusObject(math::float3& objectCenterPos);
-	void			UpdatePitchYaw();
+	void			Zooming();
 
 public:
-	Frustum frustum;
-	float cameraSpeed;
-	float rotationSpeed;
 	float mouseSensitivity;
-	float fov;
+	float rotationSpeed;
+	float cameraSpeed;
+	Frustum frustum;
+	float zoomSpeed;
+	bool orbiting = false;
 
 	unsigned screenWidth = SCREEN_WIDTH;
 	unsigned screenHeight = SCREEN_HEIGHT;
@@ -90,7 +90,7 @@ public:
 	int lastY = 0;
 
 	// Center
-	math::float3 sceneCenter = math::float3(0.0f, 0.0f, 0.0f);
+	math::float3 objectCenter = math::float3(0.0f, 0.0f, 0.0f);
 
 };
 
