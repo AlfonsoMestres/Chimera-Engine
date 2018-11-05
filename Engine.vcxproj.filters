@@ -10,9 +10,6 @@
     <ClCompile Include="ModuleRender.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleRenderExercise.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleTextures.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -148,6 +145,9 @@
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleScene.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -160,9 +160,6 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleRender.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleRenderExercise.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTextures.h">
@@ -356,6 +353,9 @@
     </ClInclude>
     <ClInclude Include="Globals.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScene.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

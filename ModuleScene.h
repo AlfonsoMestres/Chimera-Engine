@@ -1,16 +1,16 @@
-#ifndef __ModuleRenderExercise_h__
-#define __ModuleRenderExercise_h__
+#ifndef __ModuleScene_h__
+#define __ModuleScene_h__
 
 #include "Module.h"
 #include "MathGeoLib.h"
 #include "GL/glew.h"
 #include "SDL.h"
 
-class ModuleRenderExercise : public Module
+class ModuleScene : public Module
 {
 public:
-    ModuleRenderExercise();
-    ~ModuleRenderExercise();
+    ModuleScene();
+    ~ModuleScene();
 
 	bool            Init    ();
 	update_status   Update  ();
@@ -31,4 +31,4 @@ private:
 
 };
 
-#endif /* __ModuleRenderExercise_h__ */
+#endif /* __ModuleScene_h__ */

@@ -6,7 +6,7 @@
 #include "ModuleShader.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
-#include "ModuleRenderExercise.h"
+#include "ModuleScene.h"
 
 
 Application::Application()
@@ -22,7 +22,7 @@ Application::Application()
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(camera = new ModuleCamera());
 
-    modules.push_back(exercise = new ModuleRenderExercise());
+    modules.push_back(exercise = new ModuleScene());
 }
 
 Application::~Application()

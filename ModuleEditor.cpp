@@ -4,7 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
-#include "ModuleRenderExercise.h"
+#include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "GL/glew.h"
 #include "SDL.h"
@@ -37,10 +37,8 @@ bool ModuleEditor::Init() {
 	ImGui::CreateContext();
 	io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-																//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
-																//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init(glsl_version);
@@ -68,7 +66,7 @@ update_status ModuleEditor::PreUpdate() {
 update_status ModuleEditor::Update()
 {
 	
-	// ImGui::ShowDemoWindow();
+	//ImGui::ShowDemoWindow();
 	ShowMenuBar();
 
 	if (showAboutMenu) {
@@ -184,13 +182,13 @@ static void ShowSceneConfig(std::vector<float> fps, std::vector<float> ms) {
 		sprintf_s(title, 25, "Milliseconds %0.1f", ms[ms.size() - 1]);
 		ImGui::PlotHistogram("##framerate", &ms[0], ms.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
 	}
-	if (ImGui::CollapsingHeader("Camera position")) {
-		float forward[3] = { App->camera->cameraFront.x, App->camera->cameraFront.y, App->camera->cameraFront.z };
-		ImGui::InputFloat3("Front", forward, "%.3f");
+	if (ImGui::CollapsingHeader("Camera properties")) {
+		float front[3] = { App->camera->front.x, App->camera->front.y, App->camera->front.z };
+		ImGui::InputFloat3("Front", front, "%.3f");
+		float side[3] = { App->camera->side.x, App->camera->side.y, App->camera->side.z };
+		ImGui::InputFloat3("Side", side, "%.3f");
 		float up[3] = { App->camera->up.x, App->camera->up.y, App->camera->up.z };
 		ImGui::InputFloat3("Up", up, "%.3f");
-		float eye[3] = { App->camera->cameraPos.x, App->camera->cameraPos.y, App->camera->cameraPos.z };
-		ImGui::InputFloat3("Position", eye, "%.3f");
 		ImGui::Separator();
 		ImGui::InputFloat("Pitch", &App->camera->pitch, 0, 0, 0);
 		ImGui::InputFloat("Yaw", &App->camera->yaw, 0, 0, 0);

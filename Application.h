@@ -11,7 +11,7 @@ class ModuleTextures;
 class ModuleEditor;
 class ModuleCamera;
 class ModuleInput;
-class ModuleRenderExercise;
+class ModuleScene;
 class ModuleShader;
 
 class Application
@@ -33,7 +33,7 @@ public:
 	ModuleEditor* editor = nullptr;
 	ModuleCamera* camera = nullptr;
 	ModuleInput* input = nullptr;
-    ModuleRenderExercise* exercise = nullptr;
+    ModuleScene* exercise = nullptr;
 	ModuleShader* shader = nullptr;
 
 	float lastTickTime = 0.0f;

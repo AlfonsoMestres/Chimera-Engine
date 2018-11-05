@@ -2,18 +2,18 @@
 #include "ModuleShader.h"
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
-#include "ModuleRenderExercise.h"
+#include "ModuleScene.h"
 #include "ModuleWindow.h"
 
-ModuleRenderExercise::ModuleRenderExercise()
+ModuleScene::ModuleScene()
 {
 }
 
-ModuleRenderExercise::~ModuleRenderExercise()
+ModuleScene::~ModuleScene()
 {
 }
 
-bool ModuleRenderExercise::Init()
+bool ModuleScene::Init()
 {
 	// Handle texture loader
 	texture0 = App->textures->Load("./textures/Lenna.png");
@@ -65,7 +65,7 @@ bool ModuleRenderExercise::Init()
     return vbo;
 }
 
-update_status ModuleRenderExercise::Update()
+update_status ModuleScene::Update()
 {
 
 	// This is what kind of info GL is going to read and where do it needs to read from
@@ -126,7 +126,7 @@ update_status ModuleRenderExercise::Update()
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleRenderExercise::CleanUp()
+bool ModuleScene::CleanUp()
 {
     if(vbo != 0) {
         glDeleteBuffers(1, &vbo);
@@ -139,7 +139,7 @@ bool ModuleRenderExercise::CleanUp()
 	return true;
 }
 
-void ModuleRenderExercise::DrawReferenceGround() {
+void ModuleScene::DrawReferenceGround() {
 	glLineWidth(1.0f);
 	float d = 200.0f;
 	glBegin(GL_LINES);
@@ -153,7 +153,7 @@ void ModuleRenderExercise::DrawReferenceGround() {
 	glEnd();
 }
 
-void ModuleRenderExercise::DrawReferenceAxis() {
+void ModuleScene::DrawReferenceAxis() {
 	glLineWidth(2.0f);
 
 	// red X

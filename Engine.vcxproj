@@ -140,7 +140,7 @@
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleRender.h" />
-    <ClInclude Include="ModuleRenderExercise.h" />
+    <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleShader.h" />
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="ModuleWindow.h" />
@@ -192,7 +192,7 @@
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
-    <ClCompile Include="ModuleRenderExercise.cpp" />
+    <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleShader.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
