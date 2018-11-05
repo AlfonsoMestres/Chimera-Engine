@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "Application.h"
 #include "ModuleRender.h"
+#include "Timer.h"
 #include "Globals.h"
 
 #include "SDL.h"
@@ -28,14 +29,17 @@ int main(int argc, char ** argv)
 		switch (state)
 		{
 		case MAIN_CREATION:
-
 			LOG("Application Creation --------------");
 			App = new Application();
 			state = MAIN_START;
 			break;
 
 		case MAIN_START:
-
+		{
+			Timer time;
+			TimerPerfomance timeP;
+			time.Start();
+			timeP.Start();
 			LOG("Application Init --------------");
 			if (App->Init() == false)
 			{
@@ -47,8 +51,12 @@ int main(int argc, char ** argv)
 				state = MAIN_UPDATE;
 				LOG("Application Update --------------");
 			}
-
-			break;
+			timeP.Stop();
+			time.Stop();
+			LOG("Start in %ums", time.GetTicks());
+			LOG("Start in %ums", timeP.GetTicks());
+		}
+		break;
 
 		case MAIN_UPDATE:
 		{

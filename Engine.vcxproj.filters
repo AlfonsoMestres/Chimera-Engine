@@ -348,14 +348,17 @@
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Point.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Globals.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="ModuleScene.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
