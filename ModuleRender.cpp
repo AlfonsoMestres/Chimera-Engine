@@ -1,22 +1,14 @@
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
-#include "imgui.h"
-#include "imgui_impl_sdl.h"
-#include "SDL.h"
-#include "GL/glew.h"
+#include "ModuleProgram.h"
 
-ModuleRender::ModuleRender()
-{
-}
+ModuleRender::ModuleRender() { }
 
 // Destructor
-ModuleRender::~ModuleRender()
-{
-}
+ModuleRender::~ModuleRender() { }
 
 // Called before render is available
 bool ModuleRender::Init()
@@ -47,6 +39,9 @@ bool ModuleRender::Init()
     SDL_GetWindowSize(App->window->window, &width, &height);
     glViewport(0, 0, width, height);
 
+	program0 = App->program->LoadProgram("../default.vs", "../default.fs");
+	program1 = App->program->LoadProgram("../texture.vs", "../texture.fs");
+
 	return true;
 }
 
@@ -59,20 +54,25 @@ update_status ModuleRender::PreUpdate()
 }
 
 // Called every draw update
-update_status ModuleRender::Update()
-{
+update_status ModuleRender::Update() {
+
+	DrawReferenceDebug(program0, math::float4x4::identity, App->camera->viewMatrix, App->camera->ProjectionMatrix());
+
+	for (unsigned i = 0; i < App->modelLoader->meshes.size(); ++i) {
+		const ModuleModelLoader::Mesh& mesh = App->modelLoader->meshes[i];
+
+		RenderMesh(mesh, App->modelLoader->materials[mesh.material], program1, math::float4x4::identity, App->camera->viewMatrix, App->camera->ProjectionMatrix());
+	}
 
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleRender::PostUpdate()
-{
+update_status ModuleRender::PostUpdate() {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	// Update and Render additional Platform Windows
-	if (App->editor->io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
+	if (App->editor->io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
 	}
@@ -83,18 +83,109 @@ update_status ModuleRender::PostUpdate()
 }
 
 // Called before quitting
-bool ModuleRender::CleanUp()
-{
+bool ModuleRender::CleanUp() {
 	LOG("Destroying renderer");
-
 	//Destroy window
 
 	return true;
 }
 
-void ModuleRender::WindowResized(unsigned width, unsigned height)
+void ModuleRender::RenderMesh(const ModuleModelLoader::Mesh& mesh, const ModuleModelLoader::Material& material, unsigned program,
+	const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj)
 {
-    glViewport(0, 0, width, height); 
-	App->camera->SetScreenNewScreenSize(width, height);
+	glUseProgram(program);
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, material.texture0);
+	glUniform1i(glGetUniformLocation(program, "texture0"), 0);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.vbo);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * mesh.num_vertices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.ibo);
+	glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, nullptr);
+
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUseProgram(0);
+
 }
 
+void ModuleRender::DrawReferenceDebug(unsigned program, const math::float4x4& model, const math::float4x4& view, const math::float4x4& proj) {
+
+	glUseProgram(program);
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, (const float*)&proj);
+
+	// Grid white
+	int gridColor = glGetUniformLocation(program, "newColor");
+	float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glUniform4fv(gridColor, 1, white);
+
+	// Base grid
+	glLineWidth(1.0f);
+
+	float d = 200.0f;
+	glBegin(GL_LINES);
+	for (float i = -d; i <= d; i += 1.0f)
+	{
+		glVertex3f(i, 0.0f, -d);
+		glVertex3f(i, 0.0f, d);
+		glVertex3f(-d, 0.0f, i);
+		glVertex3f(d, 0.0f, i);
+	}
+	glEnd();
+	
+	/// AXIS X Y Z
+	glLineWidth(2.0f);
+
+	// red X
+	int xAxis = glGetUniformLocation(program, "newColor");
+	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	glUniform4fv(xAxis, 1, red);
+
+	glBegin(GL_LINES);
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
+	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
+	glEnd();
+
+	// green Y
+	int yAxis = glGetUniformLocation(program, "newColor");
+	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
+	glUniform4fv(yAxis, 1, green);
+
+	glBegin(GL_LINES);
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
+	glEnd();
+
+	// blue Z
+	int zAxis = glGetUniformLocation(program, "newColor");
+	float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
+	glUniform4fv(zAxis, 1, blue);
+
+	glBegin(GL_LINES);
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
+	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
+	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
+	glEnd();
+
+	glLineWidth(1.0f);
+
+	glUseProgram(0);
+}

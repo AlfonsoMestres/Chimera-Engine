@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleCamera.h"
 #include "ModuleWindow.h"
 
 ModuleWindow::ModuleWindow()
@@ -73,3 +74,7 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
+void ModuleWindow::WindowResized(unsigned width, unsigned height) {
+	glViewport(0, 0, width, height);
+	App->camera->SetScreenNewScreenSize(width, height);
+}

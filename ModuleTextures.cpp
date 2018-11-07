@@ -41,34 +41,31 @@ bool ModuleTextures::CleanUp()
 }
 
 // Load new texture from file path
-GLuint const ModuleTextures::Load(const char* path)
-{
-	currentPathLoaded = path;
-	ILboolean success;
-	ILuint imageID;				// Create an image ID as a ULuint
-	GLuint textureID;			// Create a texture ID as a GLuint
-	ILenum error;				// Create a flag to keep track of the IL error state
+unsigned ModuleTextures::Load(const char* path) {
 
-	ilGenImages(1, &imageID); 		// Generate the image ID
+	ILuint imageId;				// Create an image ID as a ULuint
 
-	ilBindImage(imageID); 			// Bind the image
+	ilGenImages(1, &imageId); 		// Generate the image ID
+
+	ilBindImage(imageId); 			// Bind the image
 
 	if (ilLoadImage(path)) {
 
+		unsigned textureId = 0;			// Create a texture ID as a GLuint
 
-		// If the image is flipped (i.e. upside-down and mirrored, flip it the right way up!)
-		ILinfo ImageInfo;
-		iluGetImageInfo(&ImageInfo);
-		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-		{
+		// Generate a new texture
+		glGenTextures(1, &textureId);
+
+		// Bind the texture to a name
+		glBindTexture(GL_TEXTURE_2D, textureId);
+
+		ILinfo imageInfo;
+		iluGetImageInfo(&imageInfo);
+		if (imageInfo.Origin == IL_ORIGIN_UPPER_LEFT) {
 			iluFlipImage();
 		}
 		
-		imgWidth = ImageInfo.Width;
-		imgHeight = ImageInfo.Height;
-		imgPixelDepth = ImageInfo.Depth;
-		
-		switch (ImageInfo.Format)
+		switch (imageInfo.Format)
 		{
 			case IL_COLOUR_INDEX: imgFormat = "Colour_index"; break;
 			case IL_RGB: imgFormat = "RGB"; break;
@@ -79,65 +76,53 @@ GLuint const ModuleTextures::Load(const char* path)
 			default: imgFormat = "Not handled"; break;
 		}
 
-		// Convert the image into a suitable format to work with
-		// NOTE: If your image contains alpha channel you can replace IL_RGB with IL_RGBA
-		success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+		// Using RGBA if we got an alpha channel
+		bool success;
+		int channels = ilGetInteger(IL_IMAGE_CHANNELS);
+
+		if (channels == 3) {
+			success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+		} else if (channels == 4) {
+			success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+		}
 
 		// Quit out if we failed the conversion
-		if (!success)
-		{
-			error = ilGetError();
-			LOG(iluErrorString(error));
+		if (!success) {
+
+			ILenum error = ilGetError();
+			LOG("Error: %s", iluErrorString(error));
+
 			return -1;
 		}
 
-		// Generate a new texture
-		glGenTextures(1, &textureID);
-
-		// Bind the texture to a name
-		glBindTexture(GL_TEXTURE_2D, textureID);
-
 		// Specify the texture specification
-		glTexImage2D(GL_TEXTURE_2D, 				// Type of texture
-			0,				// Pyramid level (for mip-mapping) - 0 is the top level
-			ilGetInteger(IL_IMAGE_FORMAT),	// Internal pixel format to use. Can be a generic type like GL_RGB or GL_RGBA, or a sized type
-			ilGetInteger(IL_IMAGE_WIDTH),	// Image width
-			ilGetInteger(IL_IMAGE_HEIGHT),	// Image height
-			0,				// Border width in pixels (can either be 1 or 0)
-			ilGetInteger(IL_IMAGE_FORMAT),	// Format of image pixel data
-			GL_UNSIGNED_BYTE,		// Image data type
-			ilGetData());			// The actual image data itself
-
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
 		glTexParameteri(GL_TEXTURE_2D, wrapMethod, clampMethod);
 
 		// MipMap is overriding the texture and the resize methods
 		if (generateMipMaps) {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 			glGenerateMipmap(GL_TEXTURE_2D);
-			glGenerateTextureMipmap(textureID);
+			glGenerateTextureMipmap(textureId);
 		} else {
 			glTexParameteri(GL_TEXTURE_2D, textFilter, resizeMethod);
 		}
 
+		ilDeleteImages(1, &imageId); // Because we have already copied image data into texture data we can release memory used by image.
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		return textureId; // Return the GLuint to the texture so you can use it!
 	}
-	else {
-		LOG("Error: Image loading error");
-		LOG(iluErrorString(ilGetError()));
-		return -1;
-	}
 
-	ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
+	LOG("Error: Image loading %s",iluErrorString(ilGetError()));
 
-	LOG("Texture loaded correctly");
-
-	return textureID; // Return the GLuint to the texture so you can use it!
+	return -1;
 }
 
 // Path to new texture and Gluint from the texture that we would like to override
-void ModuleTextures::ReloadTexture(const char* newPath, GLuint& texture) {
-	if (texture != 0) {
-		glDeleteTextures(1, &texture);
-	}
+void ModuleTextures::ReloadTexture(const char* newPath, unsigned texture) {
+	
+	Unload(texture);
 
 	texture = Load(newPath);
 
@@ -147,13 +132,19 @@ void ModuleTextures::ReloadTexture(const char* newPath, GLuint& texture) {
 
 }
 
-void ModuleTextures::SwitchMipMaps(const char* newPath, GLuint& texture, bool state) {
+void ModuleTextures::Unload(unsigned texture) {
+	if (texture != 0) {
+		glDeleteTextures(1, &texture);
+	}
+}
+
+void ModuleTextures::SwitchMipMaps(const char* newPath, unsigned texture, bool state) {
 	generateMipMaps = state;
 
 	ReloadTexture(newPath, texture);
 }
 
-void ModuleTextures::SetNewParameter(const char* newPath, GLuint& texture, GLuint newTextFilter, GLuint newResizeMethod, GLuint newWrapMethod, GLuint newClampMethod) {
+void ModuleTextures::SetNewParameter(const char* newPath, unsigned texture, unsigned newTextFilter, unsigned newResizeMethod, unsigned newWrapMethod, unsigned newClampMethod) {
 
 	textFilter = newTextFilter;
 	resizeMethod = newResizeMethod;

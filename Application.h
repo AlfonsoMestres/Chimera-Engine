@@ -12,7 +12,8 @@ class ModuleEditor;
 class ModuleCamera;
 class ModuleInput;
 class ModuleScene;
-class ModuleShader;
+class ModuleProgram;
+class ModuleModelLoader;
 
 class Application
 {
@@ -34,7 +35,8 @@ public:
 	ModuleCamera* camera = nullptr;
 	ModuleInput* input = nullptr;
     ModuleScene* exercise = nullptr;
-	ModuleShader* shader = nullptr;
+	ModuleProgram* program = nullptr;
+	ModuleModelLoader* modelLoader = nullptr;
 
 	float lastTickTime = 0.0f;
 	float deltaTime = 0.0f;

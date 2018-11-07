@@ -6,9 +6,9 @@
 #include "ModuleCamera.h"
 
 ModuleCamera::ModuleCamera() {
-	front = math::float3(0.0f, 0.0f, -1.0f);
+	front = math::float3(-0.5f, -0.5f, -0.5f);
 	up = math::float3(0.0f, 1.0f, 0.0f);
-	cameraPos = math::float3(0.0f, 0.0f, 1.0f);
+	cameraPos = math::float3(7.0f, 7.0f, 7.0f);
 
 	cameraSpeed = 17.0f;
 	rotationSpeed = 65.0f;
@@ -109,12 +109,21 @@ void ModuleCamera::RotateCameraKeyBoard(CameraMovement cameraSide) {
 
 	pitch = math::Clamp(pitch, -80.0f, 80.0f);
 
+
 	math::float3 rotation;
-	rotation.x = SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
-	rotation.y = SDL_sinf(math::DegToRad(pitch));
-	rotation.z = -SDL_cosf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
-	front = rotation.Normalized();
-	up = math::float3(0.0f, 1.0f, 0.0f);
+	if (orbiting) {
+		math::float3 cameraTarget = cameraPos + front * 5;
+		cameraPos.x = cameraTarget.x + 5 * SDL_sinf(math::DegToRad(-yaw)) * -SDL_cosf(math::DegToRad(-pitch));
+		cameraPos.y = cameraTarget.x + 5 * -SDL_sinf(math::DegToRad(-pitch));
+		cameraPos.z = cameraTarget.x + 5 * -SDL_cosf(math::DegToRad(-yaw)) * -SDL_cosf(math::DegToRad(-pitch));
+		front = (cameraTarget - cameraPos).Normalized();
+	}
+	else {
+		rotation.x = SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+		rotation.y = SDL_sinf(math::DegToRad(pitch));
+		rotation.z = -SDL_cosf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+		front = rotation.Normalized();
+	}
 	LookAt(cameraPos, (cameraPos + front));
 }
 

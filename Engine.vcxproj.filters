@@ -139,13 +139,13 @@
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleShader.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleScene.cpp">
+    <ClCompile Include="ModuleModelLoader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleProgram.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
@@ -342,23 +342,23 @@
     <ClInclude Include="ModuleEditor.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleShader.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Globals.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleScene.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Point.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleModelLoader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleProgram.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

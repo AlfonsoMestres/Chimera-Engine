@@ -4,7 +4,6 @@
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
-#include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "GL/glew.h"
 #include "SDL.h"
@@ -95,6 +94,12 @@ update_status ModuleEditor::Update()
 
 	if (requestedExit)
 		return UPDATE_STOP;
+
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleEditor::PostUpdate() {
+
 
 	return UPDATE_CONTINUE;
 }
@@ -228,7 +233,7 @@ static void ShowTextureConfig() {
 			bool is_selected = (current_item == items[n]);
 			if (ImGui::Selectable(items[n], is_selected)) {
 				current_item = items[n];
-				App->textures->ReloadTexture(items[n], App->exercise->texture0);
+				// App->textures->ReloadTexture(items[n], App->renderer->texture0);
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
@@ -238,9 +243,10 @@ static void ShowTextureConfig() {
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Texture information")) {
 		ImGui::InputText("Format", App->textures->imgFormat, sizeof(App->textures->imgFormat));
-		ImGui::InputInt("Width", &App->textures->imgWidth, 0, 0);
+		// TODO: this should be something like App->exercise->texture0.Width
+		/*ImGui::InputInt("Width", &App->textures->imgWidth, 0, 0);
 		ImGui::InputInt("Height", &App->textures->imgHeight, 0, 0);
-		ImGui::InputInt("Pixel depth", &App->textures->imgPixelDepth, 0, 0);
+		ImGui::InputInt("Pixel depth", &App->textures->imgPixelDepth, 0, 0);*/
 	}
 	if (ImGui::CollapsingHeader("Texture config")) {
 		PrintTextureParams(current_item);
@@ -264,7 +270,7 @@ static void PrintTextureParams(const char* currentTexture) {
 			bool wrapSelected = (currentWrap == wrapMethods[wr]);
 			if (ImGui::Selectable(wrapMethods[wr], wrapSelected)) {
 				currentWrap = wrapMethods[wr];
-				App->textures->SetNewParameter(currentTexture, App->exercise->texture0, App->textures->textFilter, App->textures->resizeMethod, wrapMethodsValues[wr], App->textures->clampMethod);
+				 // App->textures->SetNewParameter(currentTexture, App->exercise->texture0, App->textures->textFilter, App->textures->resizeMethod, wrapMethodsValues[wr], App->textures->clampMethod);
 			}
 			if (wrapSelected)
 				ImGui::SetItemDefaultFocus();
@@ -282,7 +288,7 @@ static void PrintTextureParams(const char* currentTexture) {
 			bool resizeSelected = (currentResize == resizeMethods[rs]);
 			if (ImGui::Selectable(resizeMethods[rs], resizeSelected)) {
 				currentResize = resizeMethods[rs];
-				App->textures->SetNewParameter(currentTexture, App->exercise->texture0, App->textures->textFilter, resizeMethodsValues[rs], App->textures->wrapMethod, App->textures->clampMethod);
+				// App->textures->SetNewParameter(currentTexture, App->exercise->texture0, App->textures->textFilter, resizeMethodsValues[rs], App->textures->wrapMethod, App->textures->clampMethod);
 			}
 			if (resizeSelected)
 				ImGui::SetItemDefaultFocus();
@@ -300,7 +306,7 @@ static void PrintTextureParams(const char* currentTexture) {
 			bool clampSelected = (currentClamp == clampMethods[cl]);
 			if (ImGui::Selectable(clampMethods[cl], clampSelected)) {
 				currentClamp = clampMethods[cl];
-				App->textures->SetNewParameter(currentTexture, App->exercise->texture0, App->textures->textFilter, App->textures->resizeMethod, App->textures->wrapMethod, clampMethodsValues[cl]);
+				// App->textures->SetNewParameter(currentTexture, App->exercise->texture0, App->textures->textFilter, App->textures->resizeMethod, App->textures->wrapMethod, clampMethodsValues[cl]);
 			}
 			if (clampSelected)
 				ImGui::SetItemDefaultFocus();
@@ -318,7 +324,7 @@ static void PrintTextureParams(const char* currentTexture) {
 			bool filterSelected = (currentFilter == filterMethods[fl]);
 			if (ImGui::Selectable(filterMethods[fl], filterSelected)) {
 				currentFilter = filterMethods[fl];
-				App->textures->SetNewParameter(currentTexture, App->exercise->texture0, filterMethodsValues[fl], App->textures->resizeMethod, App->textures->wrapMethod, App->textures->clampMethod);
+				// App->textures->SetNewParameter(currentTexture, App->exercise->texture0, filterMethodsValues[fl], App->textures->resizeMethod, App->textures->wrapMethod, App->textures->clampMethod);
 			}
 			if (filterSelected)
 				ImGui::SetItemDefaultFocus();
@@ -338,7 +344,7 @@ static void PrintMipMapOption(const char* currentTexture) {
 			bool is_selected = (currentMMState == mipMapState[mm]);
 			if (ImGui::Selectable(mipMapState[mm], is_selected)) {
 				currentMMState = mipMapState[mm];
-				App->textures->SwitchMipMaps(currentTexture, App->exercise->texture0, valueMipMapValue[mm]);
+				// App->textures->SwitchMipMaps(currentTexture, App->exercise->texture0, valueMipMapValue[mm]);
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();

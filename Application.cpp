@@ -3,10 +3,10 @@
 #include "ModuleRender.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
-#include "ModuleShader.h"
+#include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
-#include "ModuleScene.h"
+#include "ModuleModelLoader.h"
 
 
 Application::Application()
@@ -15,14 +15,14 @@ Application::Application()
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(window = new ModuleWindow());
 
-	modules.push_back(renderer = new ModuleRender());
-	modules.push_back(textures = new ModuleTextures());
-	modules.push_back(shader = new ModuleShader());
-
 	modules.push_back(camera = new ModuleCamera());
+	modules.push_back(renderer = new ModuleRender());
+	modules.push_back(program = new ModuleProgram());
+	modules.push_back(textures = new ModuleTextures());
+
 	modules.push_back(editor = new ModuleEditor());
 
-    modules.push_back(exercise = new ModuleScene());
+	modules.push_back(modelLoader = new ModuleModelLoader());
 }
 
 Application::~Application()
