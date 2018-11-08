@@ -42,9 +42,8 @@ public:
 
 	// Movement
 	void			CameraMovementKeyboard();
-	void			CameraMovementMouse();
-	void			RotateCameraKeyBoard(CameraMovement cameraSide);
-	void			RotateCameraMouse(const iPoint& mousePosition);
+	void			RotateCameraKeyBoard(CameraMovement cameraSide, bool orbit = false);
+	void			RotateCameraMouse(const iPoint& mousePosition, bool orbit = false);
 	void			MoveCamera(CameraMovement cameraSide);
 
 	//Helper
@@ -60,7 +59,6 @@ public:
 	float cameraSpeed;
 	Frustum frustum;
 	float zoomSpeed;
-	bool orbiting = false;
 
 	unsigned screenWidth = SCREEN_WIDTH;
 	unsigned screenHeight = SCREEN_HEIGHT;

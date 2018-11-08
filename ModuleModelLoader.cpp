@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "ModuleCamera.h"
 #include "ModuleTextures.h"
 #include "ModuleModelLoader.h"
 
@@ -7,19 +8,24 @@ ModuleModelLoader::ModuleModelLoader() { }
 ModuleModelLoader::~ModuleModelLoader() { }
 
 bool ModuleModelLoader::Init() {
-	return LoadModel("BakerHouse.fbx");
+	//LoadModel("BakerHouse.fbx", true);
+	return true;
 }
 
 bool ModuleModelLoader::LoadModel(const char* pathFile) {
 
-	const aiScene* scene = aiImportFile(pathFile, NULL);
+	const aiScene* scene = aiImportFile(pathFile, aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene) {
 		GenerateMeshData(scene);
 		GenerateMaterialData(scene);
 	} else {
-		LOG(aiGetErrorString());
+		LOG("Error: %s", aiGetErrorString());
 	}
+
+	// TODO: Focus object and move camera to bounding box 
+	// 1 - App->camera->FocusObject()
+	// 2 - ??
 
 	return scene;
 }
@@ -42,6 +48,9 @@ bool ModuleModelLoader::CleanUp() {
 		}
 	}
 
+	meshes.clear();
+	materials.clear();
+
 	return true;
 }
 
@@ -58,6 +67,9 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene) {
 		// Positions
 		glBufferData(GL_ARRAY_BUFFER, (sizeof(float) * 3 + sizeof(float) * 2)*src_mesh->mNumVertices, nullptr, GL_STATIC_DRAW);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 3 * src_mesh->mNumVertices, src_mesh->mVertices);
+
+		// TODO: Getting the mesh center we could easily get the bounding box or the smallest sphere that contains the mesh
+		// Assimp::FindMeshCenter() // AABB
 
 		// Texture coords
 		math::float2* texture_coords = (math::float2*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(float) * 3 * src_mesh->mNumVertices, sizeof(float) * 2 * src_mesh->mNumVertices, GL_MAP_WRITE_BIT);
@@ -78,14 +90,14 @@ void ModuleModelLoader::GenerateMeshData(const aiScene* scene) {
 		unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0,
 			sizeof(unsigned)*src_mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);
 
-		for (unsigned i = 0; i < src_mesh->mNumFaces; ++i)
-		{
+		for (unsigned i = 0; i < src_mesh->mNumFaces; ++i) {
 			assert(src_mesh->mFaces[i].mNumIndices == 3);
 
 			*(indices++) = src_mesh->mFaces[i].mIndices[0];
 			*(indices++) = src_mesh->mFaces[i].mIndices[1];
 			*(indices++) = src_mesh->mFaces[i].mIndices[2];
 		}
+
 
 		glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

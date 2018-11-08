@@ -90,6 +90,15 @@ update_status ModuleInput::PreUpdate()
 			}
 			break;
 
+		case SDL_DROPFILE:
+		{
+			// TODO: check extension of file and reupload a texture or a model
+			char* fileDroppedPath = event.drop.file;
+			App->modelLoader->CleanUp();
+			App->modelLoader->LoadModel(fileDroppedPath);
+			SDL_free(fileDroppedPath);
+			break;
+		}
 		case SDL_MOUSEBUTTONDOWN:
 			mouse_buttons[event.button.button - 1] = KEY_DOWN;
 			break;

@@ -188,6 +188,9 @@ static void ShowSceneConfig(std::vector<float> fps, std::vector<float> ms) {
 		ImGui::PlotHistogram("##framerate", &ms[0], ms.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
 	}
 	if (ImGui::CollapsingHeader("Camera properties")) {
+		float camPos[3] = { App->camera->cameraPos.x, App->camera->cameraPos.y, App->camera->cameraPos.z };
+		ImGui::InputFloat3("Cam position", camPos, "%.3f");
+		ImGui::Separator();
 		float front[3] = { App->camera->front.x, App->camera->front.y, App->camera->front.z };
 		ImGui::InputFloat3("Front", front, "%.3f");
 		float side[3] = { App->camera->side.x, App->camera->side.y, App->camera->side.z };
