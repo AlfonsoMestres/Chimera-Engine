@@ -2,15 +2,25 @@
 
 ModuleProgram::ModuleProgram() { }
 
-
 ModuleProgram::~ModuleProgram() { }
 
+bool ModuleProgram::LoadPrograms() {
+	// TODO: this should be pushed back to a vector
+	basicProgram = LoadProgram("./default.vs", "./default.fs");
+	textureProgram = LoadProgram("./texture.vs", "./texture.fs");
+
+	return (basicProgram != 0 && textureProgram != 0);
+}
+
 unsigned ModuleProgram::LoadProgram(const char* vertShaderPath, const char* fragShaderPath) {
+	assert(vertShaderPath != nullptr);
+	assert(fragShaderPath != nullptr);
+
 	unsigned program = 0;
 
 	// How to: https://badvertex.com/2012/11/20/how-to-load-a-glsl-shader-in-opengl-using-c.html
-	unsigned vertShader = glCreateShader(GL_VERTEX_SHADER);
-	unsigned fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+	vertShader = glCreateShader(GL_VERTEX_SHADER);
+	fragShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 	char* vertShaderStr = ReadShaderFile(vertShaderPath);
 	char* fragShaderStr = ReadShaderFile(fragShaderPath);
@@ -32,30 +42,39 @@ unsigned ModuleProgram::LoadProgram(const char* vertShaderPath, const char* frag
 	// Remove shaders, we wont need them anymore if they are loaded correctly into Program
 	glDeleteShader(vertShader);
 	glDeleteShader(fragShader);
+	vertShaderStr = nullptr;
+	fragShaderStr = nullptr;
 
 	return program;
 }
 
 char* ModuleProgram::ReadShaderFile(const char* shaderPath) {
-	FILE* file;
-	errno_t err = fopen_s(&file, shaderPath, "rb");
-	if (file)
-	{
+	FILE* file = nullptr;
+ 	char* shaderData = nullptr;
+	int err = fopen_s(&file, shaderPath, "rb");
+	if (file) {
 		fseek(file, 0, SEEK_END);
 		int size = ftell(file);
 		rewind(file);
-		char* shaderData = (char*)malloc(size + 1);
-		fread(shaderData, 1, size, file);
+		shaderData = (char*)malloc(size + 1);
+		int res = fread(shaderData, 1, size, file);
 		shaderData[size] = 0;
+		if (res != size) {
+			LOG("Error: Shader not loaded correctly");
+			shaderData = nullptr;
+		}
 		fclose(file);
-		return shaderData;
+	} else {
+		LOG("Error: Shader reading failed with %s", shaderPath);
+		shaderData = nullptr;
 	}
 
-	LOG("Error: Shader reading failed with %s", shaderPath);
-	return nullptr;
+	return shaderData;
 }
 
 bool ModuleProgram::CompileShader(unsigned shaderAddress, const char* shaderContent) {
+	assert(shaderContent != nullptr);
+
 	int compiled = GL_FALSE;
 
 	glShaderSource(shaderAddress, 1, &shaderContent, NULL);
@@ -63,17 +82,17 @@ bool ModuleProgram::CompileShader(unsigned shaderAddress, const char* shaderCont
 	glGetShaderiv(shaderAddress, GL_COMPILE_STATUS, &compiled);
 
 	if (!compiled) {
-		int infoLogLength = 0.0f;
+		int infoLogLength = 0;
 		glGetShaderiv(shaderAddress, GL_INFO_LOG_LENGTH, &infoLogLength);
 
-		if (infoLogLength > 0.0f) {
+		if (infoLogLength > 0) {
 			GLchar* strInfoLog = new GLchar[infoLogLength + 1];
 			glGetShaderInfoLog(shaderAddress, infoLogLength, NULL, strInfoLog);
 
-			LOG("Error: Shader failed at %s", strInfoLog);
+			LOG("Error: Shader compilation failed at %s", strInfoLog);
 
 			delete[] strInfoLog;
-			infoLogLength = NULL;
+			infoLogLength = 0;
 		}
 
 		glDeleteShader(shaderAddress); // Don't leak the shader.
@@ -92,11 +111,20 @@ void ModuleProgram::CompileProgram(unsigned programAddress) {
 		GLchar* strInfoLog = new GLchar[errorLength + 1];
 		glGetProgramInfoLog(programAddress, errorLength, &written, strInfoLog);
 
-		LOG("Error: Program failed at %s", strInfoLog);
+		LOG("Error: Program compilation failed at %s", strInfoLog);
 
 		delete[] strInfoLog;
+		strInfoLog = nullptr;
 
 		glDeleteProgram(programAddress); // Don't leak the program.
 	}
 
+}
+
+bool ModuleProgram::CleanUp() {
+	glDeleteProgram(basicProgram);
+	glDeleteProgram(textureProgram);
+	basicProgram = 0;
+	textureProgram = 0;
+	return true;
 }

@@ -25,45 +25,40 @@ enum KeyState
 
 class ModuleInput : public Module
 {
+	public:
+		ModuleInput();
+		virtual ~ModuleInput();
 
-public:
+		bool Init() override;
+		update_status PreUpdate() override;
+		bool CleanUp() override;
+		void DrawGUI();
 
-	ModuleInput();
+		// Check key states from keyboard
+		KeyState GetKey(int id) const {
+			return keyboard[id];
+		}
 
-	// Destructor
-	virtual ~ModuleInput();
+		// Check mouse key states
+		KeyState GetMouseButtonDown(int id) const {
+			return mouse_buttons[id - 1];
+		}
 
-	// Called each loop iteration
-	update_status PreUpdate();
+		// Check for window events last frame
+		bool GetWindowEvent(EventWindow code) const;
 
-	// Called before quitting
-	bool CleanUp();
+		// Get mouse / axis position
+		const fPoint&	GetMouseMotion() const;
+		const fPoint&	GetMousePosition() const;
+		const int		GetMouseWheel() const;
 
-	// Check key states from keyboard
-	KeyState GetKey(int id) const
-	{
-		return keyboard[id];
-	}
-
-	// Check mouse key states
-	KeyState GetMouseButtonDown(int id) const
-	{
-		return mouse_buttons[id - 1];
-	}
-
-	// Check for window events last frame
-	bool GetWindowEvent(EventWindow code) const;
-
-	// Get mouse / axis position
-	const iPoint& GetMouseMotion() const;
-	const iPoint& GetMousePosition() const;
-
-private:
-	bool		windowEvents[WE_COUNT];
-	KeyState*	keyboard;
-	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
-	iPoint		mouse_motion;
-	iPoint		mouse;
+	private:
+		int			mouse_wheel = 0;
+		bool		windowEvents[WE_COUNT];
+		KeyState*	keyboard = nullptr;
+		KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
+		fPoint		mouse_motion;
+		fPoint		mouse;
 };
 
 #endif // __MODULEINPUT_H__

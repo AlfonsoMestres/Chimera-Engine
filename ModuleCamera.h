@@ -10,86 +10,59 @@
 
 class ModuleCamera : public Module
 {
+	enum CameraMovement {
+		Upwards,
+		Downwards,
+		Left,
+		Right,
+		Forward,
+		Backwards
+	};
 
-enum CameraMovement {
-	Upwards,
-	Downwards,
-	Left,
-	Right,
-	Forward,
-	Backwards
-};
+	public:
 
-enum CameraRotation {
-	Pitch,
-	Yaw
-};
+		ModuleCamera();
+		~ModuleCamera();
 
-public:
+		bool Init();
+		update_status	PreUpdate() override;
+		bool			CleanUp() override;
+		void			DrawGUI();
 
-	ModuleCamera();
-	~ModuleCamera();
+		// Movement
+		void			CameraMovementKeyboard();
+		void			RotateCamera(const fPoint& mousePosition, bool orbit = false);
+		void			MoveCamera(CameraMovement cameraSide);
 
-	bool Init();
-	update_status	PreUpdate();
-	bool			CleanUp();
+		// Helpers
+		void			FocusSelectedObject();
+		void			UpdatePitchYaw();
+		void			Zoom();
 
-	// Render
-	math::float4x4	ProjectionMatrix();
-;	void			LookAt(math::float3& cameraPos, math::float3& cameraFront);
-	void			InitFrustum();
-	void			UpdatePitchYaw();
+	public:
+		float mouseSensitivity = 65.0f;
+		float rotationSpeed = 65.0f;;
+		float cameraSpeed = 17.0f;;
 
-	// Movement
-	void			CameraMovementKeyboard();
-	void			RotateCameraKeyBoard(CameraMovement cameraSide, bool orbit = false);
-	void			RotateCameraMouse(const iPoint& mousePosition, bool orbit = false);
-	void			MoveCamera(CameraMovement cameraSide);
+		// Camera rotations
+		float pitch;
+		float yaw;
 
-	//Helper
-	void			SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight);
-	void			FocusObject(math::float3& objectCenterPos);
-	void			SetHorizontalFOV(float& fovXDegrees);
-	void			SetVerticalFOV(float& fovYDegrees);
-	void			Zooming();
+		// Camera positions
+		math::float3 cameraPos = math::float3(10.0f, 10.0f, 10.0f);
 
-public:
-	float mouseSensitivity;
-	float rotationSpeed;
-	float cameraSpeed;
-	Frustum frustum;
-	float zoomSpeed;
+		//ViewMatrix info
+		math::float3 front = math::float3(-0.577350259f, -0.577350259f, -0.577350259f);
+		math::float3 side;
+		math::float3 up = math::float3(0.0f, 1.0f, 0.0f);
 
-	unsigned screenWidth = SCREEN_WIDTH;
-	unsigned screenHeight = SCREEN_HEIGHT;
-	float screenRatio = screenWidth / screenHeight;
+		// Mouse 
+		bool firstMouse = true;
+		float lastX = 0.0f;
+		float lastY = 0.0f;
 
-	float fovY = 45.0f;
-	float fovX = 45.0f;
-	float zoomValue = 0.0f;
-
-	// Camera rotations
-	float pitch;
-	float yaw;
-
-	// Camera states
-	math::float3 cameraPos;
-	math::float3 cameraFront;
-
-	//ViewMatrix info
-	math::float4x4 viewMatrix;
-	math::float3 front;
-	math::float3 side;
-	math::float3 up;
-
-	// Mouse 
-	bool firstMouse = true;
-	int lastX = 0;
-	int lastY = 0;
-
-	// Center
-	math::float3 objectCenter = math::float3(0.0f, 0.0f, 0.0f);
-
+		// Center
+		AABB selectedObjectBB;
 };
 
 #endif

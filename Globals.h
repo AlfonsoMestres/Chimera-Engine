@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __GLOBALS_H__
+#define __GLOBALS_H__
+
 #include <windows.h>
 #include <stdio.h>
 
@@ -13,30 +15,18 @@ enum update_status
 	UPDATE_ERROR
 };
 
-// Deletes a buffer
-#define RELEASE( x ) \
-    {\
-       if( x != nullptr )\
-       {\
-         delete x;\
-	     x = nullptr;\
-       }\
-    }
-
-// Deletes an array of buffers
-#define RELEASE_ARRAY( x ) \
-	{\
-       if( x != nullptr )\
-       {\
-           delete[] x;\
-	       x = nullptr;\
-		 }\
-	 }
-
 // Configuration -----------
-#define SCREEN_WIDTH 600
-#define SCREEN_HEIGHT 400
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 720
 #define FULLSCREEN false
 #define RESIZEABLE true
-#define SCREEN_SIZE 2
+#define BORDERLESS false
+#define FULLSCREEN_DESKTOP false
+#define VSYNC true
 #define TITLE "Chimera engine"
+#define AUTHOR "Alfonso Mestres Munoz"
+#define DESCRIPTION "C++/C engine for game development"
+#define REPOSITORY "https://github.com/AlfonsoMestres/ArcadeGames-OpenGL"
+#define LICENSE "https://github.com/AlfonsoMestres/ArcadeGames-OpenGL/blob/master/LICENSE"
+
+#endif

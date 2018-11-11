@@ -2,56 +2,33 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
-#pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
 
-ModuleTextures::ModuleTextures()
-{
-}
+ModuleTextures::ModuleTextures() { }
 
-// Destructor
-ModuleTextures::~ModuleTextures()
-{
-}
+ModuleTextures::~ModuleTextures() { }
 
-// Called before render is available
-bool ModuleTextures::Init()
-{
+bool ModuleTextures::Init() {
 	LOG("Init Image library");
-	bool ret = true;
 
-	// Default filters
-	textFilter = GL_TEXTURE_MIN_FILTER;
-	resizeMethod = GL_LINEAR;
-	wrapMethod = GL_TEXTURE_WRAP_S;
-	clampMethod = GL_CLAMP;
-
+	ilutRenderer(ILUT_OPENGL);
 	ilInit();
 	iluInit();
-	ilutRenderer(ILUT_OPENGL);
-	
-	return ret;
-}
+	ilutInit();
 
-// Called before quitting
-bool ModuleTextures::CleanUp()
-{
-	LOG("Freeing textures and Image library");
-
-	return true;
+	return ilutRenderer(ILUT_OPENGL);
 }
 
 // Load new texture from file path
-unsigned ModuleTextures::Load(const char* path) {
+Texture const ModuleTextures::Load(const char* path) {
+	assert(path != nullptr);
 
-	ILuint imageId;				// Create an image ID as a ULuint
+	ILuint imageId;
+	unsigned textureId = 0;
 
-	ilGenImages(1, &imageId); 		// Generate the image ID
-
-	ilBindImage(imageId); 			// Bind the image
+	ilGenImages(1, &imageId);
+	ilBindImage(imageId);
 
 	if (ilLoadImage(path)) {
-
-		unsigned textureId = 0;			// Create a texture ID as a GLuint
 
 		// Generate a new texture
 		glGenTextures(1, &textureId);
@@ -61,95 +38,83 @@ unsigned ModuleTextures::Load(const char* path) {
 
 		ILinfo imageInfo;
 		iluGetImageInfo(&imageInfo);
+
 		if (imageInfo.Origin == IL_ORIGIN_UPPER_LEFT) {
 			iluFlipImage();
 		}
-		
-		switch (imageInfo.Format)
-		{
-			case IL_COLOUR_INDEX: imgFormat = "Colour_index"; break;
-			case IL_RGB: imgFormat = "RGB"; break;
-			case IL_RGBA: imgFormat = "RGBA"; break;
-			case IL_BGR: imgFormat = "BGR"; break;
-			case IL_BGRA: imgFormat = "BGRA"; break;
-			case IL_LUMINANCE: imgFormat = "Luminance"; break;
-			default: imgFormat = "Not handled"; break;
-		}
+		width = ilGetInteger(IL_IMAGE_WIDTH);
+		height = ilGetInteger(IL_IMAGE_HEIGHT);
+		format = ilGetInteger(IL_IMAGE_FORMAT);
+		pixelDepth = ilGetInteger(IL_IMAGE_DEPTH);
 
 		// Using RGBA if we got an alpha channel
 		bool success;
 		int channels = ilGetInteger(IL_IMAGE_CHANNELS);
-
 		if (channels == 3) {
 			success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
 		} else if (channels == 4) {
 			success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 		}
 
-		// Quit out if we failed the conversion
+		// Quit if we failed the conversion
 		if (!success) {
-
-			ILenum error = ilGetError();
-			LOG("Error: %s", iluErrorString(error));
-
-			return -1;
+			LOG("Error: Could not convert the image correctly. %s", iluErrorString(ilGetError()));
+			return Texture(0, 0, 0);
 		}
 
 		// Specify the texture specification
-		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
-		glTexParameteri(GL_TEXTURE_2D, wrapMethod, clampMethod);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, ilGetData());
 
-		// MipMap is overriding the texture and the resize methods
-		if (generateMipMaps) {
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-			glGenerateMipmap(GL_TEXTURE_2D);
-			glGenerateTextureMipmap(textureId);
-		} else {
-			glTexParameteri(GL_TEXTURE_2D, textFilter, resizeMethod);
+		// Filters
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filterType);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filterType);
+
+		switch (wrapMode) {
+
+			case 0:
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+				break;
+			case 1:
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+				break;
+			case 2:
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+				break;
+			case 3:
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+				break;
+			default:
+				LOG("Warning: wrong texture wrap mode %d", wrapMode);
+				break;
 		}
 
-		ilDeleteImages(1, &imageId); // Because we have already copied image data into texture data we can release memory used by image.
+		// TODO: Set linear or nearest mipmap
+		if (mipmaping) {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+			glGenerateMipmap(GL_TEXTURE_2D);
+			glGenerateTextureMipmap(textureId);
+		} 
+
+		ilDeleteImages(1, &imageId); 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		return textureId; // Return the GLuint to the texture so you can use it!
+		return Texture(textureId, width, height); 
 	}
 
 	LOG("Error: Image loading %s",iluErrorString(ilGetError()));
 
-	return -1;
+	return Texture(0, 0, 0);
 }
 
-// Path to new texture and Gluint from the texture that we would like to override
-void ModuleTextures::ReloadTexture(const char* newPath, unsigned texture) {
-	
-	Unload(texture);
-
-	texture = Load(newPath);
-
-	if (texture == -1) {
-		LOG("Error: Texture cannot be loaded");
-	}
-
-}
-
-void ModuleTextures::Unload(unsigned texture) {
-	if (texture != 0) {
-		glDeleteTextures(1, &texture);
-	}
-}
-
-void ModuleTextures::SwitchMipMaps(const char* newPath, unsigned texture, bool state) {
-	generateMipMaps = state;
-
-	ReloadTexture(newPath, texture);
-}
-
-void ModuleTextures::SetNewParameter(const char* newPath, unsigned texture, unsigned newTextFilter, unsigned newResizeMethod, unsigned newWrapMethod, unsigned newClampMethod) {
-
-	textFilter = newTextFilter;
-	resizeMethod = newResizeMethod;
-	wrapMethod = newWrapMethod;
-	clampMethod = newClampMethod;
-
-	ReloadTexture(newPath, texture);
+void ModuleTextures::DrawGUI() {
+	ImGui::Text("This will be applied only to the next loaded models");
+	ImGui::Text("Filter type:");
+	ImGui::RadioButton("Linear", &filterType, GL_LINEAR); ImGui::SameLine();
+	ImGui::RadioButton("Nearest", &filterType, GL_NEAREST);
+	if (ImGui::Checkbox("Mipmap", &mipmaping)) { };
 }

@@ -3,35 +3,53 @@
 
 #include "Module.h"
 #include "Globals.h"
+
+#include "Dock.h"
+#include "DockAbout.h"
+#include "DockConsole.h"
+#include "DockConfig.h"
+#include "DockScene.h"
+
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
 #include <vector>
 
+class Dock;
+class DockConsole;
+class DockScene;
+class DockConfig;
+
 class ModuleEditor : public Module
 {
-public:
-	ModuleEditor();
-	~ModuleEditor();
+	public:
+		ModuleEditor();
+		~ModuleEditor();
 
-	bool Init();
-	update_status PreUpdate();
-	update_status Update();
-	update_status PostUpdate();
-	bool CleanUp();
-	void HandleInputs(SDL_Event& event);
+		bool				Init();
+		update_status		PreUpdate() override;
+		update_status		Update() override;
+		bool				CleanUp() override;
 
-public:
-	ImGuiIO io;
-	bool showAboutMenu = false;
-	bool showHardwareMenu = false;
-	bool requestedExit = false;
-	bool showSceneConfig = false;
-	bool showTextureConfig = false;
-	bool showConsole = false;
-	bool showZoomMagnifier = false;
-	std::vector<float> fps_log;
-	std::vector<float> ms_log;
+		// ImgUI info
+		void				AddFPSCount(float fps) const;
+		void				CreateDockSpace();
+		void				PrintDocks();
+		void				RenderGUI();
+		bool				SceneFocused() const;
+
+		// SDL events
+		void				ProcessInputEvent(SDL_Event * event) const;
+
+	public:
+		//Docking
+		DockAbout* about = nullptr;
+		DockConsole* console = nullptr;
+		DockScene* scene = nullptr;
+		DockConfig* config = nullptr;
+
+	private:
+		std::list<Dock*> docks;
 
 };
 

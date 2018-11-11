@@ -1,5 +1,5 @@
-#ifndef __ModuleWindow_H__
-#define __ModuleWindow_H__
+#ifndef __MODULEWINDOW_H__
+#define __MODULEWINDOW_H__
 
 #include "Module.h"
 #include "SDL/include/SDL.h"
@@ -8,27 +8,27 @@ class Application;
 
 class ModuleWindow : public Module
 {
-public:
+	public:
 
-	ModuleWindow();
+		ModuleWindow();
+		virtual ~ModuleWindow();
 
-	// Destructor
-	virtual ~ModuleWindow();
+		bool	Init() override;
+		bool	CleanUp() override;
+		void	DrawGUI();
+		void	WindowResized(unsigned width, unsigned height);
 
-	// Called before quitting
-	bool Init();
+	public:
+		SDL_Window*		window = nullptr;
+		SDL_Surface*	screen_surface = nullptr;
+		int				width = SCREEN_WIDTH;
+		int				height = SCREEN_HEIGHT;
+		float			screenRatio = SCREEN_WIDTH / SCREEN_HEIGHT;
 
-	// Called before quitting
-	bool CleanUp();
+		bool fullscreen = false;
+		bool resizable = true;
+		bool borderless = false;
 
-	void	WindowResized(unsigned width, unsigned height);
-
-public:
-	//The window we'll be rendering to
-	SDL_Window* window = NULL;
-
-	//The surface contained by the window
-	SDL_Surface* screen_surface = NULL;
 };
 
-#endif // __ModuleWindow_H__
+#endif // __MODULEWINDOW_H__
