@@ -28,10 +28,8 @@ class Model
 
 		void					Draw() const;
 		void					UpdateTexture(Texture texture);
-		void					DrawTexture();
+		void					DrawInfo() const;
 
-		AABB					BoundingBox;
-		//math::float3			centerModel;
 
 	private:
 		bool					LoadModel(const char* pathFile);
@@ -42,6 +40,7 @@ class Model
 		const char*				path;
 		std::list<Mesh>			meshes;
 		std::vector<Texture>	textures;
+		AABB					boundingBox = AABB({ 0,0,0 }, { 0,0,0 });
 };
 
 #endif //__MODEL_H__

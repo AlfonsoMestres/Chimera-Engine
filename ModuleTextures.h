@@ -30,6 +30,7 @@ class ModuleTextures : public Module
 		int filterType = GL_LINEAR;
 		bool mipmaping = false;
 		int wrapMode = 0;
+		ILuint imageId = 0;
 };		   
 
 #endif //__MODULETEXTURES_H__

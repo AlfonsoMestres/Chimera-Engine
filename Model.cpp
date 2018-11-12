@@ -12,7 +12,7 @@ Model::Model(const char* file) {
 	this->path = s.c_str();
 	LoadModel(file);
 	// Updating the focused object
-	App->camera->selectedObjectBB = BoundingBox;
+	App->camera->selectedObjectBB = boundingBox;
 	App->camera->FocusSelectedObject();
 }
 
@@ -38,7 +38,7 @@ void Model::GenerateMeshData(const aiNode* node, const aiScene* scene) {
 	assert(scene != nullptr);
 
 	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
-		aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 		meshes.emplace_back(mesh);
 	}
 
@@ -56,9 +56,30 @@ void Model::Draw() const {
 
 }
 
-void Model::DrawTexture() {
+void Model::DrawInfo() const {
 
-	if (ImGui::CollapsingHeader("Textures")) {
+	// TODO: this is weird, change collapsing to other imgui element
+	if (ImGui::CollapsingHeader("Meshes loaded")) {
+
+		for (auto& meshSelected : meshes) {
+
+			if (ImGui::CollapsingHeader(meshSelected.name, ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick)) {
+
+				if (&meshSelected != nullptr) {
+
+					ImGui::Text("Triangles Count: %d", meshSelected.numIndices / 3);
+					ImGui::Text("Vertices Count: %d", meshSelected.vertices.size());
+					ImGui::Text("Mesh size:\n X: %f | Y: %f | Z: %f", meshSelected.bbox.Size().x, meshSelected.bbox.Size().y, meshSelected.bbox.Size().z);
+
+				} else {
+					ImGui::Text("No mesh attached");
+				}
+
+			}
+		}
+	}
+
+	if (ImGui::CollapsingHeader("Texture")) {
 
 		for (auto &texture : textures) {
 			ImGui::Text("Size:  Width: %d | Height: %d", texture.width, texture.height);
@@ -68,6 +89,7 @@ void Model::DrawTexture() {
 	}
 
 }
+
 
 void Model::UpdateTexture(Texture texture) {
 
@@ -102,30 +124,8 @@ void Model::GenerateMaterialData(const aiScene* scene) {
 // Axis Aligned Bounding Box
 void Model::GetAABB() {
 
-	if (meshes.size() == 0 || meshes.front().vertices.size() == 0) {
-		return;
+	for (auto& mesh : meshes) {
+		boundingBox.Enclose(mesh.bbox);
 	}
 
-	math::float3 minV; 
-	math::float3 maxV;
-	minV = maxV = meshes.front().vertices[0];
-	for (auto &mesh : meshes) {
-
-		for (auto &vertice : mesh.vertices) {
-
-			minV.x = min(minV.x, vertice.x);
-			minV.y = min(minV.y, vertice.y);
-			minV.z = min(minV.z, vertice.z);
-			maxV.x = max(maxV.x, vertice.x);
-			maxV.y = max(maxV.y, vertice.y);
-			maxV.z = max(maxV.z, vertice.z);
-
-		}
-	}
-
-	//centerModel = math::float3((minV.x + maxV.x) * 0.5, (minV.y + maxV.y) * 0.5, (minV.z + maxV.z) * 0.5);
-	//boundingBoxSize = BoundingBox.Size();
-
-	BoundingBox.minPoint = minV;
-	BoundingBox.maxPoint = maxV;
 }

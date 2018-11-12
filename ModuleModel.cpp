@@ -43,10 +43,22 @@ void ModuleModel::DeleteModels() {
 
 void ModuleModel::DrawGUI() {
 
-	if (ImGui::Checkbox("Checkers Texture", &checkersTexture)) {
+	if (models.size() != 0) {
 
-		if (checkersTexture && checkTexture.id == 0) {
-			checkTexture = App->textures->Load("checkersTexture.jpg");
+		if (ImGui::CollapsingHeader("Model")) {
+
+			for (auto& model : models) {
+				model.DrawInfo();
+			}
+
+		}
+
+		if (ImGui::Checkbox("Checkers Texture", &checkersTexture)) {
+
+			if (checkersTexture && checkTexture.id == 0) {
+				checkTexture = App->textures->Load("checkersTexture.jpg");
+			}
+
 		}
 
 	}

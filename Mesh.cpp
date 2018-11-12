@@ -60,6 +60,11 @@ Mesh::Mesh(aiMesh* mesh) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	name = mesh->mName.C_Str();
+
+	bbox.SetNegativeInfinity();
+	bbox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
+
 	numIndices = mesh->mNumFaces * 3;
 	materialIndex = mesh->mMaterialIndex;
 

@@ -19,9 +19,11 @@ class Mesh
 		void						Draw(unsigned shaderProgram, const std::vector<Texture>& textures) const;
 
 	public:
+		const char*					name = nullptr;
 		int							numIndices = 0;
 		int							materialIndex = 0;
 		std::vector<math::float3>	vertices;
+		AABB						bbox;
 
 	private:
 		unsigned vao;

@@ -22,7 +22,7 @@ bool ModuleTextures::Init() {
 Texture const ModuleTextures::Load(const char* path) {
 	assert(path != nullptr);
 
-	ILuint imageId;
+
 	unsigned textureId = 0;
 
 	ilGenImages(1, &imageId);
