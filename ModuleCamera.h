@@ -45,6 +45,8 @@ class ModuleCamera : public Module
 		float cameraSpeed = 17.0f;;
 
 		// Camera rotations
+		float maxFov = 100.0f;
+		float minFov = 10.0f;
 		float pitch;
 		float yaw;
 

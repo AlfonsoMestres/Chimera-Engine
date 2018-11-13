@@ -139,28 +139,28 @@ void ModuleCamera::RotateCamera(const fPoint& mousePosition, bool orbit) {
 
 void ModuleCamera::Zoom() {
 
-	if (App->input->GetMouseWheel() != 0) {
-		App->renderer->frustum.verticalFov -= App->input->GetMouseWheel() * 20.0f * App->time->deltaTime;
-		App->renderer->frustum.horizontalFov = 2.0f * atanf(tanf(App->renderer->frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
+	const int wheelSlide = App->input->GetMouseWheel();
+	if (wheelSlide != 0) {
+		float zoomValue = App->renderer->frustum.verticalFov + -wheelSlide * 20.0f * App->time->deltaTime;
+		float newAngleFov = math::Clamp(zoomValue, math::DegToRad(minFov), math::DegToRad(maxFov));
+		App->renderer->frustum.verticalFov = newAngleFov;
+		App->renderer->frustum.horizontalFov = 2.0f * atanf(tanf(newAngleFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 	}
 
-	// TODO: set up the zoom imgui
-	//if (zoomValue != 1.0f)
-	//	App->editor->showZoomMagnifier = true;
-	//else
-	//	App->editor->showZoomMagnifier = false;
 }
 
 void ModuleCamera::FocusSelectedObject() {
-	float dist = cameraPos.Distance(selectedObjectBB.CenterPoint());
-	if (dist < selectedObjectBB.ClosestPoint(cameraPos).x || dist < selectedObjectBB.ClosestPoint(cameraPos).y || dist < selectedObjectBB.ClosestPoint(cameraPos).z) {
-		// TODO: this should be the distance from the camera to the closest point added to the camera pos
-		cameraPos = selectedObjectBB.CornerPoint(0).Add(10);
+	//float dist = cameraPos.Distance(selectedObjectBB.CenterPoint()); V0
+	//if (dist < selectedObjectBB.ClosestPoint(cameraPos).x || dist < selectedObjectBB.ClosestPoint(cameraPos).y || dist < selectedObjectBB.ClosestPoint(cameraPos).z) {
+	//	
+	//	cameraPos = selectedObjectBB.CornerPoint(0).Add(10);
+	//}
+	
+	// TODO: this should be the distance from the camera to the closest point added to the camera pos V1
+	/*while (!App->renderer->frustum.Contains(selectedObjectBB)) {
+		cameraPos.z += selectedObjectBB.CenterPoint().Distance(cameraPos);
 	}
-
-	front = selectedObjectBB.CenterPoint() - cameraPos;
-	front.Normalize();
-
+*/
 	UpdatePitchYaw();
 	App->renderer->LookAt(cameraPos, (cameraPos + front));
 }
