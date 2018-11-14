@@ -13,7 +13,7 @@ Model::Model(const char* file) {
 	LoadModel(file);
 	// Updating the focused object
 	App->camera->selectedObjectBB = boundingBox;
-	App->camera->FocusSelectedObject();
+	//App->camera->FocusSelectedObject();
 }
 
 Model::~Model() { }
@@ -127,5 +127,7 @@ void Model::GetAABB() {
 	for (auto& mesh : meshes) {
 		boundingBox.Enclose(mesh.bbox);
 	}
+
+	boundingBox.FaceCenterPoint(5);
 
 }

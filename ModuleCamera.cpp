@@ -150,17 +150,14 @@ void ModuleCamera::Zoom() {
 }
 
 void ModuleCamera::FocusSelectedObject() {
-	//float dist = cameraPos.Distance(selectedObjectBB.CenterPoint()); V0
-	//if (dist < selectedObjectBB.ClosestPoint(cameraPos).x || dist < selectedObjectBB.ClosestPoint(cameraPos).y || dist < selectedObjectBB.ClosestPoint(cameraPos).z) {
-	//	
-	//	cameraPos = selectedObjectBB.CornerPoint(0).Add(10);
-	//}
-	
-	// TODO: this should be the distance from the camera to the closest point added to the camera pos V1
-	/*while (!App->renderer->frustum.Contains(selectedObjectBB)) {
-		cameraPos.z += selectedObjectBB.CenterPoint().Distance(cameraPos);
+
+	// TODO: Almost there! change the extremepoint 
+	if (selectedObjectBB.Contains(cameraPos)) {
+		cameraPos = selectedObjectBB.ExtremePoint(cameraPos) * 2.0f;
 	}
-*/
+
+	front = (selectedObjectBB.CenterPoint() - cameraPos).Normalized();
+
 	UpdatePitchYaw();
 	App->renderer->LookAt(cameraPos, (cameraPos + front));
 }
