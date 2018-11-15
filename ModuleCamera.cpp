@@ -151,12 +151,12 @@ void ModuleCamera::Zoom() {
 
 void ModuleCamera::FocusSelectedObject() {
 
-	// TODO: Almost there! change the extremepoint 
-	if (selectedObjectBB.Contains(cameraPos)) {
-		cameraPos = selectedObjectBB.ExtremePoint(cameraPos) * 2.0f;
+	// Closest point returns the same point if the selected object is inside
+	while (selectedObject->boundingBox.ClosestPoint(cameraPos).Equals(cameraPos)) {
+		cameraPos = cameraPos.Mul(2.0f);
 	}
 
-	front = (selectedObjectBB.CenterPoint() - cameraPos).Normalized();
+	front = (selectedObject->boundingBox.CenterPoint() - cameraPos).Normalized();
 
 	UpdatePitchYaw();
 	App->renderer->LookAt(cameraPos, (cameraPos + front));
@@ -164,7 +164,7 @@ void ModuleCamera::FocusSelectedObject() {
 
 void ModuleCamera::UpdatePitchYaw() {
 	pitch = -math::RadToDeg(SDL_atanf(front.y / front.x));
-	yaw = -math::RadToDeg(SDL_atanf(front.y / front.z));
+	yaw = -math::RadToDeg(SDL_atanf(front.x / front.z));
 
 	if (math::IsNan(pitch))
 		pitch = 0.0f;

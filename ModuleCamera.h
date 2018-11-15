@@ -64,7 +64,7 @@ class ModuleCamera : public Module
 		float lastY = 0.0f;
 
 		// Center
-		math::AABB selectedObjectBB;
+		Model* selectedObject;
 };
 
 #endif

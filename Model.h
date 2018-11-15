@@ -30,6 +30,7 @@ class Model
 		void					UpdateTexture(Texture texture);
 		void					DrawInfo() const;
 
+		AABB					boundingBox = AABB({ 0,0,0 }, { 0,0,0 });
 
 	private:
 		bool					LoadModel(const char* pathFile);
@@ -40,7 +41,6 @@ class Model
 		const char*				path;
 		std::list<Mesh>			meshes;
 		std::vector<Texture>	textures;
-		AABB					boundingBox = AABB({ 0,0,0 }, { 0,0,0 });
 };
 
 #endif //__MODEL_H__
