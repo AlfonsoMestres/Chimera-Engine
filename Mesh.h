@@ -26,9 +26,9 @@ class Mesh
 		AABB						bbox;
 
 	private:
-		unsigned vao;
-		unsigned vbo;
-		unsigned ibo;
+		unsigned vao = 0u;
+		unsigned vbo = 0u;
+		unsigned ibo = 0u;
 };
 
 #endif //__MESH_H__

@@ -148,9 +148,6 @@
     <ClCompile Include="ModuleTime.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Dock.cpp">
-      <Filter>Docks</Filter>
-    </ClCompile>
     <ClCompile Include="DockConsole.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
@@ -173,6 +170,9 @@
       <Filter>Utils\Time</Filter>
     </ClCompile>
     <ClCompile Include="DockConfig.cpp">
+      <Filter>Docks</Filter>
+    </ClCompile>
+    <ClCompile Include="Dock.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
   </ItemGroup>

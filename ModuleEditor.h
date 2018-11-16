@@ -39,7 +39,7 @@ class ModuleEditor : public Module
 		bool				SceneFocused() const;
 
 		// SDL events
-		void				ProcessInputEvent(SDL_Event * event) const;
+		void				ProcessInputEvent(SDL_Event* event) const;
 
 	public:
 		//Docking

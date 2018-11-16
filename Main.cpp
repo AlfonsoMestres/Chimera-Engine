@@ -79,7 +79,6 @@ int main(int argc, char** argv){
 		}
 	}
 
-	LOG("See ya' later, alig...\n");
 	delete App;
 	return main_return;
 }

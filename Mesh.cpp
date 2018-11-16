@@ -19,7 +19,7 @@ Mesh::Mesh(aiMesh* mesh) {
 
 	// Texture coords
 	float* textureBuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->mNumVertices, sizeof(float) * 2 * mesh->mNumVertices, GL_MAP_WRITE_BIT);
-	for (int i = 0; i < mesh->mNumVertices; ++i) {
+	for (unsigned i = 0u; i < mesh->mNumVertices; ++i) {
 		*(textureBuffer++) = mesh->mTextureCoords[0][i].x;
 		*(textureBuffer++) = mesh->mTextureCoords[0][i].y;
 
@@ -34,7 +34,7 @@ Mesh::Mesh(aiMesh* mesh) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * mesh->mNumFaces * 3, nullptr, GL_STATIC_DRAW);
 
 	int* indices = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned) * mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);
-	for (unsigned i = 0; i < mesh->mNumFaces; ++i) {
+	for (unsigned i = 0u; i < mesh->mNumFaces; ++i) {
 		assert(mesh->mFaces[i].mNumIndices == 3);
 
 		*(indices++) = mesh->mFaces[i].mIndices[0];

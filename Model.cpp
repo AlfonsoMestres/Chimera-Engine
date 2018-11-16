@@ -11,7 +11,6 @@ Model::Model(const char* file) {
 	s = s.substr(0, found + 1);
 	this->path = s.c_str();
 	LoadModel(file);
-	// Updating the focused object
 	App->camera->selectedObject = this;
 }
 

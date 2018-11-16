@@ -14,9 +14,9 @@
 #include <string>
 
 struct Texture {
-	int id;
-	int width;
-	int height;
+	int id = 0;
+	int width = 0;
+	int height = 0;
 	Texture(int id, int width, int height) : id(id), width(width), height(height) {}
 };
 
@@ -38,7 +38,7 @@ class Model
 		void					GenerateMaterialData(const aiScene* scene);
 		void					GetAABB();
 
-		const char*				path;
+		const char*				path = nullptr;
 		std::list<Mesh>			meshes;
 		std::vector<Texture>	textures;
 };

@@ -157,10 +157,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Dock.cpp" />
     <ClCompile Include="DockAbout.cpp" />
     <ClCompile Include="DockConfig.cpp" />
     <ClCompile Include="DockConsole.cpp" />
-    <ClCompile Include="Dock.cpp" />
     <ClCompile Include="DockScene.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
     <ClCompile Include="IMGUI\imgui_demo.cpp" />

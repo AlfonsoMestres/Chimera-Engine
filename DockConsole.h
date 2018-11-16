@@ -16,7 +16,7 @@ class DockConsole : public Dock
 	private:
 		ImGuiTextBuffer     buf;
 		ImVector<int>       lineOffsets;
-		bool                scrollToBottom = false;
+		bool                scrollToBottom = true;
 };
 
 #endif __DOCKCONSOLE_H__

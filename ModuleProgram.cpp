@@ -16,7 +16,7 @@ unsigned ModuleProgram::LoadProgram(const char* vertShaderPath, const char* frag
 	assert(vertShaderPath != nullptr);
 	assert(fragShaderPath != nullptr);
 
-	unsigned program = 0;
+	unsigned program = 0u;
 
 	// How to: https://badvertex.com/2012/11/20/how-to-load-a-glsl-shader-in-opengl-using-c.html
 	vertShader = glCreateShader(GL_VERTEX_SHADER);

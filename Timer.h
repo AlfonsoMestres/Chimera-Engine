@@ -21,8 +21,8 @@ class Timer
 		double ReadPrecise();
 		double StopPrecise();
 
-		double startTimePrecise = 0;
-		double timeSpentPrecise = 0;
+		double startTimePrecise = 0.0;
+		double timeSpentPrecise = 0.0;
 		bool timerPreciseRunning = false;
 
 };

@@ -22,8 +22,7 @@ bool ModuleTextures::Init() {
 Texture const ModuleTextures::Load(const char* path) {
 	assert(path != nullptr);
 
-
-	unsigned textureId = 0;
+	unsigned textureId = 0u;
 
 	ilGenImages(1, &imageId);
 	ilBindImage(imageId);
@@ -48,7 +47,7 @@ Texture const ModuleTextures::Load(const char* path) {
 		pixelDepth = ilGetInteger(IL_IMAGE_DEPTH);
 
 		// Using RGBA if we got an alpha channel
-		bool success;
+		bool success = false;
 		int channels = ilGetInteger(IL_IMAGE_CHANNELS);
 		if (channels == 3) {
 			success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);

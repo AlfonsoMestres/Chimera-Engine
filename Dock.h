@@ -1,7 +1,7 @@
 #ifndef __DOCK_H__
 #define __DOCK_H__
 
-#include "ImGui\imgui.h"
+#include "ImGui/imgui.h"
 
 class Dock
 {

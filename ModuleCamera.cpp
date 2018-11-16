@@ -150,7 +150,6 @@ void ModuleCamera::Zoom() {
 }
 
 void ModuleCamera::FocusSelectedObject() {
-
 	// Closest point returns the same point if the selected object is inside
 	while (selectedObject->boundingBox.ClosestPoint(cameraPos).Equals(cameraPos)) {
 		cameraPos = cameraPos.Mul(2.0f);

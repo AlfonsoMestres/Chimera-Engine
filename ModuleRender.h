@@ -44,9 +44,9 @@ class ModuleRender : public Module
 		Frustum			frustum;
 		math::float4x4	viewMatrix;
 		void*			context = nullptr;
-		unsigned		fbo = 0;
-		unsigned		rbo = 0;
-		unsigned		renderTexture = 0;
+		unsigned		fbo = 0u;
+		unsigned		rbo = 0u;
+		unsigned		renderTexture = 0u;
 };
 
 #endif

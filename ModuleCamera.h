@@ -40,17 +40,18 @@ class ModuleCamera : public Module
 		void			Zoom();
 
 	public:
+		Model* selectedObject = nullptr;
+
+		// User attributes
 		float mouseSensitivity = 65.0f;
 		float rotationSpeed = 65.0f;;
 		float cameraSpeed = 17.0f;;
 
-		// Camera rotations
+		// Camera specs
 		float maxFov = 100.0f;
 		float minFov = 10.0f;
-		float pitch;
-		float yaw;
-
-		// Camera positions
+		float pitch = 0.0f;
+		float yaw = 0.0f;
 		math::float3 cameraPos = math::float3(10.0f, 10.0f, 10.0f);
 
 		//ViewMatrix info
@@ -62,9 +63,6 @@ class ModuleCamera : public Module
 		bool firstMouse = true;
 		float lastX = 0.0f;
 		float lastY = 0.0f;
-
-		// Center
-		Model* selectedObject;
 };
 
 #endif
