@@ -16,7 +16,7 @@ class ModuleTextures : public Module
 		~ModuleTextures();
 
 		bool			Init() override;
-		Texture const   Load(const char* path);
+		Texture const   Load(CustomFile& path);
 		void			DrawGUI();
 
 	public:
@@ -26,11 +26,12 @@ class ModuleTextures : public Module
 		int format = 0;
 		int width = 0;
 
-		bool anisotropic_filter = false;
-		int filterType = GL_LINEAR;
-		bool mipmaping = false;
-		int wrapMode = 0;
-		ILuint imageId = 0u;
+		bool				anisotropic_filter = false;
+		int					filterType = GL_LINEAR;
+		bool				mipmaping = false;
+		int					wrapMode = 0;
+		ILuint				imageId = 0u;
+		CustomFile&			checkersFile = CustomFile("");
 };		   
 
 #endif //__MODULETEXTURES_H__

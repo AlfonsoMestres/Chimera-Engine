@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleInput.h"
 #include "ModuleTextures.h"
 
 ModuleTextures::ModuleTextures() { }
@@ -15,19 +16,21 @@ bool ModuleTextures::Init() {
 	iluInit();
 	ilutInit();
 
+	checkersFile = CustomFile("checkersTexture.jpg");
+	App->input->files.emplace_back(checkersFile);
+
 	return ilutRenderer(ILUT_OPENGL);
 }
 
 // Load new texture from file path
-Texture const ModuleTextures::Load(const char* path) {
-	assert(path != nullptr);
+Texture const ModuleTextures::Load(CustomFile& file) {
 
 	unsigned textureId = 0u;
 
 	ilGenImages(1, &imageId);
 	ilBindImage(imageId);
 
-	if (ilLoadImage(path)) {
+	if (ilLoadImage(file.path)) {
 
 		// Generate a new texture
 		glGenTextures(1, &textureId);
@@ -102,7 +105,7 @@ Texture const ModuleTextures::Load(const char* path) {
 		ilDeleteImages(1, &imageId); 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		return Texture(textureId, width, height); 
+		return Texture(textureId, width, height);
 	}
 
 	LOG("Error: Image loading %s",iluErrorString(ilGetError()));

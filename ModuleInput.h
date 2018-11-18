@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Point.h"
+#include "CustomFile.h"
 #include "SDL_scancode.h"
 
 #define NUM_MOUSE_BUTTONS 5
@@ -52,13 +53,15 @@ class ModuleInput : public Module
 		const fPoint&	GetMousePosition() const;
 		const int		GetMouseWheel() const;
 
+		std::list<CustomFile> files;
+
 	private:
-		int			mouse_wheel = 0;
-		bool		windowEvents[WE_COUNT];
-		KeyState*	keyboard = nullptr;
-		KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
-		fPoint		mouse_motion;
-		fPoint		mouse;
+		int						mouse_wheel = 0;
+		bool					windowEvents[WE_COUNT];
+		KeyState*				keyboard = nullptr;
+		KeyState				mouse_buttons[NUM_MOUSE_BUTTONS];
+		fPoint					mouse_motion;
+		fPoint					mouse;
 };
 
 #endif // __MODULEINPUT_H__

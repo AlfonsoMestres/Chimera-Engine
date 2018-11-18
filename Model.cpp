@@ -3,23 +3,19 @@
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
+#include "ModuleInput.h"
 #include "imgui.h"
 
-Model::Model(const char* file) {
-	std::string s(file);
-	std::size_t found = s.find_last_of("/\\");
-	s = s.substr(0, found + 1);
-	this->path = s.c_str();
-	LoadModel(file);
+Model::Model(CustomFile& modelFile) {
+	LoadModel(modelFile);
 	App->camera->selectedObject = this;
 }
 
 Model::~Model() { }
 
-bool Model::LoadModel(const char* pathFile) {
-	assert(pathFile != nullptr);
+bool Model::LoadModel(CustomFile& file) {
 
-	const aiScene* scene = aiImportFile(pathFile, { aiProcess_Triangulate | aiProcess_GenUVCoords });
+	const aiScene* scene = aiImportFile(file.path, { aiProcess_Triangulate | aiProcess_GenUVCoords });
 
 	if (scene) {
 		GenerateMeshData(scene->mRootNode, scene);
@@ -108,9 +104,11 @@ void Model::GenerateMaterialData(const aiScene* scene) {
 		aiTextureMapping mapping = aiTextureMapping_UV;
 
 		if (materialSrc->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0) == AI_SUCCESS) {
-			std::string pathFile(this->path);
-			pathFile += file.C_Str();
-			textures.push_back(App->textures->Load(pathFile.c_str()));
+			std::string newTexturePath(modelFile.path);
+			newTexturePath += file.C_Str();
+			CustomFile& newTexture = CustomFile(newTexturePath.c_str());
+			App->input->files.emplace_back(newTexture);
+			textures.push_back(App->textures->Load(newTexture));
 		} else {
 			LOG("Error: Could not load the %fth material", i);
 		}

@@ -175,6 +175,9 @@
     <ClCompile Include="Dock.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
+    <ClCompile Include="CustomFile.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -410,6 +413,9 @@
     </ClInclude>
     <ClInclude Include="DockConfig.h">
       <Filter>Docks</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomFile.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -44,7 +44,8 @@ bool Application::Init() {
 
 	LOG("Modules initialized in %d ms", initTimer.Stop());
 
-	App->model->Load("./Models/BakerHouse/BakerHouse.fbx");
+	CustomFile& bakerFile = CustomFile("./Models/BakerHouse/BakerHouse.fbx");
+	App->model->Load(bakerFile);
 
 	return ret;
 }

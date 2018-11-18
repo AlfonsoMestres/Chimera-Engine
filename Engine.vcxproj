@@ -82,6 +82,7 @@
     <ClInclude Include="DockConsole.h" />
     <ClInclude Include="Dock.h" />
     <ClInclude Include="DockScene.h" />
+    <ClInclude Include="CustomFile.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModuleModel.h" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="CustomFile.cpp" />
     <ClCompile Include="Dock.cpp" />
     <ClCompile Include="DockAbout.cpp" />
     <ClCompile Include="DockConfig.cpp" />

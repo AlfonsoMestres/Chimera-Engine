@@ -100,7 +100,6 @@ void ModuleEditor::RenderGUI() {
 }
 
 void ModuleEditor::PrintDocks() {
-	// Print docks like we do with module
 	for (std::list<Dock*>::iterator it = docks.begin(); it != docks.end(); ++it)
 		if ((*it)->IsEnabled()) {
 			(*it)->Draw();
@@ -116,7 +115,6 @@ void ModuleEditor::CreateDockSpace()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 
-	//TODO: change this to a simple define
 	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar;
 	windowFlags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 

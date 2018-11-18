@@ -16,6 +16,7 @@ ModuleInput::ModuleInput() : Module(), mouse({ 0, 0 }), mouse_motion({ 0,0 }) {
 }
 
 ModuleInput::~ModuleInput() {
+	files.clear();
 	delete[](keyboard);
 	keyboard = nullptr;
 }
@@ -103,23 +104,23 @@ update_status ModuleInput::PreUpdate() {
 
 			case SDL_DROPFILE:
 			{
-				char* fileDroppedPath = event.drop.file;
+				assert(event.drop.file != nullptr);
 
-				std::string extension(fileDroppedPath);
-				std::size_t found = extension.find_last_of(".");
-				extension = extension.substr(found + 1, extension.length());
+				CustomFile droppedFile = CustomFile(event.drop.file);
 
-				if (extension == "fbx") {
+				if (droppedFile.extension == "fbx") {
+					files.emplace_back(droppedFile);
 					App->model->DeleteModels();
-					App->model->Load(fileDroppedPath);
-				} else if (extension == "png" || extension == "dds") {
-					Texture newTexture = App->textures->Load(fileDroppedPath);
+					App->model->Load(droppedFile);
+				} else if (droppedFile.extension == "png" || droppedFile.extension == "dds") {
+					files.emplace_back(droppedFile);
+					Texture newTexture = App->textures->Load(droppedFile);
 					App->model->ApplyTexture(newTexture);
 				} else {
 					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "The file you are trying to drop is not accepted.", App->window->window);
 				}
 
-				SDL_free(fileDroppedPath);
+				//SDL_free(fileDroppedPath);
 				break;
 			}
 

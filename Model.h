@@ -3,6 +3,7 @@
 
 #include "Mesh.h"
 #include "MathGeoLib.h"
+#include "CustomFile.h"
 #include <assimp/cimport.h>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
@@ -17,13 +18,13 @@ struct Texture {
 	int id = 0;
 	int width = 0;
 	int height = 0;
-	Texture(int id, int width, int height) : id(id), width(width), height(height) {}
+	Texture(int id, int width, int height) : id(id), width(width), height(height) { }
 };
 
 class Model
 {
 	public:
-		Model(const char* file);
+		Model(CustomFile& modelFile);
 		~Model();
 
 		void					Draw() const;
@@ -31,9 +32,10 @@ class Model
 		void					DrawInfo() const;
 
 		AABB					boundingBox = AABB({ 0,0,0 }, { 0,0,0 });
+		CustomFile&				modelFile = CustomFile("");
 
 	private:
-		bool					LoadModel(const char* pathFile);
+		bool					LoadModel(CustomFile& file);
 		void					GenerateMeshData(const aiNode* node, const aiScene* scene);
 		void					GenerateMaterialData(const aiScene* scene);
 		void					GetAABB();

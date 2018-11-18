@@ -60,7 +60,6 @@ update_status ModuleCamera::PreUpdate() {
 	return UPDATE_CONTINUE;
 }
 
-// Called before quitting
 bool ModuleCamera::CleanUp() {
 
 	return true;

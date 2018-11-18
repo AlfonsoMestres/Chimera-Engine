@@ -52,7 +52,7 @@ void DockConfig::Draw() {
 
 void DockConfig::DrawFPSgraph() const {
 	float total = 0.0f;
-	for (int i = 0; i < fps.size(); i++) {
+	for (unsigned i = 0u; i < fps.size(); i++) {
 		total += fps[i];
 	}
 	char avg[32];
