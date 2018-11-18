@@ -43,6 +43,7 @@ class ModuleRender : public Module
 		float			bgColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		Frustum			frustum;
 		math::float4x4	viewMatrix;
+		bool			vsyncEnabled = false;
 		void*			context = nullptr;
 		unsigned		fbo = 0u;
 		unsigned		rbo = 0u;

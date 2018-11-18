@@ -4,7 +4,6 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleEditor.h"
-#include "ModuleTime.h"
 #include "ModuleCamera.h"
 
 ModuleCamera::ModuleCamera() { }
@@ -41,6 +40,7 @@ update_status ModuleCamera::PreUpdate() {
 				RotateCamera(App->input->GetMousePosition(), true);
 			} else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT) {
 				SDL_ShowCursor(SDL_ENABLE);
+				firstMouse = true;
 			}
 		} else if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_UP) {
 			SDL_ShowCursor(SDL_ENABLE);
@@ -68,7 +68,7 @@ bool ModuleCamera::CleanUp() {
 
 void ModuleCamera::MoveCamera(CameraMovement cameraSide) {
 
-	float normMoveSpeed = cameraSpeed * App->time->deltaTime;
+	float normMoveSpeed = cameraSpeed * App->deltaTime;
 
 	switch (cameraSide) {
 		case Upwards:
@@ -118,12 +118,13 @@ void ModuleCamera::RotateCamera(const fPoint& mousePosition, bool orbit) {
 	pitch = math::Clamp(pitch, -80.0f, 80.0f);
 
 	if (orbit) {
-		// TODO: the cameraPos is not behaving correctly, check the trigonometry
-		math::float3 cameraTarget = cameraPos + front * 5;
+		// TODO: not orbiting correctly
+		math::float3 cameraTarget(cameraPos + front * 5);
 		float distanceToOrbit = cameraTarget.Length();
-		cameraPos.x = distanceToOrbit * SDL_sinf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
-		cameraPos.y = distanceToOrbit * SDL_sinf(math::DegToRad(pitch));
-		cameraPos.z = distanceToOrbit * -SDL_cosf(math::DegToRad(yaw)) * SDL_cosf(math::DegToRad(pitch));
+
+		cameraPos.x = sin(math::DegToRad(yaw)) * cos(math::DegToRad(pitch)) * distanceToOrbit;
+		cameraPos.y = sin(math::DegToRad(pitch)) * distanceToOrbit;
+		cameraPos.z = -cos(math::DegToRad(yaw)) * cos(math::DegToRad(pitch)) * distanceToOrbit;
 		front = (cameraTarget - cameraPos).Normalized();
 	} else {
 		// We are facing -z so we invert the x/z trigonometry and set the yaw to 0
@@ -141,7 +142,7 @@ void ModuleCamera::Zoom() {
 
 	const int wheelSlide = App->input->GetMouseWheel();
 	if (wheelSlide != 0) {
-		float zoomValue = App->renderer->frustum.verticalFov + -wheelSlide * 20.0f * App->time->deltaTime;
+		float zoomValue = App->renderer->frustum.verticalFov + -wheelSlide * 20.0f * App->deltaTime;
 		float newAngleFov = math::Clamp(zoomValue, math::DegToRad(minFov), math::DegToRad(maxFov));
 		App->renderer->frustum.verticalFov = newAngleFov;
 		App->renderer->frustum.horizontalFov = 2.0f * atanf(tanf(newAngleFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
@@ -157,13 +158,13 @@ void ModuleCamera::FocusSelectedObject() {
 
 	front = (selectedObject->boundingBox.CenterPoint() - cameraPos).Normalized();
 
-	UpdatePitchYaw();
 	App->renderer->LookAt(cameraPos, (cameraPos + front));
+	UpdatePitchYaw();
 }
 
 void ModuleCamera::UpdatePitchYaw() {
-	pitch = -math::RadToDeg(SDL_atanf(front.y / front.x));
-	yaw = -math::RadToDeg(SDL_atanf(front.x / front.z));
+	pitch = -math::RadToDeg(SDL_asinf(-front.y));
+	yaw = math::RadToDeg(SDL_atan2f(front.z, front.x)) + 90.0f;
 
 	if (math::IsNan(pitch))
 		pitch = 0.0f;

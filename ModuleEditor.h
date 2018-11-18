@@ -9,6 +9,7 @@
 #include "DockConsole.h"
 #include "DockConfig.h"
 #include "DockScene.h"
+#include "DockTime.h"
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -19,6 +20,7 @@ class Dock;
 class DockConsole;
 class DockScene;
 class DockConfig;
+class DockTime;
 
 class ModuleEditor : public Module
 {
@@ -32,7 +34,7 @@ class ModuleEditor : public Module
 		bool				CleanUp() override;
 
 		// ImgUI info
-		void				AddFPSCount(float fps) const;
+		void				AddFPSCount(float fps, float ms) const;
 		void				CreateDockSpace();
 		void				PrintDocks();
 		void				RenderGUI();
@@ -47,6 +49,7 @@ class ModuleEditor : public Module
 		DockConsole* console = nullptr;
 		DockScene* scene = nullptr;
 		DockConfig* config = nullptr;
+		DockTime* time = nullptr;
 
 	private:
 		std::list<Dock*> docks;

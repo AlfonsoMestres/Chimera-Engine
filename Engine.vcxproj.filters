@@ -145,9 +145,6 @@
     <ClCompile Include="ModuleProgram.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleTime.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="DockConsole.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
@@ -174,6 +171,12 @@
     </ClCompile>
     <ClCompile Include="Dock.cpp">
       <Filter>Docks</Filter>
+    </ClCompile>
+    <ClCompile Include="DockTime.cpp">
+      <Filter>Docks</Filter>
+    </ClCompile>
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>Utils\mmgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -381,9 +384,6 @@
     <ClInclude Include="ModuleProgram.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleTime.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Dock.h">
       <Filter>Docks</Filter>
     </ClInclude>
@@ -410,6 +410,15 @@
     </ClInclude>
     <ClInclude Include="DockConfig.h">
       <Filter>Docks</Filter>
+    </ClInclude>
+    <ClInclude Include="DockTime.h">
+      <Filter>Docks</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\mmgr.h">
+      <Filter>Utils\mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="mmgr\nommgr.h">
+      <Filter>Utils\mmgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -439,6 +448,9 @@
     </Filter>
     <Filter Include="Utils\Time">
       <UniqueIdentifier>{e44ee52a-3b0e-47c4-b713-03c5e4ca70e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\mmgr">
+      <UniqueIdentifier>{bd63b3a5-a3ba-47b7-850a-3e1a71685fcb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

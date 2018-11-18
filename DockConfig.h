@@ -4,7 +4,7 @@
 #include "Dock.h"
 #include <vector>
 
-#define NUMFPS 100
+#define LOGSSIZE 100
 
 class DockConfig : public Dock
 {
@@ -13,12 +13,19 @@ class DockConfig : public Dock
 		~DockConfig();
 
 		void Draw();
-		void DrawFPSgraph() const;
-		void AddFps(float fps);
-
+		void AddFps(float fps, float ms);
 
 	private:
-		std::vector<float> fps = std::vector<float>();
+		void AddMemory(float mem);
+
+	private:
+		std::vector<float> fps;
+		std::vector<float> ms;
+		std::vector<float> gameFps;
+		std::vector<float> gameMs;
+		std::vector<float> mem;
+
+
 };
 
 #endif //__DOCKCONFIG_H__

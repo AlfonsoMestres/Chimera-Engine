@@ -19,6 +19,10 @@ bool ModuleRender::Init() {
 	InitOpenGL();
 	InitFrustum();
 
+	if (vsyncEnabled && SDL_GL_SetSwapInterval(1) < 0) {
+		LOG("Error: VSync couldn't be enabled \n %s", SDL_GetError());
+	}
+
 	App->program->LoadPrograms();
 	CreateFrameBuffer();
 

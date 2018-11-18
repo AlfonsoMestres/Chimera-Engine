@@ -3,6 +3,7 @@
 
 #include <list>
 #include "Globals.h"
+#include "Timer.h"
 #include "Module.h"
 
 class ModuleRender;
@@ -24,6 +25,8 @@ class Application
 		~Application();
 
 		bool Init();
+		void PreUpdate();
+		void FinishUpdate();
 		update_status Update();
 		bool CleanUp();
 
@@ -38,8 +41,18 @@ class Application
 		ModuleTime* time = nullptr;
 		ModuleModel* model = nullptr;
 
+		Timer	gameTime;
+		bool	gamePaused = false;
+		float	deltaTime = 0.0f;
+		float	gameDeltaTime = 0.0f;
+		bool	gameModeEnabled = false;
+		int		framerateCap = 60;
+		int		gameframerateCap = 60;
+		bool	counting = false;
+
 	private:
-		std::list<Module*> modules;
+		std::list<Module*>	modules;
+		Timer				msTimer;
 
 };
 
