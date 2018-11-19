@@ -7,6 +7,7 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "ModuleModel.h"
+#include "ModuleScene.h"
 
 Application::Application() {
 
@@ -18,6 +19,7 @@ Application::Application() {
 	modules.push_back(program = new ModuleProgram());
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(model = new ModuleModel());
+	modules.push_back(scene = new ModuleScene());
 
 }
 
@@ -42,7 +44,7 @@ bool Application::Init() {
 	counting = false;
 	gameDeltaTime = 0;
 	
-	App->model->Load("./Models/BakerHouse/BakerHouse.fbx");
+	/*App->model->Load("./Models/BakerHouse/BakerHouse.fbx");*/
 
 	return ret;
 }

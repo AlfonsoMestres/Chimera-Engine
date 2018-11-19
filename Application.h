@@ -16,6 +16,7 @@ class ModuleScene;
 class ModuleProgram;
 class ModuleTime;
 class ModuleModel;
+class ModuleScene;
 
 class Application
 {
@@ -40,6 +41,7 @@ class Application
 		ModuleProgram* program = nullptr;
 		ModuleTime* time = nullptr;
 		ModuleModel* model = nullptr;
+		ModuleScene* scene = nullptr;
 
 		Timer	gameTime;
 		bool	gamePaused = false;
