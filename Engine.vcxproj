@@ -77,12 +77,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentMaterial.h" />
+    <ClInclude Include="ComponentMesh.h" />
+    <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="DockAbout.h" />
     <ClInclude Include="DockConfig.h" />
     <ClInclude Include="DockConsole.h" />
     <ClInclude Include="Dock.h" />
     <ClInclude Include="DockScene.h" />
     <ClInclude Include="DockTime.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="mmgr\nommgr.h" />
@@ -159,12 +164,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentMaterial.cpp" />
+    <ClCompile Include="ComponentMesh.cpp" />
+    <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="Dock.cpp" />
     <ClCompile Include="DockAbout.cpp" />
     <ClCompile Include="DockConfig.cpp" />
     <ClCompile Include="DockConsole.cpp" />
     <ClCompile Include="DockScene.cpp" />
     <ClCompile Include="DockTime.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
     <ClCompile Include="IMGUI\imgui_demo.cpp" />
     <ClCompile Include="IMGUI\imgui_draw.cpp" />
