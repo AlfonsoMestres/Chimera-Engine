@@ -5,26 +5,28 @@
 
 class GameObject;
 
-enum class componentType {
+enum class ComponentType {
+	EMPTY,
 	CAMERA,
 	TRANSFORM,
 	MESH,
-	MATERIAL
+	MATERIAL,
+	LIGHT
 };
 
 class Component
 {
 	public:
-		Component();
-		~Component();
+		Component(GameObject* goContainer, ComponentType type);
+		virtual ~Component();
 
-		virtual void Enable();
+		virtual void Enable() { enabled = true; };
 		virtual void Update();
-		virtual void Disable();
+		virtual void Disable() { enabled = false; };
 
-		componentType type;
-		bool active = false;
-		GameObject* fatherGO = nullptr;
+		bool enabled = false;
+		ComponentType componentType = ComponentType::EMPTY;
+		GameObject* goContainer = nullptr;
 
 };
 

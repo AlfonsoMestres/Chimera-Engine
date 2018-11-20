@@ -1,11 +1,7 @@
 #include "Component.h"
 
-Component::Component() { }
+Component::Component(GameObject* goContainer, ComponentType type) : goContainer(goContainer), componentType(type) { }
 
 Component::~Component() { }
 
-void Component::Enable() { }
-
 void Component::Update() { }
-
-void Component::Disable() { }

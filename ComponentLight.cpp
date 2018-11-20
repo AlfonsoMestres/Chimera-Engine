@@ -1,5 +1,5 @@
 #include "ComponentLight.h"
 
-ComponentLight::ComponentLight() { }
+ComponentLight::ComponentLight(GameObject* goContainer) : Component(goContainer, ComponentType::LIGHT) { }
 
 ComponentLight::~ComponentLight() { }

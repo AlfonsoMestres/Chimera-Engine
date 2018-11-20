@@ -1,5 +1,5 @@
 #include "ComponentMaterial.h"
 
-ComponentMaterial::ComponentMaterial() { }
+ComponentMaterial::ComponentMaterial(GameObject* goContainer) : Component(goContainer, ComponentType::MATERIAL) { }
 
 ComponentMaterial::~ComponentMaterial() { }

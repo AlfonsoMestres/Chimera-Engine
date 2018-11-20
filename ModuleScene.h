@@ -1,6 +1,7 @@
 #ifndef __MODULESCENE_H__
 #define __MODULESCENE_H__
 
+#include <list>
 #include "Module.h"
 #include "GameObject.h"
 
@@ -12,7 +13,12 @@ class ModuleScene : public Module
 		ModuleScene();
 		~ModuleScene();
 
-		GameObject* CreateGameObject(const char* goName);
+		bool Init() override;
+		update_status Update() override;
+		bool CleanUp() override;
+		void Draw();
+
+		GameObject* CreateGameObject(const char* goName, GameObject* goParent);
 
 	public:
 		GameObject* root = nullptr;

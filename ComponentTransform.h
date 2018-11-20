@@ -6,7 +6,7 @@
 class ComponentTransform : public Component
 {
 	public:
-		ComponentTransform();
+		ComponentTransform(GameObject* goContainer);
 		~ComponentTransform();
 };
 

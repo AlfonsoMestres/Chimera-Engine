@@ -6,7 +6,7 @@
 class ComponentLight : public Component
 {
 	public:
-		ComponentLight();
+		ComponentLight(GameObject* goContainer);
 		~ComponentLight();
 };
 

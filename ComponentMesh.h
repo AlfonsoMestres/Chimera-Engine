@@ -6,7 +6,7 @@
 class ComponentMesh : public Component
 {
 	public:
-		ComponentMesh();
+		ComponentMesh(GameObject* goContainer);
 		~ComponentMesh();
 };
 
