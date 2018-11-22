@@ -4,6 +4,7 @@
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
+#include "DebugDraw.h"
 
 ModuleRender::ModuleRender() { }
 
@@ -38,22 +39,25 @@ update_status ModuleRender::PreUpdate() {
 // Called every draw update
 update_status ModuleRender::Update() {
 
+
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	// TODO: this should affect only the window
 	glClearColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3]);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glUseProgram(App->program->textureProgram);
-	ModelTransform(App->program->textureProgram);
-	ProjectionMatrix(App->program->textureProgram);
-	ViewMatrix(App->program->textureProgram);
-	App->model->DrawModels();
+	//glUseProgram(App->program->textureProgram);
+	//ModelTransform(App->program->textureProgram);
+	//ProjectionMatrix(App->program->textureProgram);
+	//ViewMatrix(App->program->textureProgram);
+	//App->model->DrawModels();
 
-	glUseProgram(App->program->basicProgram);
+	DrawDebugData();
+
+	/*glUseProgram(App->program->basicProgram);
 	ModelTransform(App->program->basicProgram);
 	ProjectionMatrix(App->program->basicProgram);
 	ViewMatrix(App->program->basicProgram);
-	DrawReferenceDebug();
+	DrawReferenceDebug();*/
 
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -128,6 +132,18 @@ void ModuleRender::DrawReferenceDebug() {
 	glLineWidth(1.0f);
 
 	glUseProgram(0);
+}
+
+void ModuleRender::DrawDebugData()
+{
+	if (showGrid) {
+		dd::xzSquareGrid(-1000.0f, 1000.0f, 0.0f, 1.0f, math::float3(0.65f, 0.65f, 0.65f));
+	}
+
+	//if (showAxis) {
+	//	dd::axisTriad(math::float4x4::identity, 1.0f,1.0f, 0, false);
+	//}
+
 }
 
 void ModuleRender::SetScreenNewScreenSize() {

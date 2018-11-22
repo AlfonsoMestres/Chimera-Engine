@@ -82,6 +82,8 @@
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ComponentTransform.h" />
+    <ClInclude Include="debugdraw.h" />
+    <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="DockAbout.h" />
     <ClInclude Include="DockConfig.h" />
     <ClInclude Include="DockConsole.h" />
@@ -93,9 +95,11 @@
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="mmgr\nommgr.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleModel.h" />
     <ClInclude Include="ModuleProgram.h" />
     <ClInclude Include="ModuleScene.h" />
+    <ClInclude Include="par_shapes.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h" />
@@ -222,6 +226,7 @@
     <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleModel.cpp" />

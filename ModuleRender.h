@@ -34,6 +34,7 @@ class ModuleRender : public Module
 		void			ModelTransform(unsigned programUsed);
 		void			LookAt(math::float3& cameraPos, math::float3& target);
 		void			SetScreenNewScreenSize();
+		void			DrawDebugData();
 
 	private:
 		void			DrawReferenceDebug();
@@ -48,6 +49,10 @@ class ModuleRender : public Module
 		unsigned		fbo = 0u;
 		unsigned		rbo = 0u;
 		unsigned		renderTexture = 0u;
+
+	protected:
+		bool   showAxis = true;
+		bool   showGrid = true;
 };
 
 #endif
