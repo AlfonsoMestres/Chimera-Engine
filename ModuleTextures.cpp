@@ -110,6 +110,10 @@ Texture const ModuleTextures::Load(const char* path) {
 	return Texture(0, 0, 0);
 }
 
+void ModuleTextures::CreateComponentTexture() {
+
+}
+
 void ModuleTextures::DrawGUI() {
 	ImGui::Text("This will be applied only to the next loaded models");
 	ImGui::Text("Filter type:");

@@ -34,8 +34,8 @@ void ModuleScene::Draw() {
 }
 
 GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goParent) {
-	assert(goName != nullptr);
-	assert(goParent != nullptr);
+	/*assert(goName != nullptr);
+	assert(goParent != nullptr);*/
 
 	GameObject* gameObject = nullptr;
 

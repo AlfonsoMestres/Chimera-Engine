@@ -4,8 +4,6 @@
 #include <list>
 #include "assert.h"
 #include "Globals.h"
-#include "Component.h"
-#include "ComponentTransform.h"
 
 class Component;
 class ComponentTransform;

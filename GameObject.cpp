@@ -3,15 +3,16 @@
 #include "ComponentLight.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
-#include "GameObject.h"
+#include "ComponentTransform.h"
 
 GameObject::GameObject() {
 	this->name = "GameObject";
 	this->parent = App->scene->root;
+	App->scene->root->goChilds.push_back(this);
 }
 
 GameObject::GameObject(const char* goName) {
-	assert(goName != nullptr);
+	//assert(goName != nullptr);
 
 	if (goName != nullptr) {
 		this->name = goName;
@@ -20,11 +21,12 @@ GameObject::GameObject(const char* goName) {
 	}
 
 	this->parent = App->scene->root;
+	App->scene->root->goChilds.push_back(this);
 }
 
 GameObject::GameObject(const char* goName, GameObject* goParent) {
-	assert(goName != nullptr);
-	assert(goParent != nullptr);
+	//assert(goName != nullptr);
+	//assert(goParent != nullptr);
 
 	if (goName != nullptr) {
 		this->name = goName;
@@ -34,8 +36,10 @@ GameObject::GameObject(const char* goName, GameObject* goParent) {
 
 	if (goParent != nullptr) {
 		this->parent = goParent;
+		goParent->goChilds.push_back(this);
 	} else {
 		this->parent = App->scene->root;
+		App->scene->root->goChilds.push_back(this);
 	}
 }
 

@@ -23,6 +23,7 @@ class Component
 		virtual void Enable() { enabled = true; };
 		virtual void Update();
 		virtual void Disable() { enabled = false; };
+		void		 Remove();
 
 		bool enabled = false;
 		ComponentType componentType = ComponentType::EMPTY;

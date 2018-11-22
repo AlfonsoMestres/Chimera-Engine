@@ -18,6 +18,7 @@ class ModuleTextures : public Module
 		bool			Init() override;
 		Texture const   Load(const char* path);
 		void			DrawGUI();
+		void			CreateComponentTexture();
 
 	public:
 
