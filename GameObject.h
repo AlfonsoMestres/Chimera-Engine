@@ -19,6 +19,7 @@ class GameObject
 
 		void Update();
 		void Draw();
+		void DrawHierarchy(GameObject* goSelected);
 		Component* AddComponent(ComponentType type);
 		void RemoveComponent(Component* component);
 

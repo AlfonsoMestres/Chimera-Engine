@@ -5,7 +5,8 @@ ModuleScene::ModuleScene() { }
 ModuleScene::~ModuleScene() { }
 
 bool ModuleScene::Init() {
-	root = new GameObject("root", nullptr);
+	root = new GameObject();
+	root->name = "root";
 
 	return true;
 }
@@ -31,6 +32,10 @@ bool ModuleScene::CleanUp() {
 
 void ModuleScene::Draw() {
 	root->Draw();
+}
+
+void ModuleScene::DrawHierarchy() {
+	root->DrawHierarchy(goSelected);
 }
 
 GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goParent) {

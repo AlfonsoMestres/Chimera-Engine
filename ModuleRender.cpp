@@ -3,6 +3,7 @@
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
 #include "ModuleWindow.h"
+#include "ModuleScene.h"
 #include "ModuleProgram.h"
 
 ModuleRender::ModuleRender() { }
@@ -54,6 +55,8 @@ update_status ModuleRender::Update() {
 	ProjectionMatrix(App->program->basicProgram);
 	ViewMatrix(App->program->basicProgram);
 	DrawReferenceDebug();
+
+	App->scene->Draw();
 
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

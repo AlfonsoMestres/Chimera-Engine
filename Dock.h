@@ -15,12 +15,17 @@ class Dock
 			return enabled;
 		}
 
+		bool IsFocused() const {
+			return focused;
+		}
+
 		void ToggleEnabled() {
 			enabled = !enabled;
 		}
 
-	public:
+	protected:
 		bool enabled = true;
+		bool focused = false;
 };
 
 #endif //__DOCK_H__

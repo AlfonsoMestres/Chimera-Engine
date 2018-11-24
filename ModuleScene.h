@@ -17,11 +17,13 @@ class ModuleScene : public Module
 		update_status Update() override;
 		bool CleanUp() override;
 		void Draw();
+		void DrawHierarchy();
 
 		GameObject* CreateGameObject(const char* goName, GameObject* goParent);
 
 	public:
 		GameObject* root = nullptr;
+		GameObject* goSelected = nullptr;
 };
 
 #endif

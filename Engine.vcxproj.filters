@@ -199,6 +199,9 @@
     <ClCompile Include="ComponentLight.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="DockHierarchy.cpp">
+      <Filter>Docks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -461,6 +464,9 @@
     </ClInclude>
     <ClInclude Include="ComponentLight.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DockHierarchy.h">
+      <Filter>Docks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
