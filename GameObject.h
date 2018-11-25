@@ -2,8 +2,10 @@
 #define __GAMEOBJECT_H__
 
 #include <list>
+#include "imgui.h"
 #include "assert.h"
 #include "Globals.h"
+#include "assimp/matrix4x4.h"
 
 class Component;
 class ComponentTransform;
@@ -13,8 +15,8 @@ class GameObject
 {
 	public:
 		GameObject();
-		GameObject(const char* goName);
-		GameObject(const char* goName, GameObject* goParent);
+		GameObject(const char* goName, const aiMatrix4x4& transform);
+		GameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent);
 		~GameObject();
 
 		void Update();

@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
-#include "ModuleModel.h"
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
@@ -74,10 +73,6 @@ void DockConfig::Draw() {
 
 	if (ImGui::CollapsingHeader("Renderer")) {
 		App->renderer->DrawGUI();
-	}
-
-	if (ImGui::CollapsingHeader("Models")) {
-		App->model->DrawGUI();
 	}
 
 	if (ImGui::CollapsingHeader("Window")) {

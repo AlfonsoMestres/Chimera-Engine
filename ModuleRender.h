@@ -3,7 +3,6 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include "ModuleModel.h"
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -25,28 +24,29 @@ class ModuleRender : public Module
 		update_status	Update() override;
 		update_status	PostUpdate() override;
 		void			DrawGUI();
+		bool			CleanUp();
 
 		void			InitFrustum();
 		void			InitSDL();
 		void			InitOpenGL();
-		void			ViewMatrix(unsigned programUsed);
-		void			ProjectionMatrix(unsigned programUsed);
-		void			ModelTransform(unsigned programUsed);
-		void			LookAt(math::float3& cameraPos, math::float3& target);
+		void			ViewMatrix();
+		void			ProjectionMatrix();
 		void			SetScreenNewScreenSize();
+		math::float4x4  LookAt(math::float3& cameraPos, math::float3& target);
 
 	private:
 		void			DrawReferenceDebug();
 		void			CreateFrameBuffer();
+		void			CreateUniformBlocks();
 
 	public:
 		float			bgColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		Frustum			frustum;
-		math::float4x4	viewMatrix;
 		bool			vsyncEnabled = false;
 		void*			context = nullptr;
 		unsigned		fbo = 0u;
 		unsigned		rbo = 0u;
+		unsigned		ubo = 0u;
 		unsigned		renderTexture = 0u;
 };
 

@@ -104,21 +104,7 @@ update_status ModuleInput::PreUpdate() {
 			case SDL_DROPFILE:
 			{
 				char* fileDroppedPath = event.drop.file;
-
-				std::string extension(fileDroppedPath);
-				std::size_t found = extension.find_last_of(".");
-				extension = extension.substr(found + 1, extension.length());
-
-				if (extension == "fbx") {
-					App->model->DeleteModels();
-					App->model->Load(fileDroppedPath);
-				} else if (extension == "png" || extension == "dds") {
-					Texture newTexture = App->textures->Load(fileDroppedPath);
-					App->model->ApplyTexture(newTexture);
-				} else {
-					SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "The file you are trying to drop is not accepted.", App->window->window);
-				}
-
+				FileDropped(fileDroppedPath);
 				SDL_free(fileDroppedPath);
 				break;
 			}
@@ -157,6 +143,26 @@ bool ModuleInput::CleanUp() {
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
+}
+
+void ModuleInput::FileDropped(const char* fileDroppedPath) {
+
+	std::string extension(fileDroppedPath);
+	std::size_t found = extension.find_last_of(".");
+	extension = extension.substr(found + 1, extension.length());
+
+	if (extension == "fbx") {
+		// We do not require to delete the models anymore
+		// App->model->DeleteModels();
+		App->model->Import(fileDroppedPath);
+	}
+	else if (extension == "png" || extension == "dds") {
+		Texture newTexture = App->textures->Load(fileDroppedPath);
+		App->model->ApplyTexture(newTexture);
+	}
+	else {
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "The file you are trying to drop is not accepted.", App->window->window);
+	}
 }
 
 // ---------

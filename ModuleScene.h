@@ -4,8 +4,10 @@
 #include <list>
 #include "Module.h"
 #include "GameObject.h"
+#include "assimp/matrix4x4.h"
 
 class GameObject;
+enum class ComponentType;
 
 class ModuleScene : public Module
 {
@@ -20,6 +22,7 @@ class ModuleScene : public Module
 		void DrawHierarchy();
 
 		GameObject* CreateGameObject(const char* goName, GameObject* goParent);
+		GameObject* CreateGameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent);
 
 	public:
 		GameObject* root = nullptr;

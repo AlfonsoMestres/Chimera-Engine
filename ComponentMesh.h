@@ -8,12 +8,12 @@
 class ComponentMesh : public Component
 {
 	public:
-		ComponentMesh(GameObject* goContainer);
+		ComponentMesh(GameObject* goContainer, aiMesh* mesh);
 		~ComponentMesh();
 
 		void ComputeMesh(aiMesh* mesh);
 		void CleanUp();
-		void Draw(unsigned shaderProgram, const std::vector<Texture>& textures) const;
+		void Draw(unsigned shaderProgram, const Texture* textures) const;
 
 	public:
 		const char*					name = nullptr;

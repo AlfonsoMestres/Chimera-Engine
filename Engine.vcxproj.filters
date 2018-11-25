@@ -151,9 +151,6 @@
     <ClCompile Include="DockScene.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleModel.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="DockAbout.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
@@ -201,6 +198,9 @@
     </ClCompile>
     <ClCompile Include="DockHierarchy.cpp">
       <Filter>Docks</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleSceneLoader.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -417,9 +417,6 @@
     <ClInclude Include="DockScene.h">
       <Filter>Docks</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleModel.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="DockAbout.h">
       <Filter>Docks</Filter>
     </ClInclude>
@@ -468,6 +465,9 @@
     <ClInclude Include="DockHierarchy.h">
       <Filter>Docks</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleSceneLoader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -505,16 +505,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="default.fs">
+    <None Include="Game\texture.vs">
       <Filter>Utils\Shaders</Filter>
     </None>
-    <None Include="default.vs">
+    <None Include="Game\default.fs">
       <Filter>Utils\Shaders</Filter>
     </None>
-    <None Include="texture.fs">
+    <None Include="Game\default.vs">
       <Filter>Utils\Shaders</Filter>
     </None>
-    <None Include="texture.vs">
+    <None Include="Game\texture.fs">
       <Filter>Utils\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -2,7 +2,14 @@
 #include "ModuleModel.h"
 #include "Application.h"
 
-ComponentMesh::ComponentMesh(GameObject* goContainer) : Component(goContainer, ComponentType::MESH) { }
+
+ComponentMesh::ComponentMesh(GameObject* goContainer, aiMesh* mesh) : Component(goContainer, ComponentType::MESH) { 
+
+	if (mesh != nullptr) {
+		ComputeMesh(mesh);
+	}
+
+}
 
 ComponentMesh::~ComponentMesh() { }
 
@@ -63,8 +70,6 @@ void ComponentMesh::ComputeMesh(aiMesh* mesh) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	name = mesh->mName.C_Str();
-
 	bbox.SetNegativeInfinity();
 	bbox.Enclose((float3*)mesh->mVertices, mesh->mNumVertices);
 
@@ -88,14 +93,15 @@ void ComponentMesh::CleanUp() {
 }
 
 
-void ComponentMesh::Draw(unsigned shaderProgram, const std::vector<Texture>& textures) const {
+void ComponentMesh::Draw(unsigned shaderProgram, const Texture* texture) const {
 
 	glActiveTexture(GL_TEXTURE0);
 
-	if (App->model->checkersTexture) {
+	if (texture == nullptr) {
+		// TODO: this should point to checkers texture so we avoid wrong textures loaded
 		glBindTexture(GL_TEXTURE_2D, App->model->checkTexture.id);
 	} else {
-		glBindTexture(GL_TEXTURE_2D, textures[materialIndex].id);
+		glBindTexture(GL_TEXTURE_2D, texture->id);
 	}
 
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);

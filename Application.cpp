@@ -6,7 +6,7 @@
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
-#include "ModuleModel.h"
+#include "ModuleSceneLoader.h"
 #include "ModuleScene.h"
 
 Application::Application() {
@@ -18,8 +18,8 @@ Application::Application() {
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(program = new ModuleProgram());
 	modules.push_back(editor = new ModuleEditor());
-	modules.push_back(model = new ModuleModel());
 	modules.push_back(scene = new ModuleScene());
+	modules.push_back(loader = new ModuleSceneLoader());
 
 }
 

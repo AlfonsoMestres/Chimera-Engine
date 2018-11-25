@@ -3,6 +3,7 @@
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
+#include "ModuleScene.h"
 #include "imgui.h"
 
 Model::Model(const char* file) {
@@ -10,7 +11,9 @@ Model::Model(const char* file) {
 	std::size_t found = s.find_last_of("/\\");
 	s = s.substr(0, found + 1);
 	this->path = s.c_str();
+
 	LoadModel(file);
+
 	App->camera->selectedObject = this;
 }
 
@@ -19,14 +22,30 @@ Model::~Model() { }
 bool Model::LoadModel(const char* pathFile) {
 	assert(pathFile != nullptr);
 
+	std::string fullFilePath(pathFile);
+
+	std::size_t found = fullFilePath.find("\\");
+	while (found != std::string::npos) {
+		fullFilePath.replace(found, std::string("\\").length(), "/");
+		found = fullFilePath.find("\\");
+	}
+
+	found = fullFilePath.find_last_of("/");
+	std::string name = fullFilePath.substr(found + 1, fullFilePath.length());
+	name = name.substr(0, name.length() - 4);
+
 	const aiScene* scene = aiImportFile(pathFile, { aiProcess_Triangulate | aiProcess_GenUVCoords });
 
 	if (scene) {
 		GenerateMeshData(scene->mRootNode, scene);
 		GenerateMaterialData(scene);
 		GetAABB();
+
+		GameObject(name.c_str(), App->scene->root);
+		App->camera->selectedObject = this;
+
 	} else {
-		LOG("Error: %s", aiGetErrorString());
+		LOG("Error: Model failed to be imported %s", aiGetErrorString());
 	}
 
 	return scene;

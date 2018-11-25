@@ -44,6 +44,8 @@ class ModuleInput : public Module
 			return mouse_buttons[id - 1];
 		}
 
+		void FileDropped(const char* ev);
+
 		// Check for window events last frame
 		bool GetWindowEvent(EventWindow code) const;
 
