@@ -95,11 +95,11 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 	ImGui::PopID();
 }
 
-const char* GameObject::GetFileFolder() const {
-	std::string s(filepath);
+std::string GameObject::GetFileFolder() const {
+	std::string s(filePath);
 	std::size_t found = s.find_last_of("/\\");
 	s = s.substr(0, found + 1);
-	return s.c_str();
+	return s;
 }
 
 Component* GameObject::AddComponent(ComponentType type) {
@@ -138,4 +138,15 @@ void GameObject::RemoveComponent(Component* component) {
 			return;
 		}
 	}
+}
+
+Component* GameObject::GetComponent(ComponentType type) const {
+
+	for (auto &component : components) {
+		if (component->componentType == type) {
+			return component;
+		}
+	}
+
+	return nullptr;
 }

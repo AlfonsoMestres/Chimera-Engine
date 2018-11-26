@@ -24,8 +24,11 @@ class GameObject
 		void DrawHierarchy(GameObject* goSelected);
 		Component* AddComponent(ComponentType type);
 		void RemoveComponent(Component* component);
+		Component* GetComponent(ComponentType type) const;
+		std::string GetFileFolder() const;
 
 	public:
+		const char* filePath = nullptr;
 		const char* name = nullptr;
 		GameObject* parent = nullptr;
 		std::list<Component*> components;

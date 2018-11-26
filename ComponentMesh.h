@@ -13,7 +13,7 @@ class ComponentMesh : public Component
 
 		void ComputeMesh(aiMesh* mesh);
 		void CleanUp();
-		void Draw(unsigned shaderProgram, const Texture* textures) const;
+		void Draw(unsigned shaderProgram, const Texture* textures) const
 
 	public:
 		const char*					name = nullptr;

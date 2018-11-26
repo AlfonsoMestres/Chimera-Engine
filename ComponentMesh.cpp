@@ -97,7 +97,13 @@ void ComponentMesh::Draw(unsigned shaderProgram, const Texture* texture) const {
 
 	glActiveTexture(GL_TEXTURE0);
 
-	glBindTexture(GL_TEXTURE_2D, texture->id);
+	if (texture != nullptr) {
+		glBindTexture(GL_TEXTURE_2D, texture->id);
+	} 
+	// TODO: if no texture found and its being rendered, use checkers texture
+	/*else {
+		glBindTexture(GL_TEXTURE_2D, App->textures->checkersTexture)
+	}*/
 
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);
 
