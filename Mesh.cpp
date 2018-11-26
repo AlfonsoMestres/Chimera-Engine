@@ -86,15 +86,11 @@ Mesh::~Mesh() {
 
 }
 
-void Mesh::Draw(unsigned shaderProgram, const std::vector<Texture>& textures) const {
+void Mesh::Draw(unsigned shaderProgram, const Texture* texture) const {
 
 	glActiveTexture(GL_TEXTURE0);
 
-	if (App->model->checkersTexture) {
-		glBindTexture(GL_TEXTURE_2D, App->model->checkTexture.id);
-	} else {
-		glBindTexture(GL_TEXTURE_2D, textures[materialIndex].id);
-	}
+	glBindTexture(GL_TEXTURE_2D, texture->id);
 
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);
 

@@ -34,7 +34,7 @@ class Model
 
 	private:
 		bool					LoadModel(const char* pathFile);
-		void					GenerateMeshData(const aiNode* node, const aiScene* scene);
+		GameObject*				GenerateMeshData(const aiNode* node, const aiScene* scene, const aiMatrix4x4& parentTransform, GameObject* goParent);
 		void					GenerateMaterialData(const aiScene* scene);
 		void					GetAABB();
 

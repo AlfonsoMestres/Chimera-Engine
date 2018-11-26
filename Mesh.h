@@ -16,7 +16,7 @@ class Mesh
 		Mesh(aiMesh* mesh);
 		~Mesh();
 
-		void						Draw(unsigned shaderProgram, const std::vector<Texture>& textures) const;
+		void						Draw(unsigned shaderProgram, const Texture* texture) const;
 
 	public:
 		const char*					name = nullptr;

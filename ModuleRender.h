@@ -6,6 +6,7 @@
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
+#include "MathGeoLib.h"
 #include "SDL.h"
 #include "GL/glew.h"
 

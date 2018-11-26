@@ -6,7 +6,7 @@ ComponentTransform::ComponentTransform(GameObject* goContainer, const aiMatrix4x
 
 ComponentTransform::~ComponentTransform() { }
 
-void ComponentTransform::AddTransform(const aiMatrix4x4 & transform) {
+void ComponentTransform::AddTransform(const aiMatrix4x4& transform) {
 	aiVector3D translation;
 	aiVector3D scaling;
 	aiQuaternion airotation;
@@ -18,7 +18,7 @@ void ComponentTransform::AddTransform(const aiMatrix4x4 & transform) {
 	RotationToEuler();
 }
 
-void ComponentTransform::SetRotation(const Quat & rot) {
+void ComponentTransform::SetRotation(const Quat& rot) {
 	rotation = rot;
 	RotationToEuler();
 }
@@ -30,6 +30,6 @@ void ComponentTransform::RotationToEuler() {
 	eulerRotation.z = math::RadToDeg(eulerRotation.z);
 }
 
-void ComponentTransform::SetPosition(const float3 & pos) {
+void ComponentTransform::SetPosition(const float3& pos) {
 	position = pos;
 }

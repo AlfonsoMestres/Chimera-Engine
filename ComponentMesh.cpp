@@ -1,5 +1,5 @@
 #include "ComponentMesh.h"
-#include "ModuleModel.h"
+#include "ModuleSceneLoader.h"
 #include "Application.h"
 
 
@@ -97,12 +97,7 @@ void ComponentMesh::Draw(unsigned shaderProgram, const Texture* texture) const {
 
 	glActiveTexture(GL_TEXTURE0);
 
-	if (texture == nullptr) {
-		// TODO: this should point to checkers texture so we avoid wrong textures loaded
-		glBindTexture(GL_TEXTURE_2D, App->model->checkTexture.id);
-	} else {
-		glBindTexture(GL_TEXTURE_2D, texture->id);
-	}
+	glBindTexture(GL_TEXTURE_2D, texture->id);
 
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);
 

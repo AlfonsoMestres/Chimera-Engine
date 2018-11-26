@@ -152,15 +152,15 @@ void ModuleCamera::Zoom() {
 
 void ModuleCamera::FocusSelectedObject() {
 
-	if (selectedObject == nullptr) {
+	if (goSelected == nullptr) {
 		front = (cameraPos - math::float3(0.0f, 0.0f, 0.0f)).Normalized();
 	} else {
 		// Closest point returns the same point if the selected object is inside
-		while (selectedObject->boundingBox.ClosestPoint(cameraPos).Equals(cameraPos)) {
+		while (goSelected->boundingBox.ClosestPoint(cameraPos).Equals(cameraPos)) {
 			cameraPos = cameraPos.Mul(2.0f);
 		}
 
-		front = (selectedObject->boundingBox.CenterPoint() - cameraPos).Normalized();
+		front = (goSelected->boundingBox.CenterPoint() - cameraPos).Normalized();
 	}
 
 

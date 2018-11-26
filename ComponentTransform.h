@@ -3,8 +3,10 @@
 
 #include "Component.h"
 #include "imgui.h"
+#include "assimp/quaternion.h"
 #include "Math/MathFunc.h"
 #include "Math/float4x4.h"
+#include "Math/Quat.h"
 
 class ComponentTransform : public Component
 {
@@ -13,6 +15,9 @@ class ComponentTransform : public Component
 		~ComponentTransform();
 
 		void AddTransform(const aiMatrix4x4 &transform);
+		void SetRotation(const math::Quat & rot);
+		void SetPosition(const float3 & pos);
+		void RotationToEuler();
 
 	public:
 		math::float3 position = math::float3::zero;

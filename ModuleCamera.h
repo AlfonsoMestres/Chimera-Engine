@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "Point.h"
 #include "MathGeoLib.h"
+#include "GameObject.h"
 #include "GL/glew.h"
 #include "SDL.h"
 
@@ -40,7 +41,7 @@ class ModuleCamera : public Module
 		void			Zoom();
 
 	public:
-		Model* selectedObject = nullptr;
+		GameObject* goSelected = nullptr;
 
 		// User attributes
 		float mouseSensitivity = 65.0f;
