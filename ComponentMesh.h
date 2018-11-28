@@ -2,6 +2,7 @@
 #define __COMPONENTMESH_H__
 
 #include "Mesh.h"
+#include "Model.h"
 #include "assert.h"
 #include "Component.h"
 
@@ -12,8 +13,10 @@ class ComponentMesh : public Component
 		~ComponentMesh();
 
 		void ComputeMesh(aiMesh* mesh);
+		const unsigned MaterialIndex();
+
 		void CleanUp();
-		void Draw(unsigned shaderProgram, const Texture* textures) const
+		void Draw(unsigned shaderProgram, const Texture* textures) const;
 
 	public:
 		const char*					name = nullptr;

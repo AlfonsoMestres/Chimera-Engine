@@ -15,8 +15,6 @@ Model::Model(const char* file) {
 	this->path = s.c_str();
 
 	LoadModel(file);
-
-	App->camera->goSelected = this;
 }
 
 Model::~Model() { }
@@ -39,10 +37,10 @@ bool Model::LoadModel(const char* pathFile) {
 	const aiScene* scene = aiImportFile(pathFile, { aiProcess_Triangulate | aiProcess_GenUVCoords });
 
 	if (scene) {
-		GenerateMeshData(scene->mRootNode, scene);
-		GenerateMaterialData(scene);
-		GetAABB();
+		ProcessTree(scene->mRootNode, scene, aiMatrix4x4(), App->scene->root);
+		GetModelBoundingBox();
 
+		// We dont want to send a transform, so indentity 4x4
 		GameObject* go = App->scene->CreateGameObject(name.c_str(), App->scene->root);
 		App->camera->goSelected = go;
 
@@ -53,35 +51,27 @@ bool Model::LoadModel(const char* pathFile) {
 	return scene;
 }
 
-GameObject* Model::GenerateMeshData(const aiNode* node, const aiScene* scene, const aiMatrix4x4& parentTransform, GameObject* goParent) {
+GameObject* Model::ProcessTree(const aiNode* node, const aiScene* scene, const aiMatrix4x4& parentTransform, GameObject* goParent) {
 	assert(scene != nullptr);
 	assert(node != nullptr);
 	assert(goParent != nullptr);
 
 	aiMatrix4x4 transform = parentTransform * node->mTransformation;
-	GameObject* gameObject = App->scene->CreateGameObject(node->mName.C_Str(), transform, goParent);
+	GameObject* gameObject = App->scene->CreateGameObject(node->mName.C_Str(), goParent, transform);
 
-	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
+	for (unsigned i = 0; i < node->mNumMeshes; i++) {
 		ComponentMesh* mesh = (ComponentMesh*)gameObject->AddComponent(ComponentType::MESH);
 		mesh->ComputeMesh(scene->mMeshes[node->mMeshes[i]]);
 
 		ComponentMaterial* material = (ComponentMaterial*)gameObject->AddComponent(ComponentType::MATERIAL);
-		material->ComputeMaterial(scene->mMaterials[mesh->GetMaterialIndex()]);
+		material->ComputeMaterial(scene->mMaterials[mesh->MaterialIndex()]);
 	}
 
-	for (unsigned int i = 0; i < node->mNumChildren; i++) {
-		GameObject* child = GenerateMeshData(node->mChildren[i], scene, transform, gameObject);
+	for (unsigned i = 0; i < node->mNumChildren; i++) {
+		GameObject* child = ProcessTree(node->mChildren[i], scene, transform, gameObject);
 	}
 
 	return gameObject;
-
-}
-
-void Model::Draw() const {
-
-	for (auto &mesh : meshes) {
-		mesh.Draw(App->program->textureProgram, textures);
-	}
 
 }
 
@@ -108,50 +98,10 @@ void Model::DrawInfo() const {
 		}
 	}
 
-	if (ImGui::CollapsingHeader("Texture")) {
-
-		for (auto &texture : textures) {
-			ImGui::Text("Size:  Width: %d | Height: %d", texture.width, texture.height);
-			float size = ImGui::GetWindowWidth();
-			ImGui::Image((ImTextureID)texture.id, { size,size });
-		}
-	}
-
 }
 
 
-void Model::UpdateTexture(Texture texture) {
-
-	for (auto &Oldtexture : textures) {
-		Oldtexture = texture;
-	}
-
-}
-
-void Model::GenerateMaterialData(const aiScene* scene) {
-	assert(scene != nullptr);
-
-	for (unsigned i = 0; i < scene->mNumMaterials; ++i) {
-
-		const aiMaterial* materialSrc = scene->mMaterials[i];
-
-		aiString file;
-		aiTextureMapping mapping = aiTextureMapping_UV;
-
-		if (materialSrc->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0) == AI_SUCCESS) {
-			std::string pathFile(this->path);
-			pathFile += file.C_Str();
-			textures.push_back(App->textures->Load(pathFile.c_str()));
-		} else {
-			LOG("Error: Could not load the %fth material", i);
-		}
-
-	}
-
-}
-
-// Axis Aligned Bounding Box
-void Model::GetAABB() {
+void Model::GetModelBoundingBox() {
 
 	for (auto& mesh : meshes) {
 		boundingBox.Enclose(mesh.bbox);

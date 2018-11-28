@@ -21,8 +21,7 @@ class ModuleScene : public Module
 		void Draw();
 		void DrawHierarchy();
 
-		GameObject* CreateGameObject(const char* goName, GameObject* goParent);
-		GameObject* CreateGameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent);
+		GameObject* CreateGameObject(const char* goName, GameObject* goParent, const aiMatrix4x4& transform = aiMatrix4x4());
 
 	public:
 		GameObject* root = nullptr;

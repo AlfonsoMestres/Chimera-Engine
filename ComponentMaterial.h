@@ -2,6 +2,7 @@
 #define __COMPONENTTMATERIAL_H__
 
 #include "assert.h"
+#include "Model.h"
 #include "GL/glew.h"
 #include "Component.h"
 #include "Component.h"
@@ -14,11 +15,11 @@ class ComponentMaterial : public Component
 		ComponentMaterial(GameObject* goContainer, const aiMaterial* material);
 		~ComponentMaterial();
 
-		void SetMaterial(const aiMaterial* material);
+		void ComputeMaterial(const aiMaterial* material);
 		void DeleteTexture();
 
 	public:
-		unsigned int shader = 0;
+		unsigned shader = 0u;
 		Texture* texture = nullptr;
 
 };

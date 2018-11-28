@@ -156,18 +156,21 @@ void ModuleCamera::FocusSelectedObject() {
 		front = (cameraPos - math::float3(0.0f, 0.0f, 0.0f)).Normalized();
 	} else {
 		// If GO contains an AABB, push the camera outside if needed and focus its center
-		Component* component = goSelected.GetComponent(ComponentType::MESH);
+		Component* component = goSelected->GetComponent(ComponentType::MESH);
 		if (component != nullptr) {
+			ComponentMesh* meshComponent = (ComponentMesh*)component;
+
 			// Closest point returns the same point if the selected object is inside
-			while ((ComponentMesh*)boundingBox.ClosestPoint(cameraPos).Equals(cameraPos)) {
+			while (meshComponent->bbox.ClosestPoint(cameraPos).Equals(cameraPos)) {
 				cameraPos = cameraPos.Mul(2.0f);
 			}
 
-			front = ((ComponentMesh*)boundingBox.CenterPoint() - cameraPos).Normalized();
+			front = (meshComponent->bbox.CenterPoint() - cameraPos).Normalized();
 		} else {
-			component = goSelected.GetComponent(ComponentType::TRANSFORM);
+			component = goSelected->GetComponent(ComponentType::TRANSFORM);
 			if (component != nullptr) {
-				front = ((ComponentTransform*)component->position - cameraPos).Normalized();
+				ComponentTransform* transformComponent = (ComponentTransform*)component;
+				front = (transformComponent->position - cameraPos).Normalized();
 			}
 		}
 		

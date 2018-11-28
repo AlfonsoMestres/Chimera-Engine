@@ -109,14 +109,14 @@ Component* GameObject::AddComponent(ComponentType type) {
 		case ComponentType::CAMERA:
 			break;
 		case ComponentType::TRANSFORM:
-			component = new ComponentTransform(this);
+			component = new ComponentTransform(this, aiMatrix4x4());
 			transform = (ComponentTransform*)component;
 			break;
 		case  ComponentType::MESH:
 			component = new ComponentMesh(this, nullptr);
 			break;
 		case ComponentType::MATERIAL:
-			component = new ComponentMaterial(this);
+			component = new ComponentMaterial(this, nullptr);
 			break;
 		case ComponentType::EMPTY:
 		default:

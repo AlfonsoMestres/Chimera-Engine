@@ -3,11 +3,10 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "Model.h"
 #include "imgui.h"
 #include "GL/glew.h"
 #include "IL/ilut.h"
-
-struct Texture;
 
 class ModuleTextures : public Module
 {
@@ -16,22 +15,15 @@ class ModuleTextures : public Module
 		~ModuleTextures();
 
 		bool			Init() override;
-		Texture const   Load(const char* path);
+		Texture* const  Load(const char* path);
 		void			DrawGUI();
 		void			CreateComponentTexture();
 
 	public:
-
-		int pixelDepth = 0;
-		int height = 0;
-		int format = 0;
-		int width = 0;
-
-		bool anisotropic_filter = false;
-		int filterType = GL_LINEAR;
 		bool mipmaping = false;
-		int wrapMode = 0;
-		ILuint imageId = 0u;
+		int filterType = GL_LINEAR;
+		int mipMapMode = GL_NEAREST_MIPMAP_NEAREST;
+		int wrapMode = GL_CLAMP;
 };		   
 
 #endif //__MODULETEXTURES_H__

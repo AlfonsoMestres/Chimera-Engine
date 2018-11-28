@@ -1,8 +1,9 @@
 #include "Globals.h"
+#include "ModuleInput.h"
 #include "Application.h"
 #include "ModuleEditor.h"
-#include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "ModuleSceneLoader.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "SDL.h"
@@ -151,16 +152,9 @@ void ModuleInput::FileDropped(const char* fileDroppedPath) {
 	std::size_t found = extension.find_last_of(".");
 	extension = extension.substr(found + 1, extension.length());
 
-	if (extension == "fbx") {
-		// We do not require to delete the models anymore
-		// App->model->DeleteModels();
-		App->model->Import(fileDroppedPath);
-	}
-	else if (extension == "png" || extension == "dds") {
-		Texture newTexture = App->textures->Load(fileDroppedPath);
-		App->model->ApplyTexture(newTexture);
-	}
-	else {
+	if (extension == "fbx" || extension == "FBX") {
+		App->loader->LoadFile(fileDroppedPath);
+	} else {
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "The file you are trying to drop is not accepted.", App->window->window);
 	}
 }

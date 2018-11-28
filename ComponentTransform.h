@@ -8,6 +8,8 @@
 #include "Math/float4x4.h"
 #include "Math/Quat.h"
 
+// TODO: fix quaternion extern symbol
+
 class ComponentTransform : public Component
 {
 	public:

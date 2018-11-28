@@ -2,6 +2,7 @@
 #define __MODEL_H__
 
 #include "Mesh.h"
+#include "GameObject.h"
 #include "MathGeoLib.h"
 #include <assimp/cimport.h>
 #include <assimp/postprocess.h>
@@ -17,7 +18,7 @@ struct Texture {
 	int id = 0;
 	int width = 0;
 	int height = 0;
-	Texture(int id, int width, int height) : id(id), width(width), height(height) {}
+	Texture(int id, int width, int height) : id(id), width(width), height(height) { }
 };
 
 class Model
@@ -26,21 +27,17 @@ class Model
 		Model(const char* file);
 		~Model();
 
-		void					Draw() const;
-		void					UpdateTexture(Texture texture);
-		void					DrawInfo() const;
+		void			DrawInfo() const;
 
-		AABB					boundingBox = AABB({ 0,0,0 }, { 0,0,0 });
+		AABB			boundingBox = AABB({ 0,0,0 }, { 0,0,0 });
 
 	private:
-		bool					LoadModel(const char* pathFile);
-		GameObject*				GenerateMeshData(const aiNode* node, const aiScene* scene, const aiMatrix4x4& parentTransform, GameObject* goParent);
-		void					GenerateMaterialData(const aiScene* scene);
-		void					GetAABB();
+		bool			LoadModel(const char* pathFile);
+		GameObject*		ProcessTree(const aiNode* node, const aiScene* scene, const aiMatrix4x4& parentTransform, GameObject* goParent);
+		void			GetModelBoundingBox();
 
-		const char*				path = nullptr;
-		std::list<Mesh>			meshes;
-		std::vector<Texture>	textures;
+		const char*		path = nullptr;
+		std::list<Mesh>	meshes;
 };
 
-#endif //__MODEL_H__
+#endif

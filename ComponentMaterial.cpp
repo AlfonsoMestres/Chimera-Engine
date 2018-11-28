@@ -1,14 +1,18 @@
 #include "ComponentMaterial.h"
+#include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "Application.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* goContainer, const aiMaterial* material) : Component(goContainer, ComponentType::MATERIAL) {
-
+	this->shader = App->program->textureProgram;
+	ComputeMaterial(material);
 }
 
-ComponentMaterial::~ComponentMaterial() { }
+ComponentMaterial::~ComponentMaterial() { 
+	DeleteTexture();
+}
 
-void ComponentMaterial::SetMaterial(const aiMaterial* material) {
+void ComponentMaterial::ComputeMaterial(const aiMaterial* material) {
 	std::string texturePath;
 	if (material != nullptr) {
 		aiTextureMapping mapping = aiTextureMapping_UV;
@@ -25,7 +29,7 @@ void ComponentMaterial::SetMaterial(const aiMaterial* material) {
 
 void ComponentMaterial::DeleteTexture() {
 	if (texture != nullptr) {
-		glDeleteTextures(1, (GLuint*)&texture->id);
+		glDeleteTextures(1, (GLuint*)& texture->id);
 	}
 
 	delete texture;

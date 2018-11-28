@@ -42,20 +42,20 @@ GameObject* ModuleSceneLoader::ProcessNode(const aiNode* node, const aiScene* sc
 	assert(node != nullptr); 
 	assert(scene != nullptr);
 
-	aiMatrix4x4 transform = parentTransform * node->mTransformation;
-	GameObject* gameobject = App->scene->CreateGameObject(transform, filepath, node->mName.C_Str(), parent);
+	//aiMatrix4x4 transform = parentTransform * node->mTransformation;
+	//GameObject* gameobject = App->scene->CreateGameObject(transform, filepath, node->mName.C_Str(), parent);
 
-	for (unsigned int i = 0; i < node->mNumMeshes; i++) {
-		ComponentMesh* mesh = (ComponentMesh*)gameobject->CreateComponent(ComponentType::Mesh);
-		mesh->SetMesh(scene->mMeshes[node->mMeshes[i]]);
+	//for (unsigned int i = 0; i < node->mNumMeshes; i++) {
+	//	ComponentMesh* mesh = (ComponentMesh*)gameobject->CreateComponent(ComponentType::Mesh);
+	//	mesh->SetMesh(scene->mMeshes[node->mMeshes[i]]);
 
-		ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
-		material->SetMaterial(scene->mMaterials[mesh->GetMaterialIndex()]); 
-	}
+	//	ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
+	//	material->SetMaterial(scene->mMaterials[mesh->GetMaterialIndex()]); 
+	//}
 
-	for (unsigned int i = 0; i < node->mNumChildren; i++) {
-		GameObject * child = ProcessNode(node->mChildren[i], scene, transform, gameobject);
-	}
+	//for (unsigned int i = 0; i < node->mNumChildren; i++) {
+	//	GameObject * child = ProcessNode(node->mChildren[i], scene, transform, gameobject);
+	//}
 
-	return gameobject;
+	return nullptr;
 }

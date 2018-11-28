@@ -1,5 +1,4 @@
 #include "ComponentMesh.h"
-#include "ModuleSceneLoader.h"
 #include "Application.h"
 
 
@@ -78,6 +77,11 @@ void ComponentMesh::ComputeMesh(aiMesh* mesh) {
 
 }
 
+const unsigned ComponentMesh::MaterialIndex()
+{
+	return materialIndex;
+}
+
 void ComponentMesh::CleanUp() {
 	if (vao != 0) {
 		glDeleteVertexArrays(1, &vao);
@@ -92,7 +96,6 @@ void ComponentMesh::CleanUp() {
 	}
 }
 
-
 void ComponentMesh::Draw(unsigned shaderProgram, const Texture* texture) const {
 
 	glActiveTexture(GL_TEXTURE0);
@@ -100,10 +103,6 @@ void ComponentMesh::Draw(unsigned shaderProgram, const Texture* texture) const {
 	if (texture != nullptr) {
 		glBindTexture(GL_TEXTURE_2D, texture->id);
 	} 
-	// TODO: if no texture found and its being rendered, use checkers texture
-	/*else {
-		glBindTexture(GL_TEXTURE_2D, App->textures->checkersTexture)
-	}*/
 
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);
 
