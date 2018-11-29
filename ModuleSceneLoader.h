@@ -26,12 +26,12 @@ class ModuleSceneLoader : public Module
 		bool Start();
 		void LoadFile(const char* path);
 		void LoadScene(const aiScene* scene);
-		GameObject* ProcessNode(const aiNode* node, const aiScene* scene, const aiMatrix4x4 &parentTransform, GameObject* parent);
+		GameObject* ProcessTree(const aiNode* node, const aiScene* scene, const aiMatrix4x4 &parentTransform, GameObject* parent);
 
 	public:
 		//bool checkers = false;
 		//Texture checkersTexture = Texture(0,0,0);
-		const char *filepath = nullptr;
+		const char* filepath = nullptr;
 };
 
 #endif

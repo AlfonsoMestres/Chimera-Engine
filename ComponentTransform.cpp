@@ -1,5 +1,6 @@
 #include "ComponentTransform.h"
 
+
 ComponentTransform::ComponentTransform(GameObject* goContainer, const aiMatrix4x4& transform) : Component(goContainer, ComponentType::TRANSFORM) { 
 	AddTransform(transform);
 }

@@ -15,8 +15,8 @@ class GameObject
 {
 	public:
 		GameObject();
-		GameObject(const char* goName, const aiMatrix4x4& transform);
-		GameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent);
+		GameObject(const char* goName, const aiMatrix4x4& transform, const char* fileLocation);
+		GameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent, const char* fileLocation);
 		~GameObject();
 
 		void Update();

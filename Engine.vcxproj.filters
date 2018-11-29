@@ -154,12 +154,6 @@
     <ClCompile Include="DockAbout.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Utils\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Utils\Objects</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Utils\Time</Filter>
     </ClCompile>
@@ -419,12 +413,6 @@
     </ClInclude>
     <ClInclude Include="DockAbout.h">
       <Filter>Docks</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Utils\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Utils\Objects</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Utils\Time</Filter>

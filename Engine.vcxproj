@@ -90,10 +90,8 @@
     <ClInclude Include="DockScene.h" />
     <ClInclude Include="DockTime.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="mmgr\mmgr.h" />
     <ClInclude Include="mmgr\nommgr.h" />
-    <ClInclude Include="Model.h" />
     <ClInclude Include="ModuleProgram.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleSceneLoader.h" />
@@ -220,9 +218,7 @@
     <ClCompile Include="MathGeoLib\include\Math\SSEMath.cpp" />
     <ClCompile Include="MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
-    <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleInput.cpp" />

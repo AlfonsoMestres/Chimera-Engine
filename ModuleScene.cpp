@@ -39,12 +39,12 @@ void ModuleScene::DrawHierarchy() {
 }
 
 
-GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goParent, const aiMatrix4x4& transform) {
+GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goParent, const aiMatrix4x4& transform, const char* fileLocation) {
 
 	GameObject* gameObject = nullptr;
 
 	if (goName != nullptr) {
-		gameObject = new GameObject(goName, transform);
+		gameObject = new GameObject(goName, transform, fileLocation);
 
 		if (goParent != nullptr) {
 			gameObject->parent = goParent;
@@ -62,13 +62,13 @@ GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goPare
 		if (goParent != nullptr) {
 			childName += goParent->name;
 
-			gameObject = new GameObject(childName.c_str(), transform, goParent);
+			gameObject = new GameObject(childName.c_str(), transform, goParent, fileLocation);
 			goParent->goChilds.push_back(gameObject);
 		}
 		else {
 			childName += root->name;
 
-			gameObject = new GameObject(childName.c_str(), transform, root);
+			gameObject = new GameObject(childName.c_str(), transform, root, fileLocation);
 			root->goChilds.push_back(gameObject);
 		}
 

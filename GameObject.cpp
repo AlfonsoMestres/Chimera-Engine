@@ -8,12 +8,18 @@
 /// CARE Creating this without father could lead to memory leak
 GameObject::GameObject() { }
 
-GameObject::GameObject(const char* goName, const aiMatrix4x4& transform) {
+GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, const char* fileLocation) {
 
 	if (goName != nullptr) {
-		this->name = goName;
+		// TODO: accessing char that's not there anymore
+		std::string cpName(goName);
+		name = cpName.c_str();
 	} else {
-		this->name = "GameObject";
+		name = "GameObject";
+	}
+
+	if (fileLocation != nullptr) {
+		filePath = fileLocation;
 	}
 
 	this->parent = App->scene->root;
@@ -22,10 +28,12 @@ GameObject::GameObject(const char* goName, const aiMatrix4x4& transform) {
 	App->scene->root->goChilds.push_back(this);
 }
 
-GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent) {
+GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent, const char* fileLocation) {
 
 	if (goName != nullptr) {
-		this->name = goName;
+		// TODO: accessing char that's not there anymore
+		std::string cpName(goName);
+		name = cpName.c_str();
 	} else {
 		this->name = "GameObject";
 	}
@@ -36,6 +44,10 @@ GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObj
 	} else {
 		this->parent = App->scene->root;
 		App->scene->root->goChilds.push_back(this);
+	}
+
+	if (fileLocation != nullptr) {
+		filePath = fileLocation;
 	}
 }
 
@@ -66,7 +78,7 @@ void GameObject::Draw() {
 		child->Draw();
 	}
 	
-	LOG("Drawing GO %s", name);
+	/*LOG("Drawing GO %s", name);*/
 }
 
 void GameObject::DrawHierarchy(GameObject* goSelected) {
@@ -116,7 +128,7 @@ Component* GameObject::AddComponent(ComponentType type) {
 			component = new ComponentMesh(this, nullptr);
 			break;
 		case ComponentType::MATERIAL:
-			component = new ComponentMaterial(this, nullptr);
+			component = new ComponentMaterial(this);
 			break;
 		case ComponentType::EMPTY:
 		default:

@@ -3,22 +3,20 @@
 
 #include "Component.h"
 #include "imgui.h"
-#include "assimp/quaternion.h"
 #include "Math/MathFunc.h"
 #include "Math/float4x4.h"
 #include "Math/Quat.h"
-
-// TODO: fix quaternion extern symbol
+#include <assimp/scene.h> 
 
 class ComponentTransform : public Component
 {
 	public:
-		ComponentTransform(GameObject* goContainer, const aiMatrix4x4 &transform);
+		ComponentTransform(GameObject* goContainer, const aiMatrix4x4& transform);
 		~ComponentTransform();
 
-		void AddTransform(const aiMatrix4x4 &transform);
-		void SetRotation(const math::Quat & rot);
-		void SetPosition(const float3 & pos);
+		void AddTransform(const aiMatrix4x4& transform);
+		void SetRotation(const math::Quat& rot);
+		void SetPosition(const float3& pos);
 		void RotationToEuler();
 
 	public:

@@ -1,7 +1,10 @@
 #include "ComponentMaterial.h"
 #include "ModuleProgram.h"
-#include "ModuleTextures.h"
 #include "Application.h"
+
+ComponentMaterial::ComponentMaterial(GameObject* goContainer) : Component(goContainer, ComponentType::MATERIAL) {
+	this->shader = App->program->textureProgram;
+}
 
 ComponentMaterial::ComponentMaterial(GameObject* goContainer, const aiMaterial* material) : Component(goContainer, ComponentType::MATERIAL) {
 	this->shader = App->program->textureProgram;
