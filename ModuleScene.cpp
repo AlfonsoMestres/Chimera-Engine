@@ -44,7 +44,7 @@ GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goPare
 	GameObject* gameObject = nullptr;
 
 	if (goName != nullptr) {
-		gameObject = new GameObject(goName, transform, fileLocation);
+		gameObject = new GameObject(std::string(goName), transform, fileLocation);
 
 		if (goParent != nullptr) {
 			gameObject->parent = goParent;
@@ -55,20 +55,16 @@ GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goPare
 			root->goChilds.push_back(gameObject);
 		}
 
-	}
-	else {
-		std::string childName = "ChildOf";
+	} else {
 
 		if (goParent != nullptr) {
+			std::string childName = "ChildOf";
 			childName += goParent->name;
 
-			gameObject = new GameObject(childName.c_str(), transform, goParent, fileLocation);
+			gameObject = new GameObject(childName, transform, goParent, fileLocation);
 			goParent->goChilds.push_back(gameObject);
-		}
-		else {
-			childName += root->name;
-
-			gameObject = new GameObject(childName.c_str(), transform, root, fileLocation);
+		} else {
+			gameObject = new GameObject(std::string("GameObject"), transform, root, fileLocation);
 			root->goChilds.push_back(gameObject);
 		}
 

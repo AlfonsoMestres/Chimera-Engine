@@ -1,22 +1,17 @@
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleProgram.h"
 #include "ComponentLight.h"
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 
 /// CARE Creating this without father could lead to memory leak
-GameObject::GameObject() { }
+GameObject::GameObject() : bbox(AABB()) { }
 
-GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, const char* fileLocation) {
+GameObject::GameObject(const std::string goName, const aiMatrix4x4& transform, const char* fileLocation) : bbox(AABB()) {
 
-	if (goName != nullptr) {
-		// TODO: accessing char that's not there anymore
-		std::string cpName(goName);
-		name = cpName.c_str();
-	} else {
-		name = "GameObject";
-	}
+	name = goName;
 
 	if (fileLocation != nullptr) {
 		filePath = fileLocation;
@@ -28,15 +23,9 @@ GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, const c
 	App->scene->root->goChilds.push_back(this);
 }
 
-GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent, const char* fileLocation) {
+GameObject::GameObject(const std::string goName, const aiMatrix4x4& transform, GameObject* goParent, const char* fileLocation) : bbox(AABB()) {
 
-	if (goName != nullptr) {
-		// TODO: accessing char that's not there anymore
-		std::string cpName(goName);
-		name = cpName.c_str();
-	} else {
-		this->name = "GameObject";
-	}
+	name = goName;
 
 	if (goParent != nullptr) {
 		this->parent = goParent;
@@ -77,8 +66,31 @@ void GameObject::Draw() {
 	for (const auto &child : goChilds) {
 		child->Draw();
 	}
-	
-	/*LOG("Drawing GO %s", name);*/
+
+	if(transform == nullptr) return;
+
+	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::MATERIAL);
+	unsigned shader = 0u;
+	Texture* texture = nullptr;
+
+	if (material != nullptr && material->enabled) {
+		shader = material->GetShader();
+		texture = material->GetTexture();
+	} else {
+		shader = App->program->textureProgram;
+	}
+
+	glUseProgram(shader);
+	ModelTransform(shader);
+
+	std::vector<Component*> meshes = GetComponents(ComponentType::MESH);
+	for (auto &mesh : meshes) {
+		if (mesh->enabled) {
+			((ComponentMesh*)mesh)->Draw(shader, texture);
+		}
+	}
+
+	glUseProgram(0);
 }
 
 void GameObject::DrawHierarchy(GameObject* goSelected) {
@@ -89,7 +101,7 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
 
-	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name);
+	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name.c_str());
 
 	if (ImGui::IsItemClicked()) {
 		App->scene->goSelected = this;
@@ -142,7 +154,8 @@ Component* GameObject::AddComponent(ComponentType type) {
 void GameObject::RemoveComponent(Component* component) {
 	assert(component != nullptr);
 
-	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it){
+	// TODO: fix the vector iterator
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it){
 		if ((*it) == component){
 			components.erase(it);
 			delete component;
@@ -153,7 +166,6 @@ void GameObject::RemoveComponent(Component* component) {
 }
 
 Component* GameObject::GetComponent(ComponentType type) const {
-
 	for (auto &component : components) {
 		if (component->componentType == type) {
 			return component;
@@ -161,4 +173,56 @@ Component* GameObject::GetComponent(ComponentType type) const {
 	}
 
 	return nullptr;
+}
+
+std::vector<Component*> GameObject::GetComponents(ComponentType type) const {
+	std::vector<Component*> list;
+	for (auto &component : components) {
+		if (component->componentType == type) {
+			list.push_back(component);
+		}
+	}
+
+	return list;
+}
+
+math::float4x4 GameObject::GetLocalTransform() const {
+	if (transform == nullptr) {
+		return float4x4::identity;
+	}
+
+	return float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+}
+
+math::float4x4 GameObject::GetGlobalTransform() const {
+	if (parent != nullptr) {
+		return parent->GetGlobalTransform() * GetLocalTransform();
+	}
+
+	return GetLocalTransform();
+}
+
+void GameObject::ModelTransform(unsigned shader) const {
+	glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, &GetGlobalTransform()[0][0]);
+}
+
+AABB& GameObject::ComputeBBox() const {
+	bbox.SetNegativeInfinity();
+
+	// Current GO meshes
+	for (const auto &mesh : GetComponents(ComponentType::MESH)) {
+		bbox.Enclose(((ComponentMesh *)mesh)->bbox);
+	}
+
+	// Apply transformation of our GO
+	bbox.TransformAsAABB(GetGlobalTransform());
+
+	// Child meshes
+	for (const auto &child : goChilds){
+		if (child->GetComponents(ComponentType::MESH).size() > 0) {
+			bbox.Enclose(child->ComputeBBox());
+		}
+	}
+
+	return bbox;
 }

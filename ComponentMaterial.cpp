@@ -3,11 +3,11 @@
 #include "Application.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* goContainer) : Component(goContainer, ComponentType::MATERIAL) {
-	this->shader = App->program->textureProgram;
+	shader = App->program->textureProgram;
 }
 
 ComponentMaterial::ComponentMaterial(GameObject* goContainer, const aiMaterial* material) : Component(goContainer, ComponentType::MATERIAL) {
-	this->shader = App->program->textureProgram;
+	shader = App->program->textureProgram;
 	ComputeMaterial(material);
 }
 
@@ -28,6 +28,14 @@ void ComponentMaterial::ComputeMaterial(const aiMaterial* material) {
 
 	DeleteTexture();
 	texture = App->textures->Load(texturePath.c_str());
+}
+
+Texture* ComponentMaterial::GetTexture() const {
+	return texture;
+}
+
+unsigned ComponentMaterial::GetShader() const {
+	return shader;
 }
 
 void ComponentMaterial::DeleteTexture() {

@@ -19,7 +19,10 @@ class ComponentMaterial : public Component
 		void ComputeMaterial(const aiMaterial* material);
 		void DeleteTexture();
 
-	public:
+		Texture* GetTexture() const;
+		unsigned GetShader() const;
+
+	private:
 		unsigned shader = 0u;
 		Texture* texture = nullptr;
 
