@@ -87,6 +87,7 @@
     <ClInclude Include="DockConsole.h" />
     <ClInclude Include="Dock.h" />
     <ClInclude Include="DockHierarchy.h" />
+    <ClInclude Include="DockInspector.h" />
     <ClInclude Include="DockScene.h" />
     <ClInclude Include="DockTime.h" />
     <ClInclude Include="GameObject.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="DockConfig.cpp" />
     <ClCompile Include="DockConsole.cpp" />
     <ClCompile Include="DockHierarchy.cpp" />
+    <ClCompile Include="DockInspector.cpp" />
     <ClCompile Include="DockScene.cpp" />
     <ClCompile Include="DockTime.cpp" />
     <ClCompile Include="GameObject.cpp" />

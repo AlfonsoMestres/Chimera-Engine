@@ -196,6 +196,9 @@
     <ClCompile Include="ModuleSceneLoader.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="DockInspector.cpp">
+      <Filter>Docks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -455,6 +458,9 @@
     </ClInclude>
     <ClInclude Include="ModuleSceneLoader.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="DockInspector.h">
+      <Filter>Docks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

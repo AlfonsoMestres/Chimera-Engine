@@ -43,8 +43,6 @@ bool Application::Init() {
 	gameModeEnabled = false;
 	counting = false;
 	gameDeltaTime = 0;
-	
-	/*App->model->Load("./Models/BakerHouse/BakerHouse.fbx");*/
 
 	return ret;
 }

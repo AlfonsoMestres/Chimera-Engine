@@ -22,6 +22,8 @@ class ComponentMaterial : public Component
 		Texture* GetTexture() const;
 		unsigned GetShader() const;
 
+		void DrawProperties() override;
+
 	private:
 		unsigned shader = 0u;
 		Texture* texture = nullptr;

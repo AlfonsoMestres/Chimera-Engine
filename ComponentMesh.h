@@ -22,6 +22,7 @@ class ComponentMesh : public Component
 
 		void CleanUp();
 		void Draw(unsigned shaderProgram, const Texture* textures) const;
+		void DrawProperties() override;
 
 	public:
 		const char*					name = nullptr;

@@ -9,7 +9,9 @@ ComponentMesh::ComponentMesh(GameObject* goContainer, aiMesh* mesh) : Component(
 
 }
 
-ComponentMesh::~ComponentMesh() { }
+ComponentMesh::~ComponentMesh() { 
+	CleanUp();
+}
 
 void ComponentMesh::ComputeMesh(aiMesh* mesh) { 
 	assert(mesh != nullptr);
@@ -110,5 +112,23 @@ void ComponentMesh::Draw(unsigned shaderProgram, const Texture* texture) const {
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+}
+
+void ComponentMesh::DrawProperties() {
+
+	ImGui::PushID(this);
+	if (ImGui::CollapsingHeader("Mesh")){
+
+		bool removed = Component::DrawComponentState();
+		if (removed) {
+			ImGui::PopID();
+			return;
+		}
+		ImGui::Text("Num vertices : %d", vertices.size());
+		ImGui::Text("Num triangles : %d", numIndices / 3);
+		ImGui::Separator();
+	}
+	ImGui::PopID();
 
 }

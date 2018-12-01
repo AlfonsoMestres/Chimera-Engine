@@ -46,3 +46,23 @@ void ComponentMaterial::DeleteTexture() {
 	delete texture;
 	texture = nullptr;
 }
+
+void ComponentMaterial::DrawProperties() {
+
+	ImGui::PushID(this);
+	if (ImGui::CollapsingHeader("Material")) {
+		bool removed = Component::DrawComponentState();
+		if (removed) {
+			ImGui::PopID();
+			return;
+		}
+		ImGui::Text("Shader: PlaceHolder");
+		if (texture != nullptr) {
+			ImGui::Text("Texture width:%d height:%d", texture->width, texture->height);
+			float size = ImGui::GetWindowWidth();
+			ImGui::Image((ImTextureID)texture->id, { size,size });
+			ImGui::Separator();
+		}
+	}
+	ImGui::PopID();
+}

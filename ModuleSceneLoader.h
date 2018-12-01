@@ -23,14 +23,12 @@ class ModuleSceneLoader : public Module
 		ModuleSceneLoader();
 		~ModuleSceneLoader();
 
-		bool Start();
+		bool Init() override;
 		void LoadFile(const char* path);
 		void LoadScene(const aiScene* scene);
-		GameObject* ProcessTree(const aiNode* node, const aiScene* scene, const aiMatrix4x4 &parentTransform, GameObject* parent);
+		void ProcessTree(const aiNode* node, const aiScene* scene, const aiMatrix4x4 &parentTransform, GameObject* parent);
 
 	public:
-		//bool checkers = false;
-		//Texture checkersTexture = Texture(0,0,0);
 		const char* filepath = nullptr;
 };
 

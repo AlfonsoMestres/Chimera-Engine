@@ -20,14 +20,17 @@ class Component
 		Component(GameObject* goContainer, ComponentType type);
 		virtual ~Component();
 
-		virtual void Enable() { enabled = true; };
-		virtual void Update();
-		virtual void Disable() { enabled = false; };
-		void		 Remove();
+		bool			DrawComponentState();
+		virtual void	DrawProperties() { };
 
-		bool enabled = false;
-		ComponentType componentType = ComponentType::EMPTY;
-		GameObject* goContainer = nullptr;
+		virtual void	Enable() { enabled = true; };
+		virtual void	Update();
+		virtual void	Disable() { enabled = false; };
+		void			Remove();
+
+		bool			enabled = true;
+		ComponentType	componentType = ComponentType::EMPTY;
+		GameObject*		goContainer = nullptr;
 
 };
 

@@ -17,7 +17,7 @@ class ModuleScene : public Module
 
 		bool Init() override;
 		update_status Update() override;
-		bool CleanUp() override;
+		//bool CleanUp() override;
 		void Draw();
 		void DrawHierarchy();
 

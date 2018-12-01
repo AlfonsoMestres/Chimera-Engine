@@ -235,6 +235,6 @@ void ModuleCamera::DrawGUI() {
 		App->renderer->frustum.horizontalFov = 2.f * atanf(tanf(App->renderer->frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 	}
 
-	ImGui::InputFloat("zNear", &App->renderer->frustum.nearPlaneDistance, 1, 10);
-	ImGui::InputFloat("zFar", &App->renderer->frustum.farPlaneDistance, 1, 10);
+	ImGui::InputFloat("zNear", &App->renderer->frustum.nearPlaneDistance, 5, 50);
+	ImGui::InputFloat("zFar", &App->renderer->frustum.farPlaneDistance, 5, 50);
 }

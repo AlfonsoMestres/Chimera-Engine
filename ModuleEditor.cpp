@@ -14,13 +14,14 @@ ModuleEditor::ModuleEditor() {
 	docks.push_back(scene = new DockScene());
 	docks.push_back(about = new DockAbout());
 	docks.push_back(hierarchy = new DockHierarchy());
+	docks.push_back(inspector = new DockInspector());
 	//docks.push_back(time = new DockTime());
 }
 
 ModuleEditor::~ModuleEditor() { }
 
 bool ModuleEditor::Init() {
-	const char* glsl_version = "#version 130";
+	const char* glsl_version = "#version 130"; 
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();

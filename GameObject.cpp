@@ -7,9 +7,9 @@
 #include "ComponentTransform.h"
 
 /// CARE Creating this without father could lead to memory leak
-GameObject::GameObject() : bbox(AABB()) { }
+GameObject::GameObject() { }
 
-GameObject::GameObject(const std::string goName, const aiMatrix4x4& transform, const char* fileLocation) : bbox(AABB()) {
+GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, const char* fileLocation) {
 
 	name = goName;
 
@@ -23,7 +23,7 @@ GameObject::GameObject(const std::string goName, const aiMatrix4x4& transform, c
 	App->scene->root->goChilds.push_back(this);
 }
 
-GameObject::GameObject(const std::string goName, const aiMatrix4x4& transform, GameObject* goParent, const char* fileLocation) : bbox(AABB()) {
+GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent, const char* fileLocation) {
 
 	name = goName;
 
@@ -35,24 +35,34 @@ GameObject::GameObject(const std::string goName, const aiMatrix4x4& transform, G
 		App->scene->root->goChilds.push_back(this);
 	}
 
+	this->transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
+	this->transform->AddTransform(transform);
+
 	if (fileLocation != nullptr) {
 		filePath = fileLocation;
 	}
 }
 
-
+// TODO: this is not being called
 GameObject::~GameObject() {
 
-	for (std::list<GameObject*>::reverse_iterator it = goChilds.rbegin(); it != goChilds.rend(); ++it) {
-		delete *it;
-	}
-	goChilds.clear();
-
-	for (std::list<Component*>::reverse_iterator it = components.rbegin(); it != components.rend(); ++it) {
-		delete *it;
+	for (auto &component : components) {
+		delete component;
+		component = nullptr;
 	}
 	components.clear();
 
+	for (auto &child : goChilds) {
+		delete child;
+		child = nullptr;
+	}
+
+	delete transform;
+	transform = nullptr;
+	delete parent;
+	parent = nullptr;
+	delete name;
+	name = nullptr;
 }
 
 void GameObject::Update() {
@@ -62,12 +72,15 @@ void GameObject::Update() {
 
 }
 
-void GameObject::Draw() {
+void GameObject::Draw() const{
+
+
 	for (const auto &child : goChilds) {
 		child->Draw();
 	}
 
-	if(transform == nullptr) return;
+	if (!enabled) return;
+	if (transform == nullptr) return;
 
 	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::MATERIAL);
 	unsigned shader = 0u;
@@ -84,7 +97,7 @@ void GameObject::Draw() {
 	ModelTransform(shader);
 
 	std::vector<Component*> meshes = GetComponents(ComponentType::MESH);
-	for (auto &mesh : meshes) {
+	for (const auto &mesh : meshes) {
 		if (mesh->enabled) {
 			((ComponentMesh*)mesh)->Draw(shader, texture);
 		}
@@ -93,15 +106,26 @@ void GameObject::Draw() {
 	glUseProgram(0);
 }
 
+
+void GameObject::DrawProperties() const {
+	assert(name != nullptr);
+
+	ImGui::InputText("Name", (char*)name, sizeof(name));
+
+	for (auto &component : components) {
+		component->DrawProperties();
+	}
+}
+
 void GameObject::DrawHierarchy(GameObject* goSelected) {
-	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | goSelected == this ? ImGuiTreeNodeFlags_Selected : NULL;
+	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | (goSelected == this ? ImGuiTreeNodeFlags_Selected : 0);
 
 	ImGui::PushID(this);
 	if (goChilds.empty()) {
 		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
 
-	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name.c_str());
+	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name);
 
 	if (ImGui::IsItemClicked()) {
 		App->scene->goSelected = this;
@@ -154,7 +178,6 @@ Component* GameObject::AddComponent(ComponentType type) {
 void GameObject::RemoveComponent(Component* component) {
 	assert(component != nullptr);
 
-	// TODO: fix the vector iterator
 	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it){
 		if ((*it) == component){
 			components.erase(it);

@@ -12,8 +12,9 @@ ModuleSceneLoader::ModuleSceneLoader() { }
 
 ModuleSceneLoader::~ModuleSceneLoader() { }
 
-bool ModuleSceneLoader::Start() {
-	//LoadFile("Models/BakerHouse/BakerHouse.fbx");
+bool ModuleSceneLoader::Init() {
+	// TODO: Here we will call the basic scene read to be loaded
+	LoadFile("Models/BakerHouse/BakerHouse.fbx");
 	return true;
 }
 
@@ -28,7 +29,7 @@ void ModuleSceneLoader::LoadFile(const char* path) {
 		ProcessTree(scene->mRootNode, scene, aiMatrix4x4(), App->scene->root);
 		aiReleaseImport(scene);
 	} else {
-		LOG("ERROR importing file:%s \n", aiGetErrorString());
+		LOG("ERROR importing file: %s \n", aiGetErrorString());
 	}
 }
 
@@ -41,7 +42,7 @@ void ModuleSceneLoader::LoadScene(const aiScene* scene) {
 	aiReleaseImport(scene);
 }
 
-GameObject* ModuleSceneLoader::ProcessTree(const aiNode* node, const aiScene* scene, const aiMatrix4x4& parentTransform, GameObject* goParent) {
+void ModuleSceneLoader::ProcessTree(const aiNode* node, const aiScene* scene, const aiMatrix4x4& parentTransform, GameObject* goParent) {
 	assert(scene != nullptr);
 	assert(node != nullptr);
 	assert(goParent != nullptr);
@@ -61,9 +62,8 @@ GameObject* ModuleSceneLoader::ProcessTree(const aiNode* node, const aiScene* sc
 	}
 
 	for (unsigned i = 0u; i < node->mNumChildren; i++) {
-		GameObject* child = ProcessTree(node->mChildren[i], scene, transform, gameObject);
+		// Generate child
+		ProcessTree(node->mChildren[i], scene, transform, gameObject);
 	}
-
-	return gameObject;
 
 }
