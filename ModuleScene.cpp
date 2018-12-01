@@ -24,7 +24,9 @@ void ModuleScene::Draw() {
 }
 
 void ModuleScene::DrawHierarchy() {
-	root->DrawHierarchy(goSelected);
+	for (auto &child : this->root->goChilds) {
+		child->DrawHierarchy(goSelected);
+	}
 }
 
 
