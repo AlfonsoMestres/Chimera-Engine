@@ -54,9 +54,6 @@ void ModuleSceneLoader::ProcessTree(const aiNode* node, const aiScene* scene, co
 		ComponentMesh* mesh = (ComponentMesh*)gameObject->AddComponent(ComponentType::MESH);
 		mesh->ComputeMesh(scene->mMeshes[node->mMeshes[i]]);
 
-		// TODO: this should be a new part of component mesh?
-		/*boundingBox.Enclose(mesh.bbox);*/
-
 		ComponentMaterial* material = (ComponentMaterial*)gameObject->AddComponent(ComponentType::MATERIAL);
 		material->ComputeMaterial(scene->mMaterials[mesh->MaterialIndex()]);
 	}

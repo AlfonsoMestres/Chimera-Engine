@@ -26,6 +26,7 @@ class GameObject
 		void					Draw() const;
 		void					DrawProperties() const;
 		void					DrawHierarchy(GameObject* goSelected);
+		void					DrawBBox() const;
 		std::string				GetFileFolder() const;
 
 		Component*				AddComponent(ComponentType type);
@@ -33,7 +34,7 @@ class GameObject
 		Component*				GetComponent(ComponentType type) const;
 		std::vector<Component*> GetComponents(ComponentType type) const;
 
-		AABB&					ComputeBBox() const;
+		AABB					ComputeBBox() const;
 
 		math::float4x4			GetLocalTransform() const;
 		math::float4x4			GetGlobalTransform() const;
@@ -41,6 +42,8 @@ class GameObject
 
 	public:
 		bool					enabled = true;
+		bool					drawGOBBox = false;
+		bool					drawChildsBBox = false;
 		const char*				filePath = nullptr;
 		const char*				name = "GameObject";
 		GameObject*				parent = nullptr;

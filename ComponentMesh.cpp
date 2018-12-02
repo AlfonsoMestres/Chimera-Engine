@@ -129,6 +129,6 @@ void ComponentMesh::DrawProperties() {
 		ImGui::Text("Num triangles : %d", numIndices / 3);
 		ImGui::Separator();
 	}
-	ImGui::PopID();
 
+	ImGui::PopID();
 }

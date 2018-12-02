@@ -103,6 +103,17 @@ void GameObject::Draw() const{
 		}
 	}
 
+	if (drawGOBBox) {
+		DrawBBox();
+	}
+
+	// TODO: make child bbox appear too when checked the ui element
+	if (drawChildsBBox) {
+		for (auto &child : goChilds) {
+			child->DrawBBox();
+		}
+	}
+
 	glUseProgram(0);
 }
 
@@ -110,11 +121,13 @@ void GameObject::Draw() const{
 void GameObject::DrawProperties() const {
 	assert(name != nullptr);
 
-	ImGui::InputText("Name", (char*)name, sizeof(name));
+	// We could probably spent computing time calculating the goName length, but instead we use a fixed max name length
+	ImGui::InputText("Name", (char*)name, 30.0f);
 
 	for (auto &component : components) {
 		component->DrawProperties();
 	}
+
 }
 
 void GameObject::DrawHierarchy(GameObject* goSelected) {
@@ -128,7 +141,11 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name);
 
 	if (ImGui::IsItemClicked()) {
+		if (App->scene->goSelected != nullptr) {
+			App->scene->goSelected->drawGOBBox = false;
+		}
 		App->scene->goSelected = this;
+		drawGOBBox = true;
 	}
 
 	if (obj_open) {
@@ -229,7 +246,8 @@ void GameObject::ModelTransform(unsigned shader) const {
 	glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, &GetGlobalTransform()[0][0]);
 }
 
-AABB& GameObject::ComputeBBox() const {
+//TODO: this is not computing correctly, chimney is not added correctly to the global AABB
+AABB GameObject::ComputeBBox() const {
 	bbox.SetNegativeInfinity();
 
 	// Current GO meshes
@@ -242,10 +260,67 @@ AABB& GameObject::ComputeBBox() const {
 
 	// Child meshes
 	for (const auto &child : goChilds){
-		if (child->GetComponents(ComponentType::MESH).size() > 0) {
+		if (child->GetComponents(ComponentType::MESH).size() != 0) {
 			bbox.Enclose(child->ComputeBBox());
 		}
 	}
 
 	return bbox;
+}
+
+// TODO: Migrate this to the debug draw library saw in class
+void GameObject::DrawBBox() const {
+	glUseProgram(App->program->basicProgram);
+	AABB bbox = ComputeBBox();
+	GLfloat vertices[] = {
+		-0.5, -0.5, -0.5, 1.0,
+		0.5, -0.5, -0.5, 1.0,
+		0.5,  0.5, -0.5, 1.0,
+		-0.5,  0.5, -0.5, 1.0,
+		-0.5, -0.5,  0.5, 1.0,
+		0.5, -0.5,  0.5, 1.0,
+		0.5,  0.5,  0.5, 1.0,
+		-0.5,  0.5,  0.5, 1.0,
+	};
+	GLuint vbo_vertices;
+	glGenBuffers(1, &vbo_vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	GLushort elements[] = {
+		0, 1, 2, 3,
+		4, 5, 6, 7,
+		0, 4, 1, 5, 2, 6, 3, 7
+	};
+	GLuint ibo_elements;
+	glGenBuffers(1, &ibo_elements);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
+	float4x4 boxtransform = float4x4::FromTRS(bbox.CenterPoint(), Quat::identity, bbox.Size());
+	glUniformMatrix4fv(glGetUniformLocation(App->program->basicProgram, "model"), 1, GL_TRUE, &(boxtransform)[0][0]);
+
+	float color[4] = { 0.0f, 1.0f, 1.0f, 1.0f };
+	glUniform4fv(glGetUniformLocation(App->program->basicProgram, "Vcolor"), 1, color);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
+
+	glLineWidth(4.f);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
+	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
+	glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glLineWidth(1.0f);
+
+	glDisableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glDeleteBuffers(1, &vbo_vertices);
+	glDeleteBuffers(1, &ibo_elements);
+	glUseProgram(0);
 }

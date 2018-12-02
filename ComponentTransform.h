@@ -19,6 +19,8 @@ class ComponentTransform : public Component
 		void SetPosition(const float3& pos);
 		void RotationToEuler();
 
+		void DrawProperties() override;
+
 	public:
 		math::float3 position = math::float3::zero;
 		math::Quat rotation = math::Quat::identity;
