@@ -5,6 +5,13 @@ ComponentTransform::ComponentTransform(GameObject* goContainer, const aiMatrix4x
 	AddTransform(transform);
 }
 
+ComponentTransform::ComponentTransform(ComponentTransform* duplicatedTransform) {
+	position = duplicatedTransform->position;
+	scale = duplicatedTransform->scale;
+	rotation = duplicatedTransform->rotation;
+	RotationToEuler();
+}
+
 ComponentTransform::~ComponentTransform() { }
 
 void ComponentTransform::AddTransform(const aiMatrix4x4& transform) {

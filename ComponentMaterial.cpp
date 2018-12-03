@@ -11,6 +11,12 @@ ComponentMaterial::ComponentMaterial(GameObject* goContainer, const aiMaterial* 
 	ComputeMaterial(material);
 }
 
+ComponentMaterial::ComponentMaterial(ComponentMaterial* duplicatedComponent) : Component(duplicatedComponent->goContainer, ComponentType::MATERIAL) {
+	// TODO: check this
+	shader = duplicatedComponent->shader;
+	texture = duplicatedComponent->GetTexture();
+}
+
 ComponentMaterial::~ComponentMaterial() { 
 	DeleteTexture();
 }

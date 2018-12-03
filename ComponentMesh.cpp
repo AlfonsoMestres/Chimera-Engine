@@ -9,6 +9,10 @@ ComponentMesh::ComponentMesh(GameObject* goContainer, aiMesh* mesh) : Component(
 
 }
 
+ComponentMesh::ComponentMesh(ComponentMesh* duplicatedComponent) : Component(duplicatedComponent->goContainer, ComponentType::MESH) {
+	// TODO !
+}
+
 ComponentMesh::~ComponentMesh() { 
 	CleanUp();
 }

@@ -43,6 +43,23 @@ GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObj
 	}
 }
 
+GameObject::GameObject(GameObject* duplicateGameObject) {
+	for (auto &component : duplicateGameObject->components) {
+		Component* duplicatedComponent = nullptr;
+		switch(component->componentType) {
+			case ComponentType::TRANSFORM:
+				ComponentTransform* duplicatedComponent = new ComponentTransform((ComponentTransform*)component);
+				break;
+			case ComponentType::MATERIAL:
+				ComponentMaterial* duplicatedComponent = new ComponentMaterial((ComponentMaterial*)component);
+				break;
+			case ComponentType::MESH:
+				break;
+		}
+		components.push_back(duplicatedComponent);
+	}
+}
+
 // TODO: this is not being called
 GameObject::~GameObject() {
 
@@ -68,6 +85,11 @@ GameObject::~GameObject() {
 void GameObject::Update() {
 	for (const auto &child : goChilds) {
 		child->Update();
+	}
+
+	if (duplicating) {
+		duplicating = false;
+		GameObject* duplicatedGO = new GameObject(this);
 	}
 
 }
@@ -146,6 +168,22 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 		}
 		App->scene->goSelected = this;
 		drawGOBBox = true;
+	}
+
+	if (ImGui::IsMouseClicked(1) & ImGui::IsMouseHoveringWindow()) {
+		ImGui::OpenPopup("Modify_GameObject");
+	}
+
+	if (ImGui::BeginPopup("Modify_GameObject")) {
+		ImGui::Text("Modify");
+		ImGui::Separator();
+		if (ImGui::Selectable("Duplicate")) {
+			duplicating = true;
+		}
+		if (ImGui::Selectable("Remove")) {
+			// Remove();
+		}
+		ImGui::EndPopup();
 	}
 
 	if (obj_open) {

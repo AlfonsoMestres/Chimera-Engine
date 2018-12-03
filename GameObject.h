@@ -20,6 +20,7 @@ class GameObject
 		GameObject();
 		GameObject(const char* goName, const aiMatrix4x4& transform, const char* fileLocation);
 		GameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent, const char* fileLocation);
+		GameObject(GameObject* duplicateGameObject);
 		~GameObject();
 
 		void					Update();
@@ -44,6 +45,7 @@ class GameObject
 		bool					enabled = true;
 		bool					drawGOBBox = false;
 		bool					drawChildsBBox = false;
+		bool					duplicating = false;
 		const char*				filePath = nullptr;
 		const char*				name = "GameObject";
 		GameObject*				parent = nullptr;
