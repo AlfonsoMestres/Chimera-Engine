@@ -50,16 +50,15 @@ GameObject::GameObject(GameObject* duplicateGameObject) {
 
 	for (const auto &component : duplicateGameObject->components) {
 		Component* duplicatedComponent = component->Duplicate();
-		duplicatedComponent->goContainer = this;
 		components.push_back(duplicatedComponent);
 		if (duplicatedComponent->componentType == ComponentType::TRANSFORM) {
-			transform = new ComponentTransform((ComponentTransform*)component);
+			transform = (ComponentTransform*)duplicatedComponent;
 		}
 	}
 
 	for (auto &child : duplicateGameObject->goChilds) {
 		GameObject* duplicatedChild = new GameObject(child);
-		duplicatedChild->parent = duplicateGameObject->parent;
+		duplicatedChild->parent = this;
 		goChilds.push_back(duplicatedChild);
 	}
 
@@ -67,12 +66,10 @@ GameObject::GameObject(GameObject* duplicateGameObject) {
 	bbox = duplicateGameObject->bbox;
 }
 
-// TODO: this is not being called
 GameObject::~GameObject() {
 
 	for (auto &component : components) {
-		delete component;
-		component = nullptr;
+		RemoveComponent(component);
 	}
 	components.clear();
 
@@ -81,11 +78,8 @@ GameObject::~GameObject() {
 		child = nullptr;
 	}
 
-	delete transform;
 	transform = nullptr;
-	delete parent;
 	parent = nullptr;
-	delete name;
 	name = nullptr;
 }
 
@@ -183,7 +177,7 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 			App->scene->DuplicateGO(App->scene->goSelected);
 		}
 		if (ImGui::Selectable("Remove")) {
-			// RemoveGO(this);
+			toBeDeleted = true;
 		}
 		ImGui::EndPopup();
 	}

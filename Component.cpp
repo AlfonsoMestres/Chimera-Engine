@@ -5,6 +5,13 @@ Component::Component(GameObject* gameObject, ComponentType type) {
 	componentType = type;
 }
 
+Component::Component(const Component& duplicateComponent) {
+	goContainer = duplicateComponent.goContainer;
+	componentType = duplicateComponent.componentType;
+	enabled = duplicateComponent.enabled;
+}
+
+
 Component::~Component() { }
 
 void Component::Update() { }

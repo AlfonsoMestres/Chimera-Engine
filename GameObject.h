@@ -54,6 +54,9 @@ class GameObject
 
 		ComponentTransform*		transform = nullptr;
 		AABB&					bbox = AABB();
+		//TODO: remove component in next frame
+		bool					toBeDeleted = false;
+
 };
 
 #endif

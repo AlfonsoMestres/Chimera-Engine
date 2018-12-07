@@ -11,9 +11,9 @@ ComponentMaterial::ComponentMaterial(GameObject* goContainer, const aiMaterial* 
 	ComputeMaterial(material);
 }
 
-ComponentMaterial::ComponentMaterial(ComponentMaterial* duplicatedComponent) : Component(duplicatedComponent->goContainer, ComponentType::MATERIAL) {
-	shader = duplicatedComponent->shader;
-	texture = duplicatedComponent->GetTexture();
+ComponentMaterial::ComponentMaterial(const ComponentMaterial& duplicatedComponent) : Component(duplicatedComponent) {
+	shader = duplicatedComponent.shader;
+	texture = duplicatedComponent.texture;
 }
 
 ComponentMaterial::~ComponentMaterial() { 

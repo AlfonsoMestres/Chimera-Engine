@@ -12,7 +12,7 @@ class ComponentTransform : public Component
 {
 	public:
 		ComponentTransform(GameObject* goContainer, const aiMatrix4x4& transform);
-		ComponentTransform(ComponentTransform* duplicatedTransform);
+		ComponentTransform(const ComponentTransform& duplicatedTransform);
 		~ComponentTransform();
 
 		void AddTransform(const aiMatrix4x4& transform);

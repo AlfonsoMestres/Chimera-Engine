@@ -14,7 +14,7 @@ class ComponentMaterial : public Component
 	public:
 		ComponentMaterial(GameObject* goContainer);
 		ComponentMaterial(GameObject* goContainer, const aiMaterial* material);
-		ComponentMaterial(ComponentMaterial* duplicatedComponent);
+		ComponentMaterial(const ComponentMaterial& duplicatedComponent);
 		~ComponentMaterial();
 
 		void ComputeMaterial(const aiMaterial* material);

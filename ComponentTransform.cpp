@@ -5,11 +5,11 @@ ComponentTransform::ComponentTransform(GameObject* goContainer, const aiMatrix4x
 	AddTransform(transform);
 }
 
-ComponentTransform::ComponentTransform(ComponentTransform* duplicatedTransform) : Component(duplicatedTransform->goContainer, ComponentType::TRANSFORM){
-	position = duplicatedTransform->position;
-	rotation = duplicatedTransform->rotation;
-	scale = duplicatedTransform->scale;
-	eulerRotation = duplicatedTransform->eulerRotation;
+ComponentTransform::ComponentTransform(const ComponentTransform& duplicatedTransform) : Component(duplicatedTransform){
+	position = duplicatedTransform.position;
+	rotation = duplicatedTransform.rotation;
+	scale = duplicatedTransform.scale;
+	eulerRotation = duplicatedTransform.eulerRotation;
 }
 
 ComponentTransform::~ComponentTransform() { }
