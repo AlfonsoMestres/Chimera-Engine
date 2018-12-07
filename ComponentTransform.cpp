@@ -5,11 +5,11 @@ ComponentTransform::ComponentTransform(GameObject* goContainer, const aiMatrix4x
 	AddTransform(transform);
 }
 
-ComponentTransform::ComponentTransform(ComponentTransform* duplicatedTransform) {
+ComponentTransform::ComponentTransform(ComponentTransform* duplicatedTransform) : Component(duplicatedTransform->goContainer, ComponentType::TRANSFORM){
 	position = duplicatedTransform->position;
-	scale = duplicatedTransform->scale;
 	rotation = duplicatedTransform->rotation;
-	RotationToEuler();
+	scale = duplicatedTransform->scale;
+	eulerRotation = duplicatedTransform->eulerRotation;
 }
 
 ComponentTransform::~ComponentTransform() { }
@@ -40,6 +40,19 @@ void ComponentTransform::RotationToEuler() {
 
 void ComponentTransform::SetPosition(const float3& pos) {
 	position = pos;
+}
+
+void ComponentTransform::SetLocalToWorld(const math::float4x4& localTrans) {
+	math::float4x4 world = localTrans;
+	world.Decompose(position, rotation, scale);
+	RotationToEuler();
+}
+
+void ComponentTransform::SetWorldToLocal(const math::float4x4& parentTrans) {
+	math::float4x4 world = math::float4x4::FromTRS(position, rotation, scale);
+	math::float4x4 local = parentTrans.Inverted() * world;
+	local.Decompose(position, rotation, scale);
+	RotationToEuler();
 }
 
 void ComponentTransform::DrawProperties() {

@@ -17,8 +17,11 @@ class ComponentTransform : public Component
 
 		void AddTransform(const aiMatrix4x4& transform);
 		void SetRotation(const math::Quat& rot);
-		void SetPosition(const float3& pos);
+		void SetPosition(const math::float3& pos);
 		void RotationToEuler();
+
+		void SetLocalToWorld(const math::float4x4& localTrans);
+		void SetWorldToLocal(const math::float4x4& parentTrans);
 
 		void DrawProperties() override;
 

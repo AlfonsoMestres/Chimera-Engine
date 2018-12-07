@@ -44,20 +44,37 @@ GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObj
 }
 
 GameObject::GameObject(GameObject* duplicateGameObject) {
+	char* copyName = new char[strlen(duplicateGameObject->name)];
+	strcpy(copyName, duplicateGameObject->name);
+	name = copyName;
+
+	//TODO: Not changing the mesh transform when edited in the UI
+	//TODO: change the push.back repeated to a custom function
 	for (auto &component : duplicateGameObject->components) {
 		Component* duplicatedComponent = nullptr;
 		switch(component->componentType) {
 			case ComponentType::TRANSFORM:
-				ComponentTransform* duplicatedComponent = new ComponentTransform((ComponentTransform*)component);
+				transform = new ComponentTransform((ComponentTransform*)component);
 				break;
 			case ComponentType::MATERIAL:
-				ComponentMaterial* duplicatedComponent = new ComponentMaterial((ComponentMaterial*)component);
+				duplicatedComponent = new ComponentMaterial((ComponentMaterial*)component);
+				components.push_back(duplicatedComponent);
 				break;
 			case ComponentType::MESH:
+				duplicatedComponent = new ComponentMesh((ComponentMesh*)component);
+				components.push_back(duplicatedComponent);
 				break;
 		}
-		components.push_back(duplicatedComponent);
 	}
+
+	for (auto &child : duplicateGameObject->goChilds) {
+		GameObject* duplicatedChild = new GameObject(child);
+		duplicatedChild->parent = duplicateGameObject->parent;
+		goChilds.push_back(duplicatedChild);
+	}
+
+	filePath = duplicateGameObject->filePath;
+	bbox = duplicateGameObject->bbox;
 }
 
 // TODO: this is not being called
@@ -83,20 +100,18 @@ GameObject::~GameObject() {
 }
 
 void GameObject::Update() {
-	for (const auto &child : goChilds) {
-		child->Update();
-	}
-
-	if (duplicating) {
-		duplicating = false;
-		GameObject* duplicatedGO = new GameObject(this);
-	}
-
+	if (enabled) {
+		for (const auto &child : goChilds) {
+			child->Update();
+		}
+	} //TODO: disable hierarchy not just GO
 }
 
 void GameObject::Draw() const{
 
-
+	if (name == "A") {
+		LOG("GOT IT");
+	}
 	for (const auto &child : goChilds) {
 		child->Draw();
 	}
@@ -140,11 +155,13 @@ void GameObject::Draw() const{
 }
 
 
-void GameObject::DrawProperties() const {
+void GameObject::DrawProperties() {
 	assert(name != nullptr);
 
+
 	// We could probably spent computing time calculating the goName length, but instead we use a fixed max name length
-	ImGui::InputText("Name", (char*)name, 30.0f);
+	ImGui::InputText("Name", (char*)name, 30.0f); ImGui::SameLine();
+	ImGui::Checkbox("Enabled", &enabled); 
 
 	for (auto &component : components) {
 		component->DrawProperties();
@@ -178,10 +195,10 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 		ImGui::Text("Modify");
 		ImGui::Separator();
 		if (ImGui::Selectable("Duplicate")) {
-			duplicating = true;
+			App->scene->DuplicateGO(App->scene->goSelected);
 		}
 		if (ImGui::Selectable("Remove")) {
-			// Remove();
+			// RemoveGO(this);
 		}
 		ImGui::EndPopup();
 	}

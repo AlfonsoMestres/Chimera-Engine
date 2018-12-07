@@ -25,7 +25,7 @@ class GameObject
 
 		void					Update();
 		void					Draw() const;
-		void					DrawProperties() const;
+		void					DrawProperties();
 		void					DrawHierarchy(GameObject* goSelected);
 		void					DrawBBox() const;
 		std::string				GetFileFolder() const;

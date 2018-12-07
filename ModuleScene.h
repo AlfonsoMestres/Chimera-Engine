@@ -22,6 +22,7 @@ class ModuleScene : public Module
 		void DrawHierarchy();
 
 		GameObject* CreateGameObject(const char* goName, GameObject* goParent, const aiMatrix4x4& transform = aiMatrix4x4(), const char* fileLocation = nullptr);
+		GameObject* DuplicateGO(GameObject* goToDuplicate);
 
 	public:
 		GameObject* root = nullptr;

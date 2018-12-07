@@ -29,7 +29,6 @@ void ModuleScene::DrawHierarchy() {
 	}
 }
 
-
 GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goParent, const aiMatrix4x4& transform, const char* fileLocation) {
 
 	GameObject* gameObject = nullptr;
@@ -56,4 +55,15 @@ GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goPare
 	}
 
 	return gameObject;
+}
+
+GameObject* ModuleScene::DuplicateGO(GameObject* goToDuplicate) {
+
+	if (goToDuplicate == nullptr) return nullptr;
+
+	GameObject* duplicatedGo = new GameObject(goToDuplicate);
+	duplicatedGo->parent = goToDuplicate->parent;
+	duplicatedGo->parent->goChilds.push_back(duplicatedGo);
+	LOG("Duplicated %s", duplicatedGo->name);
+	return duplicatedGo;
 }
