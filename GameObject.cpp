@@ -48,22 +48,12 @@ GameObject::GameObject(GameObject* duplicateGameObject) {
 	strcpy(copyName, duplicateGameObject->name);
 	name = copyName;
 
-	//TODO: Not changing the mesh transform when edited in the UI
-	//TODO: change the push.back repeated to a custom function
-	for (auto &component : duplicateGameObject->components) {
-		Component* duplicatedComponent = nullptr;
-		switch(component->componentType) {
-			case ComponentType::TRANSFORM:
-				transform = new ComponentTransform((ComponentTransform*)component);
-				break;
-			case ComponentType::MATERIAL:
-				duplicatedComponent = new ComponentMaterial((ComponentMaterial*)component);
-				components.push_back(duplicatedComponent);
-				break;
-			case ComponentType::MESH:
-				duplicatedComponent = new ComponentMesh((ComponentMesh*)component);
-				components.push_back(duplicatedComponent);
-				break;
+	for (const auto &component : duplicateGameObject->components) {
+		Component* duplicatedComponent = component->Duplicate();
+		duplicatedComponent->goContainer = this;
+		components.push_back(duplicatedComponent);
+		if (duplicatedComponent->componentType == ComponentType::TRANSFORM) {
+			transform = new ComponentTransform((ComponentTransform*)component);
 		}
 	}
 
@@ -104,14 +94,11 @@ void GameObject::Update() {
 		for (const auto &child : goChilds) {
 			child->Update();
 		}
-	} //TODO: disable hierarchy not just GO
+	} //TODO: disable his childs not just this GO
 }
 
 void GameObject::Draw() const{
 
-	if (name == "A") {
-		LOG("GOT IT");
-	}
 	for (const auto &child : goChilds) {
 		child->Draw();
 	}
@@ -154,10 +141,8 @@ void GameObject::Draw() const{
 	glUseProgram(0);
 }
 
-
 void GameObject::DrawProperties() {
 	assert(name != nullptr);
-
 
 	// We could probably spent computing time calculating the goName length, but instead we use a fixed max name length
 	ImGui::InputText("Name", (char*)name, 30.0f); ImGui::SameLine();
@@ -346,7 +331,8 @@ void GameObject::DrawBBox() const {
 	GLushort elements[] = {
 		0, 1, 2, 3,
 		4, 5, 6, 7,
-		0, 4, 1, 5, 2, 6, 3, 7
+		0, 4, 1, 5, 
+		2, 6, 3, 7
 	};
 	GLuint ibo_elements;
 	glGenBuffers(1, &ibo_elements);

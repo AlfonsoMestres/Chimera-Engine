@@ -23,7 +23,8 @@ class ComponentMaterial : public Component
 		Texture* GetTexture() const;
 		unsigned GetShader() const;
 
-		void DrawProperties() override;
+		void		DrawProperties() override;
+		Component*	Duplicate() override;
 
 	private:
 		unsigned shader = 0u;

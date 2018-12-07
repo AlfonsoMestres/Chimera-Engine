@@ -14,6 +14,10 @@ ComponentTransform::ComponentTransform(ComponentTransform* duplicatedTransform) 
 
 ComponentTransform::~ComponentTransform() { }
 
+Component* ComponentTransform::Duplicate() {
+	return new ComponentTransform(*this);
+}
+
 void ComponentTransform::AddTransform(const aiMatrix4x4& transform) {
 	aiVector3D translation;
 	aiVector3D scaling;

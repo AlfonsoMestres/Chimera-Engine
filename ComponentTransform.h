@@ -23,7 +23,8 @@ class ComponentTransform : public Component
 		void SetLocalToWorld(const math::float4x4& localTrans);
 		void SetWorldToLocal(const math::float4x4& parentTrans);
 
-		void DrawProperties() override;
+		void		DrawProperties() override;
+		Component*	Duplicate() override;
 
 	public:
 		math::float3 position = math::float3::zero;

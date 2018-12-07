@@ -20,6 +20,10 @@ ComponentMaterial::~ComponentMaterial() {
 	DeleteTexture();
 }
 
+Component* ComponentMaterial::Duplicate() {
+	return new ComponentMaterial(*this);
+}
+
 void ComponentMaterial::ComputeMaterial(const aiMaterial* material) {
 	std::string texturePath;
 	if (material != nullptr) {

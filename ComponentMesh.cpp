@@ -24,6 +24,10 @@ ComponentMesh::~ComponentMesh() {
 	CleanUp();
 }
 
+Component* ComponentMesh::Duplicate() {
+	return new ComponentMesh(*this);
+}
+
 void ComponentMesh::ComputeMesh(aiMesh* mesh) { 
 	assert(mesh != nullptr);
 
