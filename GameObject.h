@@ -25,6 +25,7 @@ class GameObject
 
 		void					Update();
 		void					Draw() const;
+		void					CleanUp();
 		void					DrawProperties();
 		void					DrawHierarchy(GameObject* goSelected);
 		void					DrawBBox() const;
@@ -35,11 +36,14 @@ class GameObject
 		Component*				GetComponent(ComponentType type) const;
 		std::vector<Component*> GetComponents(ComponentType type) const;
 
+		void					BatmanizeGameObject(GameObject* batman);
+
 		AABB					ComputeBBox() const;
 
 		math::float4x4			GetLocalTransform() const;
 		math::float4x4			GetGlobalTransform() const;
 		void					ModelTransform(unsigned shader) const;
+
 
 	public:
 		bool					enabled = true;
@@ -54,8 +58,9 @@ class GameObject
 
 		ComponentTransform*		transform = nullptr;
 		AABB&					bbox = AABB();
-		//TODO: remove component in next frame
+
 		bool					toBeDeleted = false;
+		bool					toBeCopied = false;
 
 };
 

@@ -69,7 +69,8 @@ GameObject::GameObject(GameObject* duplicateGameObject) {
 GameObject::~GameObject() {
 
 	for (auto &component : components) {
-		RemoveComponent(component);
+		delete component;
+		component = nullptr;
 	}
 	components.clear();
 
@@ -77,18 +78,27 @@ GameObject::~GameObject() {
 		delete child;
 		child = nullptr;
 	}
+	goChilds.clear();
 
 	transform = nullptr;
 	parent = nullptr;
-	name = nullptr;
 }
 
 void GameObject::Update() {
-	if (enabled) {
-		for (const auto &child : goChilds) {
-			child->Update();
+
+	for (std::list<GameObject*>::iterator itChild = goChilds.begin(); itChild != goChilds.end();) {
+
+		(*itChild)->Update();
+
+		if ((*itChild)->toBeDeleted) {
+			(*itChild)->toBeDeleted = false;
+			(*itChild)->CleanUp();
+			goChilds.erase(itChild++);
+		} else {
+			++itChild;
 		}
-	} //TODO: disable his childs not just this GO
+	}
+
 }
 
 void GameObject::Draw() const{
@@ -135,6 +145,14 @@ void GameObject::Draw() const{
 	glUseProgram(0);
 }
 
+void GameObject::CleanUp() {
+
+	for (auto &child : goChilds) {
+		child->CleanUp();
+	}
+
+}
+
 void GameObject::DrawProperties() {
 	assert(name != nullptr);
 
@@ -178,6 +196,9 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 		}
 		if (ImGui::Selectable("Remove")) {
 			toBeDeleted = true;
+			if (App->scene->goSelected == this) {
+				App->scene->goSelected = nullptr;
+			}
 		}
 		ImGui::EndPopup();
 	}
