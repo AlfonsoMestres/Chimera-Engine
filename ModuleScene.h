@@ -17,12 +17,10 @@ class ModuleScene : public Module
 
 		bool Init() override;
 		update_status Update() override;
-		//bool CleanUp() override;
 		void Draw();
 		void DrawHierarchy();
 
-		GameObject* CreateGameObject(const char* goName, GameObject* goParent, const aiMatrix4x4& transform = aiMatrix4x4(), const char* fileLocation = nullptr);
-		GameObject* DuplicateGO(GameObject* goToDuplicate);
+		GameObject* CreateGameObject(const char* goName = nullptr, GameObject* goParent = nullptr, const aiMatrix4x4& transform = aiMatrix4x4(), const char* fileLocation = nullptr);
 
 	public:
 		GameObject* root = nullptr;

@@ -9,7 +9,7 @@ class DockHierarchy : public Dock
 		DockHierarchy();
 		~DockHierarchy();
 
-		void Draw();
+		void Draw() override;
 };
 
 #endif

@@ -13,16 +13,20 @@ void DockInspector::Draw() {
 		return;
 	}
 
+	if (focus) {
+		focus = false;
+		ImGui::SetWindowFocus();
+	}
 
 	if (App->scene->goSelected != nullptr) {
 		App->scene->goSelected->DrawProperties();
 		const char* components[] = { "Transform", "Mesh", "Material" };
 
 		if (ImGui::Button("Add Component", ImVec2(ImGui::GetWindowWidth(), 25))) {
-			ImGui::OpenPopup("component_popup");
+			ImGui::OpenPopup("AddComponentPopup");
 		}
 		ImGui::SameLine();
-		if (ImGui::BeginPopup("component_popup")) {
+		if (ImGui::BeginPopup("AddComponentPopup")) {
 			ImGui::Text("Components");
 			ImGui::Separator();
 			for (int i = 0; i < IM_ARRAYSIZE(components); i++) {
@@ -34,4 +38,8 @@ void DockInspector::Draw() {
 		}
 	}
 	ImGui::End();
+}
+
+void DockInspector::Focus(GameObject* gameobject) {
+	focus = true;
 }

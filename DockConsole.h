@@ -11,7 +11,7 @@ class DockConsole : public Dock
 
 		void Clear() { buf.clear(); lineOffsets.clear(); }
 		void AddLog(const char* log);
-		void Draw();
+		void Draw() override;
 
 	private:
 		ImGuiTextBuffer     buf;
@@ -19,4 +19,4 @@ class DockConsole : public Dock
 		bool                scrollToBottom = true;
 };
 
-#endif __DOCKCONSOLE_H__
+#endif 

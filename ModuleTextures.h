@@ -22,14 +22,15 @@ class ModuleTextures : public Module
 
 		bool			Init() override;
 		Texture* const  Load(const char* path);
+		void			LoadDefaulTexture(const char* path);
 		void			DrawGUI();
-		void			CreateComponentTexture();
 
 	public:
 		bool mipmaping = false;
 		int filterType = GL_LINEAR;
 		int mipMapMode = GL_NEAREST_MIPMAP_NEAREST;
 		int wrapMode = GL_CLAMP;
+		Texture*	defaultTexture = nullptr;
 };		   
 
 #endif //__MODULETEXTURES_H__

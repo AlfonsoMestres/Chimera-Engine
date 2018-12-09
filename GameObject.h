@@ -20,7 +20,7 @@ class GameObject
 		GameObject();
 		GameObject(const char* goName, const aiMatrix4x4& transform, const char* fileLocation);
 		GameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent, const char* fileLocation);
-		GameObject(GameObject* duplicateGameObject);
+		GameObject(const GameObject& duplicateGameObject);
 		~GameObject();
 
 		void					Update();

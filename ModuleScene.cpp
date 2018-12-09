@@ -1,4 +1,7 @@
+#include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleInput.h"
+#include "SDL/include/SDL_mouse.h"
 
 ModuleScene::ModuleScene() { }
 
@@ -24,7 +27,19 @@ void ModuleScene::Draw() {
 }
 
 void ModuleScene::DrawHierarchy() {
-	for (auto &child : this->root->goChilds) {
+	// If empty heriarchy, allow to create one with a imgui popup
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
+		ImGui::OpenPopup("Modify_GameObject");
+	}
+
+	if (ImGui::BeginPopup("Modify_GameObject")) {
+		if (ImGui::Selectable("Add Empty GameObject")) {
+			App->scene->CreateGameObject();
+		}
+		ImGui::EndPopup();
+	}
+
+	for (auto &child : root->goChilds) {
 		child->DrawHierarchy(goSelected);
 	}
 }
@@ -35,7 +50,6 @@ GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goPare
 
 	if (goName != nullptr) {
 
-		// TODO: this should be deleted
 		char* go_name = new char[strlen(goName)];
 		strcpy(go_name, goName);
 		
@@ -49,21 +63,10 @@ GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goPare
 
 			gameObject = new GameObject(childName.c_str(), transform, goParent, fileLocation);
 		} else {
-			gameObject = new GameObject(std::string("GameObject").c_str(), transform, goParent, fileLocation);
+			gameObject = new GameObject(DEFAULT_GO_NAME, transform, goParent, fileLocation);
 		}
 
 	}
 
 	return gameObject;
-}
-
-GameObject* ModuleScene::DuplicateGO(GameObject* goToDuplicate) {
-
-	if (goToDuplicate == nullptr) return nullptr;
-
-	GameObject* duplicatedGo = new GameObject(goToDuplicate);
-	duplicatedGo->parent = goToDuplicate->parent;
-	duplicatedGo->parent->goChilds.push_back(duplicatedGo);
-	LOG("Duplicated %s", duplicatedGo->name);
-	return duplicatedGo;
 }

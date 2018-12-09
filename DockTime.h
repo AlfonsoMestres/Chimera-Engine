@@ -12,17 +12,17 @@ class DockTime : public Dock
 		DockTime();
 		~DockTime();
 
-		void Draw();
+		void	Draw() override;
 
-		bool resizedLastFrame = false;
+	public:
+		bool	resizedLastFrame = false;
 
 	private:
-
 		float	gameTime = 0;
 		bool	gamePaused = false;
 		bool	step = false;
 
 };
 
-#endif //__DOCKTIME_H__
+#endif
 

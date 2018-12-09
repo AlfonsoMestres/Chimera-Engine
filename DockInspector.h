@@ -10,8 +10,11 @@ class DockInspector : public Dock
 		DockInspector();
 		~DockInspector();
 
-		void Draw();
+		void Draw() override;
+		void Focus(GameObject* gameobject);
 
+	private:
+		bool focus = false;
 };
 
 #endif

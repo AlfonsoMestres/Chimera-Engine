@@ -9,7 +9,7 @@ class Dock
 		Dock();
 		~Dock();
 
-		virtual void Draw() {}
+		virtual void Draw() { }
 
 		bool IsEnabled() const {
 			return enabled;

@@ -12,12 +12,13 @@ class DockScene : public Dock
 		DockScene();
 		~DockScene();
 
-		void Draw();
+		void Draw() override;
 		bool IsFocused() const;
 
+	public:
 		bool focus = false;
 
 };
 
-#endif //__DOCKSCENE_H__
+#endif
 

@@ -8,8 +8,8 @@ class DockAbout : public Dock
 		DockAbout();
 		~DockAbout();
 
-		void Draw();
+		void Draw() override;
 
 };
 
-#endif //__DOCKABOUT_H__
+#endif 

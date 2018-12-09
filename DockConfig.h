@@ -12,7 +12,7 @@ class DockConfig : public Dock
 		DockConfig();
 		~DockConfig();
 
-		void Draw();
+		void Draw() override;
 		void AddFps(float fps, float ms);
 
 	private:
@@ -28,4 +28,4 @@ class DockConfig : public Dock
 
 };
 
-#endif //__DOCKCONFIG_H__
+#endif
