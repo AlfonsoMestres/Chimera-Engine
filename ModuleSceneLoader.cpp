@@ -34,15 +34,6 @@ void ModuleSceneLoader::LoadFile(const char* path) {
 	}
 }
 
-// TODO: remove this
-void ModuleSceneLoader::LoadScene(const aiScene* scene) {
-	assert(scene != nullptr);
-
-	ProcessTree(scene->mRootNode, scene, aiMatrix4x4(), App->scene->root);
-
-	aiReleaseImport(scene);
-}
-
 void ModuleSceneLoader::ProcessTree(const aiNode* node, const aiScene* scene, const aiMatrix4x4& parentTransform, GameObject* goParent) {
 	assert(scene != nullptr);
 	assert(node != nullptr);

@@ -25,7 +25,6 @@ class ModuleSceneLoader : public Module
 
 		bool Init() override;
 		void LoadFile(const char* path);
-		void LoadScene(const aiScene* scene);
 		void ProcessTree(const aiNode* node, const aiScene* scene, const aiMatrix4x4 &parentTransform, GameObject* parent);
 
 	public:

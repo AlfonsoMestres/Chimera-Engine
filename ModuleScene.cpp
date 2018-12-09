@@ -27,6 +27,7 @@ void ModuleScene::Draw() {
 }
 
 void ModuleScene::DrawHierarchy() {
+	//TODO!: Create empty game object, appears in the middle of the frustum render
 	// If empty heriarchy, allow to create one with a imgui popup
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 		ImGui::OpenPopup("Modify_GameObject");

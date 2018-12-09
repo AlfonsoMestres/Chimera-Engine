@@ -14,6 +14,7 @@ class DockConfig : public Dock
 
 		void Draw() override;
 		void AddFps(float fps, float ms);
+		void AddGameFps(float fpsVal, float msVal);
 
 	private:
 		void AddMemory(float mem);

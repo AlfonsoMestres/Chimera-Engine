@@ -42,7 +42,7 @@ bool Application::Init() {
 	msTimer.Start();
 	gameModeEnabled = false;
 	counting = false;
-	gameDeltaTime = 0;
+	gameDeltaTime = 0.0f;
 
 	return ret;
 }
@@ -52,7 +52,7 @@ void Application::PreUpdate() {
 	deltaTime = (float)msTimer.Read() / 1000.0f;
 
 	if (!gameModeEnabled || gamePaused) {
-		gameDeltaTime = 0;
+		gameDeltaTime = 0.0f;
 	} else {
 		gameDeltaTime = deltaTime / ((float)gameframerateCap / (float)framerateCap);
 	}
@@ -69,15 +69,16 @@ void Application::PreUpdate() {
 void Application::FinishUpdate() {
 
 	int ms_cap = 1000 / framerateCap;
-	if (msTimer.Read() < ms_cap)
+	if (msTimer.Read() < ms_cap) {
 		SDL_Delay(ms_cap - msTimer.Read());
+	}
 
-	App->editor->AddFPSCount(1 / deltaTime, deltaTime * 1000);
+	App->editor->AddFPSCount(1 / deltaTime, deltaTime * 1000.0f);
 
 	if (!gameModeEnabled || gamePaused) {
-		App->editor->AddFPSCount(0, 0);
+		App->editor->AddGameFPSCount(0, 0);
 	} else {
-		App->editor->AddFPSCount(1 / gameDeltaTime, gameDeltaTime * 1000);
+		App->editor->AddGameFPSCount(1 / gameDeltaTime, gameDeltaTime * 1000.0f);
 	}
 
 	if (!gameModeEnabled && counting) {
@@ -86,7 +87,6 @@ void Application::FinishUpdate() {
 	}
 
 }
-
 
 update_status Application::Update() {
 

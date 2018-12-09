@@ -65,7 +65,6 @@ GameObject::GameObject(const GameObject& duplicateGameObject) {
 		duplicatedChild->parent = this;
 		goChilds.push_back(duplicatedChild);
 	}
-
 }
 
 GameObject::~GameObject() {
@@ -86,6 +85,8 @@ GameObject::~GameObject() {
 
 void GameObject::Update() {
 
+	if (!enabled) return;
+
 	for (std::list<GameObject*>::iterator itChild = goChilds.begin(); itChild != goChilds.end();) {
 
 		(*itChild)->Update();
@@ -95,11 +96,13 @@ void GameObject::Update() {
 			GameObject* goCopied = new GameObject(**itChild);
 			goCopied->parent = this;
 			goChilds.push_back(goCopied);
+			LOG("Duplicated GO: %s", (*itChild)->name);
 		}
 
 		if ((*itChild)->toBeDeleted) {
 			(*itChild)->toBeDeleted = false;
 			(*itChild)->CleanUp();
+			LOG("Removed GO: %s", (*itChild)->name);
 			delete *itChild;
 			goChilds.erase(itChild++);
 		} else {
@@ -111,11 +114,12 @@ void GameObject::Update() {
 
 void GameObject::Draw() const{
 
+	if (!enabled) return;
+
 	for (const auto &child : goChilds) {
 		child->Draw();
 	}
 
-	if (!enabled) return;
 	if (transform == nullptr) return;
 
 	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::MATERIAL);

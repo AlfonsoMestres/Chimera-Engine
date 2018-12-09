@@ -14,11 +14,8 @@ class DockTime : public Dock
 
 		void	Draw() override;
 
-	public:
-		bool	resizedLastFrame = false;
-
 	private:
-		float	gameTime = 0;
+		float	gameTime = 0.0f;
 		bool	gamePaused = false;
 		bool	step = false;
 

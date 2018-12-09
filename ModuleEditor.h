@@ -39,6 +39,7 @@ class ModuleEditor : public Module
 
 		// ImgUI info
 		void				AddFPSCount(float fps, float ms) const;
+		void				AddGameFPSCount(float fps, float ms) const;
 		void				CreateDockSpace();
 		void				PrintDocks();
 		void				RenderGUI();

@@ -15,7 +15,7 @@ ModuleEditor::ModuleEditor() {
 	docks.push_back(about = new DockAbout());
 	docks.push_back(hierarchy = new DockHierarchy());
 	docks.push_back(inspector = new DockInspector());
-	//docks.push_back(time = new DockTime());
+	docks.push_back(time = new DockTime());
 }
 
 ModuleEditor::~ModuleEditor() { }
@@ -139,4 +139,8 @@ void ModuleEditor::ProcessInputEvent(SDL_Event* event) const {
 
 void ModuleEditor::AddFPSCount(float fps, float ms) const {
 	config->AddFps(fps, ms);
+}
+
+void ModuleEditor::AddGameFPSCount(float fps, float ms) const {
+	config->AddGameFps(fps, ms);
 }

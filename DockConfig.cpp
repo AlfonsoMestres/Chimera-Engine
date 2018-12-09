@@ -37,6 +37,9 @@ void DockConfig::Draw() {
 		}
 
 		char title[25];
+		sprintf_s(title, 25, "Game Framerate %.1f", gameFps[gameFps.size() - 1]);
+		ImGui::PlotHistogram("##framerate", &gameFps[0], gameFps.size(), 0, title, 0.0f, 120.0f, ImVec2(0, 80));
+
 		sprintf_s(title, 25, "Framerate %.1f", fps[fps.size() - 1]);
 		ImGui::PlotHistogram("##framerate", &fps[0], fps.size(), 0, title, 0.0f, 120.0f, ImVec2(0, 80));
 
@@ -93,7 +96,20 @@ void DockConfig::AddFps(float fpsVal, float msVal) {
 	if (ms.size() > LOGSSIZE) {
 		ms.pop_back();
 	}
+}
 
+//TODO!: should display this on the inspector
+void DockConfig::AddGameFps(float fpsVal, float msVal) {
+	gameFps.insert(gameFps.begin(), fpsVal);
+	gameMs.insert(gameMs.begin(), msVal);
+
+	if (gameFps.size() > LOGSSIZE) {
+		gameFps.pop_back();
+	}
+
+	if (gameMs.size() > LOGSSIZE) {
+		gameMs.pop_back();
+	}
 }
 
 void DockConfig::AddMemory(float memVal) {

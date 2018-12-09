@@ -20,7 +20,6 @@ void DockInspector::Draw() {
 
 	if (App->scene->goSelected != nullptr) {
 		App->scene->goSelected->DrawProperties();
-		const char* components[] = { "Transform", "Mesh", "Material" };
 
 		if (ImGui::Button("Add Component", ImVec2(ImGui::GetWindowWidth(), 25))) {
 			ImGui::OpenPopup("AddComponentPopup");
@@ -29,10 +28,11 @@ void DockInspector::Draw() {
 		if (ImGui::BeginPopup("AddComponentPopup")) {
 			ImGui::Text("Components");
 			ImGui::Separator();
-			for (int i = 0; i < IM_ARRAYSIZE(components); i++) {
-				if (ImGui::Selectable(components[i])) {
-					App->scene->goSelected->AddComponent((ComponentType)i);
-				}
+			if (ImGui::Selectable("Mesh")) {
+				App->scene->goSelected->AddComponent(ComponentType::MESH);
+			}
+			if (ImGui::Selectable("Material")) {
+				App->scene->goSelected->AddComponent(ComponentType::MATERIAL);
 			}
 			ImGui::EndPopup();
 		}
