@@ -1,10 +1,12 @@
 #include "DockTime.h"
+#include "Application.h"
+#include "ModuleTime.h"
+#include "ModuleWindow.h"
 
 DockTime::DockTime() { }
 
 DockTime::~DockTime() { }
 
-//TODO!: Set button pause properly
 void DockTime::Draw() {
 
 	ImGui::Begin("Time", &enabled, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse);
@@ -14,7 +16,7 @@ void DockTime::Draw() {
 
 	ImGui::BeginMenuBar();
 
-	if (!App->gameModeEnabled){ 
+	if (App->time->gameState == GameState::STOP){
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.5f, 0.5f, 0.5f, 0.7f });
 	} else {
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.3f, 0.5f, 0.3f, 0.7f });
@@ -24,43 +26,49 @@ void DockTime::Draw() {
 
 	ImGui::SetCursorPosX((ImGui::GetWindowWidth() - 85) / 2);
 	if (ImGui::ArrowButton("Play", ImGuiDir_Right)) {
-		gameTime = 0.0f;
-
-		if (!App->gameModeEnabled) {
-			App->gameModeEnabled = true;
+		if (App->time->gameState == GameState::STOP) {
+			App->time->StartGameClock();
 		} else {
-			App->gameModeEnabled = false;
-			App->gamePaused = false;
+			App->time->StopGameClock();
 		}
 	}
 
+	ImGui::PopStyleColor(2);
+	if (App->time->gameState == GameState::PAUSE) {
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0.3f, 0.5f, 0.3f, 0.7f });
+	} else {
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0.5f, 0.5f, 0.5f, 0.7f });
+	}
+
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1.0f, 1.0f, 1.0f, 0.2f });
 	ImGui::SameLine();
 
-	if (ImGui::Button("||", { 23,19 }) && App->gameModeEnabled) {
-		if (!App->gamePaused) {
-			App->gamePaused = true;
-		} else {
-			App->gamePaused = false;
+	if (ImGui::Button("||", { 23,19 })) {
+		if (App->time->gameState == GameState::RUN) {
+			App->time->PauseGameClock(true);
+		} else if (App->time->gameState == GameState::PAUSE) {
+			App->time->PauseGameClock(false);
 		}
 	}
 
 	ImGui::PopStyleColor(2);
 	ImGui::SameLine();
 
-	if (!App->gameModeEnabled)
-		ImGui::PushStyleColor(ImGuiCol_Button, { 0.5f, 0.5f, 0.5f, 0.7f });
-	else
+	if (App->time->gameState == GameState::PAUSE) {
 		ImGui::PushStyleColor(ImGuiCol_Button, { 0.3f, 0.5f, 0.3f, 0.7f });
-
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1.0f, 1.0f, 1.0f, 0.2f });
-	if (App->gameModeEnabled && !App->gamePaused && step == true) {
-		App->gamePaused = true;
-		step = false;
+	} else {
+		ImGui::PushStyleColor(ImGuiCol_Button, { 0.5f, 0.5f, 0.5f, 0.7f });
 	}
 
-	if (ImGui::Button("->", { 23,19 }) && App->gameModeEnabled && App->gamePaused) {
-		App->gamePaused = false;
-		step = true;
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, { 1.0f, 1.0f, 1.0f, 0.2f });
+	if (App->time->nextFrame) {
+		App->time->nextFrame = false;
+		App->time->PauseGameClock(true);
+	}
+
+	if (ImGui::Button("->", { 23,19 }) && App->time->gameState == GameState::PAUSE) {
+		App->time->nextFrame = true;
+		App->time->PauseGameClock(false);
 	}
 
 	ImGui::PopStyleColor(2);

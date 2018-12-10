@@ -154,9 +154,6 @@
     <ClCompile Include="DockAbout.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Utils\Time</Filter>
-    </ClCompile>
     <ClCompile Include="DockConfig.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
@@ -198,6 +195,9 @@
     </ClCompile>
     <ClCompile Include="DockInspector.cpp">
       <Filter>Docks</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTime.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -417,9 +417,6 @@
     <ClInclude Include="DockAbout.h">
       <Filter>Docks</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Utils\Time</Filter>
-    </ClInclude>
     <ClInclude Include="DockConfig.h">
       <Filter>Docks</Filter>
     </ClInclude>
@@ -462,6 +459,12 @@
     <ClInclude Include="DockInspector.h">
       <Filter>Docks</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleTime.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -487,9 +490,6 @@
     </Filter>
     <Filter Include="Utils\Objects">
       <UniqueIdentifier>{9dd4ad34-b8b3-48bb-9194-efa97c36bb87}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utils\Time">
-      <UniqueIdentifier>{e44ee52a-3b0e-47c4-b713-03c5e4ca70e5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils\mmgr">
       <UniqueIdentifier>{bd63b3a5-a3ba-47b7-850a-3e1a71685fcb}</UniqueIdentifier>

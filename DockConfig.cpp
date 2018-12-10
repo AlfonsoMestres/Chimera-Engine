@@ -4,6 +4,7 @@
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
+#include "ModuleTime.h"
 #include "ModuleTextures.h"
 
 #include "mmgr/mmgr.h"
@@ -21,34 +22,31 @@ void DockConfig::Draw() {
 
 	if (ImGui::CollapsingHeader("Application")) {
 		ImGui::PushItemWidth(200.0f);
-		static int framerateCap = App->framerateCap;
+		static int framerateCap = App->time->maxFps;
 		if (ImGui::SliderInt("MaxFPS", &framerateCap, 1, 120)) {
-			App->framerateCap = framerateCap;
+			App->time->maxFps = framerateCap;
 		}
+
 		ImGui::PopItemWidth();
 
 		if (ImGui::Checkbox("Vsync", &App->renderer->vsyncEnabled)) {
 			if (App->renderer->vsyncEnabled) {
 				SDL_GL_SetSwapInterval(1);
-			}
-			else {
+			} else {
 				SDL_GL_SetSwapInterval(0);
 			}
 		}
 
 		char title[25];
-		sprintf_s(title, 25, "Game Framerate %.1f", gameFps[gameFps.size() - 1]);
-		ImGui::PlotHistogram("##framerate", &gameFps[0], gameFps.size(), 0, title, 0.0f, 120.0f, ImVec2(0, 80));
-
 		sprintf_s(title, 25, "Framerate %.1f", fps[fps.size() - 1]);
 		ImGui::PlotHistogram("##framerate", &fps[0], fps.size(), 0, title, 0.0f, 120.0f, ImVec2(0, 80));
-
 		sprintf_s(title, 25, "Milliseconds %0.1f", ms[ms.size() - 1]);
 		ImGui::PlotHistogram("##milliseconds", &ms[0], ms.size(), 0, title, 0.0f, 40.0f, ImVec2(0, 80));
 
 		sMStats stats = m_getMemoryStatistics();
 		AddMemory((float)stats.totalReportedMemory);
 
+		//TODO!!!!!!!: LEAKING MEMORY EVERY FRAME!!!
 		ImGui::PlotHistogram("##memory", &mem[0], mem.size(), 0, "Memory Consumption (Bytes)", 0.0f, (float)stats.peakReportedMemory * 1.2f, ImVec2(0, 80));
 
 		ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
@@ -60,6 +58,28 @@ void DockConfig::Draw() {
 		ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
 		ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
 		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+	}
+
+	if (ImGui::CollapsingHeader("Time")) {
+		char title[35];
+		sprintf_s(title, 25, "Framerate %0.1f", gameFps[gameFps.size() - 1]);
+		ImGui::PlotLines("##framerate", &gameFps[0], gameFps.size(), 0, title, 0.0f, 200.0f, ImVec2(300, 50));
+		sprintf_s(title, 25, "Milliseconds %0.1f", gameMs[gameMs.size() - 1]);
+		ImGui::PlotLines("##framerate", &gameMs[0], gameMs.size(), 0, title, 0.0f, 40.0f, ImVec2(300, 50));
+
+		ImGui::SliderFloat("Time Scale", &App->time->gameTimeScale, 0.1f, 5.0f, "%0.1f");
+
+		ImGui::Separator();
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "Time since App start: %f seconds", App->time->realTime);
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "Frames since App start: %u", App->time->realFrameCount);
+
+		if (App->time->gameState == GameState::STOP) {
+			ImGui::TextDisabled("Time since Game start: 0.0000000 seconds");
+			ImGui::TextDisabled("Frames since Game start: 0");
+		} else {
+			ImGui::TextColored(ImVec4(0.3f, 0.5f, 0.3f, 0.7f), "Time since Game start: %f seconds", App->time->gameTime);
+			ImGui::TextColored(ImVec4(0.3f, 0.5f, 0.3f, 0.7f), "Frames since Game start: %u", App->time->totalFrames);
+		}
 	}
 
 	if (ImGui::CollapsingHeader("Camera")) {
@@ -98,7 +118,6 @@ void DockConfig::AddFps(float fpsVal, float msVal) {
 	}
 }
 
-//TODO!: should display this on the inspector
 void DockConfig::AddGameFps(float fpsVal, float msVal) {
 	gameFps.insert(gameFps.begin(), fpsVal);
 	gameMs.insert(gameMs.begin(), msVal);

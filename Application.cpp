@@ -8,6 +8,7 @@
 #include "ModuleInput.h"
 #include "ModuleSceneLoader.h"
 #include "ModuleScene.h"
+#include "ModuleTime.h"
 
 Application::Application() {
 
@@ -20,6 +21,7 @@ Application::Application() {
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(scene = new ModuleScene());
 	modules.push_back(loader = new ModuleSceneLoader());
+	modules.push_back(time = new ModuleTime());
 
 }
 
@@ -39,58 +41,11 @@ bool Application::Init() {
 		ret = (*it)->Init();
 	}
 
-	msTimer.Start();
-	gameModeEnabled = false;
-	counting = false;
-	gameDeltaTime = 0.0f;
-
 	return ret;
-}
-
-void Application::PreUpdate() {
-
-	deltaTime = (float)msTimer.Read() / 1000.0f;
-
-	if (!gameModeEnabled || gamePaused) {
-		gameDeltaTime = 0.0f;
-	} else {
-		gameDeltaTime = deltaTime / ((float)gameframerateCap / (float)framerateCap);
-	}
-
-	msTimer.Start();
-
-	if (gameModeEnabled && !counting) {
-		counting = true;
-		gameTime.Start();
-	}
-
-}
-
-void Application::FinishUpdate() {
-
-	int ms_cap = 1000 / framerateCap;
-	if (msTimer.Read() < ms_cap) {
-		SDL_Delay(ms_cap - msTimer.Read());
-	}
-
-	App->editor->AddFPSCount(1 / deltaTime, deltaTime * 1000.0f);
-
-	if (!gameModeEnabled || gamePaused) {
-		App->editor->AddGameFPSCount(0, 0);
-	} else {
-		App->editor->AddGameFPSCount(1 / gameDeltaTime, gameDeltaTime * 1000.0f);
-	}
-
-	if (!gameModeEnabled && counting) {
-		gameTime.Stop();
-		counting = false;
-	}
-
 }
 
 update_status Application::Update() {
 
-	PreUpdate();
 	update_status ret = UPDATE_CONTINUE;
 
 	for (std::list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it) {
@@ -106,18 +61,23 @@ update_status Application::Update() {
 	}
 
 	FinishUpdate();
+
 	return ret;
 }
 
-bool Application::CleanUp() {
+void Application::FinishUpdate() {
+	int ms_cap = 1000 / time->maxFps;
+	if (time->frameTimer.Read() < ms_cap) {
+		SDL_Delay(ms_cap - time->frameTimer.Read());
+	}
+}
 
-	Timer cleanUpTimer;
+bool Application::CleanUp() {
 	bool ret = true;
 
 	for (std::list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it) {
 		ret = (*it)->CleanUp();
 	}
 
-	LOG("Cleaned modules in %d ms", cleanUpTimer.Stop());
 	return ret;
 }
