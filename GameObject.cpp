@@ -207,7 +207,7 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 
 	if (ImGui::BeginPopup("Modify_GameObject")) {
 		if (ImGui::Selectable("Add Empty GameObject")) {
-			App->scene->CreateGameObject("GameObject", this);
+			App->scene->CreateGameObject(DEFAULT_GO_NAME, this);
 		}
 		if (ImGui::Selectable("Duplicate") && App->scene->goSelected != nullptr) {
 			toBeCopied = true;

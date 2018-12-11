@@ -36,8 +36,6 @@ class GameObject
 		Component*				GetComponent(ComponentType type) const;
 		std::vector<Component*> GetComponents(ComponentType type) const;
 
-		void					BatmanizeGameObject(GameObject* batman);
-
 		AABB					ComputeBBox() const;
 
 		math::float4x4			GetLocalTransform() const;
@@ -51,7 +49,7 @@ class GameObject
 		bool					drawChildsBBox = false;
 		bool					duplicating = false;
 		const char*				filePath = nullptr;
-		const char*				name = "GameObject";
+		const char*				name = DEFAULT_GO_NAME;
 		GameObject*				parent = nullptr;
 		std::vector<Component*>	components;
 		std::list<GameObject*>	goChilds;
