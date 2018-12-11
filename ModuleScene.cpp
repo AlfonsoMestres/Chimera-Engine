@@ -1,7 +1,5 @@
 #include "Application.h"
 #include "ModuleScene.h"
-#include "ModuleInput.h"
-#include "SDL/include/SDL_mouse.h"
 
 ModuleScene::ModuleScene() { }
 
@@ -27,19 +25,6 @@ void ModuleScene::Draw() {
 }
 
 void ModuleScene::DrawHierarchy() {
-	//TODO!: Create empty game object, appears in the middle of the frustum render
-	// If empty heriarchy, allow to create one with a imgui popup
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
-		ImGui::OpenPopup("Modify_GameObject");
-	}
-
-	if (ImGui::BeginPopup("Modify_GameObject")) {
-		if (ImGui::Selectable("Add Empty GameObject")) {
-			App->scene->CreateGameObject();
-		}
-		ImGui::EndPopup();
-	}
-
 	for (auto &child : root->goChilds) {
 		child->DrawHierarchy(goSelected);
 	}

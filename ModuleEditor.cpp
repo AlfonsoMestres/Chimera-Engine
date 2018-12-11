@@ -51,26 +51,55 @@ update_status ModuleEditor::Update() {
 
 	if (ImGui::BeginMainMenuBar()) {
 
-		if (ImGui::BeginMenu("File")) {
+		if (ImGui::BeginMenu("App")) {
 
 			if (ImGui::MenuItem("Exit")) {
 				ImGui::EndMenu();
 				ImGui::EndMainMenuBar();
 				ImGui::End();
 				ImGui::EndFrame();
-				return UPDATE_ERROR;
+				return UPDATE_STOP;
 			}
 			ImGui::EndMenu();
 		}
+
+		if (ImGui::BeginMenu("Edit")) {
+			if (ImGui::BeginMenu("Add")) {
+				if(ImGui::MenuItem("Empty GameObject")) {
+					new GameObject(DEFAULT_GO_NAME, aiMatrix4x4(), nullptr, nullptr);
+				}
+				if (ImGui::MenuItem("Sphere")) {
+					// TODO: Add sphere from external library
+				}
+				if (ImGui::MenuItem("Cube")) {
+					// TODO: Add sphere from external library
+				}
+				if (ImGui::MenuItem("Torus")) {
+					// TODO: Add sphere from external library
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenu();
+		}
+
 		if (ImGui::BeginMenu("Window")) {
 
 			if (ImGui::MenuItem("Scene", NULL, scene->IsEnabled())) {
 				scene->ToggleEnabled();
 			}
 
+			if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->IsEnabled())) {
+				hierarchy->ToggleEnabled();
+			}
+
+			if (ImGui::MenuItem("Time", NULL, time->IsEnabled())) {
+				time->ToggleEnabled();
+			}
+
 			if (ImGui::MenuItem("Logs", NULL, console->IsEnabled())) {
 				console->ToggleEnabled();
 			} 
+
 			
 			ImGui::EndMenu();
 		}
