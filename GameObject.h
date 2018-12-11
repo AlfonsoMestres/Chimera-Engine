@@ -59,6 +59,8 @@ class GameObject
 
 		bool					toBeDeleted = false;
 		bool					toBeCopied = false;
+		bool					moveGOUp = false;
+		bool					moveGODown = false;
 
 };
 

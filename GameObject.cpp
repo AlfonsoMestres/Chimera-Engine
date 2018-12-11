@@ -108,6 +108,28 @@ void GameObject::Update() {
 		} else {
 			++itChild;
 		}
+
+		// TODO: Move up and down elements
+		if ((*itChild)->moveGOUp) {
+			(*itChild)->moveGOUp = false;
+			// child position
+			/*if(std::distance(goChilds.begin(), itChild) != goChilds.begin()) {
+				LOG("YAY! +");
+			}*/
+
+			// Swap child - 1 with child position <- copying ? just copying the pointer will be enough
+		}
+
+		if ((*itChild)->moveGODown) {
+			(*itChild)->moveGODown = false;
+			// child position
+			//std::distance(goChilds.begin(), itChild);
+			// if selected child not in last position
+			/*if (std::distance(goChilds.begin(), itChild) != goChilds.end()) {
+				LOG("YAY! -");
+			}*/
+		}
+
 	}
 
 }
@@ -119,7 +141,6 @@ void GameObject::Draw() const{
 	for (const auto &child : goChilds) {
 		child->Draw();
 	}
-
 	if (transform == nullptr) return;
 
 	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::MATERIAL);
@@ -140,11 +161,9 @@ void GameObject::Draw() const{
 	glUseProgram(shader);
 	ModelTransform(shader);
 
-	std::vector<Component*> meshes = GetComponents(ComponentType::MESH);
-	for (const auto &mesh : meshes) {
-		if (mesh->enabled) {
-			((ComponentMesh*)mesh)->Draw(shader, texture);
-		}
+	Component* mesh = GetComponent(ComponentType::MESH);
+	if(mesh != nullptr && mesh->enabled) {
+		((ComponentMesh*)mesh)->Draw(shader, texture);
 	}
 
 	if (drawGOBBox) {
@@ -218,6 +237,13 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 				App->scene->goSelected = nullptr;
 			}
 		}
+		if (ImGui::Selectable("Move up") && App->scene->goSelected != nullptr) {
+			moveGOUp = true;
+		}
+		if (ImGui::Selectable("Move down") && App->scene->goSelected != nullptr) {
+			moveGODown = true;
+		}
+
 		ImGui::EndPopup();
 	}
 
