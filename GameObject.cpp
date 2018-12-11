@@ -91,6 +91,22 @@ void GameObject::Update() {
 
 		(*itChild)->Update();
 
+		// TODO: Move up and down elements
+		if ((*itChild)->moveGOUp) {
+			(*itChild)->moveGOUp = false;
+			/*if(std::distance(goChilds.begin(), itChild) != goChilds.begin()) {
+				LOG("YAY! +");
+			}*/
+		}
+
+		if ((*itChild)->moveGODown) {
+			(*itChild)->moveGODown = false;
+			// if selected child not in last position
+			/*if (std::distance(goChilds.begin(), itChild) != goChilds.end()) {
+				LOG("YAY! -");
+			}*/
+		}
+
 		if ((*itChild)->toBeCopied) {
 			(*itChild)->toBeCopied = false;
 			GameObject* goCopied = new GameObject(**itChild);
@@ -107,27 +123,6 @@ void GameObject::Update() {
 			goChilds.erase(itChild++);
 		} else {
 			++itChild;
-		}
-
-		// TODO: Move up and down elements
-		if ((*itChild)->moveGOUp) {
-			(*itChild)->moveGOUp = false;
-			// child position
-			/*if(std::distance(goChilds.begin(), itChild) != goChilds.begin()) {
-				LOG("YAY! +");
-			}*/
-
-			// Swap child - 1 with child position <- copying ? just copying the pointer will be enough
-		}
-
-		if ((*itChild)->moveGODown) {
-			(*itChild)->moveGODown = false;
-			// child position
-			//std::distance(goChilds.begin(), itChild);
-			// if selected child not in last position
-			/*if (std::distance(goChilds.begin(), itChild) != goChilds.end()) {
-				LOG("YAY! -");
-			}*/
 		}
 
 	}
