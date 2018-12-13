@@ -16,6 +16,7 @@ class ModuleProgram;
 class ModuleTime;
 class ModuleScene;
 class ModuleSceneLoader;
+class ModuleResourceManager;
 
 class Application
 {
@@ -40,6 +41,7 @@ class Application
 		ModuleTime* time = nullptr;
 		ModuleScene* scene = nullptr;
 		ModuleSceneLoader* loader = nullptr;
+		ModuleResourceManager* resource = nullptr;
 
 	private:
 		std::list<Module*>	modules;

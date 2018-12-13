@@ -97,6 +97,7 @@
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleSceneLoader.h" />
     <ClInclude Include="ModuleTime.h" />
+    <ClInclude Include="ModuleResourceManager.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="Utils\crossguid\guid.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -232,6 +234,8 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="ModuleResourceManager.cpp" />
+    <ClCompile Include="Utils\guid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\default.fs" />

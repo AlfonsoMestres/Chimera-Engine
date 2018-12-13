@@ -199,6 +199,12 @@
     <ClCompile Include="ModuleTime.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\guid.cpp">
+      <Filter>Utils\Uuid</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleResourceManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -465,6 +471,12 @@
     <ClInclude Include="Timer.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Utils\crossguid\guid.hpp">
+      <Filter>Utils\Uuid</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleResourceManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -496,6 +508,9 @@
     </Filter>
     <Filter Include="Components">
       <UniqueIdentifier>{2ee2a73a-ae0f-445f-93cb-59309d4ed58b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Uuid">
+      <UniqueIdentifier>{68d6e8f5-73aa-46d0-8a48-d49f2afdb6cf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -6,13 +6,17 @@
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "ModuleResourceManager.h"
 #include "SDL/include/SDL_mouse.h"
 
 /// CARE Creating this without father could lead to memory leak
-GameObject::GameObject() { }
+GameObject::GameObject() { 
+	uuid = App->resource->NewGuuid();
+}
 
 GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, const char* fileLocation) {
 
+	uuid = App->resource->NewGuuid();
 	name = goName;
 
 	if (fileLocation != nullptr) {
@@ -27,6 +31,7 @@ GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, const c
 
 GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent, const char* fileLocation) {
 
+	uuid = App->resource->NewGuuid();
 	name = goName;
 
 	if (goParent != nullptr) {
@@ -46,6 +51,8 @@ GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObj
 }
 
 GameObject::GameObject(const GameObject& duplicateGameObject) {
+
+	uuid = App->resource->NewGuuid();
 	char* copyName = new char[strlen(duplicateGameObject.name)];
 	strcpy(copyName, duplicateGameObject.name);
 	name = copyName;
@@ -189,6 +196,8 @@ void GameObject::DrawProperties() {
 	// We could probably spent computing time calculating the goName length, but instead we use a fixed max name length
 	ImGui::InputText("Name", (char*)name, 30.0f); ImGui::SameLine();
 	ImGui::Checkbox("Enabled", &enabled); 
+	ImGui::BulletText("UUID: "); ImGui::SameLine();
+	ImGui::Text(uuid.c_str());
 
 	for (auto &component : components) {
 		component->DrawProperties();
