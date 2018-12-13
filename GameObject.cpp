@@ -314,9 +314,14 @@ Component* GameObject::AddComponent(ComponentType type) {
 			transform = (ComponentTransform*)component;
 			break;
 		case  ComponentType::MESH:
-			component = new ComponentMesh(this, nullptr);
+			if (GetComponent(ComponentType::MESH) != nullptr) {
+				LOG("This GO already have a MESH");
+			} else {
+				component = new ComponentMesh(this, nullptr);
+			}
 			break;
 		case ComponentType::MATERIAL:
+			// TODO: Unity allow multiple but its weird to have this. RESTRICT
 			component = new ComponentMaterial(this);
 			break;
 		case ComponentType::EMPTY:
@@ -387,16 +392,17 @@ AABB GameObject::ComputeBBox() const {
 	bbox.SetNegativeInfinity();
 
 	// Current GO meshes
-	for (const auto &mesh : GetComponents(ComponentType::MESH)) {
-		bbox.Enclose(((ComponentMesh *)mesh)->bbox);
+	ComponentMesh* mesh = (ComponentMesh*)GetComponent(ComponentType::MESH);
+	if (mesh != nullptr) {
+		bbox.Enclose((mesh)->bbox);
 	}
-
+	
 	// Apply transformation of our GO
 	bbox.TransformAsAABB(GetGlobalTransform());
 
 	// Child meshes
 	for (const auto &child : goChilds){
-		if (child->GetComponents(ComponentType::MESH).size() != 0) {
+		if (child->GetComponent(ComponentType::MESH) != nullptr) {
 			bbox.Enclose(child->ComputeBBox());
 		}
 	}
@@ -430,14 +436,14 @@ void GameObject::DrawBBox() const {
 		0, 4, 1, 5, 
 		2, 6, 3, 7
 	};
+
 	GLuint ibo_elements;
 	glGenBuffers(1, &ibo_elements);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-
-	float4x4 boxtransform = float4x4::FromTRS(bbox.CenterPoint(), Quat::identity, bbox.Size());
+	math::float4x4 boxtransform = math::float4x4::FromTRS(bbox.CenterPoint(), Quat::identity, bbox.Size());
 	glUniformMatrix4fv(glGetUniformLocation(App->program->basicProgram, "model"), 1, GL_TRUE, &(boxtransform)[0][0]);
 
 	float color[4] = { 0.0f, 1.0f, 1.0f, 1.0f };
