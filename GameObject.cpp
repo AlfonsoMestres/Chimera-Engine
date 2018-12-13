@@ -94,17 +94,17 @@ void GameObject::Update() {
 		// TODO: Move up and down elements
 		if ((*itChild)->moveGOUp) {
 			(*itChild)->moveGOUp = false;
-			/*if(std::distance(goChilds.begin(), itChild) != goChilds.begin()) {
-				LOG("YAY! +");
-			}*/
+			if (std::abs(std::distance(goChilds.begin(), itChild)) != 0) {
+				LOG("Begin move up");
+			}
 		}
 
 		if ((*itChild)->moveGODown) {
 			(*itChild)->moveGODown = false;
 			// if selected child not in last position
-			/*if (std::distance(goChilds.begin(), itChild) != goChilds.end()) {
-				LOG("YAY! -");
-			}*/
+			if (std::abs(std::distance(goChilds.begin(), itChild)) != goChilds.size() - 1) {
+				LOG("Begin move down");
+			}
 		}
 
 		if ((*itChild)->toBeCopied) {
@@ -212,6 +212,48 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 		}
 		App->scene->goSelected = this;
 		drawGOBBox = true;
+	}
+
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)){
+		GameObject* draggedGo = this;
+		ImGui::SetDragDropPayload("DragDropHierarchy", &draggedGo, sizeof(GameObject*), ImGuiCond_Once);
+		ImGui::Text("%s", name);
+		ImGui::EndDragDropSource();
+	}
+
+	if (ImGui::BeginDragDropTarget()) {
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy")) {
+			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
+			GameObject* droppedGo = (GameObject *)*(const int*)payload->Data;
+
+			if (droppedGo->parent != this) {
+
+				bool droppedIntoChild = false;
+				GameObject* inheritedTrasnform = this;
+				while (inheritedTrasnform->parent != nullptr) {
+					if (inheritedTrasnform->parent == droppedGo) {
+						droppedIntoChild = true;
+					}
+					inheritedTrasnform = inheritedTrasnform->parent;
+				}
+				inheritedTrasnform = nullptr;
+
+				if (!droppedIntoChild) {
+					goChilds.push_back(droppedGo);
+
+					if (droppedGo->transform != nullptr) {
+						droppedGo->transform->SetLocalToWorld(droppedGo->GetGlobalTransform());
+					}
+					droppedGo->parent->goChilds.remove(droppedGo);
+					droppedGo->parent = this;
+					if (droppedGo->transform != nullptr) {
+						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+					}
+				}
+
+			}
+		}
+		ImGui::EndDragDropTarget();
 	}
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
