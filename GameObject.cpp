@@ -55,6 +55,7 @@ GameObject::GameObject(const GameObject& duplicateGameObject) {
 	for (const auto &component : duplicateGameObject.components) {
 		Component* duplicatedComponent = component->Duplicate();
 		components.push_back(duplicatedComponent);
+		duplicatedComponent->goContainer = this;
 		if (duplicatedComponent->componentType == ComponentType::TRANSFORM) {
 			transform = (ComponentTransform*)duplicatedComponent;
 		}
@@ -101,7 +102,6 @@ void GameObject::Update() {
 
 		if ((*itChild)->moveGODown) {
 			(*itChild)->moveGODown = false;
-			// if selected child not in last position
 			if (std::abs(std::distance(goChilds.begin(), itChild)) != goChilds.size() - 1) {
 				LOG("Begin move down");
 			}
