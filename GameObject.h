@@ -45,6 +45,7 @@ class GameObject
 
 	public:
 		std::string				uuid = "";
+		std::string				parentUuid = "";
 		bool					enabled = true;
 		bool					drawGOBBox = false;
 		bool					drawChildsBBox = false;

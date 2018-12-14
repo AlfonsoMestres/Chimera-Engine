@@ -1,16 +1,21 @@
+#include "Application.h"
+#include "ModuleResourceManager.h"
 #include "Component.h"
 
 Component::Component(GameObject* gameObject, ComponentType type) {
+	uuid = App->resource->NewGuuid();
+	parentUuid = gameObject->uuid;
 	goContainer = gameObject;
 	componentType = type;
 }
 
 Component::Component(const Component& duplicateComponent) {
+	uuid = App->resource->NewGuuid();
+	parentUuid = duplicateComponent.parentUuid;
 	goContainer = duplicateComponent.goContainer;
 	componentType = duplicateComponent.componentType;
 	enabled = duplicateComponent.enabled;
 }
-
 
 Component::~Component() { }
 
@@ -24,6 +29,11 @@ bool Component::DrawComponentState() {
 
 	bool removed = ImGui::SmallButton("Remove Component");
 	if (removed) Remove();
+
+	ImGui::Text("UUID: "); ImGui::SameLine();
+	ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, uuid.c_str());
+	/*ImGui::Text("Go UUID: "); ImGui::SameLine();
+	ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, parentUuid.c_str());*/
 
 	ImGui::PopStyleColor(3);
 	return removed;

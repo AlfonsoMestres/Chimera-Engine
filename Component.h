@@ -32,6 +32,8 @@ class Component
 
 		bool				enabled = true;
 		ComponentType		componentType = ComponentType::EMPTY;
+		std::string			uuid = "";
+		std::string			parentUuid = "";
 		GameObject*			goContainer = nullptr;
 
 };

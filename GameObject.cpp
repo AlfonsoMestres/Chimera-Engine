@@ -23,7 +23,8 @@ GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, const c
 		filePath = fileLocation;
 	}
 
-	this->parent = App->scene->root;
+	parent = App->scene->root;
+	parentUuid = App->scene->root->uuid;
 	this->transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
 	this->transform->AddTransform(transform);
 	App->scene->root->goChilds.push_back(this);
@@ -35,10 +36,12 @@ GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObj
 	name = goName;
 
 	if (goParent != nullptr) {
-		this->parent = goParent;
+		parent = goParent;
+		parentUuid = goParent->uuid;
 		goParent->goChilds.push_back(this);
 	} else {
-		this->parent = App->scene->root;
+		parent = App->scene->root;
+		parentUuid = App->scene->root->uuid;
 		App->scene->root->goChilds.push_back(this);
 	}
 
@@ -53,6 +56,7 @@ GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObj
 GameObject::GameObject(const GameObject& duplicateGameObject) {
 
 	uuid = App->resource->NewGuuid();
+	parentUuid = duplicateGameObject.parentUuid;
 	char* copyName = new char[strlen(duplicateGameObject.name)];
 	strcpy(copyName, duplicateGameObject.name);
 	name = copyName;
@@ -63,6 +67,7 @@ GameObject::GameObject(const GameObject& duplicateGameObject) {
 		Component* duplicatedComponent = component->Duplicate();
 		components.push_back(duplicatedComponent);
 		duplicatedComponent->goContainer = this;
+		duplicatedComponent->parentUuid = uuid;
 		if (duplicatedComponent->componentType == ComponentType::TRANSFORM) {
 			transform = (ComponentTransform*)duplicatedComponent;
 		}
@@ -71,6 +76,7 @@ GameObject::GameObject(const GameObject& duplicateGameObject) {
 	for (const auto &child : duplicateGameObject.goChilds) {
 		GameObject* duplicatedChild = new GameObject(*child);
 		duplicatedChild->parent = this;
+		duplicatedChild->parentUuid = uuid;
 		goChilds.push_back(duplicatedChild);
 	}
 }
@@ -196,8 +202,13 @@ void GameObject::DrawProperties() {
 	// We could probably spent computing time calculating the goName length, but instead we use a fixed max name length
 	ImGui::InputText("Name", (char*)name, 30.0f); ImGui::SameLine();
 	ImGui::Checkbox("Enabled", &enabled); 
-	ImGui::BulletText("UUID: "); ImGui::SameLine();
-	ImGui::Text(uuid.c_str());
+
+	if (ImGui::CollapsingHeader("Info")) {
+		ImGui::Text("UUID: "); ImGui::SameLine();
+		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, uuid.c_str());
+		ImGui::Text("Parent UUID: "); ImGui::SameLine();
+		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, parentUuid.c_str());
+	}
 
 	for (auto &component : components) {
 		component->DrawProperties();
@@ -233,7 +244,7 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 	if (ImGui::BeginDragDropTarget()) {
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy")) {
 			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
-			GameObject* droppedGo = (GameObject *)*(const int*)payload->Data;
+			GameObject* droppedGo = (GameObject*)*(const int*)payload->Data;
 
 			if (droppedGo->parent != this) {
 
@@ -255,6 +266,7 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 					}
 					droppedGo->parent->goChilds.remove(droppedGo);
 					droppedGo->parent = this;
+					droppedGo->parentUuid = uuid;
 					if (droppedGo->transform != nullptr) {
 						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
 					}

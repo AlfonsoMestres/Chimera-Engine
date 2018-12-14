@@ -1,5 +1,4 @@
 #include "ComponentMesh.h"
-#include "Application.h"
 
 ComponentMesh::ComponentMesh(GameObject* goContainer, aiMesh* mesh) : Component(goContainer, ComponentType::MESH) { 
 
