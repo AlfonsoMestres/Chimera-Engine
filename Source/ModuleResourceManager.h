@@ -2,7 +2,7 @@
 #define __MODULERESOURCEMANAGER_H__
 
 #include "Module.h"
-#include "Utils/crossguid/guid.hpp"
+#include "Crossguid/crossguid/guid.hpp"
 
 class ModuleResourceManager : public Module
 {

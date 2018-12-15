@@ -23,6 +23,8 @@ game programming and development.
 * [Assimp](http://www.assimp.org/).
 * [DevIL](http://openil.sourceforge.net/).
 * [mmgr](http://www.flipcode.com/archives/Presenting_A_Memory_Manager.shtml).
+* [CrossGuid](https://github.com/graeme-hill/crossguid)
+* [DebugDraw](https://github.com/glampert/debug-draw)
 
 ## License
 

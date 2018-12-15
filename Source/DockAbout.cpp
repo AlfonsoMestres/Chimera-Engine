@@ -4,6 +4,7 @@
 #include "SDL_version.h"
 #include "IL/il.h"
 #include "assimp/version.h"
+#include "debug_draw.hpp"
 #include "mmgr/mmgr.h"
 #include "GL/glew.h"
 
@@ -46,7 +47,8 @@ void DockAbout::Draw() {
 		ImGui::BulletText("Glew (version %s)", glewGetString(GLEW_VERSION));
 		ImGui::BulletText("Assimp (version %d.%d.%d)", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
 		ImGui::BulletText("mmgr (version 1.0)");
-
+		ImGui::BulletText("Crossguid (version 0.2.2)");
+		ImGui::BulletText("DebugDraw (version 2017)");
 		ImGui::TreePop();
 	}
 

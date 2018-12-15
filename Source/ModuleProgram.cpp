@@ -6,8 +6,8 @@ ModuleProgram::~ModuleProgram() { }
 
 bool ModuleProgram::LoadPrograms() {
 	// TODO: this should be pushed back to a vector
-	basicProgram = LoadProgram("./default.vs", "./default.fs");
-	textureProgram = LoadProgram("./texture.vs", "./texture.fs");
+	basicProgram = LoadProgram("./Shaders/default.vs", "./Shaders/default.fs");
+	textureProgram = LoadProgram("./Shaders/texture.vs", "./Shaders/texture.fs");
 
 	return (basicProgram != 0 && textureProgram != 0);
 }
