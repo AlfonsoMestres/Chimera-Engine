@@ -15,6 +15,7 @@ class ModuleScene;
 class ModuleProgram;
 class ModuleTime;
 class ModuleScene;
+class ModuleDebugDraw;
 class ModuleSceneLoader;
 class ModuleResourceManager;
 
@@ -40,6 +41,7 @@ class Application
 		ModuleProgram* program = nullptr;
 		ModuleTime* time = nullptr;
 		ModuleScene* scene = nullptr;
+		ModuleDebugDraw* debug = nullptr;
 		ModuleSceneLoader* loader = nullptr;
 		ModuleResourceManager* resource = nullptr;
 

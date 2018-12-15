@@ -5,6 +5,7 @@
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "ModuleProgram.h"
+#include "debugdraw.h"
 
 ModuleRender::ModuleRender() { }
 
@@ -38,6 +39,7 @@ update_status ModuleRender::PreUpdate() {
 
 // Called every draw update
 update_status ModuleRender::Update() {
+
 
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glClearColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3]);
@@ -127,6 +129,18 @@ void ModuleRender::DrawReferenceDebug() {
 	glLineWidth(1.0f);
 
 	glUseProgram(0);
+}
+
+void ModuleRender::DrawDebugData()
+{
+	if (showGrid) {
+		dd::xzSquareGrid(-1000.0f, 1000.0f, 0.0f, 1.0f, math::float3(0.65f, 0.65f, 0.65f));
+	}
+
+	//if (showAxis) {
+	//	dd::axisTriad(math::float4x4::identity, 1.0f,1.0f, 0, false);
+	//}
+
 }
 
 void ModuleRender::SetScreenNewScreenSize() {

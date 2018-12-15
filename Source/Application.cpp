@@ -6,6 +6,7 @@
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
+#include "ModuleDebugDraw.h"
 #include "ModuleSceneLoader.h"
 #include "ModuleScene.h"
 #include "ModuleResourceManager.h"
@@ -21,6 +22,7 @@ Application::Application() {
 	modules.push_back(program = new ModuleProgram());
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(scene = new ModuleScene());
+	modules.push_back(debug = new ModuleDebugDraw());
 	modules.push_back(loader = new ModuleSceneLoader());
 	modules.push_back(time = new ModuleTime());
 	modules.push_back(resource = new ModuleResourceManager());

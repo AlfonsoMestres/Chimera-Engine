@@ -205,6 +205,9 @@
     <ClCompile Include="Source\MathGeoLib\include\Time\Clock.cpp">
       <Filter>Utils\MathGeoLib</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleDebugDraw.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ComponentMaterial.h">
@@ -481,6 +484,12 @@
       <Filter>Utils\DebugDraw</Filter>
     </ClInclude>
     <ClInclude Include="Source\par_shapes.h">
+      <Filter>Utils\DebugDraw</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleDebugDraw.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\debugdraw.h">
       <Filter>Utils\DebugDraw</Filter>
     </ClInclude>
   </ItemGroup>

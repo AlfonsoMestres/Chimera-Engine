@@ -37,6 +37,7 @@ class ModuleRender : public Module
 
 	private:
 		void			DrawReferenceDebug();
+		void			DrawDebugData();
 		void			CreateFrameBuffer();
 		void			CreateUniformBlocks();
 
@@ -49,6 +50,10 @@ class ModuleRender : public Module
 		unsigned		rbo = 0u;
 		unsigned		ubo = 0u;
 		unsigned		renderTexture = 0u;
+
+	protected:
+		bool   showAxis = true;
+		bool   showGrid = true;
 };
 
 #endif

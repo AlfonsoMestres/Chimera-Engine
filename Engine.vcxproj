@@ -83,6 +83,7 @@
     <ClInclude Include="Source\ComponentMesh.h" />
     <ClInclude Include="Source\ComponentTransform.h" />
     <ClInclude Include="Source\Crossguid\crossguid\guid.hpp" />
+    <ClInclude Include="Source\debugdraw.h" />
     <ClInclude Include="Source\debug_draw.hpp" />
     <ClInclude Include="Source\Dock.h" />
     <ClInclude Include="Source\DockAbout.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Source\mmgr\nommgr.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ModuleCamera.h" />
+    <ClInclude Include="Source\ModuleDebugDraw.h" />
     <ClInclude Include="Source\ModuleEditor.h" />
     <ClInclude Include="Source\ModuleInput.h" />
     <ClInclude Include="Source\ModuleProgram.h" />
@@ -228,6 +230,7 @@
     <ClCompile Include="Source\MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="Source\mmgr\mmgr.cpp" />
     <ClCompile Include="Source\ModuleCamera.cpp" />
+    <ClCompile Include="Source\ModuleDebugDraw.cpp" />
     <ClCompile Include="Source\ModuleEditor.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
     <ClCompile Include="Source\ModuleProgram.cpp" />
