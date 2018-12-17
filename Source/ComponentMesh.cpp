@@ -154,7 +154,7 @@ void ComponentMesh::ComputeMesh(par_shapes_mesh_s* mesh) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	vertices.reserve(mesh->npoints);
-	for (unsigned int i = 0; i < mesh->npoints; i++) {
+	for (unsigned i = 0u; i < mesh->npoints; i++) {
 		vertices.push_back(float3((float *)&mesh->points[i]));
 	}
 
@@ -162,8 +162,7 @@ void ComponentMesh::ComputeMesh(par_shapes_mesh_s* mesh) {
 	materialIndex = mesh->npoints;
 }
 
-const unsigned ComponentMesh::MaterialIndex()
-{
+const unsigned ComponentMesh::MaterialIndex() {
 	return materialIndex;
 }
 

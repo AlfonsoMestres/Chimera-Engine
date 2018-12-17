@@ -5,6 +5,8 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "MathGeoLib.h"
+#include "SDL.h"
+#include "GL/glew.h"
 
 class ComponentCamera : public Component
 {
@@ -16,15 +18,21 @@ class ComponentCamera : public Component
 		Component*		Duplicate() override;
 
 		math::float4x4	ProjectionMatrix();
-		math::float4x4	LookAt(math::float3& cameraPosition, math::float3& cameraFront, math::float3& cameraUp);
-		math::float4x4	ComponentCamera::LookAt(math::float3& cameraPos, math::float3& target);
+		void			LookAt(math::float3 target);
+
+		void			Update();
 
 		void			SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight);
-		void			InitFrustum(GameObject* goParent);
+		void			InitFrustum();
+
+		math::float4x4	GetViewMatrix();
+		math::float4x4	GetProjectionMatrix();
 
 		void			SetHorizontalFOV(float fovXDegrees);
 		void			SetVerticalFOV(float fovYDegrees);
 		void			UpdatePitchYaw();
+
+		void			CreateFrameBuffer();
 
 	public:
 		math::Frustum	frustum;
@@ -55,6 +63,10 @@ class ComponentCamera : public Component
 		bool			firstMouse = true;
 		int				lastX = 0;
 		int				lastY = 0;
+
+		unsigned		fbo = 0u;
+		unsigned		rbo = 0u;
+		unsigned		renderTexture = 0u;
 };
 
 #endif

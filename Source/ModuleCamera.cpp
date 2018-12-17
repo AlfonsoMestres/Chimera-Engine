@@ -18,9 +18,9 @@ bool ModuleCamera::Init() {
 	selectedCamera = sceneCamera;
 
 	selectedCamera->cameraPosition = math::float3(0.0f, 3.0f, 40.0f);
-	selectedCamera->InitFrustum(nullptr);
+	selectedCamera->InitFrustum();
 	sceneCamera->UpdatePitchYaw();
-	sceneCamera->LookAt(sceneCamera->cameraPosition, (sceneCamera->cameraPosition + sceneCamera->cameraFront));
+	/*sceneCamera->LookAt();*/
 
 	return true;
 }
@@ -74,6 +74,7 @@ bool ModuleCamera::CleanUp() {
 	return true;
 }
 
+//TODO: ComponentCamera to ModuleCamera
 void ModuleCamera::MoveCamera(CameraMovement cameraSide) {
 
 	float normMoveSpeed = sceneCamera->cameraSpeed * App->time->realDeltaTime;

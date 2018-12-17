@@ -7,6 +7,13 @@ class DockCamera : public Dock
 	public:
 		DockCamera();
 		~DockCamera();
+
+		void Draw() override;
+		bool IsFocused() const;
+
+	public:
+		bool focus = false;
+
 };
 
 #endif
