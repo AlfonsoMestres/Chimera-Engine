@@ -27,13 +27,13 @@ class ModuleRender : public Module
 		void			DrawGUI();
 		bool			CleanUp();
 
-		void			InitFrustum();
+		//void			InitFrustum();
 		void			InitSDL();
 		void			InitOpenGL();
 		void			ViewMatrix();
 		void			ProjectionMatrix();
 		void			SetScreenNewScreenSize();
-		math::float4x4  LookAt(math::float3& cameraPos, math::float3& target);
+		/*math::float4x4  LookAt(math::float3& cameraPos, math::float3& target);*/
 
 	private:
 		void			DrawReferenceDebug();
@@ -43,7 +43,7 @@ class ModuleRender : public Module
 
 	public:
 		float			bgColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
-		Frustum			frustum;
+		/*Frustum			frustum;*/
 		bool			vsyncEnabled = false;
 		void*			context = nullptr;
 		unsigned		fbo = 0u;

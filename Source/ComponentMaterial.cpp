@@ -32,7 +32,7 @@ void ComponentMaterial::ComputeMaterial(const aiMaterial* material) {
 		material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
 		texturePath = goContainer->GetFileFolder() + file.C_Str();
 	} else {
-		texturePath = "checkersTexture.jpg";
+		texture = App->textures->defaultTexture;
 	}
 
 	DeleteTexture();
@@ -43,11 +43,16 @@ Texture* ComponentMaterial::GetTexture() const {
 	return texture;
 }
 
+void ComponentMaterial::SetTexture(Texture* newTexture) {
+	texture = newTexture;
+}
+
 unsigned ComponentMaterial::GetShader() const {
 	return shader;
 }
 
 void ComponentMaterial::DeleteTexture() {
+	//TODO: Ask to resource manager if texture is being used by other GO
 	if (texture != nullptr) {
 		glDeleteTextures(1, (GLuint*)& texture->id);
 	}
@@ -57,7 +62,6 @@ void ComponentMaterial::DeleteTexture() {
 }
 
 void ComponentMaterial::DrawProperties() {
-
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Material")) {
 		bool removed = Component::DrawComponentState();

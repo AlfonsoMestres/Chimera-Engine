@@ -14,7 +14,7 @@ GameObject::GameObject() {
 	uuid = App->resource->NewGuuid();
 }
 
-GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, const char* fileLocation) {
+GameObject::GameObject(const char* goName, const math::float4x4& transform, const char* fileLocation) {
 
 	uuid = App->resource->NewGuuid();
 	name = goName;
@@ -30,7 +30,7 @@ GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, const c
 	App->scene->root->goChilds.push_back(this);
 }
 
-GameObject::GameObject(const char* goName, const aiMatrix4x4& transform, GameObject* goParent, const char* fileLocation) {
+GameObject::GameObject(const char* goName, const math::float4x4& transform, GameObject* goParent, const char* fileLocation) {
 
 	uuid = App->resource->NewGuuid();
 	name = goName;
@@ -331,7 +331,7 @@ Component* GameObject::AddComponent(ComponentType type) {
 		case ComponentType::CAMERA:
 			break;
 		case ComponentType::TRANSFORM:
-			component = new ComponentTransform(this, aiMatrix4x4());
+			component = new ComponentTransform(this, math::float4x4().identity);
 			transform = (ComponentTransform*)component;
 			break;
 		case  ComponentType::MESH:

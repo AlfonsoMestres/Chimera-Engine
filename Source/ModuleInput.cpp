@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ModuleTextures.h"
+#include "ModuleCamera.h"
 #include "ModuleSceneLoader.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
@@ -98,6 +99,7 @@ update_status ModuleInput::PreUpdate() {
 					case SDL_WINDOWEVENT_RESIZED:
 					case SDL_WINDOWEVENT_SIZE_CHANGED:
 						App->window->WindowResized(event.window.data1, event.window.data2);
+						App->camera->SetScreenNewScreenSize(event.window.data1, event.window.data2);
 						break;
 				}
 				break;
@@ -147,6 +149,8 @@ bool ModuleInput::CleanUp() {
 }
 
 void ModuleInput::FileDropped(const char* fileDroppedPath) {
+
+	// TODO: if image dropped, load it into our resource manager.
 
 	std::string extension(fileDroppedPath);
 	std::size_t found = extension.find_last_of(".");

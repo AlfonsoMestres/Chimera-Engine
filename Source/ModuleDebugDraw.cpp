@@ -2,7 +2,6 @@
 #include "ModuleDebugDraw.h"
 #include "Application.h"
 #include "ModuleRender.h"
-#include "ModuleRender.h"
 
 #define DEBUG_DRAW_IMPLEMENTATION
 #include "DebugDraw.h"     // Debug Draw API. Notice that we need the DEBUG_DRAW_IMPLEMENTATION macro here!
@@ -573,24 +572,18 @@ const char * DDRenderInterfaceCoreGL::textFragShaderSrc = "\n"
 
 DDRenderInterfaceCoreGL* ModuleDebugDraw::implementation = 0;
 
-ModuleDebugDraw::ModuleDebugDraw() 
-{
-}
+ModuleDebugDraw::ModuleDebugDraw() { }
 
-ModuleDebugDraw::~ModuleDebugDraw()
-{
-}
+ModuleDebugDraw::~ModuleDebugDraw() { }
 
-bool ModuleDebugDraw::Init()
-{
+bool ModuleDebugDraw::Init() {
     implementation = new DDRenderInterfaceCoreGL;
     dd::initialize(implementation);
     return true;
 }
 
 
-bool ModuleDebugDraw::CleanUp()
-{
+bool ModuleDebugDraw::CleanUp() {
     dd::shutdown();
 
     delete implementation;
@@ -599,15 +592,14 @@ bool ModuleDebugDraw::CleanUp()
     return true;
 }
 
-update_status  ModuleDebugDraw::Update()
-{
+update_status  ModuleDebugDraw::Update() {
 	return UPDATE_CONTINUE;
 }
 
-void ModuleDebugDraw::Draw(Camera* camera, unsigned fbo, unsigned fb_width, unsigned fb_height)
-{
-	math::float4x4 view  = App->renderer->frustum.ViewMatrix();
-	math::float4x4 proj = App->renderer->frustum.ProjectionMatrix();
+//TODO: implement multiple cameras
+void ModuleDebugDraw::Draw(ComponentCamera* camera, unsigned fbo, unsigned fb_width, unsigned fb_height) {
+	math::float4x4 view  = camera->frustum.ViewMatrix();
+	math::float4x4 proj = camera->frustum.ProjectionMatrix();
 
     implementation->width     = fb_width;
     implementation->height    = fb_height;
@@ -617,5 +609,3 @@ void ModuleDebugDraw::Draw(Camera* camera, unsigned fbo, unsigned fb_width, unsi
     dd::flush();
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
-
-

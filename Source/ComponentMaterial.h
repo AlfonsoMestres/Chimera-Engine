@@ -18,6 +18,7 @@ class ComponentMaterial : public Component
 		~ComponentMaterial();
 
 		void ComputeMaterial(const aiMaterial* material);
+		void SetTexture(Texture* newTexture);
 		void DeleteTexture();
 
 		Texture* GetTexture() const;

@@ -5,6 +5,7 @@
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "ModuleProgram.h"
+#include "ModuleDebugDraw.h"
 #include "debugdraw.h"
 
 ModuleRender::ModuleRender() { }
@@ -19,7 +20,7 @@ bool ModuleRender::Init() {
 	InitSDL();
 	glewInit();
 	InitOpenGL();
-	InitFrustum();
+	//InitFrustum();
 
 	if (vsyncEnabled && SDL_GL_SetSwapInterval(1) < 0) {
 		LOG("Error: VSync couldn't be enabled \n %s", SDL_GetError());
@@ -40,16 +41,20 @@ update_status ModuleRender::PreUpdate() {
 // Called every draw update
 update_status ModuleRender::Update() {
 
-
+	//TODO: We need to render the gameFBO if a camera is selected
 	glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 	glClearColor(bgColor[0], bgColor[1], bgColor[2], bgColor[3]);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	// OLD
+	DrawReferenceDebug();
+	// NEW
+	/*DrawDebugData();*/
+	//App->debug->Draw(nullptr, fbo, App->window->height, App->window->width);
 
 	ProjectionMatrix();
 	ViewMatrix();
 
-	DrawReferenceDebug();
 
 	App->scene->Draw();
 
@@ -131,24 +136,19 @@ void ModuleRender::DrawReferenceDebug() {
 	glUseProgram(0);
 }
 
-void ModuleRender::DrawDebugData()
-{
+void ModuleRender::DrawDebugData() {
+	//TODO: we are not displaying correctly due to camera issues, fix this.
 	if (showGrid) {
 		dd::xzSquareGrid(-1000.0f, 1000.0f, 0.0f, 1.0f, math::float3(0.65f, 0.65f, 0.65f));
 	}
 
-	//if (showAxis) {
-	//	dd::axisTriad(math::float4x4::identity, 1.0f,1.0f, 0, false);
-	//}
+	if (showAxis) {
+		dd::axisTriad(math::float4x4::identity, 1.0f,1.0f, 0, false);
+	}
 
 }
 
-void ModuleRender::SetScreenNewScreenSize() {
-	glViewport(0, 0, App->window->width, App->window->height);
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
-	CreateFrameBuffer();
-}
-
+//TODO: we need to have to FBOS, one for the SCENE camera and other for the gameCameras
 void ModuleRender::CreateFrameBuffer() {
 	glDeleteFramebuffers(1, &fbo);
 	glDeleteRenderbuffers(1, &rbo);
@@ -198,7 +198,7 @@ void ModuleRender::CreateUniformBlocks() {
 }
 
 void ModuleRender::ViewMatrix() {
-	math::float4x4 viewMatrix = LookAt(App->camera->cameraPos, App->camera->cameraPos + App->camera->front);
+	math::float4x4 viewMatrix = App->camera->sceneCamera->frustum.ViewMatrix();
 	viewMatrix.Transpose();
 	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float4x4), sizeof(float4x4), &viewMatrix[0][0]);
@@ -206,41 +206,41 @@ void ModuleRender::ViewMatrix() {
 }
 
 void ModuleRender::ProjectionMatrix() {
-	float4x4 projection = frustum.ProjectionMatrix();
+	float4x4 projection = App->camera->sceneCamera->frustum.ProjectionMatrix();
 	projection.Transpose();
 	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float4x4), &projection[0][0]);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-// We avoid the viewMatrix calc if camera not moving
-math::float4x4 ModuleRender::LookAt(math::float3& cameraPos, math::float3& target) {
-	math::float3 front(target - cameraPos); front.Normalize();
-	// We are not implementing roll, so we will calculate the up again mantaining the verticalitiy
-	math::float3 side(front.Cross(App->camera->up)); side.Normalize();
-	math::float3 up(side.Cross(front));
-
-	math::float4x4 viewMatrix(math::float4x4::zero);
-	viewMatrix[0][0] = side.x; viewMatrix[0][1] = side.y; viewMatrix[0][2] = side.z;
-	viewMatrix[1][0] = up.x; viewMatrix[1][1] = up.y; viewMatrix[1][2] = up.z;
-	viewMatrix[2][0] = -front.x; viewMatrix[2][1] = -front.y; viewMatrix[2][2] = -front.z;
-	viewMatrix[0][3] = -side.Dot(cameraPos); viewMatrix[1][3] = -up.Dot(cameraPos); viewMatrix[2][3] = front.Dot(cameraPos);
-	viewMatrix[3][0] = 0.0f; viewMatrix[3][1] = 0.0f; viewMatrix[3][2] = 0.0f; viewMatrix[3][3] = 1.0f;
-
-	return viewMatrix;
-}
-
-// Initialization
-void ModuleRender::InitFrustum() {
-	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.front = -float3::unitZ;
-	frustum.up = float3::unitY;
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 1000.0f;
-	frustum.verticalFov = math::pi / 4.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
-}
+//// We avoid the viewMatrix calc if camera not moving
+//math::float4x4 ModuleRender::LookAt(math::float3& cameraPos, math::float3& target) {
+//	math::float3 front(target - cameraPos); front.Normalize();
+//	// We are not implementing roll, so we will calculate the up again mantaining the verticalitiy
+//	math::float3 side(front.Cross(App->camera->up)); side.Normalize();
+//	math::float3 up(side.Cross(front));
+//
+//	math::float4x4 viewMatrix(math::float4x4::zero);
+//	viewMatrix[0][0] = side.x; viewMatrix[0][1] = side.y; viewMatrix[0][2] = side.z;
+//	viewMatrix[1][0] = up.x; viewMatrix[1][1] = up.y; viewMatrix[1][2] = up.z;
+//	viewMatrix[2][0] = -front.x; viewMatrix[2][1] = -front.y; viewMatrix[2][2] = -front.z;
+//	viewMatrix[0][3] = -side.Dot(cameraPos); viewMatrix[1][3] = -up.Dot(cameraPos); viewMatrix[2][3] = front.Dot(cameraPos);
+//	viewMatrix[3][0] = 0.0f; viewMatrix[3][1] = 0.0f; viewMatrix[3][2] = 0.0f; viewMatrix[3][3] = 1.0f;
+//
+//	return viewMatrix;
+//}
+//
+//// Initialization
+//void ModuleRender::InitFrustum() {
+//	frustum.type = FrustumType::PerspectiveFrustum;
+//	frustum.pos = float3::zero;
+//	frustum.front = -float3::unitZ;
+//	frustum.up = float3::unitY;
+//	frustum.nearPlaneDistance = 0.1f;
+//	frustum.farPlaneDistance = 1000.0f;
+//	frustum.verticalFov = math::pi / 4.0f;
+//	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
+//}
 
 void ModuleRender::InitSDL() {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);

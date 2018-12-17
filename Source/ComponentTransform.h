@@ -11,11 +11,11 @@
 class ComponentTransform : public Component
 {
 	public:
-		ComponentTransform(GameObject* goContainer, const aiMatrix4x4& transform);
+		ComponentTransform(GameObject* goContainer, const math::float4x4& transform);
 		ComponentTransform(const ComponentTransform& duplicatedTransform);
 		~ComponentTransform();
 
-		void AddTransform(const aiMatrix4x4& transform);
+		void AddTransform(const math::float4x4& transform);
 		void SetRotation(const math::Quat& rot);
 		void SetPosition(const math::float3& pos);
 		void RotationToEuler();

@@ -5,6 +5,7 @@
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
 #include "ModuleEditor.h"
+#include "ModuleScene.h"
 #include "GL/glew.h"
 #include "SDL.h"
 
@@ -66,10 +67,10 @@ update_status ModuleEditor::Update() {
 		if (ImGui::BeginMenu("Edit")) {
 			if (ImGui::BeginMenu("Add")) {
 				if(ImGui::MenuItem("Empty GameObject")) {
-					new GameObject(DEFAULT_GO_NAME, aiMatrix4x4(), nullptr, nullptr);
+					new GameObject(DEFAULT_GO_NAME, math::float4x4().identity, nullptr, nullptr);
 				}
 				if (ImGui::MenuItem("Sphere")) {
-					// TODO: Add sphere from external library
+					//App->scene->GenerateSphere(App->scene->goSelected, 24, 24);
 				}
 				if (ImGui::MenuItem("Cube")) {
 					// TODO: Add sphere from external library

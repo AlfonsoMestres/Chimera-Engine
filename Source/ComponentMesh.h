@@ -4,9 +4,9 @@
 #include "assert.h"
 #include "Component.h"
 #include "ModuleTextures.h"
+#include "par_shapes.h"
 #include "Geometry/AABB.h"
 #include "Math/float3.h"
-#include "Math/Quat.h"
 #include <assimp/mesh.h>
 #include <vector>
 #include "GL/glew.h"
@@ -19,6 +19,7 @@ class ComponentMesh : public Component
 		~ComponentMesh();
 
 		void ComputeMesh(aiMesh* mesh);
+		void ComputeMesh(par_shapes_mesh_s* mesh);
 		const unsigned MaterialIndex();
 
 		void CleanUp();

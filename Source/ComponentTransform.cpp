@@ -1,6 +1,6 @@
 #include "ComponentTransform.h"
 
-ComponentTransform::ComponentTransform(GameObject* goContainer, const aiMatrix4x4& transform) : Component(goContainer, ComponentType::TRANSFORM) { 
+ComponentTransform::ComponentTransform(GameObject* goContainer, const math::float4x4& transform) : Component(goContainer, ComponentType::TRANSFORM) {
 	AddTransform(transform);
 }
 
@@ -17,15 +17,15 @@ Component* ComponentTransform::Duplicate() {
 	return new ComponentTransform(*this);
 }
 
-void ComponentTransform::AddTransform(const aiMatrix4x4& transform) {
-	aiVector3D translation;
-	aiVector3D scaling;
-	aiQuaternion airotation;
-	transform.Decompose(scaling, airotation, translation);
+void ComponentTransform::AddTransform(const math::float4x4& transform) {
+	math::float3 translation;
+	math::float3 scaling;
+	math::Quat aiRotation;
+	transform.Decompose(translation, aiRotation, scaling);
 
 	position = { translation.x, translation.y, translation.z };
 	scale = { scaling.x, scaling.y, scaling.z };
-	rotation = Quat(airotation.x, airotation.y, airotation.z, airotation.w);
+	rotation = math::Quat(aiRotation.x, aiRotation.y, aiRotation.z, aiRotation.w);
 	RotationToEuler();
 }
 

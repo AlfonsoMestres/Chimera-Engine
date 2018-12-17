@@ -7,9 +7,12 @@
 #include "MathGeoLib.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 #include "GameObject.h"
 #include "GL/glew.h"
 #include "SDL.h"
+
+class Camera;
 
 class ModuleCamera : public Module
 {
@@ -27,7 +30,7 @@ class ModuleCamera : public Module
 		ModuleCamera();
 		~ModuleCamera();
 
-		bool Init();
+		bool			Init() override;
 		update_status	PreUpdate() override;
 		bool			CleanUp() override;
 		void			DrawGUI();
@@ -39,29 +42,21 @@ class ModuleCamera : public Module
 
 		// Helpers
 		void			FocusSelectedObject();
-		void			UpdatePitchYaw();
 		void			Zoom();
 
+		void SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight);
+
 	public:
+		ComponentCamera* sceneCamera = nullptr;
+		ComponentCamera* selectedCamera = nullptr;
+		
 		GameObject* goSelected = nullptr;
 
 		// User attributes
 		float mouseSensitivity = 65.0f;
-		float rotationSpeed = 65.0f;;
-		float cameraSpeed = 17.0f;;
-
-		// Camera specs
-		float maxFov = 100.0f;
-		float minFov = 10.0f;
-		float pitch = 0.0f;
-		float yaw = 0.0f;
-		math::float3 cameraPos = math::float3(10.0f, 10.0f, 10.0f);
-
-		//ViewMatrix info
-		math::float3 front = math::float3(-0.577350259f, -0.577350259f, -0.577350259f);
-		math::float3 side;
-		math::float3 up = math::float3(0.0f, 1.0f, 0.0f);
-
+		float rotationSpeed = 65.0f;
+		float cameraSpeed = 17.0f;
+		
 		// Mouse 
 		bool firstMouse = true;
 		float lastX = 0.0f;

@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="Source\ComponentMaterial.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
     <ClCompile Include="Source\ComponentMesh.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -10,11 +13,20 @@
     <ClCompile Include="Source\Component.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ComponentCamera.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
     <ClCompile Include="Source\ComponentLight.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ComponentMaterial.cpp">
-      <Filter>Components</Filter>
+    <ClCompile Include="Source\DockConfig.cpp">
+      <Filter>Docks</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DockConsole.cpp">
+      <Filter>Docks</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DockHierarchy.cpp">
+      <Filter>Docks</Filter>
     </ClCompile>
     <ClCompile Include="Source\DockInspector.cpp">
       <Filter>Docks</Filter>
@@ -31,41 +43,17 @@
     <ClCompile Include="Source\DockAbout.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
-    <ClCompile Include="Source\DockConfig.cpp">
-      <Filter>Docks</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\DockConsole.cpp">
-      <Filter>Docks</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\DockHierarchy.cpp">
+    <ClCompile Include="Source\DockCamera.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Main.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleTextures.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleTime.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleWindow.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleCamera.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleEditor.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ModuleInput.cpp">
-      <Filter>Modules</Filter>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModuleProgram.cpp">
       <Filter>Modules</Filter>
@@ -82,8 +70,26 @@
     <ClCompile Include="Source\ModuleSceneLoader.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\IMGUI\imgui_draw.cpp">
-      <Filter>Utils\ImgUi</Filter>
+    <ClCompile Include="Source\ModuleTextures.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleTime.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleWindow.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleCamera.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleDebugDraw.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleEditor.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ModuleInput.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\IMGUI\imgui_impl_opengl3.cpp">
       <Filter>Utils\ImgUi</Filter>
@@ -100,32 +106,8 @@
     <ClCompile Include="Source\IMGUI\imgui_demo.cpp">
       <Filter>Utils\ImgUi</Filter>
     </ClCompile>
-    <ClCompile Include="Source\log.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Crossguid\guid.cpp">
-      <Filter>Utils\Uuid</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\mmgr\mmgr.cpp">
-      <Filter>Utils\mmgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MathGeoLib\include\Geometry\Plane.cpp">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MathGeoLib\include\Geometry\Polygon.cpp">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MathGeoLib\include\Geometry\Polyhedron.cpp">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MathGeoLib\include\Geometry\Ray.cpp">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MathGeoLib\include\Geometry\Triangle.cpp">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MathGeoLib\include\Geometry\TriangleMesh.cpp">
-      <Filter>Utils\MathGeoLib</Filter>
+    <ClCompile Include="Source\IMGUI\imgui_draw.cpp">
+      <Filter>Utils\ImgUi</Filter>
     </ClCompile>
     <ClCompile Include="Source\MathGeoLib\include\Geometry\AABB.cpp">
       <Filter>Utils\MathGeoLib</Filter>
@@ -154,16 +136,25 @@
     <ClCompile Include="Source\MathGeoLib\include\Geometry\OBB.cpp">
       <Filter>Utils\MathGeoLib</Filter>
     </ClCompile>
+    <ClCompile Include="Source\MathGeoLib\include\Geometry\Plane.cpp">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MathGeoLib\include\Geometry\Polygon.cpp">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MathGeoLib\include\Geometry\Polyhedron.cpp">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MathGeoLib\include\Geometry\Ray.cpp">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClCompile>
     <ClCompile Include="Source\MathGeoLib\include\Geometry\Sphere.cpp">
       <Filter>Utils\MathGeoLib</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MathGeoLib\include\Algorithm\Random\LCG.cpp">
+    <ClCompile Include="Source\MathGeoLib\include\Geometry\Triangle.cpp">
       <Filter>Utils\MathGeoLib</Filter>
     </ClCompile>
-    <ClCompile Include="Source\MathGeoLib\include\Math\SSEMath.cpp">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MathGeoLib\include\Math\TransformOps.cpp">
+    <ClCompile Include="Source\MathGeoLib\include\Geometry\TriangleMesh.cpp">
       <Filter>Utils\MathGeoLib</Filter>
     </ClCompile>
     <ClCompile Include="Source\MathGeoLib\include\Math\BitOps.cpp">
@@ -202,11 +193,26 @@
     <ClCompile Include="Source\MathGeoLib\include\Math\Quat.cpp">
       <Filter>Utils\MathGeoLib</Filter>
     </ClCompile>
+    <ClCompile Include="Source\MathGeoLib\include\Math\SSEMath.cpp">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MathGeoLib\include\Math\TransformOps.cpp">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClCompile>
     <ClCompile Include="Source\MathGeoLib\include\Time\Clock.cpp">
       <Filter>Utils\MathGeoLib</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleDebugDraw.cpp">
-      <Filter>Modules</Filter>
+    <ClCompile Include="Source\MathGeoLib\include\Algorithm\Random\LCG.cpp">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\mmgr\mmgr.cpp">
+      <Filter>Utils\mmgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Crossguid\guid.cpp">
+      <Filter>Utils\Uuid</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\log.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,8 +228,20 @@
     <ClInclude Include="Source\Component.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ComponentCamera.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="Source\ComponentLight.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DockConfig.h">
+      <Filter>Docks</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DockConsole.h">
+      <Filter>Docks</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DockHierarchy.h">
+      <Filter>Docks</Filter>
     </ClInclude>
     <ClInclude Include="Source\DockInspector.h">
       <Filter>Docks</Filter>
@@ -240,13 +258,7 @@
     <ClInclude Include="Source\DockAbout.h">
       <Filter>Docks</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DockConfig.h">
-      <Filter>Docks</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\DockConsole.h">
-      <Filter>Docks</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\DockHierarchy.h">
+    <ClInclude Include="Source\DockCamera.h">
       <Filter>Docks</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameObject.h">
@@ -254,6 +266,18 @@
     </ClInclude>
     <ClInclude Include="Source\Application.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleProgram.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleRender.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleResourceManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ModuleScene.h">
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleSceneLoader.h">
       <Filter>Modules</Filter>
@@ -273,65 +297,20 @@
     <ClInclude Include="Source\ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ModuleDebugDraw.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
     <ClInclude Include="Source\ModuleEditor.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleInput.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleProgram.h">
-      <Filter>Modules</Filter>
+    <ClInclude Include="Source\par_shapes.h">
+      <Filter>Utils\DebugDraw</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleRender.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleResourceManager.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleScene.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Point.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Timer.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Globals.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Crossguid\crossguid\guid.hpp">
-      <Filter>Utils\Uuid</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\mmgr\mmgr.h">
-      <Filter>Utils\mmgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\mmgr\nommgr.h">
-      <Filter>Utils\mmgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Geometry\Plane.h">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Geometry\Polygon.h">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Geometry\Polyhedron.h">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Geometry\QuadTree.h">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Geometry\Ray.h">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Geometry\Sphere.h">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Geometry\Triangle.h">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Geometry\TriangleMesh.h">
-      <Filter>Utils\MathGeoLib</Filter>
+    <ClInclude Include="Source\debugdraw.h">
+      <Filter>Utils\DebugDraw</Filter>
     </ClInclude>
     <ClInclude Include="Source\MathGeoLib\include\Geometry\AABB.h">
       <Filter>Utils\MathGeoLib</Filter>
@@ -378,25 +357,28 @@
     <ClInclude Include="Source\MathGeoLib\include\Geometry\PBVolume.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Algorithm\Random\LCG.h">
+    <ClInclude Include="Source\MathGeoLib\include\Geometry\Plane.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Math\quat_simd.h">
+    <ClInclude Include="Source\MathGeoLib\include\Geometry\Polygon.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Math\Rect.h">
+    <ClInclude Include="Source\MathGeoLib\include\Geometry\Polyhedron.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Math\Reinterpret.h">
+    <ClInclude Include="Source\MathGeoLib\include\Geometry\QuadTree.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Math\sse_mathfun.h">
+    <ClInclude Include="Source\MathGeoLib\include\Geometry\Ray.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Math\SSEMath.h">
+    <ClInclude Include="Source\MathGeoLib\include\Geometry\Sphere.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Math\TransformOps.h">
+    <ClInclude Include="Source\MathGeoLib\include\Geometry\Triangle.h">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MathGeoLib\include\Geometry\TriangleMesh.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
     <ClInclude Include="Source\MathGeoLib\include\Math\assume.h">
@@ -429,12 +411,6 @@
     <ClInclude Include="Source\MathGeoLib\include\Math\float4.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Math\float4_neon.h">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MathGeoLib\include\Math\float4_sse.h">
-      <Filter>Utils\MathGeoLib</Filter>
-    </ClInclude>
     <ClInclude Include="Source\MathGeoLib\include\Math\float4x4.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
@@ -442,6 +418,12 @@
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
     <ClInclude Include="Source\MathGeoLib\include\Math\float4x4_sse.h">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MathGeoLib\include\Math\float4_neon.h">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MathGeoLib\include\Math\float4_sse.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
     <ClInclude Include="Source\MathGeoLib\include\Math\FloatCmp.h">
@@ -477,20 +459,47 @@
     <ClInclude Include="Source\MathGeoLib\include\Math\Quat.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
+    <ClInclude Include="Source\MathGeoLib\include\Math\quat_simd.h">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MathGeoLib\include\Math\Rect.h">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MathGeoLib\include\Math\Reinterpret.h">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MathGeoLib\include\Math\SSEMath.h">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MathGeoLib\include\Math\sse_mathfun.h">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MathGeoLib\include\Math\TransformOps.h">
+      <Filter>Utils\MathGeoLib</Filter>
+    </ClInclude>
     <ClInclude Include="Source\MathGeoLib\include\Time\Clock.h">
       <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\debug_draw.hpp">
-      <Filter>Utils\DebugDraw</Filter>
+    <ClInclude Include="Source\MathGeoLib\include\Algorithm\Random\LCG.h">
+      <Filter>Utils\MathGeoLib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\par_shapes.h">
-      <Filter>Utils\DebugDraw</Filter>
+    <ClInclude Include="Source\mmgr\mmgr.h">
+      <Filter>Utils\mmgr</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ModuleDebugDraw.h">
-      <Filter>Modules</Filter>
+    <ClInclude Include="Source\mmgr\nommgr.h">
+      <Filter>Utils\mmgr</Filter>
     </ClInclude>
-    <ClInclude Include="Source\debugdraw.h">
-      <Filter>Utils\DebugDraw</Filter>
+    <ClInclude Include="Source\Crossguid\crossguid\guid.hpp">
+      <Filter>Utils\Uuid</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Globals.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Point.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -532,6 +541,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Source\MathGeoLib\include\Geometry\KDTree.inl">
+      <Filter>Utils\MathGeoLib</Filter>
+    </None>
+    <None Include="Source\MathGeoLib\include\Geometry\QuadTree.inl">
+      <Filter>Utils\MathGeoLib</Filter>
+    </None>
     <None Include="Game\Shaders\texture.fs">
       <Filter>Utils\Shaders</Filter>
     </None>
@@ -543,9 +558,6 @@
     </None>
     <None Include="Game\Shaders\default.vs">
       <Filter>Utils\Shaders</Filter>
-    </None>
-    <None Include="Source\MathGeoLib\include\Math\Matrix.inl">
-      <Filter>Utils\MathGeoLib</Filter>
     </None>
   </ItemGroup>
 </Project>

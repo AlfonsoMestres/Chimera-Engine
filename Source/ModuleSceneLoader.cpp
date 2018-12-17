@@ -14,11 +14,10 @@ ModuleSceneLoader::~ModuleSceneLoader() { }
 
 bool ModuleSceneLoader::Init() {
 	// TODO: Here we will call the basic scene read to be loaded
-	LoadFile("Models/BakerHouse/BakerHouse.fbx");
 	App->textures->LoadDefaulTexture("checkersTexture.jpg");
+	LoadFile("Models/BakerHouse/BakerHouse.fbx");
 	return true;
 }
-
 
 void ModuleSceneLoader::LoadFile(const char* path) {
 	assert(path != nullptr);
@@ -40,10 +39,11 @@ void ModuleSceneLoader::ProcessTree(const aiNode* node, const aiScene* scene, co
 	assert(goParent != nullptr);
 
 	aiMatrix4x4 transform = parentTransform * node->mTransformation;
-	GameObject* gameObject = App->scene->CreateGameObject(node->mName.C_Str(), goParent, transform, filepath);
+	GameObject* gameObject = App->scene->CreateGameObject(node->mName.C_Str(), goParent, (math::float4x4&)transform, filepath);
 
 	for (unsigned i = 0u; i < node->mNumMeshes; i++) {
 		ComponentMesh* mesh = (ComponentMesh*)gameObject->AddComponent(ComponentType::MESH);
+		mesh->name = scene->mMeshes[node->mMeshes[i]]->mName.C_Str();
 		mesh->ComputeMesh(scene->mMeshes[node->mMeshes[i]]);
 
 		ComponentMaterial* material = (ComponentMaterial*)gameObject->AddComponent(ComponentType::MATERIAL);
