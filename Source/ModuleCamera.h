@@ -35,10 +35,9 @@ class ModuleCamera : public Module
 		bool			CleanUp() override;
 		void			DrawGUI();
 
-		// Movement
-		void			CameraMovementKeyboard();
-		void			RotateCamera(const fPoint& mousePosition, bool orbit = false);
-		void			MoveCamera(CameraMovement cameraSide);
+		// Scene camera movement
+		void			Move();
+		void			MovementSpeed();
 
 		// Helpers
 		void			FocusSelectedObject();

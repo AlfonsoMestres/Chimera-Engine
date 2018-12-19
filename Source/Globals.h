@@ -6,6 +6,9 @@
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
+#define MAX(x,y) ((x>y)?x:y)
+#define MIN(x,y) ((x<y)?x:y)
+
 void log(const char file[], int line, const char* format, ...);
 
 enum update_status

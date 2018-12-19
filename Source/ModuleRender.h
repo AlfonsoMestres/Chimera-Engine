@@ -22,6 +22,7 @@ class ModuleRender : public Module
 		~ModuleRender();
 
 		bool			Init() override;
+		bool			Start();
 		update_status	PreUpdate() override;
 		update_status	Update() override;
 		update_status	PostUpdate() override;
@@ -31,6 +32,7 @@ class ModuleRender : public Module
 		void			InitOpenGL() const;
 		void			SetViewMatrix(ComponentCamera* camera) const;
 		void			SetProjectionMatrix(ComponentCamera* camera) const;
+		void			GenerateBlockUniforms();
 
 	private:
 		void			DrawReferenceDebug();

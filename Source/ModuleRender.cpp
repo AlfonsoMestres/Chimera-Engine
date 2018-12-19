@@ -26,8 +26,15 @@ bool ModuleRender::Init() {
 		LOG("Error: VSync couldn't be enabled \n %s", SDL_GetError());
 	}
 
-	App->program->LoadPrograms();
 
+	App->program->LoadPrograms();
+	GenerateBlockUniforms();
+
+	return true;
+}
+
+bool ModuleRender::Start() {
+	
 	return true;
 }
 
@@ -42,13 +49,13 @@ update_status ModuleRender::Update() {
 
 	//TODO: We need to render the gameFBO if a camera is selected
 	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->sceneCamera->fbo);
-	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	SetProjectionMatrix(App->camera->sceneCamera);
 	SetViewMatrix(App->camera->sceneCamera);
 
-	App->scene->Draw();
+	//App->scene->Draw();
 
 	// OLD
 	DrawReferenceDebug();
@@ -56,17 +63,17 @@ update_status ModuleRender::Update() {
 	/*DrawDebugData();*/
 	//App->debug->Draw(nullptr, fbo, App->window->height, App->window->width);
 
-	if (App->camera->selectedCamera != nullptr) {
-		glBindFramebuffer(GL_FRAMEBUFFER, App->camera->selectedCamera->fbo);
-		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//if (App->camera->selectedCamera != nullptr) {
+	//	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->selectedCamera->fbo);
+	//	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		SetProjectionMatrix(App->camera->selectedCamera);
-		SetViewMatrix(App->camera->selectedCamera);
+	//	SetProjectionMatrix(App->camera->selectedCamera);
+	//	SetViewMatrix(App->camera->selectedCamera);
 
-		// TODO: we will send the frustum to do the culling in the GOs
-		App->scene->Draw();
-	}
+	//	// TODO: we will send the frustum to do the culling in the GOs
+	//	App->scene->Draw();
+	//}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return UPDATE_CONTINUE;
@@ -169,6 +176,21 @@ void ModuleRender::SetProjectionMatrix(ComponentCamera* camera) const {
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
+void ModuleRender::GenerateBlockUniforms() {
+	unsigned uniformBlockIndexDefault = glGetUniformBlockIndex(App->program->basicProgram, "Matrices");
+	unsigned uniformBlockIndexTexture = glGetUniformBlockIndex(App->program->textureProgram, "Matrices");
+
+	glUniformBlockBinding(App->program->basicProgram, uniformBlockIndexDefault, 0);
+	glUniformBlockBinding(App->program->textureProgram, uniformBlockIndexTexture, 0);
+
+	glGenBuffers(1, &ubo);
+	glBindBuffer(GL_UNIFORM_BUFFER, ubo);
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(math::float4x4), nullptr, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, ubo, 0, 2 * sizeof(math::float4x4));
+}
+
 void ModuleRender::InitSDL() {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
@@ -191,7 +213,7 @@ void ModuleRender::InitOpenGL() const {
 	glEnable(GL_TEXTURE_2D);
 
 	glClearDepth(1.0f);
-	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glViewport(0, 0, App->window->width, App->window->height);
 }
 

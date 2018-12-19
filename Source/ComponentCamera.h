@@ -4,7 +4,11 @@
 #include "Globals.h"
 #include "Component.h"
 #include "GameObject.h"
-#include "MathGeoLib.h"
+#include "MathGeoLib/include/Math/Quat.h"
+#include "MathGeoLib/include/Math/float3.h"
+#include "MathGeoLib/include/Math/float4x4.h"
+#include "MathGeoLib/include/Math/MathFunc.h"
+#include "MathGeoLib/include/Geometry/Frustum.h"
 #include "SDL.h"
 #include "GL/glew.h"
 
@@ -16,21 +20,20 @@ class ComponentCamera : public Component
 
 		void			DrawProperties() override;
 		Component*		Duplicate() override;
-
-		math::float4x4	ProjectionMatrix();
-		void			LookAt(math::float3 target);
-
 		void			Update();
 
-		void			SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight);
 		void			InitFrustum();
 
+		void			LookAt(math::float3 target);
 		math::float4x4	GetViewMatrix();
 		math::float4x4	GetProjectionMatrix();
 
+		void			Rotate(float dx, float dy);
+		void			Orbit(float dx, float dy);
+
+		void			SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight);
 		void			SetHorizontalFOV(float fovXDegrees);
 		void			SetVerticalFOV(float fovYDegrees);
-		void			UpdatePitchYaw();
 
 		void			CreateFrameBuffer();
 
@@ -59,10 +62,6 @@ class ComponentCamera : public Component
 		float			fovY = 45.0f;
 		float			fovX = 45.0f;
 		float			zoomValue = 0.0f;
-
-		bool			firstMouse = true;
-		int				lastX = 0;
-		int				lastY = 0;
 
 		unsigned		fbo = 0u;
 		unsigned		rbo = 0u;

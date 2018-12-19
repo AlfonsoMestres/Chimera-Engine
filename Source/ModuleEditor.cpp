@@ -17,6 +17,7 @@ ModuleEditor::ModuleEditor() {
 	docks.push_back(hierarchy = new DockHierarchy());
 	docks.push_back(inspector = new DockInspector());
 	docks.push_back(time = new DockTime());
+	//docks.push_back(camera = new DockCamera());
 }
 
 ModuleEditor::~ModuleEditor() { }

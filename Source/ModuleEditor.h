@@ -12,6 +12,7 @@
 #include "DockTime.h"
 #include "DockHierarchy.h"
 #include "DockInspector.h"
+#include "DockCamera.h"
 
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -25,6 +26,7 @@ class DockConfig;
 class DockTime;
 class DockHierarchy;
 class DockInspector;
+class DockCamera;
 
 class ModuleEditor : public Module
 {
@@ -57,6 +59,7 @@ class ModuleEditor : public Module
 		DockTime* time = nullptr;
 		DockHierarchy* hierarchy = nullptr;
 		DockInspector* inspector = nullptr;
+		DockCamera* camera = nullptr;
 
 	private:
 		std::list<Dock*> docks;

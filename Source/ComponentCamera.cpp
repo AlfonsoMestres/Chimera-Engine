@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "ModuleScene.h"
 #include "ModuleWindow.h"
 #include "ComponentCamera.h"
 
@@ -18,12 +19,13 @@ ComponentCamera::~ComponentCamera() {
 
 void ComponentCamera::InitFrustum() {
 	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.front = -float3::unitZ;
+	frustum.pos = cameraPosition;
+	frustum.front = cameraFront;
 	frustum.up = float3::unitY;
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 1000.0f;
-	SetVerticalFOV(fovY);
+	frustum.verticalFov = math::pi / 2.0f;
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 }
 
 void ComponentCamera::Update() {
@@ -77,10 +79,6 @@ Component* ComponentCamera::Duplicate() {
 	return new ComponentCamera(*this);
 }
 
-math::float4x4 ComponentCamera::ProjectionMatrix() {
-	return frustum.ProjectionMatrix();
-}
-
 void ComponentCamera::LookAt(math::float3 target) {
 	math::float3 dir = (target - frustum.pos).Normalized();
 	math::float3x3 look = math::float3x3::LookAt(frustum.front, dir, frustum.up, math::float3::unitY);
@@ -107,17 +105,43 @@ void ComponentCamera::SetScreenNewScreenSize(unsigned width, unsigned height) {
 	CreateFrameBuffer();
 }
 
-void ComponentCamera::UpdatePitchYaw() {
-	pitch = -math::RadToDeg(sinf(-cameraFront.y));
-	yaw = math::RadToDeg(atan2f(cameraFront.z, cameraFront.x)) + 90.0f;
+void ComponentCamera::Rotate(float dx, float dy) {
+	if (dx != 0) {
+		math::Quat rotation = math::Quat::RotateY(math::DegToRad(-dx)).Normalized();
+		frustum.front = rotation.Mul(frustum.front).Normalized();
+		frustum.up = rotation.Mul(frustum.up).Normalized();
+	}
+	if (dy != 0) {
+		math::Quat rotation = math::Quat::RotateAxisAngle(frustum.WorldRight(), math::DegToRad(-dy)).Normalized();
+		math::float3 validUp = rotation.Mul(frustum.up).Normalized();
+		// Avoiding gimbal lock
+		if (validUp.y > 0.0f) {
+			frustum.up = validUp;
+			frustum.front = rotation.Mul(frustum.front).Normalized();
+		}
+	}
+}
 
-	if (math::IsNan(pitch)) {
-		pitch = 0.0f;
+void ComponentCamera::Orbit(float dx, float dy) {
+	// TODO: set up the orbit when no GO is selected in front of the camera
+	if (App->scene->goSelected == nullptr) return;
+
+	AABB& bbox = App->scene->goSelected->bbox;
+	math::float3 center = bbox.CenterPoint();
+
+	if (dx != 0) {
+		math::Quat rotation = math::Quat::RotateY(math::DegToRad(-dx)).Normalized();
+		frustum.pos = rotation.Mul(frustum.pos);
+	}
+	if (dy != 0) {
+		math::Quat rotation = math::Quat::RotateAxisAngle(frustum.WorldRight(), math::DegToRad(-dy)).Normalized();
+		math::float3 new_pos = rotation.Mul(frustum.pos);
+		if (!(abs(new_pos.x - center.x) < 0.5f && abs(new_pos.z - center.z) < 0.5f)) {
+			frustum.pos = new_pos;
+		}
 	}
 
-	if (math::IsNan(yaw)) {
-		yaw = 0.0f;
-	}
+	LookAt(center);
 }
 
 void ComponentCamera::CreateFrameBuffer() {
