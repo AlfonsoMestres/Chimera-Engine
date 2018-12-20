@@ -17,7 +17,7 @@ ModuleEditor::ModuleEditor() {
 	docks.push_back(hierarchy = new DockHierarchy());
 	docks.push_back(inspector = new DockInspector());
 	docks.push_back(time = new DockTime());
-	//docks.push_back(camera = new DockCamera());
+	docks.push_back(camera = new DockCamera());
 }
 
 ModuleEditor::~ModuleEditor() { }
@@ -88,6 +88,10 @@ update_status ModuleEditor::Update() {
 
 			if (ImGui::MenuItem("Scene", NULL, scene->IsEnabled())) {
 				scene->ToggleEnabled();
+			}
+
+			if (ImGui::MenuItem("Game", NULL, camera->IsEnabled())) {
+				camera->ToggleEnabled();
 			}
 
 			if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->IsEnabled())) {

@@ -18,12 +18,16 @@ void DockHierarchy::Draw() {
 
 	// If empty heriarchy, allow to create one with a imgui popup
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && ImGui::IsWindowHovered()) {
-		ImGui::OpenPopup("Modify_GameObject");
+		ImGui::OpenPopup("NewElement");
 	}
 
-	if (ImGui::BeginPopup("Modify_GameObject")) {
+	if (ImGui::BeginPopup("NewElement")) {
 		if (ImGui::Selectable("Add Empty GameObject")) {
 			App->scene->CreateGameObject();
+		}
+		ImGui::Separator();
+		if (ImGui::Selectable("Camera")) {
+			App->scene->CreateCamera();
 		}
 		ImGui::EndPopup();
 	}

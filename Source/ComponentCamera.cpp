@@ -54,6 +54,9 @@ void ComponentCamera::SetVerticalFOV(float fovYDegrees) {
 void ComponentCamera::DrawProperties() {
 
 	if (ImGui::CollapsingHeader("Camera properties")) {
+		ImGui::Text("UUID: "); ImGui::SameLine();
+		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, uuid.c_str());
+			
 		float camPos[3] = { cameraPosition.x, cameraPosition.y, cameraPosition.z };
 		ImGui::InputFloat3("Position", camPos, "%.2f");
 		cameraPosition = math::float3(camPos[0], camPos[1], camPos[2]);

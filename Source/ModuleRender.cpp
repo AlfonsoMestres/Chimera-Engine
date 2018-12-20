@@ -47,7 +47,6 @@ update_status ModuleRender::PreUpdate() {
 // Called every draw update
 update_status ModuleRender::Update() {
 
-	//TODO: We need to render the gameFBO if a camera is selected
 	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->sceneCamera->fbo);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -55,7 +54,7 @@ update_status ModuleRender::Update() {
 	SetProjectionMatrix(App->camera->sceneCamera);
 	SetViewMatrix(App->camera->sceneCamera);
 
-	//App->scene->Draw();
+	App->scene->Draw();
 
 	// OLD
 	DrawReferenceDebug();
@@ -63,17 +62,17 @@ update_status ModuleRender::Update() {
 	/*DrawDebugData();*/
 	//App->debug->Draw(nullptr, fbo, App->window->height, App->window->width);
 
-	//if (App->camera->selectedCamera != nullptr) {
-	//	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->selectedCamera->fbo);
-	//	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	if (App->camera->selectedCamera != nullptr) {
+		glBindFramebuffer(GL_FRAMEBUFFER, App->camera->selectedCamera->fbo);
+		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//	SetProjectionMatrix(App->camera->selectedCamera);
-	//	SetViewMatrix(App->camera->selectedCamera);
+		SetProjectionMatrix(App->camera->selectedCamera);
+		SetViewMatrix(App->camera->selectedCamera);
 
-	//	// TODO: we will send the frustum to do the culling in the GOs
-	//	App->scene->Draw();
-	//}
+		// TODO: we will send the frustum to do the culling in the GOs
+		App->scene->Draw();
+	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return UPDATE_CONTINUE;

@@ -28,6 +28,10 @@ void DockInspector::Draw() {
 		if (ImGui::BeginPopup("AddComponentPopup")) {
 			ImGui::Text("Components");
 			ImGui::Separator();
+			if (ImGui::Selectable("Camera")) {
+				App->scene->goSelected->AddComponent(ComponentType::CAMERA);
+			}
+			ImGui::Separator();
 			if (ImGui::Selectable("Mesh")) {
 				App->scene->goSelected->AddComponent(ComponentType::MESH);
 			}

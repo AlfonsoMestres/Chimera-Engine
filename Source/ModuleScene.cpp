@@ -63,6 +63,15 @@ GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goPare
 	return gameObject;
 }
 
+GameObject* ModuleScene::CreateCamera(GameObject* goParent, const math::float4x4& transform) {
+	GameObject* gameObject = nullptr;
+
+	gameObject = new GameObject("Camera", transform, goParent, nullptr);
+	gameObject->AddComponent(ComponentType::CAMERA);
+
+	return gameObject;
+}
+
 //GameObject* ModuleScene::GenerateSphere(GameObject* goParent, int slices, int stacks, const math::float3& position,
 //										const math::Quat& rotation, const math::float3& size, const math::float4& color) {
 //	assert(slices >= 1);

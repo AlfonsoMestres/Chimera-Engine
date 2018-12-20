@@ -1,10 +1,12 @@
 #include "Application.h"
 #include "ModuleScene.h"
-#include "ModuleProgram.h"
 #include "ModuleInput.h"
-#include "ComponentLight.h"
-#include "ComponentMaterial.h"
+#include "ModuleCamera.h"
+#include "ModuleProgram.h"
 #include "ComponentMesh.h"
+#include "ComponentLight.h"
+#include "ComponentCamera.h"
+#include "ComponentMaterial.h"
 #include "ComponentTransform.h"
 #include "ModuleResourceManager.h"
 #include "SDL/include/SDL_mouse.h"
@@ -232,7 +234,7 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 		}
 		App->scene->goSelected = this;
 		drawGOBBox = true;
-	}
+	} 
 
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)){
 		GameObject* draggedGo = this;
@@ -329,6 +331,10 @@ Component* GameObject::AddComponent(ComponentType type) {
 
 	switch (type) {
 		case ComponentType::CAMERA:
+			component = new ComponentCamera(this);
+			if (App->camera->selectedCamera == nullptr) {
+				App->camera->selectedCamera = (ComponentCamera*)component;
+			}
 			break;
 		case ComponentType::TRANSFORM:
 			component = new ComponentTransform(this, math::float4x4().identity);

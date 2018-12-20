@@ -46,7 +46,6 @@ void DockConfig::Draw() {
 		sMStats stats = m_getMemoryStatistics();
 		AddMemory((float)stats.totalReportedMemory);
 
-		//TODO!!!!!!!: LEAKING MEMORY EVERY FRAME!!!
 		ImGui::PlotHistogram("##memory", &mem[0], mem.size(), 0, "Memory Consumption (Bytes)", 0.0f, (float)stats.peakReportedMemory * 1.2f, ImVec2(0, 80));
 
 		ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);

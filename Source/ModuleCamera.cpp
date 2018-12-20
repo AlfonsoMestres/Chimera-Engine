@@ -15,10 +15,8 @@ ModuleCamera::~ModuleCamera() {}
 bool ModuleCamera::Init() {
 
 	sceneCamera = new ComponentCamera(App->scene->root);
-	selectedCamera = sceneCamera;
-
-	selectedCamera->cameraPosition = math::float3(0.0f, 15.0f, 40.0f);
-	selectedCamera->InitFrustum();
+	sceneCamera->cameraPosition = math::float3(0.0f, 20.0f, 30.0f);
+	sceneCamera->InitFrustum();
 
 	return true;
 }
@@ -90,7 +88,6 @@ void ModuleCamera::FocusSelectedObject() {
 
 		math::float3 center = bbox.FaceCenterPoint(5);
 		sceneCamera->frustum.pos = center + math::float3(0, 0, camDist);
-
 		sceneCamera->frustum.front = -math::float3::unitZ;
 		sceneCamera->frustum.up = math::float3::unitY;
 	}
@@ -150,11 +147,6 @@ void ModuleCamera::DrawGUI() {
 	ImGui::Text("Rotation "); ImGui::SameLine();
 	ImGui::Text("Pitch: %.2f", sceneCamera->pitch, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
 	ImGui::Text("Yaw: %.2f", sceneCamera->yaw, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-
-	ImGui::Separator();
-	ImGui::InputFloat("Movement Speed", &sceneCamera->cameraSpeed, 1.0f, 100.0f);
-	ImGui::InputFloat("Rotation Speed", &sceneCamera->rotationSpeed, 1.0f, 100.0f);
-	ImGui::InputFloat("Mouse sensitivity", &mouseSensitivity, 1.0f, 100.0f);
 	
 	float fov = math::RadToDeg(sceneCamera->frustum.verticalFov);
 	if (ImGui::SliderFloat("FOV", &fov, 40, 120)) {

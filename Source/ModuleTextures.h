@@ -22,7 +22,7 @@ class ModuleTextures : public Module
 
 		bool			Init() override;
 		Texture* const  Load(const char* path);
-		void			LoadDefaulTexture(const char* path);
+		void			LoadDefaulTextures();
 		void			DrawGUI();
 
 	public:
@@ -31,6 +31,7 @@ class ModuleTextures : public Module
 		int mipMapMode = GL_NEAREST_MIPMAP_NEAREST;
 		int wrapMode = GL_CLAMP;
 		Texture*	defaultTexture = nullptr;
+		Texture*	noCameraSelectedTexture = nullptr;
 };		   
 
 #endif //__MODULETEXTURES_H__
