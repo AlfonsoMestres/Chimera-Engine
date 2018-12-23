@@ -1,13 +1,17 @@
+#include "Globals.h"
 #include "Application.h"
+#include "ModuleScene.h"
 #include "ModuleRender.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
-#include "ComponentCamera.h"
 #include "ModuleWindow.h"
-#include "ModuleScene.h"
 #include "ModuleProgram.h"
 #include "ModuleDebugDraw.h"
+#include "ComponentCamera.h"
+#include "SDL.h"
+#include "GL/glew.h"
 #include "debugdraw.h"
+#include "Math/float4x4.h"
 
 ModuleRender::ModuleRender() { }
 
@@ -30,11 +34,6 @@ bool ModuleRender::Init() {
 	App->program->LoadPrograms();
 	GenerateBlockUniforms();
 
-	return true;
-}
-
-bool ModuleRender::Start() {
-	
 	return true;
 }
 
@@ -72,8 +71,6 @@ update_status ModuleRender::Update() {
 		DrawDebugData(App->camera->selectedCamera);
 	}
 
-	
-
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return UPDATE_CONTINUE;
 }
@@ -86,7 +83,7 @@ update_status ModuleRender::PostUpdate() {
 	return UPDATE_CONTINUE;
 }
 
-void ModuleRender::DrawDebugData(ComponentCamera* camera) {
+void ModuleRender::DrawDebugData(ComponentCamera* camera) const {
 
 	if (camera->debugDraw == false) return;
 

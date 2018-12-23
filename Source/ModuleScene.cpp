@@ -1,7 +1,10 @@
+#include <list>
 #include "Application.h"
-#include "ComponentMaterial.h"
-#include "ComponentMesh.h"
 #include "ModuleScene.h"
+#include "ComponentMesh.h"
+#include "ModuleProgram.h"
+#include "ComponentMaterial.h"
+#include "ComponentTransform.h"
 
 #define PAR_SHAPES_IMPLEMENTATION
 #include "par_shapes.h"
@@ -80,33 +83,36 @@ GameObject* ModuleScene::CreateCamera(GameObject* goParent, const math::float4x4
 	return gameObject;
 }
 
-//GameObject* ModuleScene::GenerateSphere(GameObject* goParent, int slices, int stacks, const math::float3& position,
-//										const math::Quat& rotation, const math::float3& size, const math::float4& color) {
-//	assert(slices >= 1);
-//	assert(stacks >= 1);
-//
-//	//TODO: first multiple cameras
-//	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(slices, stacks);
-//
-//	if (mesh == nullptr) {
-//		LOG("Error: Sphere mesh invalid.");
-//		return nullptr;
-//	}
-//
-//	GameObject* sphere = new GameObject("Sphere", float4x4::FromTRS(position, rotation, size), goParent, nullptr);
-//
-//	par_shapes_scale(mesh, size.x, size.y, size.z);
-//
-//	ComponentMesh* sphereMesh = (ComponentMesh*)sphere->AddComponent(ComponentType::MESH);
-//	sphereMesh->ComputeMesh(mesh);
-//
-//	par_shapes_free_mesh(mesh);
-//
-//	ComponentMaterial* sphereMaterial = (ComponentMaterial*)sphere->AddComponent(ComponentType::MATERIAL);
-//	sphereMaterial->SetTexture(App->textures->defaultTexture);
-//
-//	return nullptr;
-//}
+GameObject* ModuleScene::GenerateSphere(GameObject* goParent, int slices, int stacks, const math::float3& pos,
+										const math::Quat& rot, const float size, const math::float4& color) {
+	assert(slices >= 1); assert(stacks >= 1);
+
+	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(slices, stacks);
+
+	if (mesh) {
+		GameObject* sphere = new GameObject("Sphere", math::float4x4::identity, goParent, nullptr);
+		sphere->transform->SetRotation(rot);
+		sphere->transform->SetPosition(pos);
+
+		par_shapes_scale(mesh, size, size, size);
+
+		ComponentMesh* sphereMesh = (ComponentMesh*)sphere->AddComponent(ComponentType::MESH);
+		sphereMesh->ComputeMesh(mesh);
+
+		par_shapes_free_mesh(mesh);
+
+		ComponentMaterial* sphereMaterial = (ComponentMaterial*)sphere->AddComponent(ComponentType::MATERIAL);
+		sphereMaterial->shader = App->program->basicProgram;
+		sphereMaterial->color = color;
+
+		goSelected = sphere;
+
+		return sphere;
+	}
+
+	LOG("Error: par_shape_mesh error");
+	return nullptr;
+}
 
 //GameObject* ModuleScene::CreateCylinder(const char* name, const math::float3& position, const math::Quat& rotation, 
 //										float height, float radius, unsigned slices, unsigned stacks, const math::float4& color) {

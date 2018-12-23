@@ -6,6 +6,7 @@
 #include "Component.h"
 #include "Component.h"
 #include "Imgui/imgui.h"
+#include "Math/float4.h"
 #include "ModuleTextures.h"
 #include "assimp/material.h"
 
@@ -18,19 +19,15 @@ class ComponentMaterial : public Component
 		~ComponentMaterial();
 
 		void ComputeMaterial(const aiMaterial* material);
-		void SetTexture(Texture* newTexture);
 		void DeleteTexture();
-
-		Texture* GetTexture() const;
-		unsigned GetShader() const;
 
 		void		DrawProperties() override;
 		Component*	Duplicate() override;
 
-	private:
-		unsigned shader = 0u;
-		Texture* texture = nullptr;
-
+	public:
+		unsigned		shader = 0u;
+		math::float4	color = math::float4::one;
+		Texture*		texture = nullptr;
 };
 
 #endif

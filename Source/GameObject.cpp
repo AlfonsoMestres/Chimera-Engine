@@ -159,14 +159,16 @@ void GameObject::Draw() const{
 	Texture* texture = nullptr;
 
 	if (material != nullptr && material->enabled) {
-		shader = material->GetShader();
-		texture = material->GetTexture();
+		shader = material->shader;
+		texture = material->texture;
 	} else {
 		shader = App->program->textureProgram;
 	}
 
-	if (texture == nullptr) {
-		texture = App->textures->defaultTexture;
+	//TODO: Rendering color problem, solve this!
+	if (texture == nullptr && material != nullptr) {
+		shader = App->program->basicProgram;
+		glUniform4fv(glGetUniformLocation(shader, "Vcolor"), 1, (GLfloat*)&material->color);
 	}
 
 	glUseProgram(shader);

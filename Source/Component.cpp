@@ -1,6 +1,6 @@
 #include "Application.h"
-#include "ModuleResourceManager.h"
 #include "Component.h"
+#include "ModuleResourceManager.h"
 
 Component::Component(GameObject* gameObject, ComponentType type) {
 	uuid = App->resource->NewGuuid();

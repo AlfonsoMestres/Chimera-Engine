@@ -85,7 +85,7 @@ update_status ModuleEditor::Update() {
 					new GameObject(DEFAULT_GO_NAME, math::float4x4().identity, nullptr, nullptr);
 				}
 				if (ImGui::MenuItem("Sphere")) {
-					//App->scene->GenerateSphere(App->scene->goSelected, 24, 24);
+					App->scene->GenerateSphere(App->scene->goSelected, 20, 20, math::float3::zero, math::Quat::identity, 1.0f, math::float4(0.3f, 100.7f, 0.2f, 1.0f));
 				}
 				if (ImGui::MenuItem("Cube")) {
 					// TODO: Add sphere from external library

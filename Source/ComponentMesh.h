@@ -1,15 +1,14 @@
 #ifndef __COMPONENTMESH_H__
 #define __COMPONENTMESH_H__
 
-#include "assert.h"
-#include "Component.h"
-#include "ModuleTextures.h"
-#include "par_shapes.h"
-#include "Geometry/AABB.h"
-#include "Math/float3.h"
-#include <assimp/mesh.h>
 #include <vector>
-#include "GL/glew.h"
+#include <assimp/mesh.h>
+#include "Component.h"
+#include "Math/float3.h"
+#include "ModuleTextures.h"
+#include "Geometry/AABB.h"
+
+struct par_shapes_mesh_s;
 
 class ComponentMesh : public Component
 {

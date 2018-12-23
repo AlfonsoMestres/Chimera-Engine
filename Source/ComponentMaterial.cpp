@@ -39,17 +39,6 @@ void ComponentMaterial::ComputeMaterial(const aiMaterial* material) {
 	texture = App->textures->Load(texturePath.c_str());
 }
 
-Texture* ComponentMaterial::GetTexture() const {
-	return texture;
-}
-
-void ComponentMaterial::SetTexture(Texture* newTexture) {
-	texture = newTexture;
-}
-
-unsigned ComponentMaterial::GetShader() const {
-	return shader;
-}
 
 void ComponentMaterial::DeleteTexture() {
 	//TODO: Ask to resource manager if texture is being used by other GO
