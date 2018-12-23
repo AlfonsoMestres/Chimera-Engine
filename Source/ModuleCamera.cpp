@@ -17,6 +17,7 @@ bool ModuleCamera::Init() {
 	sceneCamera = new ComponentCamera(App->scene->root);
 	sceneCamera->cameraPosition = math::float3(0.0f, 20.0f, 30.0f);
 	sceneCamera->InitFrustum();
+	sceneCamera->debugDraw = true;
 
 	return true;
 }
@@ -143,6 +144,9 @@ void ModuleCamera::Move() {
 }
 
 void ModuleCamera::DrawGUI() {
+
+	ImGui::Checkbox("Debug", &sceneCamera->debugDraw);
+
 	ImGui::Text("Position "); ImGui::SameLine();
 	ImGui::Text("X: %.2f", sceneCamera->cameraPosition.x, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
 	ImGui::Text("Y: %.2f", sceneCamera->cameraPosition.y, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
@@ -155,7 +159,7 @@ void ModuleCamera::DrawGUI() {
 
 	ImGui::Text("Rotation "); ImGui::SameLine();
 	ImGui::Text("Pitch: %.2f", sceneCamera->pitch, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-	ImGui::Text("Yaw: %.2f", sceneCamera->yaw, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+	ImGui::Text("Yaw: %.2f", sceneCamera->yaw, ImGuiInputTextFlags_ReadOnly); 
 	
 	float fov = math::RadToDeg(sceneCamera->frustum.verticalFov);
 	if (ImGui::SliderFloat("FOV", &fov, 40, 120)) {

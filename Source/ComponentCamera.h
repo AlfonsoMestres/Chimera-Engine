@@ -50,6 +50,8 @@ class ComponentCamera : public Component
 		float			pitch = 0.0f;
 		float			yaw = 0.0f;
 
+		bool			debugDraw = false;
+
 		unsigned		screenWidth = SCREEN_WIDTH;
 		unsigned		screenHeight = SCREEN_HEIGHT;
 

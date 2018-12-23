@@ -68,23 +68,13 @@ void ComponentCamera::DrawProperties() {
 
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Camera properties")) {
-
-		bool removed = Component::DrawComponentState();
+		bool removed = Component::DrawComponentState(); 
 		if (removed) {
 			ImGui::PopID();
 			return;
 		}
 
-		if (ImGui::Button("Select this camera", ImVec2(ImGui::GetWindowWidth(), 25))) {
-			App->camera->selectedCamera = this;
-		}
-			
-		float camPos[3] = { cameraPosition.x, cameraPosition.y, cameraPosition.z };
-		ImGui::InputFloat3("Position", camPos, "%.2f");
-		cameraPosition = math::float3(camPos[0], camPos[1], camPos[2]);
-		float vectorFront[3] = { cameraFront.x, cameraFront.y, cameraFront.z };
-		ImGui::InputFloat3("Front", vectorFront, "%.2f");
-		cameraFront = math::float3(vectorFront[0], vectorFront[1], vectorFront[2]);
+		ImGui::Checkbox("Debug", &debugDraw);
 
 		ImGui::Separator();
 		ImGui::Text("Pitch: %.2f", pitch, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
@@ -96,6 +86,17 @@ void ComponentCamera::DrawProperties() {
 
 		ImGui::InputFloat("zNear", &frustum.nearPlaneDistance, 5, 50);
 		ImGui::InputFloat("zFar", &frustum.farPlaneDistance, 5, 50);
+
+		if (App->camera->selectedCamera == this) {
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+			ImGui::Button("Current camera");
+			ImGui::PopStyleVar();
+		} else {
+			if (ImGui::Button("Set camera")) {
+				App->camera->selectedCamera = this;
+			}
+		}
+		ImGui::Separator();
 	}
 	ImGui::PopID();
 }

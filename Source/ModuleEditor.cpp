@@ -72,7 +72,7 @@ update_status ModuleEditor::Update() {
 					ImGui::Text("No game cameras availables");
 				} else {
 					for (auto& camera : App->camera->gameCameras) {
-						if (ImGui::MenuItem(camera->goContainer->name)) {
+						if (ImGui::MenuItem(camera->goContainer->name, NULL, App->camera->selectedCamera == camera)) {
 							App->camera->selectedCamera = camera;
 						}
 					}

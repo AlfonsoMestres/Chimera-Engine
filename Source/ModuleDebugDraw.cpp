@@ -582,7 +582,6 @@ bool ModuleDebugDraw::Init() {
     return true;
 }
 
-
 bool ModuleDebugDraw::CleanUp() {
     dd::shutdown();
 
@@ -596,7 +595,6 @@ update_status  ModuleDebugDraw::Update() {
 	return UPDATE_CONTINUE;
 }
 
-//TODO: implement multiple cameras
 void ModuleDebugDraw::Draw(ComponentCamera* camera, unsigned fbo, unsigned fb_width, unsigned fb_height) {
 	math::float4x4 view  = camera->frustum.ViewMatrix();
 	math::float4x4 proj = camera->frustum.ProjectionMatrix();

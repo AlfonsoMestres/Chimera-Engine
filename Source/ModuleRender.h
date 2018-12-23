@@ -35,8 +35,7 @@ class ModuleRender : public Module
 		void			GenerateBlockUniforms();
 
 	private:
-		void			DrawReferenceDebug();
-		void			DrawDebugData();
+		void			DrawDebugData(ComponentCamera* camera);
 
 	public:
 		bool			vsyncEnabled = false;

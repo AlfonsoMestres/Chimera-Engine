@@ -10,6 +10,7 @@
 #include "ComponentTransform.h"
 #include "ModuleResourceManager.h"
 #include "SDL/include/SDL_mouse.h"
+#include "debugdraw.h"
 
 /// CARE Creating this without father could lead to memory leak
 GameObject::GameObject() { 
@@ -176,7 +177,7 @@ void GameObject::Draw() const{
 		((ComponentMesh*)mesh)->Draw(shader, texture);
 	}
 
-	if (drawGOBBox) {
+	if (App->scene->goSelected == this) {
 		DrawBBox();
 	}
 
@@ -413,77 +414,35 @@ void GameObject::ModelTransform(unsigned shader) const {
 	glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, &GetGlobalTransform()[0][0]);
 }
 
-//TODO: this is not computing correctly, chimney is not added correctly to the global AABB
-AABB GameObject::ComputeBBox() const {
+math::AABB GameObject::ComputeBBox() const {
 	bbox.SetNegativeInfinity();
 
 	// Apply transformation of our GO
-	//bbox.TransformAsAABB(GetGlobalTransform());
+	ComponentMesh* mesh = (ComponentMesh*)GetComponent(ComponentType::MESH);
+	if (mesh != nullptr) {
+		bbox.Enclose(mesh->bbox);
+	}
 
-	// Child meshes
+	// Draw child bboxes
 	for (const auto &child : goChilds){
 		if (child->GetComponent(ComponentType::MESH) != nullptr) {
-			bbox.Enclose(child->ComputeBBox());
+			child->DrawBBox();
 		}
 	}
+
+	bbox.TransformAsAABB(GetGlobalTransform());
 
 	return bbox;
 }
 
-// TODO: Migrate this to the debug draw library saw in class
 void GameObject::DrawBBox() const {
-	glUseProgram(App->program->basicProgram);
-	AABB bbox = ComputeBBox();
-	GLfloat vertices[] = {
-		-0.5, -0.5, -0.5, 1.0,
-		0.5, -0.5, -0.5, 1.0,
-		0.5,  0.5, -0.5, 1.0,
-		-0.5,  0.5, -0.5, 1.0,
-		-0.5, -0.5,  0.5, 1.0,
-		0.5, -0.5,  0.5, 1.0,
-		0.5,  0.5,  0.5, 1.0,
-		-0.5,  0.5,  0.5, 1.0,
-	};
-	GLuint vbo_vertices;
-	glGenBuffers(1, &vbo_vertices);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	GLushort elements[] = {
-		0, 1, 2, 3,
-		4, 5, 6, 7,
-		0, 4, 1, 5, 
-		2, 6, 3, 7
-	};
+	//TODO: this is being calculated every update, set a TRANSFORM_EDITED bool to avoid this
+	math::AABB bbox = ComputeBBox();
 
-	GLuint ibo_elements;
-	glGenBuffers(1, &ibo_elements);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	Component* mesh = GetComponent(ComponentType::MESH);
+	if (mesh != nullptr) {
+		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
+	}
 
-	math::float4x4 boxtransform = math::float4x4::FromTRS(bbox.CenterPoint(), Quat::identity, bbox.Size());
-	glUniformMatrix4fv(glGetUniformLocation(App->program->basicProgram, "model"), 1, GL_TRUE, &(boxtransform)[0][0]);
-
-	float color[4] = { 0.0f, 1.0f, 1.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->basicProgram, "Vcolor"), 1, color);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-
-	glLineWidth(4.f);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
-	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
-	glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glLineWidth(1.0f);
-
-	glDisableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glDeleteBuffers(1, &vbo_vertices);
-	glDeleteBuffers(1, &ibo_elements);
-	glUseProgram(0);
 }
