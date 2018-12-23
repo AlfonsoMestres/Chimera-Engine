@@ -85,10 +85,10 @@ update_status ModuleEditor::Update() {
 					new GameObject(DEFAULT_GO_NAME, math::float4x4().identity, nullptr, nullptr);
 				}
 				if (ImGui::MenuItem("Sphere")) {
-					App->scene->GenerateSphere(App->scene->goSelected, 20, 20, math::float3::zero, math::Quat::identity, 1.0f, math::float4(0.3f, 100.7f, 0.2f, 1.0f));
+					App->scene->GenerateSphere(App->scene->goSelected, 20, 20, math::float3::zero, math::Quat::identity, 1.0f, math::float4(50.0f, 100.0f, 0.0f, 1.0f));
 				}
-				if (ImGui::MenuItem("Cube")) {
-					// TODO: Add sphere from external library
+				if (ImGui::MenuItem("Cylinder")) {
+					App->scene->GenerateCylinder(App->scene->goSelected, math::float3::zero, math::Quat::identity, 5.0f, 5.0f, 20u, 20u, math::float4(50.0f, 100.0f, 0.0f, 1.0f));
 				}
 				if (ImGui::MenuItem("Torus")) {
 					// TODO: Add sphere from external library

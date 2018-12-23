@@ -85,7 +85,6 @@ GameObject* ModuleScene::CreateCamera(GameObject* goParent, const math::float4x4
 
 GameObject* ModuleScene::GenerateSphere(GameObject* goParent, int slices, int stacks, const math::float3& pos,
 										const math::Quat& rot, const float size, const math::float4& color) {
-	assert(slices >= 1); assert(stacks >= 1);
 
 	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(slices, stacks);
 
@@ -110,42 +109,47 @@ GameObject* ModuleScene::GenerateSphere(GameObject* goParent, int slices, int st
 		return sphere;
 	}
 
-	LOG("Error: par_shape_mesh error");
+	LOG("Error: par_shape_mesh sphere error");
 	return nullptr;
 }
 
-//GameObject* ModuleScene::CreateCylinder(const char* name, const math::float3& position, const math::Quat& rotation, 
-//										float height, float radius, unsigned slices, unsigned stacks, const math::float4& color) {
-//	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(int(slices), int(stacks));
-//	par_shapes_rotate(mesh, -float(PAR_PI*0.5), (float*)&math::float3::unitX);
-//	par_shapes_translate(mesh, 0.0f, -0.5f, 0.0f);
-//
-//	par_shapes_mesh* top = par_shapes_create_disk(radius, int(slices), (const float*)&math::float3::zero, (const float*)&math::float3::unitZ);
-//	par_shapes_rotate(top, -float(PAR_PI*0.5), (float*)&math::float3::unitX);
-//	par_shapes_translate(top, 0.0f, height*0.5f, 0.0f);
-//
-//	par_shapes_mesh* bottom = par_shapes_create_disk(radius, int(slices), (const float*)&math::float3::zero, (const float*)&math::float3::unitZ);
-//	par_shapes_rotate(bottom, float(PAR_PI*0.5), (float*)&math::float3::unitX);
-//	par_shapes_translate(bottom, 0.0f, height*-0.5f, 0.0f);
-//
-//	if (mesh == nullptr) {
-//		LOG("Error: Cylinder couldn't be created. Par_shapes returned nullptr.");
-//		return nullptr;
-//	}
-//
-//	par_shapes_scale(mesh, radius, height, radius);
-//	par_shapes_merge_and_free(mesh, top);
-//	par_shapes_merge_and_free(mesh, bottom);
-//
-//	GameObject* cylinder = App->scene->CreateGameObject(name, math::float4x4::FromTRS(position, rotation, math::float3::one));
-//
-//	ComponentMesh* cylinder_mesh = (ComponentMesh*)cylinder->CreateComponent(component_type::Mesh);
-//	cylinder_mesh->GenerateMesh(mesh);
-//
-//	par_shapes_free_mesh(mesh);
-//
-//	ComponentMaterial* cylinder_material = (ComponentMaterial*)cylinder->CreateComponent(component_type::Material);
-//	cylinder_material->texture = App->textures->loadTexture("checkersTexture.jpg.jpg");
-//
-//	return cylinder;
-//}
+//TODO: Fix this ... thing. Not rendering correctly the meshes
+GameObject* ModuleScene::GenerateCylinder(GameObject* goParent, const math::float3& pos, const math::Quat& rot,
+										float height, float radius, unsigned slices, unsigned stacks, const math::float4& color) {
+
+	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(int(slices), int(stacks));
+	par_shapes_rotate(mesh, -float(PAR_PI*0.5), (float*)&math::float3::unitX);
+	par_shapes_translate(mesh, 0.0f, -0.5f, 0.0f);
+
+	par_shapes_mesh* top = par_shapes_create_disk(radius, int(slices), (const float*)&math::float3::zero, (const float*)&math::float3::unitZ);
+	par_shapes_rotate(top, -float(PAR_PI*0.5), (float*)&math::float3::unitX);
+	par_shapes_translate(top, 0.0f, height*0.5f, 0.0f);
+
+	par_shapes_mesh* bottom = par_shapes_create_disk(radius, int(slices), (const float*)&math::float3::zero, (const float*)&math::float3::unitZ);
+	par_shapes_rotate(bottom, float(PAR_PI*0.5), (float*)&math::float3::unitX);
+	par_shapes_translate(bottom, 0.0f, height*-0.5f, 0.0f);
+
+	if (mesh == nullptr || top == nullptr || bottom == nullptr) {
+		LOG("Error: par_shape_mesh cylinder error");
+		return nullptr;
+	}
+
+	GameObject* cylinder = new GameObject("Cylinder", math::float4x4::identity, goParent, nullptr);
+	cylinder->transform->SetRotation(rot);
+	cylinder->transform->SetPosition(pos);
+
+	par_shapes_scale(mesh, radius, height, radius);
+	par_shapes_merge_and_free(mesh, top);
+	par_shapes_merge_and_free(mesh, bottom);
+
+	ComponentMesh* cylinderMesh = (ComponentMesh*)cylinder->AddComponent(ComponentType::MESH);
+	cylinderMesh->ComputeMesh(mesh);
+
+	par_shapes_free_mesh(mesh);
+
+	ComponentMaterial* cylinderMaterial = (ComponentMaterial*)cylinder->AddComponent(ComponentType::MATERIAL);
+	cylinderMaterial->shader = App->program->basicProgram;
+	cylinderMaterial->color = color;
+
+	return cylinder;
+}

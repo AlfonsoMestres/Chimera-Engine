@@ -58,7 +58,14 @@ void ComponentMaterial::DrawProperties() {
 			ImGui::PopID();
 			return;
 		}
-		ImGui::Text("Shader: PlaceHolder");
+
+		if (texture == nullptr) {
+			float colors[3] = { color.x, color.y, color.z };
+			if (ImGui::ColorPicker3("", colors, ImGuiColorEditFlags_RGB | ImGuiColorEditFlags_HEX)) {
+				color = { colors[0], colors[1], colors[2] , color.w };
+			}
+		}
+
 		if (texture != nullptr) {
 			ImGui::Text("Texture width:%d height:%d", texture->width, texture->height);
 			float size = ImGui::GetWindowWidth();
