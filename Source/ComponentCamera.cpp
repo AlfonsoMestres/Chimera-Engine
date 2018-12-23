@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
+#include "ModuleCamera.h"
 #include "ComponentCamera.h"
 
 ComponentCamera::ComponentCamera(GameObject* goParent) : Component(goParent, ComponentType::CAMERA) {
@@ -54,8 +55,16 @@ void ComponentCamera::SetVerticalFOV(float fovYDegrees) {
 void ComponentCamera::DrawProperties() {
 
 	if (ImGui::CollapsingHeader("Camera properties")) {
-		ImGui::Text("UUID: "); ImGui::SameLine();
-		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, uuid.c_str());
+
+		bool removed = Component::DrawComponentState();
+		if (removed) {
+			ImGui::PopID();
+			return;
+		}
+
+		if (ImGui::Button("Select this camera", ImVec2(ImGui::GetWindowWidth(), 25))) {
+			App->camera->selectedCamera = this;
+		}
 			
 		float camPos[3] = { cameraPosition.x, cameraPosition.y, cameraPosition.z };
 		ImGui::InputFloat3("Position", camPos, "%.2f");

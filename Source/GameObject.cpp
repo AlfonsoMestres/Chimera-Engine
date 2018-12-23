@@ -180,13 +180,6 @@ void GameObject::Draw() const{
 		DrawBBox();
 	}
 
-	// TODO: make child bbox appear too when checked the ui element
-	if (drawChildsBBox) {
-		for (auto &child : goChilds) {
-			child->DrawBBox();
-		}
-	}
-
 	glUseProgram(0);
 }
 
@@ -335,6 +328,7 @@ Component* GameObject::AddComponent(ComponentType type) {
 			if (App->camera->selectedCamera == nullptr) {
 				App->camera->selectedCamera = (ComponentCamera*)component;
 			}
+			App->camera->gameCameras.push_back((ComponentCamera*)component);
 			break;
 		case ComponentType::TRANSFORM:
 			component = new ComponentTransform(this, math::float4x4().identity);
@@ -418,14 +412,8 @@ void GameObject::ModelTransform(unsigned shader) const {
 AABB GameObject::ComputeBBox() const {
 	bbox.SetNegativeInfinity();
 
-	// Current GO meshes
-	ComponentMesh* mesh = (ComponentMesh*)GetComponent(ComponentType::MESH);
-	if (mesh != nullptr) {
-		bbox.Enclose((mesh)->bbox);
-	}
-	
 	// Apply transformation of our GO
-	bbox.TransformAsAABB(GetGlobalTransform());
+	//bbox.TransformAsAABB(GetGlobalTransform());
 
 	// Child meshes
 	for (const auto &child : goChilds){

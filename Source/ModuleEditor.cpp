@@ -65,8 +65,23 @@ update_status ModuleEditor::Update() {
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Edit")) {
-			if (ImGui::BeginMenu("Add")) {
+		if (ImGui::BeginMenu("Scene")) {
+
+			if (ImGui::BeginMenu("Select camera in")) {
+				if (App->camera->gameCameras.size() == 0) {
+					ImGui::Text("No game cameras availables");
+				} else {
+					// TODO: Handle camera removal
+					for (auto& camera : App->camera->gameCameras) {
+						if (ImGui::MenuItem(camera->goContainer->name)) {
+							App->camera->selectedCamera = camera;
+						}
+					}
+				}
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("Add new")) {
 				if(ImGui::MenuItem("Empty GameObject")) {
 					new GameObject(DEFAULT_GO_NAME, math::float4x4().identity, nullptr, nullptr);
 				}

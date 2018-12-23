@@ -27,6 +27,7 @@ enum update_status
 #define FULLSCREEN_DESKTOP false
 #define VSYNC true
 #define DEFAULT_GO_NAME "GameObject"
+#define DEFAULT_CAMERA_NAME "Camera"
 #define TITLE "Chimera engine"
 #define AUTHOR "Alfonso Mestres Munoz"
 #define DESCRIPTION "C++/C engine for game development"

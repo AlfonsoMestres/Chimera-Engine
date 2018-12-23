@@ -30,10 +30,12 @@ bool Component::DrawComponentState() {
 	bool removed = ImGui::SmallButton("Remove Component");
 	if (removed) Remove();
 
-	ImGui::Text("UUID: "); ImGui::SameLine();
-	ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, uuid.c_str());
-	/*ImGui::Text("Go UUID: "); ImGui::SameLine();
-	ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, parentUuid.c_str());*/
+	if (ImGui::CollapsingHeader("UUID") && !removed) {
+		ImGui::Text("UUID: "); ImGui::SameLine();
+		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, uuid.c_str());
+		/*ImGui::Text("Go UUID: "); ImGui::SameLine();
+		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, parentUuid.c_str());*/
+	}
 
 	ImGui::PopStyleColor(3);
 	return removed;

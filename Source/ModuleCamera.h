@@ -32,6 +32,7 @@ class ModuleCamera : public Module
 
 		bool			Init() override;
 		update_status	PreUpdate() override;
+		update_status	Update() override;
 		bool			CleanUp() override;
 		void			DrawGUI();
 
@@ -48,6 +49,7 @@ class ModuleCamera : public Module
 	public:
 		ComponentCamera* sceneCamera = nullptr;
 		ComponentCamera* selectedCamera = nullptr;
+		std::vector<ComponentCamera*> gameCameras;
 		
 		GameObject* goSelected = nullptr;
 

@@ -50,12 +50,17 @@ GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goPare
 	} else {
 
 		if (goParent != nullptr) {
-			std::string childName = "ChildOf";
-			childName += goParent->name;
+			std::string childNameStr = "ChildOf";
+			childNameStr += goParent->name;
+			char* childName = new char[strlen(childNameStr.c_str())];
+			strcpy(childName, childNameStr.c_str());
 
-			gameObject = new GameObject(childName.c_str(), transform, goParent, fileLocation);
+			gameObject = new GameObject(childName, transform, goParent, fileLocation);
 		} else {
-			gameObject = new GameObject(DEFAULT_GO_NAME, transform, goParent, fileLocation);
+			char* goName = new char[strlen(DEFAULT_GO_NAME)];
+			strcpy(goName, DEFAULT_GO_NAME);
+
+			gameObject = new GameObject(goName, transform, goParent, fileLocation);
 		}
 
 	}
@@ -66,7 +71,10 @@ GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goPare
 GameObject* ModuleScene::CreateCamera(GameObject* goParent, const math::float4x4& transform) {
 	GameObject* gameObject = nullptr;
 
-	gameObject = new GameObject("Camera", transform, goParent, nullptr);
+	char* cameraName = new char[strlen(DEFAULT_CAMERA_NAME)];
+	strcpy(cameraName, DEFAULT_CAMERA_NAME);
+
+	gameObject = new GameObject(cameraName, transform, goParent, nullptr);
 	gameObject->AddComponent(ComponentType::CAMERA);
 
 	return gameObject;

@@ -48,7 +48,6 @@ class GameObject
 		std::string				parentUuid = "";
 		bool					enabled = true;
 		bool					drawGOBBox = false;
-		bool					drawChildsBBox = false;
 		bool					duplicating = false;
 		const char*				filePath = nullptr;
 		const char*				name = DEFAULT_GO_NAME;
