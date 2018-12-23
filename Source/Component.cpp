@@ -28,14 +28,13 @@ bool Component::DrawComponentState() {
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.8f, 0.8f));
 
 	bool removed = ImGui::SmallButton("Remove Component");
-	if (removed) Remove();
 
-	if (ImGui::CollapsingHeader("UUID") && !removed) {
-		ImGui::Text("UUID: "); ImGui::SameLine();
-		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, uuid.c_str());
-		/*ImGui::Text("Go UUID: "); ImGui::SameLine();
-		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, parentUuid.c_str());*/
-	}
+	ImGui::Text("UUID: "); ImGui::SameLine();
+	ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, uuid.c_str());
+	/*ImGui::Text("Go UUID: "); ImGui::SameLine();
+	ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, parentUuid.c_str());*/
+
+	if (removed) Remove();
 
 	ImGui::PopStyleColor(3);
 	return removed;

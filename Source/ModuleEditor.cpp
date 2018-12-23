@@ -71,7 +71,6 @@ update_status ModuleEditor::Update() {
 				if (App->camera->gameCameras.size() == 0) {
 					ImGui::Text("No game cameras availables");
 				} else {
-					// TODO: Handle camera removal
 					for (auto& camera : App->camera->gameCameras) {
 						if (ImGui::MenuItem(camera->goContainer->name)) {
 							App->camera->selectedCamera = camera;

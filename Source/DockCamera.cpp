@@ -13,7 +13,7 @@ void DockCamera::Draw() {
 
 	ImVec2 size = ImGui::GetWindowSize();
 	ImGui::SetCursorPos(ImVec2(-(App->window->width - size.x) * 0.5f, -(App->window->height - size.y) * 0.5f));
-	if (App->camera->selectedCamera != nullptr) {
+	if (App->camera->selectedCamera != nullptr && App->camera->selectedCamera->enabled == true) {
 		ImGui::Image((ImTextureID)App->camera->selectedCamera->renderTexture, { (float)App->window->width, (float)App->window->height }, { 0,1 }, { 1,0 });
 	} else {
 		ImGui::Image((ImTextureID)App->textures->noCameraSelectedTexture->id, { (float)App->window->width, (float)App->window->height }, { 0,1 }, { 1,0 });

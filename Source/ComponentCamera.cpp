@@ -13,9 +13,21 @@ ComponentCamera::ComponentCamera(GameObject* goParent) : Component(goParent, Com
 }
 
 ComponentCamera::~ComponentCamera() { 
+
 	glDeleteFramebuffers(1, &fbo);
 	glDeleteRenderbuffers(1, &rbo);
 	glDeleteTextures(1, &renderTexture);
+
+	for (std::vector<ComponentCamera*>::iterator it = App->camera->gameCameras.begin(); it != App->camera->gameCameras.end(); ++it) {
+		if ((*it) == this) {
+			if (App->camera->selectedCamera == this) {
+				App->camera->selectedCamera = nullptr;
+			}
+			App->camera->gameCameras.erase(it);
+			return;
+		}
+	}
+
 }
 
 void ComponentCamera::InitFrustum() {
@@ -54,6 +66,7 @@ void ComponentCamera::SetVerticalFOV(float fovYDegrees) {
 
 void ComponentCamera::DrawProperties() {
 
+	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Camera properties")) {
 
 		bool removed = Component::DrawComponentState();
@@ -84,7 +97,7 @@ void ComponentCamera::DrawProperties() {
 		ImGui::InputFloat("zNear", &frustum.nearPlaneDistance, 5, 50);
 		ImGui::InputFloat("zFar", &frustum.farPlaneDistance, 5, 50);
 	}
-
+	ImGui::PopID();
 }
 
 Component* ComponentCamera::Duplicate() {

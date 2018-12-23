@@ -196,7 +196,12 @@ void GameObject::DrawProperties() {
 
 	// We could probably spent computing time calculating the goName length, but instead we use a fixed max name length
 	ImGui::InputText("Name", (char*)name, 30.0f); ImGui::SameLine();
-	ImGui::Checkbox("Enabled", &enabled); 
+
+	if (ImGui::Checkbox("Enabled", &enabled)) {
+		for (auto &component : components) {
+			component->enabled = enabled;
+		}
+	}
 
 	if (ImGui::CollapsingHeader("Info")) {
 		ImGui::Text("UUID: "); ImGui::SameLine();
@@ -357,8 +362,8 @@ Component* GameObject::AddComponent(ComponentType type) {
 void GameObject::RemoveComponent(Component* component) {
 	assert(component != nullptr);
 
-	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it){
-		if ((*it) == component){
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
+		if ((*it) == component) {
 			components.erase(it);
 			delete component;
 			component = nullptr;

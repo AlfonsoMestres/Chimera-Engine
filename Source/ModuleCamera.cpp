@@ -56,7 +56,7 @@ update_status ModuleCamera::PreUpdate() {
 
 update_status ModuleCamera::Update() {
 
-	if (selectedCamera != nullptr) {
+	if (selectedCamera != nullptr && selectedCamera->enabled) {
 		selectedCamera->Update();
 	}
 	
