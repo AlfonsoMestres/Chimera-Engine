@@ -20,7 +20,10 @@ GameObject::GameObject() {
 GameObject::GameObject(const char* goName, const math::float4x4& transform, const char* fileLocation) {
 
 	uuid = App->resource->NewGuuid();
-	name = goName;
+
+	char* copyName = new char[strlen(goName)];
+	strcpy(copyName, goName);
+	name = copyName;
 
 	if (fileLocation != nullptr) {
 		filePath = fileLocation;
@@ -36,7 +39,10 @@ GameObject::GameObject(const char* goName, const math::float4x4& transform, cons
 GameObject::GameObject(const char* goName, const math::float4x4& transform, GameObject* goParent, const char* fileLocation) {
 
 	uuid = App->resource->NewGuuid();
-	name = goName;
+
+	char* copyName = new char[strlen(goName)];
+	strcpy(copyName, goName);
+	name = copyName;
 
 	if (goParent != nullptr) {
 		parent = goParent;

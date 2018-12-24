@@ -87,11 +87,8 @@ update_status ModuleEditor::Update() {
 				if (ImGui::MenuItem("Sphere")) {
 					App->scene->GenerateSphere(App->scene->goSelected, 20, 20, math::float3::zero, math::Quat::identity, 1.0f, math::float4(50.0f, 100.0f, 0.0f, 1.0f));
 				}
-				if (ImGui::MenuItem("Cylinder")) {
-					App->scene->GenerateCylinder(App->scene->goSelected, math::float3::zero, math::Quat::identity, 5.0f, 5.0f, 20u, 20u, math::float4(50.0f, 100.0f, 0.0f, 1.0f));
-				}
 				if (ImGui::MenuItem("Torus")) {
-					// TODO: Add sphere from external library
+					App->scene->GenerateTorus(App->scene->goSelected, math::float3::zero, math::Quat::identity, 0.5f, 0.67f, 30, 30, math::float4(50.0f, 100.0f, 0.0f, 1.0f));
 				}
 				ImGui::EndMenu();
 			}

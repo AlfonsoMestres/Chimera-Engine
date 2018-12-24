@@ -43,27 +43,17 @@ GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goPare
 
 	GameObject* gameObject = nullptr;
 
-	if (goName != nullptr) {
-
-		char* go_name = new char[strlen(goName)];
-		strcpy(go_name, goName);
-		
-		gameObject = new GameObject(go_name, transform, goParent, fileLocation);
-
+	if (goName != nullptr) {		
+		gameObject = new GameObject(goName, transform, goParent, fileLocation);
 	} else {
 
 		if (goParent != nullptr) {
 			std::string childNameStr = "ChildOf";
 			childNameStr += goParent->name;
-			char* childName = new char[strlen(childNameStr.c_str())];
-			strcpy(childName, childNameStr.c_str());
 
-			gameObject = new GameObject(childName, transform, goParent, fileLocation);
+			gameObject = new GameObject(childNameStr.c_str(), transform, goParent, fileLocation);
 		} else {
-			char* goName = new char[strlen(DEFAULT_GO_NAME)];
-			strcpy(goName, DEFAULT_GO_NAME);
-
-			gameObject = new GameObject(goName, transform, goParent, fileLocation);
+			gameObject = new GameObject(DEFAULT_GO_NAME, transform, goParent, fileLocation);
 		}
 
 	}
@@ -74,10 +64,7 @@ GameObject* ModuleScene::CreateGameObject(const char* goName, GameObject* goPare
 GameObject* ModuleScene::CreateCamera(GameObject* goParent, const math::float4x4& transform) {
 	GameObject* gameObject = nullptr;
 
-	char* cameraName = new char[strlen(DEFAULT_CAMERA_NAME)];
-	strcpy(cameraName, DEFAULT_CAMERA_NAME);
-
-	gameObject = new GameObject(cameraName, transform, goParent, nullptr);
+	gameObject = new GameObject(DEFAULT_CAMERA_NAME, transform, goParent, nullptr);
 	gameObject->AddComponent(ComponentType::CAMERA);
 
 	return gameObject;
@@ -113,43 +100,31 @@ GameObject* ModuleScene::GenerateSphere(GameObject* goParent, int slices, int st
 	return nullptr;
 }
 
-//TODO: Fix this ... thing. Not rendering correctly the meshes
-GameObject* ModuleScene::GenerateCylinder(GameObject* goParent, const math::float3& pos, const math::Quat& rot,
-										float height, float radius, unsigned slices, unsigned stacks, const math::float4& color) {
+//TODO: torus not being generated inside other meshes
+GameObject* ModuleScene::GenerateTorus(GameObject* goParent, const math::float3& pos, const math::Quat& rot,
+										float innerRad, float outerRad, unsigned slices, unsigned stacks, const math::float4& color) {
 
-	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(int(slices), int(stacks));
-	par_shapes_rotate(mesh, -float(PAR_PI*0.5), (float*)&math::float3::unitX);
-	par_shapes_translate(mesh, 0.0f, -0.5f, 0.0f);
+	par_shapes_mesh* mesh = par_shapes_create_torus(slices, stacks, innerRad);
 
-	par_shapes_mesh* top = par_shapes_create_disk(radius, int(slices), (const float*)&math::float3::zero, (const float*)&math::float3::unitZ);
-	par_shapes_rotate(top, -float(PAR_PI*0.5), (float*)&math::float3::unitX);
-	par_shapes_translate(top, 0.0f, height*0.5f, 0.0f);
+	if (mesh) {
+		GameObject* torus = new GameObject("Torus", math::float4x4::identity, goParent, nullptr);
+		torus->transform->SetRotation(rot);
+		torus->transform->SetPosition(pos);
 
-	par_shapes_mesh* bottom = par_shapes_create_disk(radius, int(slices), (const float*)&math::float3::zero, (const float*)&math::float3::unitZ);
-	par_shapes_rotate(bottom, float(PAR_PI*0.5), (float*)&math::float3::unitX);
-	par_shapes_translate(bottom, 0.0f, height*-0.5f, 0.0f);
+		par_shapes_scale(mesh, outerRad, outerRad, outerRad);
 
-	if (mesh == nullptr || top == nullptr || bottom == nullptr) {
-		LOG("Error: par_shape_mesh cylinder error");
-		return nullptr;
-	}
+		ComponentMesh* torusMesh = (ComponentMesh*)torus->AddComponent(ComponentType::MESH);
+		torusMesh->ComputeMesh(mesh);
 
-	GameObject* cylinder = new GameObject("Cylinder", math::float4x4::identity, goParent, nullptr);
-	cylinder->transform->SetRotation(rot);
-	cylinder->transform->SetPosition(pos);
+		par_shapes_free_mesh(mesh);
 
-	par_shapes_scale(mesh, radius, height, radius);
-	par_shapes_merge_and_free(mesh, top);
-	par_shapes_merge_and_free(mesh, bottom);
+		ComponentMaterial* torusMaterial = (ComponentMaterial*)torus->AddComponent(ComponentType::MATERIAL);
+		torusMaterial->shader = App->program->basicProgram;
+		torusMaterial->color = color;
 
-	ComponentMesh* cylinderMesh = (ComponentMesh*)cylinder->AddComponent(ComponentType::MESH);
-	cylinderMesh->ComputeMesh(mesh);
+		return torus;
+	} 
 
-	par_shapes_free_mesh(mesh);
-
-	ComponentMaterial* cylinderMaterial = (ComponentMaterial*)cylinder->AddComponent(ComponentType::MATERIAL);
-	cylinderMaterial->shader = App->program->basicProgram;
-	cylinderMaterial->color = color;
-
-	return cylinder;
+	LOG("Error: par_shape_mesh cylinder error");
+	return nullptr;
 }
