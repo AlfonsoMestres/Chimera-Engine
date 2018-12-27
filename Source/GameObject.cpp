@@ -158,6 +158,7 @@ void GameObject::Draw() const{
 	for (const auto &child : goChilds) {
 		child->Draw();
 	}
+
 	if (transform == nullptr) return;
 
 	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::MATERIAL);

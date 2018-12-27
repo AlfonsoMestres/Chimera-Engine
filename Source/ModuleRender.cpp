@@ -58,6 +58,9 @@ update_status ModuleRender::Update() {
 	DrawDebugData(App->camera->sceneCamera);
 
 	if (App->camera->selectedCamera != nullptr) {
+
+
+
 		glBindFramebuffer(GL_FRAMEBUFFER, App->camera->selectedCamera->fbo);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -86,6 +89,10 @@ update_status ModuleRender::PostUpdate() {
 void ModuleRender::DrawDebugData(ComponentCamera* camera) const {
 
 	if (camera->debugDraw == false) return;
+
+	if (App->camera->selectedCamera != nullptr) {
+		dd::frustum((App->camera->selectedCamera->frustum.ProjectionMatrix() * App->camera->selectedCamera->frustum.ViewMatrix()).Inverted(), dd::colors::Crimson);
+	}
 
 	if (showGrid) {
 		dd::xzSquareGrid(-1000.0f, 1000.0f, 0.0f, 1.0f, math::float3(0.65f, 0.65f, 0.65f));
