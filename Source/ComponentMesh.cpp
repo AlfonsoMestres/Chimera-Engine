@@ -1,6 +1,10 @@
 #include "assert.h"
 #include "par_shapes.h"
+#include "Application.h"
+#include "ModuleScene.h"
+#include "ComponentLight.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 
 ComponentMesh::ComponentMesh(GameObject* goContainer, aiMesh* mesh) : Component(goContainer, ComponentType::MESH) { 
 
@@ -69,6 +73,8 @@ void ComponentMesh::ComputeMesh(aiMesh* mesh) {
 	}
 
 	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+
+	//MISSING NORMALS
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -182,15 +188,30 @@ void ComponentMesh::CleanUp() {
 	}
 }
 
-void ComponentMesh::Draw(unsigned shaderProgram, const Texture* texture) const {
+void ComponentMesh::Draw(unsigned shaderProgram, const ComponentMaterial* material) const {
 
 	glActiveTexture(GL_TEXTURE0);
 
-	if (texture != nullptr) {
-		glBindTexture(GL_TEXTURE_2D, texture->id);
-		glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);
-	} else {
-		glUniform1i(glGetUniformLocation(shaderProgram, "vColor"), 0);
+	switch (shaderProgram) {
+		case 3: //basic
+			break;
+		case 6: //texture
+			if (material != nullptr && material->texture != nullptr) {
+				glBindTexture(GL_TEXTURE_2D, material->texture->id);
+				glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);
+			} else {
+				glUniform1i(glGetUniformLocation(shaderProgram, "vColor"), 0);
+			}
+			break;
+		case 9: //blinn
+			glUniform3fv(glGetUniformLocation(shaderProgram, "light_pos"), 1, (float*)&App->scene->lightPosition);
+			glUniform1f(glGetUniformLocation(shaderProgram, "ambient"), App->scene->ambientLight);
+			glUniform1f(glGetUniformLocation(shaderProgram, "shininess"), material->shininess);
+			glUniform1f(glGetUniformLocation(shaderProgram, "k_ambient"), material->ambientK);
+			glUniform1f(glGetUniformLocation(shaderProgram, "k_diffuse"), material->diffuseK);
+			glUniform1f(glGetUniformLocation(shaderProgram, "k_specular"), material->specularK);
+			glUniform4fv(glGetUniformLocation(shaderProgram, "newColor"), 1, (float*)&material->color);
+			break;
 	}
 
 	glBindVertexArray(vao);

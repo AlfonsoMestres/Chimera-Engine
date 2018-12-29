@@ -50,6 +50,8 @@ update_status ModuleRender::Update() {
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glPolygonMode(GL_FRONT_AND_BACK, App->camera->sceneCamera->wireFrame);
+
 	SetProjectionMatrix(App->camera->sceneCamera);
 	SetViewMatrix(App->camera->sceneCamera);
 
@@ -58,12 +60,11 @@ update_status ModuleRender::Update() {
 	DrawDebugData(App->camera->sceneCamera);
 
 	if (App->camera->selectedCamera != nullptr) {
-
-
-
 		glBindFramebuffer(GL_FRAMEBUFFER, App->camera->selectedCamera->fbo);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glPolygonMode(GL_FRONT_AND_BACK, App->camera->selectedCamera->wireFrame);
 
 		SetProjectionMatrix(App->camera->selectedCamera);
 		SetViewMatrix(App->camera->selectedCamera);
@@ -120,9 +121,11 @@ void ModuleRender::SetProjectionMatrix(ComponentCamera* camera) const {
 void ModuleRender::GenerateBlockUniforms() {
 	unsigned uniformBlockIndexDefault = glGetUniformBlockIndex(App->program->basicProgram, "Matrices");
 	unsigned uniformBlockIndexTexture = glGetUniformBlockIndex(App->program->textureProgram, "Matrices");
+	unsigned uniformBlockIndexBlinn = glGetUniformBlockIndex(App->program->blinnProgram, "Matrices");
 
 	glUniformBlockBinding(App->program->basicProgram, uniformBlockIndexDefault, 0);
 	glUniformBlockBinding(App->program->textureProgram, uniformBlockIndexTexture, 0);
+	glUniformBlockBinding(App->program->blinnProgram, uniformBlockIndexBlinn, 0);
 
 	glGenBuffers(1, &ubo);
 	glBindBuffer(GL_UNIFORM_BUFFER, ubo);

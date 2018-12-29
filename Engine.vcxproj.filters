@@ -214,6 +214,9 @@
     <ClCompile Include="Source\log.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DockLight.cpp">
+      <Filter>Docks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ComponentMaterial.h">
@@ -501,6 +504,9 @@
     <ClInclude Include="Source\Point.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Source\DockLight.h">
+      <Filter>Docks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -557,6 +563,12 @@
       <Filter>Utils\Shaders</Filter>
     </None>
     <None Include="Game\Shaders\default.vs">
+      <Filter>Utils\Shaders</Filter>
+    </None>
+    <None Include="Game\Shaders\blinn.vs">
+      <Filter>Utils\Shaders</Filter>
+    </None>
+    <None Include="Game\Shaders\blinn.fs">
       <Filter>Utils\Shaders</Filter>
     </None>
   </ItemGroup>

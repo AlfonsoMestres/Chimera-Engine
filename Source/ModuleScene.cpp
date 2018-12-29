@@ -3,6 +3,7 @@
 #include "ModuleScene.h"
 #include "ComponentMesh.h"
 #include "ModuleProgram.h"
+#include "ComponentLight.h"
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
@@ -91,7 +92,7 @@ GameObject* ModuleScene::GenerateSphere(GameObject* goParent, int slices, int st
 		par_shapes_free_mesh(mesh);
 
 		ComponentMaterial* sphereMaterial = (ComponentMaterial*)sphere->AddComponent(ComponentType::MATERIAL);
-		sphereMaterial->shader = App->program->basicProgram;
+		sphereMaterial->shader = App->program->blinnProgram;
 		sphereMaterial->color = color;
 
 		goSelected = sphere;

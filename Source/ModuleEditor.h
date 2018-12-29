@@ -3,7 +3,6 @@
 
 #include "Module.h"
 #include "Globals.h"
-
 #include "Dock.h"
 #include "DockAbout.h"
 #include "DockConsole.h"
@@ -13,7 +12,7 @@
 #include "DockHierarchy.h"
 #include "DockInspector.h"
 #include "DockCamera.h"
-
+#include "DockLight.h"
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
@@ -27,6 +26,7 @@ class DockTime;
 class DockHierarchy;
 class DockInspector;
 class DockCamera;
+class DockLight;
 
 class ModuleEditor : public Module
 {
@@ -60,6 +60,7 @@ class ModuleEditor : public Module
 		DockHierarchy* hierarchy = nullptr;
 		DockInspector* inspector = nullptr;
 		DockCamera* camera = nullptr;
+		DockLight* light = nullptr;
 
 	private:
 		std::list<Dock*> docks;

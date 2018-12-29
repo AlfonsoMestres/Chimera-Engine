@@ -73,8 +73,15 @@ void ComponentCamera::DrawProperties() {
 			ImGui::PopID();
 			return;
 		}
+		ImGui::ShowDemoWindow();
 
 		ImGui::Checkbox("Debug", &debugDraw);
+
+		if (debugDraw) {
+			ImGui::RadioButton("Wireframe", &wireFrame, GL_LINE); ImGui::SameLine();
+			ImGui::RadioButton("Fill", &wireFrame, GL_FILL);
+		}
+
 
 		ImGui::Separator();
 		ImGui::Text("Pitch: %.2f", pitch, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();

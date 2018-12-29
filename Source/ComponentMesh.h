@@ -9,6 +9,7 @@
 #include "Geometry/AABB.h"
 
 struct par_shapes_mesh_s;
+class ComponentMaterial;
 
 class ComponentMesh : public Component
 {
@@ -23,7 +24,7 @@ class ComponentMesh : public Component
 
 		void CleanUp();
 
-		void		Draw(unsigned shaderProgram, const Texture* textures) const;
+		void		Draw(unsigned shaderProgram, const ComponentMaterial* material) const;
 		void		DrawProperties() override;
 		Component*	Duplicate() override;
 

@@ -99,6 +99,7 @@
     <ClInclude Include="Source\DockConsole.h" />
     <ClInclude Include="Source\DockHierarchy.h" />
     <ClInclude Include="Source\DockInspector.h" />
+    <ClInclude Include="Source\DockLight.h" />
     <ClInclude Include="Source\DockScene.h" />
     <ClInclude Include="Source\DockTime.h" />
     <ClInclude Include="Source\GameObject.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="Source\DockConsole.cpp" />
     <ClCompile Include="Source\DockHierarchy.cpp" />
     <ClCompile Include="Source\DockInspector.cpp" />
+    <ClCompile Include="Source\DockLight.cpp" />
     <ClCompile Include="Source\DockScene.cpp" />
     <ClCompile Include="Source\DockTime.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
@@ -253,6 +255,8 @@
     <ClCompile Include="Source\ModuleWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Game\Shaders\blinn.fs" />
+    <None Include="Game\Shaders\blinn.vs" />
     <None Include="Game\Shaders\default.fs" />
     <None Include="Game\Shaders\default.vs" />
     <None Include="Game\Shaders\texture.fs" />

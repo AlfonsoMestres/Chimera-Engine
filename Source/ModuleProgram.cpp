@@ -8,8 +8,9 @@ bool ModuleProgram::LoadPrograms() {
 	// TODO: this should be pushed back to a vector
 	basicProgram = LoadProgram("./Shaders/default.vs", "./Shaders/default.fs");
 	textureProgram = LoadProgram("./Shaders/texture.vs", "./Shaders/texture.fs");
+	blinnProgram = LoadProgram("./Shaders/blinn.vs", "./Shaders/blinn.fs");
 
-	return (basicProgram != 0 && textureProgram != 0);
+	return (basicProgram != 0 && textureProgram != 0 && blinnProgram != 0);
 }
 
 unsigned ModuleProgram::LoadProgram(const char* vertShaderPath, const char* fragShaderPath) {

@@ -18,6 +18,7 @@ ModuleEditor::ModuleEditor() {
 	docks.push_back(inspector = new DockInspector());
 	docks.push_back(time = new DockTime());
 	docks.push_back(camera = new DockCamera());
+	docks.push_back(light = new DockLight());
 }
 
 ModuleEditor::~ModuleEditor() { }
@@ -85,10 +86,10 @@ update_status ModuleEditor::Update() {
 					new GameObject(DEFAULT_GO_NAME, math::float4x4().identity, nullptr, nullptr);
 				}
 				if (ImGui::MenuItem("Sphere")) {
-					App->scene->GenerateSphere(App->scene->goSelected, 20, 20, math::float3::zero, math::Quat::identity, 1.0f, math::float4(50.0f, 100.0f, 0.0f, 1.0f));
+					App->scene->GenerateSphere(App->scene->goSelected, 20, 20, math::float3::zero, math::Quat::identity, 1.0f, math::float4(0.4f, 0.7f, 0.2f, 0.8f));
 				}
 				if (ImGui::MenuItem("Torus")) {
-					App->scene->GenerateTorus(App->scene->goSelected, math::float3::zero, math::Quat::identity, 0.5f, 0.67f, 30, 30, math::float4(50.0f, 100.0f, 0.0f, 1.0f));
+					App->scene->GenerateTorus(App->scene->goSelected, math::float3::zero, math::Quat::identity, 0.5f, 0.67f, 30, 30, math::float4(0.4f, 0.7f, 0.2f, 0.8f));
 				}
 				ImGui::EndMenu();
 			}
@@ -107,6 +108,10 @@ update_status ModuleEditor::Update() {
 
 			if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->IsEnabled())) {
 				hierarchy->ToggleEnabled();
+			}
+
+			if (ImGui::MenuItem("Lights", NULL, light->IsEnabled())) {
+				light->ToggleEnabled();
 			}
 
 			if (ImGui::MenuItem("Time", NULL, time->IsEnabled())) {

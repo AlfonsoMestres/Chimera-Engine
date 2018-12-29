@@ -22,7 +22,7 @@ bool ModuleSceneLoader::Init() {
 void ModuleSceneLoader::LoadFile(const char* path) {
 	assert(path != nullptr);
 
-	const aiScene* scene = aiImportFile(path, aiProcess_Triangulate);
+	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene != NULL) {
 		filepath = path;
@@ -33,11 +33,12 @@ void ModuleSceneLoader::LoadFile(const char* path) {
 	}
 }
 
+//TODO: Create GO for every mesh instead for every node
 void ModuleSceneLoader::ProcessTree(const aiNode* node, const aiScene* scene, const aiMatrix4x4& parentTransform, GameObject* goParent) {
 	assert(scene != nullptr);
 	assert(node != nullptr);
 	assert(goParent != nullptr);
-
+	 
 	aiMatrix4x4 transform = parentTransform * node->mTransformation;
 	GameObject* gameObject = App->scene->CreateGameObject(node->mName.C_Str(), goParent, (math::float4x4&)transform, filepath);
 
@@ -47,6 +48,7 @@ void ModuleSceneLoader::ProcessTree(const aiNode* node, const aiScene* scene, co
 		mesh->ComputeMesh(scene->mMeshes[node->mMeshes[i]]);
 
 		ComponentMaterial* material = (ComponentMaterial*)gameObject->AddComponent(ComponentType::MATERIAL);
+		//This is generating a difuse material, change to multiple texture materials
 		material->ComputeMaterial(scene->mMaterials[mesh->MaterialIndex()]);
 	}
 

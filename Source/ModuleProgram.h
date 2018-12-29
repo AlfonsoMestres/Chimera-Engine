@@ -18,6 +18,7 @@ class ModuleProgram : public Module
 	public:
 		unsigned	basicProgram = 0u;
 		unsigned	textureProgram = 0u;
+		unsigned	blinnProgram = 0u;
 		unsigned	vertShader = 0u;
 		unsigned	fragShader = 0u;
 

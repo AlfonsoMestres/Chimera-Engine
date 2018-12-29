@@ -27,6 +27,9 @@ class ModuleScene : public Module
 	public:
 		GameObject* root = nullptr;
 		GameObject* goSelected = nullptr;
+
+		math::float3 lightPosition = math::float3(0.0f, 10.0f, 10.0f);
+		float ambientLight = 0.3f;
 };
 
 #endif

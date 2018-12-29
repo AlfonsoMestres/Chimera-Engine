@@ -51,6 +51,7 @@ class ComponentCamera : public Component
 		float			yaw = 0.0f;
 
 		bool			debugDraw = true;
+		int				wireFrame = GL_FILL;
 
 		unsigned		screenWidth = SCREEN_WIDTH;
 		unsigned		screenHeight = SCREEN_HEIGHT;
