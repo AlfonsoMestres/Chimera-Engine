@@ -26,6 +26,7 @@ class ModuleRender : public Module
 		void			GenerateBlockUniforms();
 
 	public:
+		bool			cullingFromGameCamera = true;
 		bool			vsyncEnabled = false;
 		void*			context = nullptr;
 		unsigned		ubo = 0u;

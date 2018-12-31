@@ -55,7 +55,11 @@ update_status ModuleRender::Update() {
 	SetProjectionMatrix(App->camera->sceneCamera);
 	SetViewMatrix(App->camera->sceneCamera);
 
-	App->scene->Draw();
+	if (cullingFromGameCamera && App->camera->selectedCamera != nullptr) {
+		App->scene->Draw(App->camera->selectedCamera->frustum);
+	} else {
+		App->scene->Draw(App->camera->sceneCamera->frustum);
+	}
 
 	DrawDebugData(App->camera->sceneCamera);
 
@@ -70,7 +74,7 @@ update_status ModuleRender::Update() {
 		SetViewMatrix(App->camera->selectedCamera);
 
 		// TODO: we will send the frustum to do the culling in the GOs
-		App->scene->Draw();
+		App->scene->Draw(App->camera->selectedCamera->frustum);
 
 		DrawDebugData(App->camera->selectedCamera);
 	}
@@ -165,3 +169,4 @@ bool ModuleRender::CleanUp() {
 	glDeleteBuffers(1, &ubo);
 	return true;
 }
+

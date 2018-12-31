@@ -95,16 +95,16 @@ void ModuleCamera::SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight)
 void ModuleCamera::FocusSelectedObject() {
 
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->goSelected != nullptr) {
-		math::AABB& bbox = App->scene->goSelected->bbox;
-		math::float3 HalfSize = bbox.HalfSize();
-		float distX = HalfSize.x / tanf(sceneCamera->frustum.horizontalFov*0.5f);
-		float distY = HalfSize.y / tanf(sceneCamera->frustum.verticalFov*0.5f);
-		float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
+		//math::AABB& bbox = App->scene->goSelected->bbox;
+		//math::float3 HalfSize = bbox.HalfSize();
+		//float distX = HalfSize.x / tanf(sceneCamera->frustum.horizontalFov*0.5f);
+		//float distY = HalfSize.y / tanf(sceneCamera->frustum.verticalFov*0.5f);
+		//float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
 
-		math::float3 center = bbox.FaceCenterPoint(5);
-		sceneCamera->frustum.pos = center + math::float3(0, 0, camDist);
-		sceneCamera->frustum.front = -math::float3::unitZ;
-		sceneCamera->frustum.up = math::float3::unitY;
+		//math::float3 center = bbox.FaceCenterPoint(5);
+		//sceneCamera->frustum.pos = center + math::float3(0, 0, camDist);
+		//sceneCamera->frustum.front = -math::float3::unitZ;
+		//sceneCamera->frustum.up = math::float3::unitY;
 	}
 
 }

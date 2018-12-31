@@ -33,7 +33,7 @@ class ComponentMesh : public Component
 		int							numIndices = 0;
 		int							materialIndex = 0;
 		std::vector<math::float3>	vertices;
-		AABB						bbox;
+		math::AABB					bbox;
 
 	private:
 		unsigned vao = 0u;

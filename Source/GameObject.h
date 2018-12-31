@@ -11,6 +11,8 @@
 #include "Geometry/AABB.h"
 
 class Component;
+class ComponentMesh;
+class ComponentMaterial;
 class ComponentTransform;
 enum class ComponentType;
 
@@ -24,7 +26,7 @@ class GameObject
 		~GameObject();
 
 		void					Update();
-		void					Draw() const;
+		void					Draw(const math::Frustum& frustum) const;
 		void					CleanUp();
 		void					DrawProperties();
 		void					DrawHierarchy(GameObject* goSelected);
@@ -36,12 +38,11 @@ class GameObject
 		Component*				GetComponent(ComponentType type) const;
 		std::vector<Component*> GetComponents(ComponentType type) const;
 
-		AABB					ComputeBBox() const;
+		void					ComputeBBox();
 
 		math::float4x4			GetLocalTransform() const;
 		math::float4x4			GetGlobalTransform() const;
 		void					ModelTransform(unsigned shader) const;
-
 
 	public:
 		std::string				uuid = "";
@@ -52,11 +53,14 @@ class GameObject
 		const char*				filePath = nullptr;
 		const char*				name = DEFAULT_GO_NAME;
 		GameObject*				parent = nullptr;
-		std::vector<Component*>	components;
 		std::list<GameObject*>	goChilds;
 
+		math::AABB				bbox;
+
 		ComponentTransform*		transform = nullptr;
-		AABB&					bbox = AABB();
+		ComponentMesh*			mesh = nullptr;
+		ComponentMaterial*		material = nullptr;
+		std::vector<Component*>	components;
 
 		bool					toBeDeleted = false;
 		bool					toBeCopied = false;

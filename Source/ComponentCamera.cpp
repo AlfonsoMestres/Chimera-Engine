@@ -2,14 +2,12 @@
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
+#include "ModuleRender.h"
 #include "ComponentCamera.h"
 
 ComponentCamera::ComponentCamera(GameObject* goParent) : Component(goParent, ComponentType::CAMERA) {
 	InitFrustum();
 	CreateFrameBuffer();
-	if (goParent != nullptr) {
-		frustum.pos = goParent->bbox.CenterPoint();
-	}
 }
 
 ComponentCamera::~ComponentCamera() { 
@@ -73,9 +71,10 @@ void ComponentCamera::DrawProperties() {
 			ImGui::PopID();
 			return;
 		}
-		ImGui::ShowDemoWindow();
 
 		ImGui::Checkbox("Debug", &debugDraw);
+
+		ImGui::Checkbox("Frustum culling", &App->renderer->cullingFromGameCamera);
 
 		if (debugDraw) {
 			ImGui::RadioButton("Wireframe", &wireFrame, GL_LINE); ImGui::SameLine();
@@ -159,8 +158,7 @@ void ComponentCamera::Orbit(float dx, float dy) {
 	// TODO: set up the orbit when no GO is selected in front of the camera
 	if (App->scene->goSelected == nullptr) return;
 
-	AABB& bbox = App->scene->goSelected->bbox;
-	math::float3 center = bbox.CenterPoint();
+	math::float3 center = App->scene->goSelected->transform->position;
 
 	if (dx != 0) {
 		math::Quat rotation = math::Quat::RotateY(math::DegToRad(-dx)).Normalized();

@@ -1,3 +1,5 @@
+#include "Application.h"
+#include "ModuleScene.h"
 #include "ComponentTransform.h"
 
 ComponentTransform::ComponentTransform(GameObject* goContainer, const math::float4x4& transform) : Component(goContainer, ComponentType::TRANSFORM) {
@@ -60,14 +62,31 @@ void ComponentTransform::SetWorldToLocal(const math::float4x4& parentTrans) {
 
 void ComponentTransform::DrawProperties() {
 	if (ImGui::CollapsingHeader("Local Transformation")) {
-		ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f);
 
-		ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180, 180.f);
 
-		rotation = rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x),
-		math::DegToRad(eulerRotation.y), math::DegToRad(eulerRotation.z));
+		if (ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f)) {
+			edited = true;
+		}
 
-		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f);
+		if (ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180, 180.f)) {
+			edited = true;
+		}
+
+		if (ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f)) {
+			edited = true;
+		}
+
+		rotation = rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x), math::DegToRad(eulerRotation.y), math::DegToRad(eulerRotation.z));
+
+		if (edited) {
+			goContainer->ComputeBBox();
+			/*GameObject* oldestParent = goContainer;
+			while (oldestParent->parent != App->scene->root) {
+				oldestParent = oldestParent->parent;
+			}
+			oldestParent->ComputeBBox();*/
+			edited = false;
+		}
 
 		ImGui::Separator();
 	}

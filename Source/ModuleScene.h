@@ -15,7 +15,7 @@ class ModuleScene : public Module
 
 		bool Init() override;
 		update_status Update() override;
-		void Draw();
+		void Draw(const math::Frustum& frustum) const;
 		void DrawHierarchy();
 
 		GameObject* CreateGameObject(const char* goName = nullptr, GameObject* goParent = nullptr, 

@@ -13,11 +13,12 @@
 #include "debugdraw.h"
 
 /// CARE Creating this without father could lead to memory leak
-GameObject::GameObject() { 
+GameObject::GameObject() {
 	uuid = App->resource->NewGuuid();
+	transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
 }
 
-GameObject::GameObject(const char* goName, const math::float4x4& transform, const char* fileLocation) {
+GameObject::GameObject(const char* goName, const math::float4x4& parentTransform, const char* fileLocation) {
 
 	uuid = App->resource->NewGuuid();
 
@@ -31,12 +32,12 @@ GameObject::GameObject(const char* goName, const math::float4x4& transform, cons
 
 	parent = App->scene->root;
 	parentUuid = App->scene->root->uuid;
-	this->transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
-	this->transform->AddTransform(transform);
+	transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
+	transform->AddTransform(parentTransform);
 	App->scene->root->goChilds.push_back(this);
 }
 
-GameObject::GameObject(const char* goName, const math::float4x4& transform, GameObject* goParent, const char* fileLocation) {
+GameObject::GameObject(const char* goName, const math::float4x4& parentTransform, GameObject* goParent, const char* fileLocation) {
 
 	uuid = App->resource->NewGuuid();
 
@@ -54,8 +55,8 @@ GameObject::GameObject(const char* goName, const math::float4x4& transform, Game
 		App->scene->root->goChilds.push_back(this);
 	}
 
-	this->transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
-	this->transform->AddTransform(transform);
+	transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
+	transform->AddTransform(parentTransform);
 
 	if (fileLocation != nullptr) {
 		filePath = fileLocation;
@@ -79,6 +80,12 @@ GameObject::GameObject(const GameObject& duplicateGameObject) {
 		duplicatedComponent->parentUuid = uuid;
 		if (duplicatedComponent->componentType == ComponentType::TRANSFORM) {
 			transform = (ComponentTransform*)duplicatedComponent;
+		}
+		if (duplicatedComponent->componentType == ComponentType::MESH) {
+			mesh = (ComponentMesh*)duplicatedComponent;
+		}
+		if (duplicatedComponent->componentType == ComponentType::MATERIAL) {
+			material = (ComponentMaterial*)duplicatedComponent;
 		}
 	}
 
@@ -104,6 +111,10 @@ GameObject::~GameObject() {
 	}
 	goChilds.clear();
 
+	parent = nullptr;
+	transform = nullptr;
+	mesh = nullptr;
+	material = nullptr;
 }
 
 void GameObject::Update() {
@@ -147,19 +158,40 @@ void GameObject::Update() {
 			++itChild;
 		}
 
+		// If a child transform has been edited, compute the BBoxes of the entire family to render correctly
+		/*if (transform != nullptr && transform->edited) {
+			GameObject* oldestParent = this;
+			while (oldestParent->parent != App->scene->root) {
+				oldestParent = oldestParent->parent;
+			}
+			oldestParent->ComputeBBox();
+			transform->edited = false;
+		}*/
+
 	}
 
 }
 
-void GameObject::Draw() const{
+void GameObject::Draw(const math::Frustum& frustum) const {
 
 	if (!enabled) return;
+	if (transform == nullptr) return;
 
 	for (const auto &child : goChilds) {
-		child->Draw();
+		child->Draw(frustum);
 	}
 
-	if (transform == nullptr) return;
+	if (App->scene->goSelected == this) {
+		DrawBBox();
+	}
+
+	ComponentMesh* mesh = (ComponentMesh*)GetComponent(ComponentType::MESH);
+	if (mesh != nullptr && !frustum.Intersects(bbox)) {
+		if (App->scene->goSelected != this) {
+			DrawBBox();
+		}
+		return;
+	}
 
 	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::MATERIAL);
 	unsigned shader = 0u;
@@ -175,13 +207,8 @@ void GameObject::Draw() const{
 	glUseProgram(shader);
 	ModelTransform(shader);
 
-	Component* mesh = GetComponent(ComponentType::MESH);
 	if(mesh != nullptr && mesh->enabled) {
 		((ComponentMesh*)mesh)->Draw(shader, material);
-	}
-
-	if (App->scene->goSelected == this) {
-		DrawBBox();
 	}
 
 	glUseProgram(0);
@@ -340,19 +367,28 @@ Component* GameObject::AddComponent(ComponentType type) {
 			App->camera->gameCameras.push_back((ComponentCamera*)component);
 			break;
 		case ComponentType::TRANSFORM:
-			component = new ComponentTransform(this, math::float4x4().identity);
-			transform = (ComponentTransform*)component;
+			if (GetComponent(ComponentType::TRANSFORM) == nullptr) {
+				component = new ComponentTransform(this, math::float4x4().identity);
+				transform = (ComponentTransform*)component;
+			} else {
+				LOG("This GO already have a TRANSFORM");
+			}
 			break;
 		case  ComponentType::MESH:
-			if (GetComponent(ComponentType::MESH) != nullptr) {
-				LOG("This GO already have a MESH");
-			} else {
+			if (GetComponent(ComponentType::MESH) == nullptr) {
 				component = new ComponentMesh(this, nullptr);
+				mesh = (ComponentMesh*)component;
+			} else {
+				LOG("This GO already have a MESH");
 			}
 			break;
 		case ComponentType::MATERIAL:
-			// TODO: Unity allow multiple but its weird to have this. RESTRICT
-			component = new ComponentMaterial(this);
+			if (GetComponent(ComponentType::MATERIAL) == nullptr) {
+				component = new ComponentMaterial(this);
+				material = (ComponentMaterial*)component;
+			} else {
+				LOG("This GO already have a MATERIAL");
+			}
 			break;
 		case ComponentType::EMPTY:
 		default:
@@ -399,10 +435,10 @@ std::vector<Component*> GameObject::GetComponents(ComponentType type) const {
 
 math::float4x4 GameObject::GetLocalTransform() const {
 	if (transform == nullptr) {
-		return float4x4::identity;
+		return math::float4x4::identity;
 	}
 
-	return float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+	return math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
 }
 
 math::float4x4 GameObject::GetGlobalTransform() const {
@@ -417,35 +453,30 @@ void GameObject::ModelTransform(unsigned shader) const {
 	glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, &GetGlobalTransform()[0][0]);
 }
 
-math::AABB GameObject::ComputeBBox() const {
-	bbox.SetNegativeInfinity();
+void GameObject::ComputeBBox() {
 
-	// Apply transformation of our GO
-	ComponentMesh* mesh = (ComponentMesh*)GetComponent(ComponentType::MESH);
-	if (mesh != nullptr) {
-		bbox.Enclose(mesh->bbox);
-	}
-
-	// Draw child bboxes
-	for (const auto &child : goChilds){
-		if (child->GetComponent(ComponentType::MESH) != nullptr) {
-			child->DrawBBox();
+	for (auto& child : goChilds) {
+		if (child->mesh != nullptr) {
+			child->ComputeBBox();
 		}
 	}
 
-	bbox.TransformAsAABB(GetGlobalTransform());
+	if (mesh != nullptr) {
+		bbox.SetNegativeInfinity();
+		bbox.Enclose(mesh->bbox);
+		bbox.TransformAsAABB(GetGlobalTransform());
+	}
 
-	return bbox;
 }
 
 void GameObject::DrawBBox() const {
 
-	//TODO: this is being calculated every update, set a TRANSFORM_EDITED bool to avoid this
-	math::AABB bbox = ComputeBBox();
-
-	Component* mesh = GetComponent(ComponentType::MESH);
 	if (mesh != nullptr) {
 		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
+	}
+
+	for (auto& child : goChilds) {
+		child->DrawBBox();
 	}
 
 }
