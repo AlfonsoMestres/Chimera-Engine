@@ -97,6 +97,8 @@ GameObject* ModuleScene::GenerateSphere(GameObject* goParent, int slices, int st
 
 		goSelected = sphere;
 
+		sphere->ComputeBBox();
+
 		return sphere;
 	}
 
@@ -125,6 +127,8 @@ GameObject* ModuleScene::GenerateTorus(GameObject* goParent, const math::float3&
 		ComponentMaterial* torusMaterial = (ComponentMaterial*)torus->AddComponent(ComponentType::MATERIAL);
 		torusMaterial->shader = App->program->basicProgram;
 		torusMaterial->color = color;
+
+		torus->ComputeBBox();
 
 		return torus;
 	} 

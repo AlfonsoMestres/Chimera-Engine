@@ -166,8 +166,11 @@ void ComponentMesh::ComputeMesh(par_shapes_mesh_s* mesh) {
 		vertices.push_back(float3((float *)&mesh->points[i]));
 	}
 
+	bbox.SetNegativeInfinity();
+	bbox.Enclose((float3*)mesh->points, mesh->npoints);
+
+	materialIndex = 0;
 	numIndices = mesh->ntriangles * 3;
-	materialIndex = mesh->npoints;
 }
 
 const unsigned ComponentMesh::MaterialIndex() {
