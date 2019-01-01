@@ -1,16 +1,16 @@
 #include "Application.h"
 #include "Component.h"
-#include "ModuleResourceManager.h"
+#include "ModuleFileSystem.h"
 
 Component::Component(GameObject* gameObject, ComponentType type) {
-	uuid = App->resource->NewGuuid();
+	uuid = App->fileSystem->NewGuuid();
 	parentUuid = gameObject->uuid;
 	goContainer = gameObject;
 	componentType = type;
 }
 
 Component::Component(const Component& duplicateComponent) {
-	uuid = App->resource->NewGuuid();
+	uuid = App->fileSystem->NewGuuid();
 	parentUuid = duplicateComponent.parentUuid;
 	goContainer = duplicateComponent.goContainer;
 	componentType = duplicateComponent.componentType;

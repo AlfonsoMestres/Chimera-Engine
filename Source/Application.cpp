@@ -9,7 +9,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleSceneLoader.h"
 #include "ModuleScene.h"
-#include "ModuleResourceManager.h"
+#include "ModuleFileSystem.h"
 #include "ModuleTime.h"
 
 Application::Application() {
@@ -24,8 +24,8 @@ Application::Application() {
 	modules.push_back(debug = new ModuleDebugDraw());
 	modules.push_back(loader = new ModuleSceneLoader());
 	modules.push_back(time = new ModuleTime());
-	modules.push_back(resource = new ModuleResourceManager());
 	modules.push_back(camera = new ModuleCamera());
+	modules.push_back(fileSystem = new ModuleFileSystem());
 
 }
 

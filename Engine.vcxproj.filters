@@ -61,9 +61,6 @@
     <ClCompile Include="Source\ModuleRender.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleResourceManager.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ModuleScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -217,6 +214,12 @@
     <ClCompile Include="Source\DockLight.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleFileSystem.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MaterialImporter.cpp">
+      <Filter>Utils\Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ComponentMaterial.h">
@@ -274,9 +277,6 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleRender.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleResourceManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleScene.h">
@@ -507,6 +507,12 @@
     <ClInclude Include="Source\DockLight.h">
       <Filter>Docks</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ModuleFileSystem.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MaterialImporter.h">
+      <Filter>Utils\Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -544,6 +550,9 @@
     </Filter>
     <Filter Include="Utils\DebugDraw">
       <UniqueIdentifier>{e601ccb2-a421-4c4d-b3b0-345d5f013111}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Importers">
+      <UniqueIdentifier>{8f78d95d-9e8d-4044-a5a5-76f6922419f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

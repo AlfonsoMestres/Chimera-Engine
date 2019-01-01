@@ -41,7 +41,6 @@ void ComponentMaterial::ComputeMaterial(const aiMaterial* material) {
 		texture = App->textures->defaultTexture;
 	}
 
-	/*DeleteTexture();*/
 }
 
 
@@ -71,12 +70,37 @@ void ComponentMaterial::DrawProperties() {
 			}
 		}
 
-		if (texture != nullptr) {
-			ImGui::Text("Texture width:%d height:%d", texture->width, texture->height);
-			float size = ImGui::GetWindowWidth();
-			ImGui::Image((ImTextureID)texture->id, { size,size });
-			ImGui::Separator();
-		}
+		//TODO: First we will require to have our own materials loaded from .dds
+		//if (ImGui::CollapsingHeader("Diffuse")) {
+		//	ImGui::ColorEdit3("Diffuse color", (float*)&diffuseColor);
+		//	/*DrawComboBoxMaterials("DiffuseComboTextures", MaterialTypeSelected::DIFFUSE_MAP, labelDiffuseCurrentFileTextureSelected);*/
+		//	ImGui::Text("Dimensions: %dx%d", diffuseWidth, diffuseHeight);
+		//	ImGui::Image((ImTextureID)diffuseMap, ImVec2(200, 200));
+		//	ImGui::SliderFloat("K diffuse", &diffuseK, 0.0f, 1.0f);
+		//}
+
+		//if (ImGui::CollapsingHeader("Ambient")) {
+		//	/*DrawComboBoxMaterials("OcclusionComboTextures", MaterialTypeSelected::OCCLUSION_MAP, labelOcclusionCurrentFileTextureSelected);*/
+		//	ImGui::Text("Dimensions: %dx%d", ambientWidth, ambientHeight);
+		//	ImGui::Image((ImTextureID)occlusionMap, ImVec2(200, 200));
+		//	ImGui::SliderFloat("K ambient", &ambientK, 0.0f, 1.0f);
+		//}
+
+		//if (ImGui::CollapsingHeader("Specular")) {
+		//	ImGui::ColorEdit3("Specular color", (float*)&specularColor);
+		//	/*DrawComboBoxMaterials("SpecularComboTextures", MaterialTypeSelected::SPECULAR_MAP, labelSpecularCurrentFileTextureSelected);*/
+		//	ImGui::Text("Dimensions: %dx%d", specularWidth, specularHeight);
+		//	ImGui::Image((ImTextureID)specularMap, ImVec2(200, 200));
+		//	ImGui::SliderFloat("K specular", &specularK, 0.0f, 1.0f);
+		//	ImGui::SliderFloat("K shininess", &shininess, 0.0f, 128.0f);
+		//}
+
+		//if (ImGui::CollapsingHeader("Emissive")) {
+		//	ImGui::ColorEdit3("Emissive color", (float*)&emissiveColor);
+		//	/*DrawComboBoxMaterials("EmissiveComboTextures", MaterialTypeSelected::EMISSIVE_MAP, labelEmissiveCurrentFileTextureSelected);*/
+		//	ImGui::Text("Dimensions: %dx%d", emissiveWidth, emissiveHeight);
+		//	ImGui::Image((ImTextureID)emissiveMap, ImVec2(200, 200));
+		//}
 	}
 	ImGui::PopID();
 }

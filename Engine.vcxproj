@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}</ProjectGuid>
     <RootNamespace>SDLGame</RootNamespace>
-    <ProjectName>Engine - Master 1</ProjectName>
+    <ProjectName>Chimera</ProjectName>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -54,13 +54,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Source/glew-2.1.0/include;./Source/SDL/include;./Source/MathGeoLib/include;./Source/IMGUI;./Source/DevIL/include;./Source/Assimp/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Source/glew-2.1.0/include;./Source/SDL/include;./Source/MathGeoLib/include;./Source/IMGUI;./Source/DevIL/include;./Source/Assimp/include;./Source/physicsFS/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>./Source/glew-2.1.0/lib/Release/Win32;./Source/IMGUI;./Source/DevIL/lib/x86/Release;./Source/Assimp/lib/x86;./Source/SDL/libx86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;assimp.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;DevIL.lib;Ilu.lib;Ilut.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>./Source/glew-2.1.0/lib/Release/Win32;./Source/IMGUI;./Source/DevIL/lib/x86/Release;./Source/Assimp/lib/x86;./Source/SDL/libx86;./Source/physicsFS/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>physfs.lib;glew32.lib;assimp.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;DevIL.lib;Ilu.lib;Ilut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -71,14 +71,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Source/glew-2.1.0/include;./Source/SDL/include;./Source/MathGeoLib/include;./Source/IMGUI;./Source/DevIL/include;./Source/Assimp/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Source/glew-2.1.0/include;./Source/SDL/include;./Source/MathGeoLib/include;./Source/IMGUI;./Source/DevIL/include;./Source/Assimp/include;./Source/physicsFS/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>./Source/glew-2.1.0/lib/Release/Win32;./Source/IMGUI;./Source/DevIL/lib/x86/Release;./Source/Assimp/lib/x86;./Source/SDL/libx86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>./Source/glew-2.1.0/lib/Release/Win32;./Source/IMGUI;./Source/DevIL/lib/x86/Release;./Source/Assimp/lib/x86;./Source/SDL/libx86;./Source/physicsFS/lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;assimp.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;DevIL.lib;Ilu.lib;Ilut.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -104,6 +104,7 @@
     <ClInclude Include="Source\DockTime.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Globals.h" />
+    <ClInclude Include="Source\MaterialImporter.h" />
     <ClInclude Include="Source\MathGeoLib\include\Algorithm\Random\LCG.h" />
     <ClInclude Include="Source\MathGeoLib\include\Geometry\AABB.h" />
     <ClInclude Include="Source\MathGeoLib\include\Geometry\AABB2D.h" />
@@ -167,10 +168,10 @@
     <ClInclude Include="Source\ModuleCamera.h" />
     <ClInclude Include="Source\ModuleDebugDraw.h" />
     <ClInclude Include="Source\ModuleEditor.h" />
+    <ClInclude Include="Source\ModuleFileSystem.h" />
     <ClInclude Include="Source\ModuleInput.h" />
     <ClInclude Include="Source\ModuleProgram.h" />
     <ClInclude Include="Source\ModuleRender.h" />
-    <ClInclude Include="Source\ModuleResourceManager.h" />
     <ClInclude Include="Source\ModuleScene.h" />
     <ClInclude Include="Source\ModuleSceneLoader.h" />
     <ClInclude Include="Source\ModuleTextures.h" />
@@ -206,6 +207,7 @@
     <ClCompile Include="Source\IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Source\IMGUI\imgui_impl_sdl.cpp" />
     <ClCompile Include="Source\IMGUI\imgui_widgets.cpp" />
+    <ClCompile Include="Source\MaterialImporter.cpp" />
     <ClCompile Include="Source\log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\MathGeoLib\include\Algorithm\Random\LCG.cpp" />
@@ -244,10 +246,10 @@
     <ClCompile Include="Source\ModuleCamera.cpp" />
     <ClCompile Include="Source\ModuleDebugDraw.cpp" />
     <ClCompile Include="Source\ModuleEditor.cpp" />
+    <ClCompile Include="Source\ModuleFileSystem.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
     <ClCompile Include="Source\ModuleProgram.cpp" />
     <ClCompile Include="Source\ModuleRender.cpp" />
-    <ClCompile Include="Source\ModuleResourceManager.cpp" />
     <ClCompile Include="Source\ModuleScene.cpp" />
     <ClCompile Include="Source\ModuleSceneLoader.cpp" />
     <ClCompile Include="Source\ModuleTextures.cpp" />

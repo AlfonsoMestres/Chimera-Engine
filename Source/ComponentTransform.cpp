@@ -80,11 +80,6 @@ void ComponentTransform::DrawProperties() {
 
 		if (edited) {
 			goContainer->ComputeBBox();
-			/*GameObject* oldestParent = goContainer;
-			while (oldestParent->parent != App->scene->root) {
-				oldestParent = oldestParent->parent;
-			}
-			oldestParent->ComputeBBox();*/
 			edited = false;
 		}
 

@@ -2,8 +2,9 @@
 #include "ModuleInput.h"
 #include "Application.h"
 #include "ModuleEditor.h"
-#include "ModuleTextures.h"
 #include "ModuleCamera.h"
+#include "ModuleTextures.h"
+#include "MaterialImporter.h"
 #include "ModuleSceneLoader.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
@@ -151,13 +152,16 @@ bool ModuleInput::CleanUp() {
 void ModuleInput::FileDropped(const char* fileDroppedPath) {
 
 	// TODO: if image dropped, load it into our resource manager.
-
 	std::string extension(fileDroppedPath);
 	std::size_t found = extension.find_last_of(".");
 	extension = extension.substr(found + 1, extension.length());
 
-	if (extension == "fbx" || extension == "FBX") {
-		App->loader->LoadFile(fileDroppedPath);
+	if (extension == "png" || extension == "tif") {
+
+		char* copiedPath = new char[strlen(fileDroppedPath)];
+		strcpy(copiedPath, fileDroppedPath);
+		MaterialImporter::Import(copiedPath);
+
 	} else {
 		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "The file you are trying to drop is not accepted.", App->window->window);
 	}

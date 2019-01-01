@@ -207,6 +207,10 @@ void ComponentMesh::Draw(unsigned shaderProgram, const ComponentMaterial* materi
 			}
 			break;
 		case 9: //blinn
+			glUniform4f(glGetUniformLocation(shaderProgram, "diffuseColor"), material->diffuseColor.x, material->diffuseColor.y, material->diffuseColor.z, 1.0f);
+			glUniform4f(glGetUniformLocation(shaderProgram, "emissiveColor"), material->emissiveColor.x, material->emissiveColor.y, material->emissiveColor.z, 1.0f);
+			glUniform4f(glGetUniformLocation(shaderProgram, "specularColor"), material->specularColor.x, material->specularColor.y, material->specularColor.z, 1.0f);
+
 			glUniform3fv(glGetUniformLocation(shaderProgram, "light_pos"), 1, (float*)&App->scene->lightPosition);
 			glUniform1f(glGetUniformLocation(shaderProgram, "ambient"), App->scene->ambientLight);
 			glUniform1f(glGetUniformLocation(shaderProgram, "shininess"), material->shininess);
@@ -214,6 +218,43 @@ void ComponentMesh::Draw(unsigned shaderProgram, const ComponentMaterial* materi
 			glUniform1f(glGetUniformLocation(shaderProgram, "k_diffuse"), material->diffuseK);
 			glUniform1f(glGetUniformLocation(shaderProgram, "k_specular"), material->specularK);
 			glUniform4fv(glGetUniformLocation(shaderProgram, "newColor"), 1, (float*)&material->color);
+
+			if (material->diffuseMap != 0) {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, material->diffuseMap);
+				glUniform1i(glGetUniformLocation(shaderProgram, "diffuseMap"), 0);
+				glUniform1i(glGetUniformLocation(shaderProgram, "useDiffuseMap"), 1);
+			} else {
+				glUniform1i(glGetUniformLocation(shaderProgram, "useDiffuseMap"), 0);
+			}
+
+			if (material->emissiveMap != 0) {
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, material->emissiveMap);
+				glUniform1i(glGetUniformLocation(shaderProgram, "emissiveMap"), 1);
+				glUniform1i(glGetUniformLocation(shaderProgram, "useEmissiveMap"), 1);
+			} else {
+				glUniform1i(glGetUniformLocation(shaderProgram, "useEmissiveMap"), 0);
+			}
+
+			if (material->occlusionMap != 0) {
+				glActiveTexture(GL_TEXTURE2);
+				glBindTexture(GL_TEXTURE_2D, material->occlusionMap);
+				glUniform1i(glGetUniformLocation(shaderProgram, "occlusionMap"), 2);
+				glUniform1i(glGetUniformLocation(shaderProgram, "useOcclusionMap"), 1);
+			} else {
+				glUniform1i(glGetUniformLocation(shaderProgram, "useOcclusionMap"), 0);
+			}
+
+			if (material->specularMap != 0) {
+				glActiveTexture(GL_TEXTURE3);
+				glBindTexture(GL_TEXTURE_2D, material->specularMap);
+				glUniform1i(glGetUniformLocation(shaderProgram, "specularMap"), 3);
+				glUniform1i(glGetUniformLocation(shaderProgram, "useSpecularMap"), 1);
+			} else {
+				glUniform1i(glGetUniformLocation(shaderProgram, "useSpecularMap"), 0);
+			}
+
 			break;
 	}
 

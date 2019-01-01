@@ -8,19 +8,18 @@
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
-#include "ModuleResourceManager.h"
+#include "ModuleFileSystem.h"
 #include "SDL/include/SDL_mouse.h"
 #include "debugdraw.h"
 
 /// CARE Creating this without father could lead to memory leak
 GameObject::GameObject() {
-	uuid = App->resource->NewGuuid();
+	uuid = App->fileSystem->NewGuuid();
 	transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
 }
 
 GameObject::GameObject(const char* goName, const math::float4x4& parentTransform, const char* fileLocation) {
-
-	uuid = App->resource->NewGuuid();
+	uuid = App->fileSystem->NewGuuid();
 
 	char* copyName = new char[strlen(goName)];
 	strcpy(copyName, goName);
@@ -38,8 +37,7 @@ GameObject::GameObject(const char* goName, const math::float4x4& parentTransform
 }
 
 GameObject::GameObject(const char* goName, const math::float4x4& parentTransform, GameObject* goParent, const char* fileLocation) {
-
-	uuid = App->resource->NewGuuid();
+	uuid = App->fileSystem->NewGuuid();
 
 	char* copyName = new char[strlen(goName)];
 	strcpy(copyName, goName);
@@ -64,12 +62,13 @@ GameObject::GameObject(const char* goName, const math::float4x4& parentTransform
 }
 
 GameObject::GameObject(const GameObject& duplicateGameObject) {
-
-	uuid = App->resource->NewGuuid();
+	uuid = App->fileSystem->NewGuuid();
 	parentUuid = duplicateGameObject.parentUuid;
+
 	char* copyName = new char[strlen(duplicateGameObject.name)];
 	strcpy(copyName, duplicateGameObject.name);
 	name = copyName;
+
 	filePath = duplicateGameObject.filePath;
 	bbox = duplicateGameObject.bbox;
 
@@ -157,16 +156,6 @@ void GameObject::Update() {
 		} else {
 			++itChild;
 		}
-
-		// If a child transform has been edited, compute the BBoxes of the entire family to render correctly
-		/*if (transform != nullptr && transform->edited) {
-			GameObject* oldestParent = this;
-			while (oldestParent->parent != App->scene->root) {
-				oldestParent = oldestParent->parent;
-			}
-			oldestParent->ComputeBBox();
-			transform->edited = false;
-		}*/
 
 	}
 
