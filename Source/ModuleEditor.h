@@ -9,6 +9,7 @@
 #include "DockConfig.h"
 #include "DockScene.h"
 #include "DockTime.h"
+#include "DockAssets.h"
 #include "DockHierarchy.h"
 #include "DockInspector.h"
 #include "DockCamera.h"
@@ -27,6 +28,7 @@ class DockHierarchy;
 class DockInspector;
 class DockCamera;
 class DockLight;
+class DockAssets;
 
 class ModuleEditor : public Module
 {
@@ -61,6 +63,7 @@ class ModuleEditor : public Module
 		DockInspector* inspector = nullptr;
 		DockCamera* camera = nullptr;
 		DockLight* light = nullptr;
+		DockAssets* assets = nullptr;
 
 	private:
 		std::list<Dock*> docks;

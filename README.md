@@ -11,7 +11,7 @@ game programming and development.
 * Mouse wheel to zoom in/out.
 * F to center the camera into the last loaded object.
 * SHIFT + Movement to duplicate the movement speed.
-* Drag and drop .fbx/.png/.jpg/.dds files to import them.
+* Drag and drop .fbx.png.dds files to import them.
 
 ## Libraries
 
@@ -25,6 +25,8 @@ game programming and development.
 * [mmgr](http://www.flipcode.com/archives/Presenting_A_Memory_Manager.shtml).
 * [CrossGuid](https://github.com/graeme-hill/crossguid)
 * [DebugDraw](https://github.com/glampert/debug-draw)
+* [PhysicsFS](https://icculus.org/physfs/)
+* [RapidJson](https://github.com/Tencent/rapidjson)
 
 ## License
 

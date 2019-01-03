@@ -10,6 +10,14 @@
 #include "ModuleTextures.h"
 #include "assimp/material.h"
 
+enum class MaterialType {
+	NO_TYPE_SELECTED = 0,
+	OCCLUSION_MAP,
+	DIFFUSE_MAP,
+	SPECULAR_MAP,
+	EMISSIVE_MAP
+};
+
 class ComponentMaterial : public Component
 {
 	public:
@@ -18,41 +26,23 @@ class ComponentMaterial : public Component
 		ComponentMaterial(const ComponentMaterial& duplicatedComponent);
 		~ComponentMaterial();
 
-		void ComputeMaterial(const aiMaterial* material);
-		void DeleteTexture();
+		void		UnloadMaterial();
 
 		void		DrawProperties() override;
 		Component*	Duplicate() override;
 
 	public:
-		unsigned occlusionMap = 0u; //ambient
-		float ambientK = 0.5f;
-		int ambientWidth = 0;
-		int ambientHeight = 0;
+		Material	material;
 
-		unsigned diffuseMap = 0u;
-		math::float4 diffuseColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-		float diffuseK = 1.0f;
-		int diffuseWidth = 0;
-		int diffuseHeight = 0;
+	private:
+		void		DeleteTexture(unsigned id);
+		void		DrawComboBoxMaterials(const char* id, MaterialType matType, static std::string& labelCurrentFileTextureSelected);
 
-		unsigned specularMap = 0u;
-		math::float4 specularColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
-		float specularK = 0.6f;
-		float shininess = 64.0f;
-		int specularWidth = 0;
-		int specularHeight = 0;
-
-		unsigned emissiveMap = 0u;
-		math::float4 emissiveColor = float4(0.0f, 0.0f, 0.0f, 0.0f);
-		int emissiveWidth = 0;
-		int emissiveHeight = 0;
-
-		int width = 0;
-		int height = 0;
-		unsigned		shader = 0u;
-		math::float4	color = math::float4::one;
-		Texture*		texture = nullptr;
+	private:
+		std::string diffuseSelected;
+		std::string occlusionSelected;
+		std::string specularSelected;
+		std::string emissiveSelected;
 };
 
 #endif

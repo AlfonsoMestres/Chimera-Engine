@@ -20,12 +20,13 @@ bool MaterialImporter::Import(const char* path)
 		ilBindImage(ImageName);
 
 		if (ilLoadL(IL_TYPE_UNKNOWN, (const void*)fileBuffer, lenghBuffer)) {
-			ilEnable(IL_FILE_OVERWRITE);
 
+			ilEnable(IL_FILE_OVERWRITE);
 			ILuint   size;
 			ILubyte *data;
 			ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
 			size = ilSaveL(IL_DDS, NULL, 0);
+
 			if (size > 0) {
 				data = new ILubyte[size];
 				if (ilSaveL(IL_DDS, data, size) > 0) {
@@ -42,6 +43,7 @@ bool MaterialImporter::Import(const char* path)
 				delete[] data;
 				data = nullptr;
 			}
+
 			ilDeleteImages(1, &ImageName);
 		}
 	}

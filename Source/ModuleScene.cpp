@@ -74,65 +74,34 @@ GameObject* ModuleScene::CreateCamera(GameObject* goParent, const math::float4x4
 	return gameObject;
 }
 
-GameObject* ModuleScene::GenerateSphere(GameObject* goParent, int slices, int stacks, const math::float3& pos,
-										const math::Quat& rot, const float size, const math::float4& color) {
+void ModuleScene::LoadGeometry(GameObject* goParent, GeometryType geometryType) {
+	par_shapes_mesh_s* parMesh = nullptr;
 
-	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(slices, stacks);
-
-	if (mesh) {
-		GameObject* sphere = new GameObject("Sphere", math::float4x4::identity, goParent, nullptr);
-		sphere->transform->SetRotation(rot);
-		sphere->transform->SetPosition(pos);
-
-		par_shapes_scale(mesh, size, size, size);
-
-		ComponentMesh* sphereMesh = (ComponentMesh*)sphere->AddComponent(ComponentType::MESH);
-		sphereMesh->ComputeMesh(mesh);
-
-		par_shapes_free_mesh(mesh);
-
-		ComponentMaterial* sphereMaterial = (ComponentMaterial*)sphere->AddComponent(ComponentType::MATERIAL);
-		sphereMaterial->shader = App->program->blinnProgram;
-		sphereMaterial->color = color;
-
-		goSelected = sphere;
-
-		sphere->ComputeBBox();
-
-		return sphere;
+	switch (geometryType) {
+		case GeometryType::SPHERE:
+			parMesh = par_shapes_create_parametric_sphere(30, 30);
+			break;
+		case GeometryType::TORUS:
+			parMesh = par_shapes_create_torus(30, 30, 0.5f);
+			break;
+		case GeometryType::PLANE:
+			parMesh = par_shapes_create_plane(30, 30);
+			break;
+		case GeometryType::CUBE:
+			parMesh = par_shapes_create_cube();
+			break;
 	}
 
-	LOG("Error: par_shape_mesh sphere error");
-	return nullptr;
-}
+	if (parMesh != nullptr) {
+		par_shapes_scale(parMesh, 5.0f, 5.0f, 5.0f);
 
-//TODO: torus not being generated inside other meshes
-GameObject* ModuleScene::GenerateTorus(GameObject* goParent, const math::float3& pos, const math::Quat& rot,
-										float innerRad, float outerRad, unsigned slices, unsigned stacks, const math::float4& color) {
+		ComponentMesh* mesh = (ComponentMesh*)goParent->AddComponent(ComponentType::MESH);
+		mesh->ComputeMesh(parMesh);
+		par_shapes_free_mesh(parMesh);
 
-	par_shapes_mesh* mesh = par_shapes_create_torus(slices, stacks, innerRad);
-
-	if (mesh) {
-		GameObject* torus = new GameObject("Torus", math::float4x4::identity, goParent, nullptr);
-		torus->transform->SetRotation(rot);
-		torus->transform->SetPosition(pos);
-
-		par_shapes_scale(mesh, outerRad, outerRad, outerRad);
-
-		ComponentMesh* torusMesh = (ComponentMesh*)torus->AddComponent(ComponentType::MESH);
-		torusMesh->ComputeMesh(mesh);
-
-		par_shapes_free_mesh(mesh);
-
-		ComponentMaterial* torusMaterial = (ComponentMaterial*)torus->AddComponent(ComponentType::MATERIAL);
-		torusMaterial->shader = App->program->basicProgram;
-		torusMaterial->color = color;
-
-		torus->ComputeBBox();
-
-		return torus;
-	} 
-
-	LOG("Error: par_shape_mesh cylinder error");
-	return nullptr;
+		ComponentMaterial* mat = (ComponentMaterial*)goParent->AddComponent(ComponentType::MATERIAL);
+		goParent->ComputeBBox();
+	} else {
+		LOG("Error: error loading par_shapes mesh");
+	}
 }

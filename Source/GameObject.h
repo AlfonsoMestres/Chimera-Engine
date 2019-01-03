@@ -31,7 +31,6 @@ class GameObject
 		void					DrawProperties();
 		void					DrawHierarchy(GameObject* goSelected);
 		void					DrawBBox() const;
-		std::string				GetFileFolder() const;
 
 		Component*				AddComponent(ComponentType type);
 		void					RemoveComponent(Component* component);

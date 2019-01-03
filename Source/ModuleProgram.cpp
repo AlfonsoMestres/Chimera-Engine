@@ -6,11 +6,11 @@ ModuleProgram::~ModuleProgram() { }
 
 bool ModuleProgram::LoadPrograms() {
 	// TODO: this should be pushed back to a vector
-	basicProgram = LoadProgram("./Shaders/default.vs", "./Shaders/default.fs");
+	colorProgram = LoadProgram("./Shaders/color.vs", "./Shaders/color.fs");
 	textureProgram = LoadProgram("./Shaders/texture.vs", "./Shaders/texture.fs");
 	blinnProgram = LoadProgram("./Shaders/blinn.vs", "./Shaders/blinn.fs");
 
-	return (basicProgram != 0 && textureProgram != 0 && blinnProgram != 0);
+	return (colorProgram != 0 && textureProgram != 0 && blinnProgram != 0);
 }
 
 unsigned ModuleProgram::LoadProgram(const char* vertShaderPath, const char* fragShaderPath) {
@@ -20,8 +20,8 @@ unsigned ModuleProgram::LoadProgram(const char* vertShaderPath, const char* frag
 	unsigned program = 0u;
 
 	// How to: https://badvertex.com/2012/11/20/how-to-load-a-glsl-shader-in-opengl-using-c.html
-	vertShader = glCreateShader(GL_VERTEX_SHADER);
-	fragShader = glCreateShader(GL_FRAGMENT_SHADER);
+	unsigned vertShader = glCreateShader(GL_VERTEX_SHADER);
+	unsigned fragShader = glCreateShader(GL_FRAGMENT_SHADER);
 
 	char* vertShaderStr = ReadShaderFile(vertShaderPath);
 	char* fragShaderStr = ReadShaderFile(fragShaderPath);
@@ -123,9 +123,9 @@ void ModuleProgram::CompileProgram(unsigned programAddress) {
 }
 
 bool ModuleProgram::CleanUp() {
-	glDeleteProgram(basicProgram);
+	glDeleteProgram(colorProgram);
 	glDeleteProgram(textureProgram);
-	basicProgram = 0;
+	colorProgram = 0;
 	textureProgram = 0;
 	return true;
 }

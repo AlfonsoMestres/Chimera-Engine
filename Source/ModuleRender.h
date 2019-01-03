@@ -31,9 +31,11 @@ class ModuleRender : public Module
 		void*			context = nullptr;
 		unsigned		ubo = 0u;
 
+
 	protected:
 		bool   showAxis = true;
 		bool   showGrid = true;
+
 };
 
 #endif

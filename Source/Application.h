@@ -16,8 +16,8 @@ class ModuleProgram;
 class ModuleTime;
 class ModuleScene;
 class ModuleDebugDraw;
-class ModuleSceneLoader;
 class ModuleFileSystem;
+class ModuleLibrary;
 
 class Application
 {
@@ -42,8 +42,8 @@ class Application
 		ModuleTime* time = nullptr;
 		ModuleScene* scene = nullptr;
 		ModuleDebugDraw* debug = nullptr;
-		ModuleSceneLoader* loader = nullptr;
 		ModuleFileSystem* fileSystem = nullptr;
+		ModuleLibrary* library = nullptr;
 
 	private:
 		std::list<Module*>	modules;

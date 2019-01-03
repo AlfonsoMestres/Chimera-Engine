@@ -49,6 +49,8 @@ void DockAbout::Draw() {
 		ImGui::BulletText("mmgr (version 1.0)");
 		ImGui::BulletText("Crossguid (version 0.2.2)");
 		ImGui::BulletText("DebugDraw (version 2017)");
+		ImGui::BulletText("PhysicsFS (version 3.0.1)");
+		ImGui::BulletText("RapidJson (version 1.1.0)");
 		ImGui::TreePop();
 	}
 

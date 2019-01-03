@@ -73,7 +73,6 @@ update_status ModuleRender::Update() {
 		SetProjectionMatrix(App->camera->selectedCamera);
 		SetViewMatrix(App->camera->selectedCamera);
 
-		// TODO: we will send the frustum to do the culling in the GOs
 		App->scene->Draw(App->camera->selectedCamera->frustum);
 
 		DrawDebugData(App->camera->selectedCamera);
@@ -123,11 +122,11 @@ void ModuleRender::SetProjectionMatrix(ComponentCamera* camera) const {
 }
 
 void ModuleRender::GenerateBlockUniforms() {
-	unsigned uniformBlockIndexDefault = glGetUniformBlockIndex(App->program->basicProgram, "Matrices");
+	unsigned uniformBlockIndexDefault = glGetUniformBlockIndex(App->program->colorProgram, "Matrices");
 	unsigned uniformBlockIndexTexture = glGetUniformBlockIndex(App->program->textureProgram, "Matrices");
 	unsigned uniformBlockIndexBlinn = glGetUniformBlockIndex(App->program->blinnProgram, "Matrices");
 
-	glUniformBlockBinding(App->program->basicProgram, uniformBlockIndexDefault, 0);
+	glUniformBlockBinding(App->program->colorProgram, uniformBlockIndexDefault, 0);
 	glUniformBlockBinding(App->program->textureProgram, uniformBlockIndexTexture, 0);
 	glUniformBlockBinding(App->program->blinnProgram, uniformBlockIndexBlinn, 0);
 

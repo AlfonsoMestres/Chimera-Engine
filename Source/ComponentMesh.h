@@ -6,7 +6,6 @@
 #include "Component.h"
 #include "Math/float3.h"
 #include "ModuleTextures.h"
-#include "Geometry/AABB.h"
 
 struct par_shapes_mesh_s;
 class ComponentMaterial;
@@ -14,31 +13,25 @@ class ComponentMaterial;
 class ComponentMesh : public Component
 {
 	public:
-		ComponentMesh(GameObject* goContainer, aiMesh* mesh);
+		ComponentMesh(GameObject* goContainer, Mesh* mesh);
 		ComponentMesh(const ComponentMesh& duplicatedComponent);
 		~ComponentMesh();
 
-		void ComputeMesh(aiMesh* mesh);
-		void ComputeMesh(par_shapes_mesh_s* mesh);
-		const unsigned MaterialIndex();
-
 		void CleanUp();
 
+		void		ComputeMesh();
+		void		ComputeMesh(par_shapes_mesh_s* parMesh);
 		void		Draw(unsigned shaderProgram, const ComponentMaterial* material) const;
 		void		DrawProperties() override;
+		void		LoadMesh(const char* name);
 		Component*	Duplicate() override;
 
 	public:
-		const char*					name = nullptr;
-		int							numIndices = 0;
-		int							materialIndex = 0;
-		std::vector<math::float3>	vertices;
-		math::AABB					bbox;
+		Mesh			mesh;
+		const char*		name = nullptr;
 
 	private:
-		unsigned vao = 0u;
-		unsigned vbo = 0u;
-		unsigned ibo = 0u;
+		std::string currentMesh;
 };
 
 #endif

@@ -1,11 +1,12 @@
 #include "Globals.h"
 #include "ModuleInput.h"
 #include "Application.h"
+#include "MeshImporter.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
 #include "MaterialImporter.h"
-#include "ModuleSceneLoader.h"
+#include "ModuleFileSystem.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "SDL.h"
@@ -150,20 +151,21 @@ bool ModuleInput::CleanUp() {
 }
 
 void ModuleInput::FileDropped(const char* fileDroppedPath) {
+	std::string fileName(fileDroppedPath);
+	std::string extension(fileName.substr(fileName.length() - 3));
 
-	// TODO: if image dropped, load it into our resource manager.
-	std::string extension(fileDroppedPath);
-	std::size_t found = extension.find_last_of(".");
-	extension = extension.substr(found + 1, extension.length());
+	std::size_t found = fileName.find("Models");
+	fileName = fileName.substr(found, fileName.length());
 
+	//TODO: we should be able to drop fbx and png from outside the project
 	if (extension == "png" || extension == "tif") {
-
-		char* copiedPath = new char[strlen(fileDroppedPath)];
-		strcpy(copiedPath, fileDroppedPath);
-		MaterialImporter::Import(copiedPath);
-
+		App->fileSystem->ChangePathSlashes(fileName);
+		MaterialImporter::Import(fileName.c_str());
+	} else if (extension == "fbx" || extension == "FBX") {
+		App->fileSystem->ChangePathSlashes(fileName);
+		MeshImporter::ImportFBX(fileName.c_str());
 	} else {
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "The file you are trying to drop is not accepted.", App->window->window);
+		LOG("Error: The file you are trying to drop is not accepted.");
 	}
 }
 

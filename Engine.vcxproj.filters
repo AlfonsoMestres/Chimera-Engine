@@ -64,9 +64,6 @@
     <ClCompile Include="Source\ModuleScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ModuleSceneLoader.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ModuleTextures.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -220,6 +217,15 @@
     <ClCompile Include="Source\MaterialImporter.cpp">
       <Filter>Utils\Importers</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ModuleLibrary.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MeshImporter.cpp">
+      <Filter>Utils\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DockAssets.cpp">
+      <Filter>Docks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ComponentMaterial.h">
@@ -280,9 +286,6 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleScene.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ModuleSceneLoader.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModuleTextures.h">
@@ -513,6 +516,15 @@
     <ClInclude Include="Source\MaterialImporter.h">
       <Filter>Utils\Importers</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ModuleLibrary.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MeshImporter.h">
+      <Filter>Utils\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DockAssets.h">
+      <Filter>Docks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -568,16 +580,16 @@
     <None Include="Game\Shaders\texture.vs">
       <Filter>Utils\Shaders</Filter>
     </None>
-    <None Include="Game\Shaders\default.fs">
-      <Filter>Utils\Shaders</Filter>
-    </None>
-    <None Include="Game\Shaders\default.vs">
-      <Filter>Utils\Shaders</Filter>
-    </None>
     <None Include="Game\Shaders\blinn.vs">
       <Filter>Utils\Shaders</Filter>
     </None>
     <None Include="Game\Shaders\blinn.fs">
+      <Filter>Utils\Shaders</Filter>
+    </None>
+    <None Include="Game\Shaders\color.fs">
+      <Filter>Utils\Shaders</Filter>
+    </None>
+    <None Include="Game\Shaders\color.vs">
       <Filter>Utils\Shaders</Filter>
     </None>
   </ItemGroup>

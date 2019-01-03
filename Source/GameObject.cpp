@@ -170,36 +170,31 @@ void GameObject::Draw(const math::Frustum& frustum) const {
 		child->Draw(frustum);
 	}
 
+	// If GO does not contain any mesh, do not draw
+	if (mesh == nullptr || mesh != nullptr && !mesh->enabled) {
+		return;
+	}
+
 	if (App->scene->goSelected == this) {
 		DrawBBox();
 	}
 
-	ComponentMesh* mesh = (ComponentMesh*)GetComponent(ComponentType::MESH);
-	if (mesh != nullptr && !frustum.Intersects(bbox)) {
-		if (App->scene->goSelected != this) {
-			DrawBBox();
-		}
+	if (!frustum.Intersects(bbox)) {
+		DrawBBox();
 		return;
 	}
 
-	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::MATERIAL);
-	unsigned shader = 0u;
-	Texture* texture = nullptr;
-	
-	if (material != nullptr && material->enabled) {
-		shader = material->shader;
-		texture = material->texture;
-	} else {
-		shader = App->program->basicProgram;
+	unsigned program = App->program->blinnProgram;
+	if (material == nullptr) {
+		program = App->program->textureProgram;
+	} else if (!material->enabled) {
+		program = App->program->colorProgram;
 	}
 
-	glUseProgram(shader);
-	ModelTransform(shader);
+	glUseProgram(program);
+	ModelTransform(program);
 
-	if(mesh != nullptr && mesh->enabled) {
-		((ComponentMesh*)mesh)->Draw(shader, material);
-	}
-
+	((ComponentMesh*)mesh)->Draw(program, material);
 	glUseProgram(0);
 }
 
@@ -214,8 +209,7 @@ void GameObject::CleanUp() {
 void GameObject::DrawProperties() {
 	assert(name != nullptr);
 
-	// We could probably spent computing time calculating the goName length, but instead we use a fixed max name length
-	ImGui::InputText("Name", (char*)name, 30.0f); ImGui::SameLine();
+	ImGui::InputText("Name", (char*)name, 50.0f); ImGui::SameLine();
 
 	if (ImGui::Checkbox("Enabled", &enabled)) {
 		for (auto &component : components) {
@@ -337,13 +331,6 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 	ImGui::PopID();
 }
 
-std::string GameObject::GetFileFolder() const {
-	std::string s(filePath);
-	std::size_t found = s.find_last_of("/\\");
-	s = s.substr(0, found + 1);
-	return s;
-}
-
 Component* GameObject::AddComponent(ComponentType type) {
 	Component* component = nullptr;
 
@@ -384,7 +371,9 @@ Component* GameObject::AddComponent(ComponentType type) {
 			break;
 	}
 
-	components.push_back(component);
+	if (component != nullptr) {
+		components.push_back(component);
+	}
 	return component;
 }
 
@@ -452,7 +441,7 @@ void GameObject::ComputeBBox() {
 
 	if (mesh != nullptr) {
 		bbox.SetNegativeInfinity();
-		bbox.Enclose(mesh->bbox);
+		bbox.Enclose(mesh->mesh.bbox);
 		bbox.TransformAsAABB(GetGlobalTransform());
 	}
 

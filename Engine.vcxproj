@@ -94,6 +94,7 @@
     <ClInclude Include="Source\debugdraw.h" />
     <ClInclude Include="Source\Dock.h" />
     <ClInclude Include="Source\DockAbout.h" />
+    <ClInclude Include="Source\DockAssets.h" />
     <ClInclude Include="Source\DockCamera.h" />
     <ClInclude Include="Source\DockConfig.h" />
     <ClInclude Include="Source\DockConsole.h" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Source\MathGeoLib\include\Math\sse_mathfun.h" />
     <ClInclude Include="Source\MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="Source\MathGeoLib\include\Time\Clock.h" />
+    <ClInclude Include="Source\MeshImporter.h" />
     <ClInclude Include="Source\mmgr\mmgr.h" />
     <ClInclude Include="Source\mmgr\nommgr.h" />
     <ClInclude Include="Source\Module.h" />
@@ -170,10 +172,10 @@
     <ClInclude Include="Source\ModuleEditor.h" />
     <ClInclude Include="Source\ModuleFileSystem.h" />
     <ClInclude Include="Source\ModuleInput.h" />
+    <ClInclude Include="Source\ModuleLibrary.h" />
     <ClInclude Include="Source\ModuleProgram.h" />
     <ClInclude Include="Source\ModuleRender.h" />
     <ClInclude Include="Source\ModuleScene.h" />
-    <ClInclude Include="Source\ModuleSceneLoader.h" />
     <ClInclude Include="Source\ModuleTextures.h" />
     <ClInclude Include="Source\ModuleTime.h" />
     <ClInclude Include="Source\ModuleWindow.h" />
@@ -192,6 +194,7 @@
     <ClCompile Include="Source\Crossguid\guid.cpp" />
     <ClCompile Include="Source\Dock.cpp" />
     <ClCompile Include="Source\DockAbout.cpp" />
+    <ClCompile Include="Source\DockAssets.cpp" />
     <ClCompile Include="Source\DockCamera.cpp" />
     <ClCompile Include="Source\DockConfig.cpp" />
     <ClCompile Include="Source\DockConsole.cpp" />
@@ -242,16 +245,17 @@
     <ClCompile Include="Source\MathGeoLib\include\Math\SSEMath.cpp" />
     <ClCompile Include="Source\MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="Source\MathGeoLib\include\Time\Clock.cpp" />
+    <ClCompile Include="Source\MeshImporter.cpp" />
     <ClCompile Include="Source\mmgr\mmgr.cpp" />
     <ClCompile Include="Source\ModuleCamera.cpp" />
     <ClCompile Include="Source\ModuleDebugDraw.cpp" />
     <ClCompile Include="Source\ModuleEditor.cpp" />
     <ClCompile Include="Source\ModuleFileSystem.cpp" />
     <ClCompile Include="Source\ModuleInput.cpp" />
+    <ClCompile Include="Source\ModuleLibrary.cpp" />
     <ClCompile Include="Source\ModuleProgram.cpp" />
     <ClCompile Include="Source\ModuleRender.cpp" />
     <ClCompile Include="Source\ModuleScene.cpp" />
-    <ClCompile Include="Source\ModuleSceneLoader.cpp" />
     <ClCompile Include="Source\ModuleTextures.cpp" />
     <ClCompile Include="Source\ModuleTime.cpp" />
     <ClCompile Include="Source\ModuleWindow.cpp" />
@@ -259,8 +263,8 @@
   <ItemGroup>
     <None Include="Game\Shaders\blinn.fs" />
     <None Include="Game\Shaders\blinn.vs" />
-    <None Include="Game\Shaders\default.fs" />
-    <None Include="Game\Shaders\default.vs" />
+    <None Include="Game\Shaders\color.fs" />
+    <None Include="Game\Shaders\color.vs" />
     <None Include="Game\Shaders\texture.fs" />
     <None Include="Game\Shaders\texture.vs" />
     <None Include="Source\MathGeoLib\include\Geometry\KDTree.inl" />

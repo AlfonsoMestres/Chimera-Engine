@@ -7,6 +7,13 @@
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/Quat.h"
 
+enum class GeometryType {
+	SPHERE,
+	TORUS,
+	PLANE,
+	CUBE
+};
+
 class ModuleScene : public Module
 {
 	public:
@@ -21,8 +28,7 @@ class ModuleScene : public Module
 		GameObject* CreateGameObject(const char* goName = nullptr, GameObject* goParent = nullptr, 
 										const math::float4x4& transform = math::float4x4().identity, const char* fileLocation = nullptr);
 		GameObject* CreateCamera(GameObject* goParent = nullptr, const math::float4x4& transform = math::float4x4().identity);
-		GameObject* GenerateSphere(GameObject* goParent, int slices, int stacks, const math::float3& pos, const math::Quat& rot, const float size, const math::float4& color);
-		GameObject* GenerateTorus(GameObject* goParent, const math::float3& pos, const math::Quat& rot, float innerRad, float outerRad, unsigned slices, unsigned stacks, const math::float4& color);
+		void		LoadGeometry(GameObject* goParent, GeometryType geometryType);
 
 	public:
 		GameObject* root = nullptr;
