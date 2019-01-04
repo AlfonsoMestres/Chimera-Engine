@@ -36,9 +36,6 @@ bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName) {
 	meshStruct.vertices = new float[meshStruct.verticesNumber * 3];
 	memcpy(meshStruct.vertices, aiMesh->mVertices, sizeof(float) * meshStruct.verticesNumber * 3);
 
-	meshStruct.bbox.SetNegativeInfinity();
-	meshStruct.bbox.Enclose((math::float3*)aiMesh->mVertices, aiMesh->mNumVertices);
-
 	if (aiMesh->HasFaces()) {
 		meshStruct.indicesNumber = aiMesh->mNumFaces * 3;
 		meshStruct.indices = new unsigned[meshStruct.indicesNumber];
@@ -67,6 +64,9 @@ bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName) {
 		meshStruct.colors = new float[meshStruct.verticesNumber * 3];
 		memcpy(meshStruct.colors, aiMesh->mColors, sizeof(float) * meshStruct.verticesNumber * 3);
 	}
+
+	meshStruct.bbox.SetNegativeInfinity();
+	meshStruct.bbox.Enclose((math::float3*)aiMesh->mVertices, aiMesh->mNumVertices);
 
 	return Save(meshStruct, meshName);
 }
@@ -142,7 +142,7 @@ bool MeshImporter::Save(const Mesh& mesh, const char* meshName) {
 	bool result = false;
 
 	// indices / vertices / uvs / normals/ colors / 
-	unsigned ranges[6] = {
+	unsigned ranges[5] = {
 		mesh.indicesNumber,
 		mesh.verticesNumber,
 		(mesh.uvs) ? mesh.verticesNumber : 0u,

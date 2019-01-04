@@ -12,7 +12,7 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& duplicatedComponen
 }
 
 ComponentMaterial::~ComponentMaterial() { 
-	//DeleteTexture();
+	UnloadMaterial();
 }
 
 Component* ComponentMaterial::Duplicate() {

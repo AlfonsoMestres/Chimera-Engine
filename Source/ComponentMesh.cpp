@@ -24,9 +24,13 @@ Component* ComponentMesh::Duplicate() {
 }
 
 void ComponentMesh::CleanUp() {
-	//TODO!: when deleted we should remove the component mesh element instead of ignoring it
-	goContainer->mesh = nullptr;
-	delete this;
+	if (mesh.vbo != 0) {
+		glDeleteBuffers(1, &mesh.vbo);
+	}
+
+	if (mesh.ibo != 0) {
+		glDeleteBuffers(1, &mesh.ibo);
+	}
 }
 
 void ComponentMesh::Draw(unsigned shaderProgram, const ComponentMaterial* material) const {

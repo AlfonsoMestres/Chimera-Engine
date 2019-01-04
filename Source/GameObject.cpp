@@ -124,18 +124,17 @@ void GameObject::Update() {
 
 		(*itChild)->Update();
 
-		// TODO: Move up and down elements
 		if ((*itChild)->moveGOUp) {
 			(*itChild)->moveGOUp = false;
 			if (std::abs(std::distance(goChilds.begin(), itChild)) != 0) {
-				LOG("Begin move up");
+				std::swap(*itChild, *std::prev(itChild));
 			}
 		}
 
 		if ((*itChild)->moveGODown) {
 			(*itChild)->moveGODown = false;
 			if (std::abs(std::distance(goChilds.begin(), itChild)) != goChilds.size() - 1) {
-				LOG("Begin move down");
+				std::swap(*itChild, *std::next(itChild));
 			}
 		}
 
@@ -170,13 +169,13 @@ void GameObject::Draw(const math::Frustum& frustum) const {
 		child->Draw(frustum);
 	}
 
-	// If GO does not contain any mesh, do not draw
-	if (mesh == nullptr || mesh != nullptr && !mesh->enabled) {
-		return;
-	}
-
 	if (App->scene->goSelected == this) {
 		DrawBBox();
+	}
+
+	// If GO does not contain any mesh, do not draw
+	if (mesh == nullptr || mesh != nullptr && !mesh->enabled || mesh != nullptr && mesh->mesh.vbo == 0) {
+		return;
 	}
 
 	if (!frustum.Intersects(bbox)) {
@@ -185,6 +184,8 @@ void GameObject::Draw(const math::Frustum& frustum) const {
 	}
 
 	unsigned program = App->program->blinnProgram;
+	//TODO: we should have at least one basic material and assign to the mesh when "removed" the current one
+	// WE ALWAYS need to have a material, its nonsense to have a mesh without material
 	if (material == nullptr) {
 		program = App->program->textureProgram;
 	} else if (!material->enabled) {
@@ -194,7 +195,10 @@ void GameObject::Draw(const math::Frustum& frustum) const {
 	glUseProgram(program);
 	ModelTransform(program);
 
-	((ComponentMesh*)mesh)->Draw(program, material);
+	if (material != nullptr) {
+		((ComponentMesh*)mesh)->Draw(program, material);
+	}
+
 	glUseProgram(0);
 }
 
@@ -354,6 +358,8 @@ Component* GameObject::AddComponent(ComponentType type) {
 			if (GetComponent(ComponentType::MESH) == nullptr) {
 				component = new ComponentMesh(this, nullptr);
 				mesh = (ComponentMesh*)component;
+				//We need to have a material to render a mesh, so we include one if not already added
+				AddComponent(ComponentType::MATERIAL);
 			} else {
 				LOG("This GO already have a MESH");
 			}
