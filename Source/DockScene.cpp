@@ -1,5 +1,7 @@
-#include "ModuleCamera.h"
 #include "Application.h"
+#include "ModuleWindow.h"
+#include "ModuleRender.h"
+#include "ModuleCamera.h"
 #include "DockScene.h"
 
 DockScene::DockScene() { }

@@ -51,9 +51,27 @@ update_status ModuleEditor::PreUpdate() {
 
 update_status ModuleEditor::Update() {
 
+	ImGui::ShowDemoWindow();
 	if (ImGui::BeginMainMenuBar()) {
 
 		if (ImGui::BeginMenu("App")) {
+
+			if (ImGui::MenuItem("New scene")) {
+				//TODO: set up a basic scene to be loaded when chimera is loaded
+				//App->scene->LoadScene();
+				App->scene->ClearScene();
+			}
+
+			if (ImGui::MenuItem("Save scene")) {
+				//TODO: open a popup and be able to save with an specific name
+				App->scene->SaveScene();
+			}
+
+
+			if (ImGui::MenuItem("Load scene")) {
+				//TODO: load from file system instead default scene / load from a list of scenes in our library
+				App->scene->LoadScene();
+			}
 
 			if (ImGui::MenuItem("Exit")) {
 				ImGui::EndMenu();
@@ -65,7 +83,13 @@ update_status ModuleEditor::Update() {
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Scene")) {
+		/*bool result = false;
+		if (ImGui::BeginPopupModal(FilePickerID, WindowFlags.NoTitleBar)) {
+			result = DrawFolder(ref selected, true);
+			ImGui::EndPopup();
+		}*/
+
+		if (ImGui::BeginMenu("Elements")) {
 
 			if (ImGui::BeginMenu("Select camera in")) {
 				if (App->camera->gameCameras.size() == 0) {
@@ -82,25 +106,25 @@ update_status ModuleEditor::Update() {
 
 			if (ImGui::BeginMenu("Add new")) {
 				if(ImGui::MenuItem("Empty GameObject")) {
-					new GameObject(DEFAULT_GO_NAME, math::float4x4().identity, nullptr, nullptr);
+					new GameObject(DEFAULT_GO_NAME, math::float4x4().identity, nullptr);
 				}
 				if (ImGui::MenuItem("Sphere")) {
-					GameObject* sphereGO = new GameObject("Sphere", math::float4x4().identity, App->scene->goSelected, nullptr);
+					GameObject* sphereGO = new GameObject("Sphere", math::float4x4().identity, App->scene->goSelected);
 					App->scene->LoadGeometry(sphereGO, GeometryType::SPHERE);
 					App->scene->goSelected = sphereGO;
 				}
 				if (ImGui::MenuItem("Torus")) {
-					GameObject* torusGO = new GameObject("Torus", math::float4x4().identity, App->scene->goSelected, nullptr); 
+					GameObject* torusGO = new GameObject("Torus", math::float4x4().identity, App->scene->goSelected); 
 					App->scene->LoadGeometry(torusGO, GeometryType::TORUS);
 					App->scene->goSelected = torusGO;
 				}
 				if (ImGui::MenuItem("Cube")) {
-					GameObject* cubeGO = new GameObject("Cube", math::float4x4().identity, App->scene->goSelected, nullptr);
+					GameObject* cubeGO = new GameObject("Cube", math::float4x4().identity, App->scene->goSelected);
 					App->scene->LoadGeometry(cubeGO, GeometryType::CUBE);
 					App->scene->goSelected = cubeGO;
 				}
 				if (ImGui::MenuItem("Plane")) {
-					GameObject* planeGO = new GameObject("Plane", math::float4x4().identity, App->scene->goSelected, nullptr);
+					GameObject* planeGO = new GameObject("Plane", math::float4x4().identity, App->scene->goSelected);
 					App->scene->LoadGeometry(planeGO, GeometryType::PLANE);
 					App->scene->goSelected = planeGO;
 				}

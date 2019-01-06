@@ -8,6 +8,8 @@
 #include "Math/Quat.h"
 #include <assimp/scene.h> 
 
+class GameObject;
+
 class ComponentTransform : public Component
 {
 	public:
@@ -26,12 +28,14 @@ class ComponentTransform : public Component
 		void		DrawProperties() override;
 		Component*	Duplicate() override;
 
+		void Save(Config* config) override;
+		void Load(Config* config, rapidjson::Value& value) override;
+
 	public:
 		math::float3	position = math::float3::zero;
 		math::Quat		rotation = math::Quat::identity;
 		math::float3	eulerRotation = math::float3::zero;
 		math::float3	scale = math::float3::zero;
-
 		bool			edited = false;
 };
 

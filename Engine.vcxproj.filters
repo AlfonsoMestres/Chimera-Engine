@@ -226,6 +226,9 @@
     <ClCompile Include="Source\DockAssets.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Config.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ComponentMaterial.h">
@@ -525,6 +528,66 @@
     <ClInclude Include="Source\DockAssets.h">
       <Filter>Docks</Filter>
     </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\memorybuffer.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\memorystream.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\ostreamwrapper.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\pointer.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\prettywriter.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\rapidjson.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\reader.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\schema.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\stream.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\stringbuffer.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\writer.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\allocators.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\document.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\encodedstream.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\encodings.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\filereadstream.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\filewritestream.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\fwd.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\rapidjson-1.1.0\include\rapidjson\istreamwrapper.h">
+      <Filter>Utils\RapidJson</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Config.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -565,6 +628,9 @@
     </Filter>
     <Filter Include="Utils\Importers">
       <UniqueIdentifier>{8f78d95d-9e8d-4044-a5a5-76f6922419f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\RapidJson">
+      <UniqueIdentifier>{6c094496-a00e-4a2a-b1d8-ff04e1038c34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

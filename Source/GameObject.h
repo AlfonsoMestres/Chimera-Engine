@@ -10,6 +10,10 @@
 #include "Math/float4x4.h"
 #include "Geometry/AABB.h"
 
+#include "document.h"
+#include "prettywriter.h"
+
+class Config;
 class Component;
 class ComponentMesh;
 class ComponentMaterial;
@@ -20,8 +24,9 @@ class GameObject
 {
 	public:
 		GameObject();
-		GameObject(const char* goName, const math::float4x4& transform, const char* fileLocation);
-		GameObject(const char* goName, const math::float4x4& transform, GameObject* goParent, const char* fileLocation);
+		GameObject(const char* goName, GameObject* goParent);
+		GameObject(const char* goName, const math::float4x4& transform);
+		GameObject(const char* goName, const math::float4x4& transform, GameObject* goParent);
 		GameObject(const GameObject& duplicateGameObject);
 		~GameObject();
 
@@ -43,9 +48,12 @@ class GameObject
 		math::float4x4			GetGlobalTransform() const;
 		void					ModelTransform(unsigned shader) const;
 
+		bool Save(Config* config);
+		void Load(Config* config, rapidjson::Value& value);
+
 	public:
-		std::string				uuid = "";
-		std::string				parentUuid = "";
+		const char *			uuid = nullptr;
+		const char *			parentUuid = nullptr;
 		bool					enabled = true;
 		bool					drawGOBBox = false;
 		bool					duplicating = false;
@@ -59,7 +67,7 @@ class GameObject
 		ComponentTransform*		transform = nullptr;
 		ComponentMesh*			mesh = nullptr;
 		ComponentMaterial*		material = nullptr;
-		std::vector<Component*>	components;
+		std::list<Component*>	components;
 
 		bool					toBeDeleted = false;
 		bool					toBeCopied = false;

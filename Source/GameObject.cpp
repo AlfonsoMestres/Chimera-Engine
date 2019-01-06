@@ -1,3 +1,4 @@
+#include "Config.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
@@ -18,16 +19,25 @@ GameObject::GameObject() {
 	transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
 }
 
-GameObject::GameObject(const char* goName, const math::float4x4& parentTransform, const char* fileLocation) {
+GameObject::GameObject(const char* goName, GameObject* goParent) {
+	uuid = App->fileSystem->NewGuuid();
+	char* copyName = new char[strlen(goName)];
+	strcpy(copyName, goName);
+	name = copyName;
+
+	if (goParent != nullptr) {
+		parent = goParent;
+		parentUuid = goParent->uuid;
+		goParent->goChilds.push_back(this);
+	} 
+}
+
+GameObject::GameObject(const char* goName, const math::float4x4& parentTransform) {
 	uuid = App->fileSystem->NewGuuid();
 
 	char* copyName = new char[strlen(goName)];
 	strcpy(copyName, goName);
 	name = copyName;
-
-	if (fileLocation != nullptr) {
-		filePath = fileLocation;
-	}
 
 	parent = App->scene->root;
 	parentUuid = App->scene->root->uuid;
@@ -36,7 +46,7 @@ GameObject::GameObject(const char* goName, const math::float4x4& parentTransform
 	App->scene->root->goChilds.push_back(this);
 }
 
-GameObject::GameObject(const char* goName, const math::float4x4& parentTransform, GameObject* goParent, const char* fileLocation) {
+GameObject::GameObject(const char* goName, const math::float4x4& parentTransform, GameObject* goParent) {
 	uuid = App->fileSystem->NewGuuid();
 
 	char* copyName = new char[strlen(goName)];
@@ -55,10 +65,6 @@ GameObject::GameObject(const char* goName, const math::float4x4& parentTransform
 
 	transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
 	transform->AddTransform(parentTransform);
-
-	if (fileLocation != nullptr) {
-		filePath = fileLocation;
-	}
 }
 
 GameObject::GameObject(const GameObject& duplicateGameObject) {
@@ -163,11 +169,12 @@ void GameObject::Update() {
 void GameObject::Draw(const math::Frustum& frustum) const {
 
 	if (!enabled) return;
-	if (transform == nullptr) return;
 
 	for (const auto &child : goChilds) {
 		child->Draw(frustum);
 	}
+
+	if (transform == nullptr) return;
 
 	if (App->scene->goSelected == this) {
 		DrawBBox();
@@ -223,9 +230,9 @@ void GameObject::DrawProperties() {
 
 	if (ImGui::CollapsingHeader("Info")) {
 		ImGui::Text("UUID: "); ImGui::SameLine();
-		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, uuid.c_str());
+		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, uuid);
 		ImGui::Text("Parent UUID: "); ImGui::SameLine();
-		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, parentUuid.c_str());
+		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, parentUuid);
 	}
 
 	for (auto &component : components) {
@@ -386,7 +393,7 @@ Component* GameObject::AddComponent(ComponentType type) {
 void GameObject::RemoveComponent(Component* component) {
 	assert(component != nullptr);
 
-	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
+	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
 		if ((*it) == component) {
 			components.erase(it);
 			delete component;
@@ -463,4 +470,45 @@ void GameObject::DrawBBox() const {
 		child->DrawBBox();
 	}
 
+}
+
+/* RapidJson storage */
+bool GameObject::Save(Config* config) {
+	config->StartObject();
+
+	config->AddString("uuid", uuid);
+	config->AddString("name", name);
+
+	if (parent != nullptr) {
+		config->AddString("parent", parent->uuid);
+	}
+
+	config->AddBool("enabled", enabled);
+
+	config->StartArray("components");
+
+	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
+		(*it)->Save(config);
+	}
+
+	config->EndArray();
+
+	config->EndObject();
+
+	return true;
+}
+
+void GameObject::Load(Config* config, rapidjson::Value& value) {
+	uuid = config->GetString("uuid", value);
+	enabled = config->GetBool("enabled", value);
+
+	rapidjson::Value components = value["components"].GetArray();
+
+	for (rapidjson::Value::ValueIterator it = components.Begin(); it != components.End(); ++it) {
+		Component* component = AddComponent(config->GetComponentType("componentType", (*it)));
+
+		if (component != nullptr) {
+			component->Load(config, (*it));
+		}
+	}
 }

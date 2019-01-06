@@ -29,7 +29,7 @@ class ModuleFileSystem : public Module
 		void ChangePathSlashes(std::string& fullPath) const;
 		void SplitFilePath(const char* fullPath, std::string* path, std::string* file = nullptr, std::string* extension = nullptr) const;
 
-		std::string NewGuuid();
+		const char* NewGuuid();
 
 	public:
 		char* basePath = nullptr;

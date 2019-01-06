@@ -1,6 +1,10 @@
+#include "assert.h"
+#include "Config.h"
+#include "GameObject.h"
 #include "Application.h"
 #include "ModuleProgram.h"
 #include "ModuleLibrary.h"
+#include "ModuleTextures.h"
 #include "ComponentMaterial.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* goContainer) : Component(goContainer, ComponentType::MATERIAL) { }
@@ -121,4 +125,49 @@ void ComponentMaterial::UnloadMaterial() {
 
 	Material emptyMaterial;
 	material = emptyMaterial;
+}
+
+void ComponentMaterial::Save(Config* config) {
+	config->StartObject();
+
+	config->AddComponentType("componentType", componentType);
+	config->AddString("parent", goContainer->uuid);
+
+	config->AddString("diffuseSelected", diffuseSelected.c_str());
+	config->AddFloat4("diffuseColor", material.diffuseColor);
+	config->AddFloat("diffuseK", material.diffuseK);
+
+	config->AddString("occlusionSelected", occlusionSelected.c_str());
+	config->AddFloat("ambientK", material.ambientK);
+
+	config->AddString("specularSelected", specularSelected.c_str());
+	config->AddFloat4("specularColor", material.specularColor);
+	config->AddFloat("specularK", material.specularK);
+	config->AddFloat("shininess", material.shininess);
+
+	config->AddString("emissiveSelected", emissiveSelected.c_str());
+	config->AddFloat4("emissiveColor", material.emissiveColor);
+
+	config->EndObject();
+}
+
+void ComponentMaterial::Load(Config* config, rapidjson::Value& value) {
+	diffuseSelected = config->GetString("diffuseSelected", value);
+	material.diffuseColor = config->GetFloat4("diffuseColor", value);
+	material.diffuseK = config->GetFloat("diffuseK", value);
+	App->textures->LoadMaterial(diffuseSelected.c_str(), this, MaterialType::DIFFUSE_MAP);
+
+	occlusionSelected = config->GetString("occlusionSelected", value);
+	material.ambientK = config->GetFloat("ambientK", value);
+	App->textures->LoadMaterial(occlusionSelected.c_str(), this, MaterialType::OCCLUSION_MAP);
+
+	specularSelected = config->GetString("specularSelected", value);
+	material.specularColor = config->GetFloat4("specularColor", value);
+	material.specularK = config->GetFloat("specularK", value);
+	material.shininess = config->GetFloat("shininess", value);
+	App->textures->LoadMaterial(specularSelected.c_str(), this, MaterialType::SPECULAR_MAP);
+
+	emissiveSelected = config->GetString("emissiveSelected", value);
+	material.emissiveColor = config->GetFloat4("emissiveColor", value);
+	App->textures->LoadMaterial(emissiveSelected.c_str(), this, MaterialType::EMISSIVE_MAP);
 }

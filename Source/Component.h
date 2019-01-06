@@ -1,8 +1,10 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 
-#include "GameObject.h"
+#include "document.h"
+#include "prettywriter.h"
 
+class Config;
 class GameObject;
 
 enum class ComponentType {
@@ -30,10 +32,14 @@ class Component
 		virtual void		Disable() { enabled = false; };
 		void				Remove();
 
+		virtual void Save(Config* config) { };
+		virtual void Load(Config* config, rapidjson::Value& value) { };
+
+	public:
 		bool				enabled = true;
 		ComponentType		componentType = ComponentType::EMPTY;
-		std::string			uuid = "";
-		std::string			parentUuid = "";
+		const char*			uuid = "";
+		const char*			parentUuid = "";
 		GameObject*			goContainer = nullptr;
 
 };

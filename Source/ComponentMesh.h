@@ -9,6 +9,7 @@
 
 struct par_shapes_mesh_s;
 class ComponentMaterial;
+class GameObject;
 
 class ComponentMesh : public Component
 {
@@ -25,6 +26,9 @@ class ComponentMesh : public Component
 		void		DrawProperties() override;
 		void		LoadMesh(const char* name);
 		Component*	Duplicate() override;
+
+		void Save(Config* config) override;
+		void Load(Config* config, rapidjson::Value& value) override;
 
 	public:
 		Mesh			mesh;

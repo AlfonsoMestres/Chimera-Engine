@@ -2,10 +2,12 @@
 #define __MODULESCENE_H__
 
 #include "Module.h"
-#include "GameObject.h"
-#include "MathGeoLib/include/Math/float4.h"
-#include "MathGeoLib/include/Math/float3.h"
-#include "MathGeoLib/include/Math/Quat.h"
+#include "Math/Quat.h"
+#include "Math/float3.h"
+#include "Math/float4.h"
+#include "Math/float4x4.h"
+#include "prettywriter.h"
+#include "document.h"
 
 enum class GeometryType {
 	SPHERE,
@@ -14,28 +16,39 @@ enum class GeometryType {
 	CUBE
 };
 
+class Config;
+class GameObject;
+
 class ModuleScene : public Module
 {
 	public:
 		ModuleScene();
 		~ModuleScene();
 
-		bool Init() override;
-		update_status Update() override;
-		void Draw(const math::Frustum& frustum) const;
-		void DrawHierarchy();
+		bool			Init() override;
+		bool			CleanUp() override;
+		update_status	Update() override;
+		void			Draw(const math::Frustum& frustum) const;
+		void			DrawHierarchy();
 
-		GameObject* CreateGameObject(const char* goName = nullptr, GameObject* goParent = nullptr, 
-										const math::float4x4& transform = math::float4x4().identity, const char* fileLocation = nullptr);
-		GameObject* CreateCamera(GameObject* goParent = nullptr, const math::float4x4& transform = math::float4x4().identity);
-		void		LoadGeometry(GameObject* goParent, GeometryType geometryType);
+		GameObject*		CreateGameObject(const char* goName = nullptr, GameObject* goParent = nullptr, const math::float4x4& transform = math::float4x4().identity);
+		GameObject*		CreateCamera(GameObject* goParent = nullptr, const math::float4x4& transform = math::float4x4().identity);
+		void			LoadGeometry(GameObject* goParent, GeometryType geometryType);
+
+		GameObject*		GetGameObjectByUUID(GameObject* gameObject, char uuidObjectName[37]);
+
+		void			CreateGameObject(Config* config, rapidjson::Value& value);
+		void			SaveScene();
+		void			SaveGameObject(Config* config, GameObject* gameObject);
+		void			LoadScene();
+		void			ClearScene();
 
 	public:
-		GameObject* root = nullptr;
-		GameObject* goSelected = nullptr;
+		GameObject*		root = nullptr;
+		GameObject*		goSelected = nullptr;
 
-		math::float3 lightPosition = math::float3(0.0f, 10.0f, 10.0f);
-		float ambientLight = 0.3f;
+		math::float3	lightPosition = math::float3(0.0f, 10.0f, 10.0f);
+		float			ambientLight = 0.3f;
 };
 
 #endif

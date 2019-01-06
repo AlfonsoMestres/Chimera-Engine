@@ -9,7 +9,9 @@
 
 ModuleTextures::ModuleTextures() { }
 
-ModuleTextures::~ModuleTextures() { }
+ModuleTextures::~ModuleTextures() {
+	CleanUp();
+}
 
 bool ModuleTextures::Init() {
 	LOG("Init Image library");
@@ -22,6 +24,21 @@ bool ModuleTextures::Init() {
 	LoadDefaulTextures();
 
 	return ilutRenderer(ILUT_OPENGL);
+}
+
+bool ModuleTextures::CleanUp() {
+	for (std::list<ComponentMaterial*>::iterator iterator = materials.begin(); iterator != materials.end();) {
+		delete *iterator;
+		iterator = materials.erase(iterator);
+		*iterator = nullptr;
+	}
+
+	delete defaultTexture;
+	delete noCameraSelectedTexture;
+	defaultTexture = nullptr;
+	noCameraSelectedTexture = nullptr;
+
+	return true;
 }
 
 Texture* const ModuleTextures::Load(const char* path) {

@@ -1,6 +1,8 @@
-#include "DockInspector.h"
+#include "Component.h"
+#include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "DockInspector.h"
 
 DockInspector::DockInspector() { }
 

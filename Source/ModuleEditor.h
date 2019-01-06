@@ -65,6 +65,8 @@ class ModuleEditor : public Module
 		DockLight* light = nullptr;
 		DockAssets* assets = nullptr;
 
+		const std::string FilePickerID = "###FilePicker";
+
 	private:
 		std::list<Dock*> docks;
 

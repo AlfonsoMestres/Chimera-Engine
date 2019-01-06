@@ -18,12 +18,14 @@ class ModuleLibrary : public Module
 
 		void UpdateMeshesList();
 		void UpdateTexturesList();
+		void UpdateScenesList();
 
 	public:
 		bool					 toBeDeleted = false;
 		bool			  		 removeHead = false;
 		std::vector<std::string> fileMeshesList;
 		std::vector<std::string> fileTexturesList;
+		std::vector<std::string> fileScenesList;
 
 };
 

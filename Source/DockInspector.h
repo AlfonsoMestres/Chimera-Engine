@@ -2,7 +2,8 @@
 #define __DOCKINSPECTOR_H__
 
 #include "Dock.h"
-#include "Component.h"
+
+class GameObject;
 
 class DockInspector : public Dock
 {

@@ -1,6 +1,7 @@
+#include "Component.h"
+#include "DockLight.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "DockLight.h"
 
 DockLight::DockLight() { }
 

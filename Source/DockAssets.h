@@ -2,6 +2,7 @@
 #define __DOCKASSETS_H__
 
 #include "Dock.h"
+
 class DockAssets : public Dock
 {
 	public:

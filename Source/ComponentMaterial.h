@@ -1,13 +1,9 @@
 #ifndef __COMPONENTTMATERIAL_H__
 #define __COMPONENTTMATERIAL_H__
 
-#include "assert.h"
-#include "GL/glew.h"
-#include "Component.h"
 #include "Component.h"
 #include "Imgui/imgui.h"
 #include "Math/float4.h"
-#include "ModuleTextures.h"
 #include "assimp/material.h"
 
 enum class MaterialType {
@@ -17,6 +13,8 @@ enum class MaterialType {
 	SPECULAR_MAP,
 	EMISSIVE_MAP
 };
+
+class GameObject;
 
 class ComponentMaterial : public Component
 {
@@ -30,6 +28,9 @@ class ComponentMaterial : public Component
 
 		void		DrawProperties() override;
 		Component*	Duplicate() override;
+
+		void Save(Config* config) override;
+		void Load(Config* config, rapidjson::Value& value) override;
 
 	public:
 		Material	material;

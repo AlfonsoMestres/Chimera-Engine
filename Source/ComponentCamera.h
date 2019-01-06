@@ -3,7 +3,6 @@
 
 #include "Globals.h"
 #include "Component.h"
-#include "GameObject.h"
 #include "MathGeoLib/include/Math/Quat.h"
 #include "MathGeoLib/include/Math/float3.h"
 #include "MathGeoLib/include/Math/float4x4.h"
@@ -11,6 +10,8 @@
 #include "MathGeoLib/include/Geometry/Frustum.h"
 #include "SDL.h"
 #include "GL/glew.h"
+
+class GameObject;
 
 class ComponentCamera : public Component
 {
@@ -23,6 +24,7 @@ class ComponentCamera : public Component
 		void			Update();
 
 		void			InitFrustum();
+		void			CreateFrameBuffer();
 
 		void			LookAt(math::float3 target);
 		math::float4x4	GetViewMatrix();
@@ -35,7 +37,8 @@ class ComponentCamera : public Component
 		void			SetHorizontalFOV(float fovXDegrees);
 		void			SetVerticalFOV(float fovYDegrees);
 
-		void			CreateFrameBuffer();
+		void Save(Config* config) override;
+		void Load(Config* config, rapidjson::Value& value) override;
 
 	public:
 		math::Frustum	frustum;
@@ -47,28 +50,24 @@ class ComponentCamera : public Component
 		// Camera specs
 		float			maxFov = 100.0f;
 		float			minFov = 10.0f;
-		float			pitch = 0.0f;
-		float			yaw = 0.0f;
-
-		bool			debugDraw = true;
-		int				wireFrame = GL_FILL;
+		float			fovY = 45.0f;
+		float			fovX = 45.0f;
+		float			cameraSpeed = 35.0f;
+		float			rotationSpeed = 65.0f;
+		float			mouseSensitivity = 0.2f;
+		float			zoomValue = 0.0f;
 
 		unsigned		screenWidth = SCREEN_WIDTH;
 		unsigned		screenHeight = SCREEN_HEIGHT;
-
 		float			screenRatio = screenWidth / screenHeight;
-
-		float			cameraSpeed = 15.0f;
-		float			rotationSpeed = 65.0f;
-		float			mouseSensitivity = 0.2f;
-
-		float			fovY = 45.0f;
-		float			fovX = 45.0f;
-		float			zoomValue = 0.0f;
 
 		unsigned		fbo = 0u;
 		unsigned		rbo = 0u;
 		unsigned		renderTexture = 0u;
+
+		//Camera debug settings
+		bool			debugDraw = true;
+		int				wireFrame = GL_FILL;
 };
 
 #endif

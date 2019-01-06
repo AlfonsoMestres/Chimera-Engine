@@ -16,6 +16,7 @@ void DockCamera::Draw() {
 	if (App->camera->selectedCamera != nullptr && App->camera->selectedCamera->enabled == true) {
 		ImGui::Image((ImTextureID)App->camera->selectedCamera->renderTexture, { (float)App->window->width, (float)App->window->height }, { 0,1 }, { 1,0 });
 	} else {
+		//TODO: this should be a unique Material, not an old Texture
 		ImGui::Image((ImTextureID)App->textures->noCameraSelectedTexture->id, { (float)App->window->width, (float)App->window->height }, { 0,1 }, { 1,0 });
 	}
 	ImGui::End();

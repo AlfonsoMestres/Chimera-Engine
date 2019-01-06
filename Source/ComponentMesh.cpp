@@ -1,5 +1,7 @@
 #include "assert.h"
+#include "Config.h"
 #include "par_shapes.h"
+#include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "MeshImporter.h"
@@ -122,15 +124,14 @@ void ComponentMesh::DrawProperties() {
 		ImGui::Separator();
 
 		std::vector<std::string> fileMeshesList = App->library->fileMeshesList;
-		currentMesh;
 		fileMeshesList.insert(fileMeshesList.begin(), "Select mesh");
 
 		if (fileMeshesList.size() > 0) {
 			if (ImGui::BeginCombo("##meshCombo", currentMesh.c_str())) {
-				for (std::vector<std::string>::iterator iterator = fileMeshesList.begin(); iterator != fileMeshesList.end(); ++iterator) {
-					bool isSelected = (currentMesh == (*iterator));
-					if (ImGui::Selectable((*iterator).c_str(), isSelected)) {
-						currentMesh = (*iterator);
+				for (std::vector<std::string>::iterator it = fileMeshesList.begin(); it != fileMeshesList.end(); ++it) {
+					bool isSelected = (currentMesh == (*it));
+					if (ImGui::Selectable((*it).c_str(), isSelected)) {
+						currentMesh = (*it);
 
 						LoadMesh(currentMesh.c_str());
 						if (isSelected) {
@@ -305,4 +306,19 @@ void ComponentMesh::ComputeMesh(par_shapes_mesh_s* parMesh) {
 	glDisableVertexAttribArray(2);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void ComponentMesh::Save(Config* config) {
+	config->StartObject();
+
+	config->AddComponentType("componentType", componentType);
+	config->AddString("parent", goContainer->uuid);
+	config->AddString("currentMesh", currentMesh.c_str());
+
+	config->EndObject();
+}
+
+void ComponentMesh::Load(Config* config, rapidjson::Value& value) {
+	currentMesh = config->GetString("currentMesh", value);
+	LoadMesh(currentMesh.c_str());
 }

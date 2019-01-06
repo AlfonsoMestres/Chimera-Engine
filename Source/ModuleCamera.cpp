@@ -10,11 +10,12 @@
 
 ModuleCamera::ModuleCamera() { }
 
-ModuleCamera::~ModuleCamera() {}
+ModuleCamera::~ModuleCamera() {
+	CleanUp();
+}
 
 bool ModuleCamera::Init() {
-
-	sceneCamera = new ComponentCamera(App->scene->root);
+	sceneCamera = new ComponentCamera(nullptr);
 	sceneCamera->cameraPosition = math::float3(0.0f, 20.0f, 30.0f);
 	sceneCamera->InitFrustum();
 	sceneCamera->debugDraw = true;
@@ -64,9 +65,9 @@ update_status ModuleCamera::Update() {
 	return UPDATE_CONTINUE;
 }
 
-// Called before quitting
 bool ModuleCamera::CleanUp() {
-
+	delete sceneCamera;
+	sceneCamera = nullptr;
 	return true;
 }
 
@@ -79,7 +80,6 @@ void ModuleCamera::Zoom() {
 		sceneCamera->frustum.verticalFov = newAngleFov;
 		sceneCamera->frustum.horizontalFov = 2.0f * atanf(tanf(newAngleFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 	}
-
 }
 
 void ModuleCamera::SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight) {
@@ -151,20 +151,6 @@ void ModuleCamera::Move() {
 void ModuleCamera::DrawGUI() {
 
 	ImGui::Checkbox("Debug", &sceneCamera->debugDraw);
-
-	ImGui::Text("Position "); ImGui::SameLine();
-	ImGui::Text("X: %.2f", sceneCamera->cameraPosition.x, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-	ImGui::Text("Y: %.2f", sceneCamera->cameraPosition.y, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-	ImGui::Text("Z: %.2f", sceneCamera->cameraPosition.z, ImGuiInputTextFlags_ReadOnly);
-
-	ImGui::Text("Forward "); ImGui::SameLine();
-	ImGui::Text("X: %.2f", sceneCamera->cameraFront.x, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-	ImGui::Text("Y: %.2f", sceneCamera->cameraFront.y, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-	ImGui::Text("Z: %.2f", sceneCamera->cameraFront.z, ImGuiInputTextFlags_ReadOnly);
-
-	ImGui::Text("Rotation "); ImGui::SameLine();
-	ImGui::Text("Pitch: %.2f", sceneCamera->pitch, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-	ImGui::Text("Yaw: %.2f", sceneCamera->yaw, ImGuiInputTextFlags_ReadOnly); 
 	
 	float fov = math::RadToDeg(sceneCamera->frustum.verticalFov);
 	if (ImGui::SliderFloat("FOV", &fov, 40, 120)) {

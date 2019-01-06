@@ -31,4 +31,4 @@ class ModuleWindow : public Module
 
 };
 
-#endif // __MODULEWINDOW_H__
+#endif

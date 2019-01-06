@@ -40,6 +40,7 @@ void LibraryWatcher() {
 			oldFilesAssets = currentFilesAssets;
 			App->library->UpdateMeshesList();
 			App->library->UpdateTexturesList();
+			App->library->UpdateScenesList();
 		} else if (oldFilesAssets.size() > currentFilesAssets.size()) {
 			oldFilesAssets = currentFilesAssets;
 		}
@@ -55,6 +56,7 @@ bool ModuleLibrary::Init() {
 
 	UpdateMeshesList();
 	UpdateTexturesList();
+	UpdateScenesList();
 
 	return true;
 }
@@ -86,4 +88,10 @@ void ModuleLibrary::UpdateMeshesList() {
 void ModuleLibrary::UpdateTexturesList() {
 	fileTexturesList.clear();
 	App->fileSystem->GetFilesFromDirectory("/Library/Textures/", fileTexturesList);
+}
+
+//TODO: check if this is working
+void ModuleLibrary::UpdateScenesList() {
+	fileScenesList.clear();
+	App->fileSystem->GetFilesFromDirectory("/Library/Scenes/", fileScenesList);
 }

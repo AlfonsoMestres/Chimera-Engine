@@ -2,7 +2,6 @@
 #define __DOCKLIGHT_H__
 
 #include "Dock.h"
-#include "Component.h"
 
 class DockLight : public Dock
 {

@@ -28,4 +28,4 @@ class Dock
 		bool focused = false;
 };
 
-#endif //__DOCK_H__
+#endif

@@ -49,7 +49,7 @@ class ModuleCamera : public Module
 	public:
 		ComponentCamera* sceneCamera = nullptr;
 		ComponentCamera* selectedCamera = nullptr;
-		std::vector<ComponentCamera*> gameCameras;
+		std::list<ComponentCamera*> gameCameras;
 		
 		GameObject* goSelected = nullptr;
 

@@ -1,3 +1,5 @@
+#include "Config.h"
+#include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
@@ -16,7 +18,7 @@ ComponentCamera::~ComponentCamera() {
 	glDeleteRenderbuffers(1, &rbo);
 	glDeleteTextures(1, &renderTexture);
 
-	for (std::vector<ComponentCamera*>::iterator it = App->camera->gameCameras.begin(); it != App->camera->gameCameras.end(); ++it) {
+	for (std::list<ComponentCamera*>::iterator it = App->camera->gameCameras.begin(); it != App->camera->gameCameras.end(); ++it) {
 		if ((*it) == this) {
 			if (App->camera->selectedCamera == this) {
 				App->camera->selectedCamera = nullptr;
@@ -76,22 +78,17 @@ void ComponentCamera::DrawProperties() {
 
 		ImGui::Checkbox("Frustum culling", &App->renderer->cullingFromGameCamera);
 
-		if (debugDraw) {
-			ImGui::RadioButton("Wireframe", &wireFrame, GL_LINE); ImGui::SameLine();
-			ImGui::RadioButton("Fill", &wireFrame, GL_FILL);
-		}
-
+		ImGui::RadioButton("Wireframe", &wireFrame, GL_LINE); ImGui::SameLine();
+		ImGui::RadioButton("Fill", &wireFrame, GL_FILL);
 
 		ImGui::Separator();
-		ImGui::Text("Pitch: %.2f", pitch, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
-		ImGui::Text("Yaw: %.2f", yaw, ImGuiInputTextFlags_ReadOnly);
 
 		if (ImGui::SliderFloat("FOV", &fovY, 40, 120)) {
 			SetVerticalFOV(fovY);
 		}
 
-		ImGui::InputFloat("zNear", &frustum.nearPlaneDistance, 5, 50);
-		ImGui::InputFloat("zFar", &frustum.farPlaneDistance, 5, 50);
+		ImGui::SliderFloat("zNear", &frustum.nearPlaneDistance, 5, 50);
+		ImGui::SliderFloat("zFar", &frustum.farPlaneDistance, 5, 50);
 
 		if (App->camera->selectedCamera == this) {
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
@@ -206,4 +203,36 @@ void ComponentCamera::CreateFrameBuffer() {
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+/* RapidJson Storage */
+void ComponentCamera::Save(Config* config) {
+	config->StartObject();
+
+	config->AddComponentType("componentType", componentType);
+
+	if (goContainer != nullptr) {
+		config->AddString("goContainer", goContainer->uuid);
+	}
+
+	//TODO: we are not moving the camera anymore, we are moving his goContainer
+	config->AddFloat("frustum.nearPlaneDistance", frustum.nearPlaneDistance);
+	config->AddFloat("frustum.farPlaneDistance", frustum.farPlaneDistance);
+	config->AddFloat3("frustum.pos", frustum.pos);
+	config->AddFloat3("frustum.front", frustum.front);
+	config->AddFloat3("frustum.up", frustum.up);
+	config->AddBool("debugDraw", debugDraw);
+	config->AddInt("wireFrame", GL_FILL);
+
+	config->EndObject();
+}
+
+void ComponentCamera::Load(Config* config, rapidjson::Value& value) {
+	frustum.nearPlaneDistance = config->GetFloat("frustum.nearPlaneDistance", value);
+	frustum.farPlaneDistance = config->GetFloat("frustum.farPlaneDistance", value);
+	frustum.pos = config->GetFloat3("frustum.pos", value);
+	frustum.front = config->GetFloat3("frustum.front", value);
+	frustum.up = config->GetFloat3("frustum.up", value);
+	debugDraw = config->GetBool("debugDraw", value);
+	wireFrame = config->GetInt("wireFrame", value);
 }

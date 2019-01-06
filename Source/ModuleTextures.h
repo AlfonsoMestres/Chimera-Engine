@@ -1,6 +1,7 @@
 #ifndef __MODULETEXTURES_H__
 #define __MODULETEXTURES_H__
 
+#include <list>
 #include "Module.h"
 #include "Globals.h"
 #include "imgui.h"
@@ -73,6 +74,7 @@ class ModuleTextures : public Module
 		~ModuleTextures();
 
 		bool			Init() override;
+		bool			CleanUp() override;
 		Texture* const  Load(const char* path);
 		void			LoadDefaulTextures();
 		void			DrawGUI();
@@ -93,4 +95,4 @@ class ModuleTextures : public Module
 		std::list<ComponentMaterial*> materials;
 };		   
 
-#endif //__MODULETEXTURES_H__
+#endif
