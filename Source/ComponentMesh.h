@@ -23,7 +23,7 @@ class ComponentMesh : public Component
 		void		ComputeMesh();
 		void		ComputeMesh(par_shapes_mesh_s* parMesh);
 		void		Draw(unsigned shaderProgram, const ComponentMaterial* material) const;
-		void		DrawProperties() override;
+		void		DrawProperties(bool enabled) override;
 		void		LoadMesh(const char* name);
 		Component*	Duplicate() override;
 

@@ -9,6 +9,7 @@
 #include "DockConfig.h"
 #include "DockScene.h"
 #include "DockTime.h"
+#include "DockQuad.h"
 #include "DockAssets.h"
 #include "DockHierarchy.h"
 #include "DockInspector.h"
@@ -29,6 +30,7 @@ class DockInspector;
 class DockCamera;
 class DockLight;
 class DockAssets;
+class DockQuad;
 
 class ModuleEditor : public Module
 {
@@ -64,6 +66,7 @@ class ModuleEditor : public Module
 		DockCamera* camera = nullptr;
 		DockLight* light = nullptr;
 		DockAssets* assets = nullptr;
+		DockQuad* quad = nullptr;
 
 		const std::string FilePickerID = "###FilePicker";
 

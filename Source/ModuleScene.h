@@ -18,6 +18,7 @@ enum class GeometryType {
 
 class Config;
 class GameObject;
+class QuadTreeChimera;
 
 class ModuleScene : public Module
 {
@@ -44,11 +45,12 @@ class ModuleScene : public Module
 		void			ClearScene();
 
 	public:
-		GameObject*		root = nullptr;
-		GameObject*		goSelected = nullptr;
+		GameObject*			root = nullptr;
+		GameObject*			goSelected = nullptr;
+		QuadTreeChimera*	quadTree = nullptr;
 
-		math::float3	lightPosition = math::float3(0.0f, 10.0f, 10.0f);
-		float			ambientLight = 0.3f;
+		math::float3		lightPosition = math::float3(0.0f, 10.0f, 10.0f);
+		float				ambientLight = 0.3f;
 };
 
 #endif

@@ -62,9 +62,15 @@ void ComponentTransform::SetWorldToLocal(const math::float4x4& parentTrans) {
 	RotationToEuler();
 }
 
-void ComponentTransform::DrawProperties() {
+void ComponentTransform::DrawProperties(bool enabled) {
 
 	if (ImGui::CollapsingHeader("Local Transform")) {
+
+		if (!enabled) {
+			//https://github.com/ocornut/imgui/issues/211
+			/*ImGui::PushItemFlag(ImGuiSelectableFlags_Disabled, true);
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);*/
+		}
 
 		if (ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f)) {
 			edited = true;
@@ -83,6 +89,11 @@ void ComponentTransform::DrawProperties() {
 		if (edited) {
 			goContainer->ComputeBBox();
 			edited = false;
+		}
+
+		if (!enabled) {
+			/*ImGui::PopItemFlag();
+			ImGui::PopStyleVar();*/
 		}
 
 		ImGui::Separator();

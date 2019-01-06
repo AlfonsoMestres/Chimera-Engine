@@ -3,6 +3,7 @@
 
 #include "Module.h"
 
+class QuadTreeNode;
 class ComponentCamera;
 
 class ModuleRender : public Module
@@ -22,19 +23,16 @@ class ModuleRender : public Module
 		void			InitOpenGL() const;
 		void			SetViewMatrix(ComponentCamera* camera) const;
 		void			SetProjectionMatrix(ComponentCamera* camera) const;
-		void			DrawDebugData(ComponentCamera* camera) const;
 		void			GenerateBlockUniforms();
+		void			DrawDebugData(ComponentCamera* camera) const;
+		void			PrintQuadNode(QuadTreeNode* quadNode) const;
 
 	public:
 		bool			cullingFromGameCamera = true;
 		bool			vsyncEnabled = false;
 		void*			context = nullptr;
 		unsigned		ubo = 0u;
-
-
-	protected:
-		bool   showAxis = true;
-		bool   showGrid = true;
+		bool			showQuad = false;
 
 };
 

@@ -29,7 +29,7 @@ void ComponentMaterial::DeleteTexture(unsigned id) {
 	}
 }
 
-void ComponentMaterial::DrawProperties() {
+void ComponentMaterial::DrawProperties(bool enabled) {
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Material")) {
 		bool removed = Component::DrawComponentState();

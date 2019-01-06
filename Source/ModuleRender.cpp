@@ -7,6 +7,7 @@
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
 #include "ModuleDebugDraw.h"
+#include "QuadTreeChimera.h"
 #include "ComponentCamera.h"
 #include "SDL.h"
 #include "GL/glew.h"
@@ -98,12 +99,13 @@ void ModuleRender::DrawDebugData(ComponentCamera* camera) const {
 		dd::frustum((App->camera->selectedCamera->frustum.ProjectionMatrix() * App->camera->selectedCamera->frustum.ViewMatrix()).Inverted(), dd::colors::Crimson);
 	}
 
-	if (showGrid) {
-		dd::xzSquareGrid(-1000.0f, 1000.0f, 0.0f, 1.0f, math::float3(0.65f, 0.65f, 0.65f));
-	}
+	//Grid
+	dd::xzSquareGrid(-1000.0f, 1000.0f, 0.0f, 1.0f, math::float3(0.65f, 0.65f, 0.65f));
+	//Axis
+	dd::axisTriad(math::float4x4::identity, 0.1f, 1.0f, 0, true);
 
-	if (showAxis) {
-		dd::axisTriad(math::float4x4::identity, 0.1f, 1.0f, 0, true);
+	if (showQuad) {
+		PrintQuadNode(App->scene->quadTree->root);
 	}
 
 	App->debug->Draw(camera, camera->fbo, App->window->height, App->window->width);
@@ -169,3 +171,12 @@ bool ModuleRender::CleanUp() {
 	return true;
 }
 
+void ModuleRender::PrintQuadNode(QuadTreeNode* quadNode) const {
+	if (quadNode->childs[0] != nullptr) {
+		for (int i = 0; i < 4; ++i) {
+			PrintQuadNode(quadNode->childs[i]);
+		}
+	}
+
+	dd::aabb(quadNode->aabb.minPoint, quadNode->aabb.maxPoint, dd::colors::Yellow);
+}

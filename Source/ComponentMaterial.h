@@ -26,7 +26,7 @@ class ComponentMaterial : public Component
 
 		void		UnloadMaterial();
 
-		void		DrawProperties() override;
+		void		DrawProperties(bool enabled) override;
 		Component*	Duplicate() override;
 
 		void Save(Config* config) override;

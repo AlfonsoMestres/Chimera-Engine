@@ -19,7 +19,7 @@ class ComponentCamera : public Component
 		ComponentCamera(GameObject* goParent);
 		~ComponentCamera();
 
-		void			DrawProperties() override;
+		void			DrawProperties(bool enabled) override;
 		Component*		Duplicate() override;
 		void			Update();
 

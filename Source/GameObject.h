@@ -57,7 +57,6 @@ class GameObject
 		bool					enabled = true;
 		bool					drawGOBBox = false;
 		bool					duplicating = false;
-		const char*				filePath = nullptr;
 		const char*				name = DEFAULT_GO_NAME;
 		GameObject*				parent = nullptr;
 		std::list<GameObject*>	goChilds;
@@ -73,6 +72,7 @@ class GameObject
 		bool					toBeCopied = false;
 		bool					moveGOUp = false;
 		bool					moveGODown = false;
+		bool					staticGo = false;
 
 };
 

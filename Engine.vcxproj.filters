@@ -229,6 +229,12 @@
     <ClCompile Include="Source\Config.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\QuadTreeChimera.cpp">
+      <Filter>Utils\QuadTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DockQuad.cpp">
+      <Filter>Docks</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ComponentMaterial.h">
@@ -588,6 +594,12 @@
     <ClInclude Include="Source\Config.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Source\QuadTreeChimera.h">
+      <Filter>Utils\QuadTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DockQuad.h">
+      <Filter>Docks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -631,6 +643,9 @@
     </Filter>
     <Filter Include="Utils\RapidJson">
       <UniqueIdentifier>{6c094496-a00e-4a2a-b1d8-ff04e1038c34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\QuadTree">
+      <UniqueIdentifier>{f01b90de-90cf-4b9f-8ed2-2bfb1f03c04d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -12,65 +12,114 @@
         "frustum.nearPlaneDistance": 0.10000000149011612,
         "frustum.farPlaneDistance": 420.0,
         "frustum.pos": {
-            "x": 5.787988185882568,
-            "y": 8.506674766540528,
-            "z": 12.503046989440918
+            "x": 0.6221272349357605,
+            "y": 10.134636878967286,
+            "z": 11.81198787689209
         },
         "frustum.front": {
-            "x": -0.2834414541721344,
-            "y": -0.47164592146873476,
-            "z": -0.8349917531013489
+            "x": 0.00781654566526413,
+            "y": -0.5804523229598999,
+            "z": -0.8142568469047546
         },
         "frustum.up": {
-            "x": -0.1516055166721344,
-            "y": 0.8817881941795349,
-            "z": -0.44661566615104678
-        },
-        "debugDraw": true,
-        "wireFrame": 6914
-    },
-    "selectedCamera": {
-        "componentType": "CAMERA",
-        "goContainer": "490b64db-1aff-4437-8b96-eaa83bae5576",
-        "frustum.nearPlaneDistance": 0.10000000149011612,
-        "frustum.farPlaneDistance": 420.0,
-        "frustum.pos": {
-            "x": 0.0,
-            "y": 2.5,
-            "z": 10.0
-        },
-        "frustum.front": {
-            "x": 8.742277657347586e-8,
-            "y": 0.0,
-            "z": -1.0
-        },
-        "frustum.up": {
-            "x": 0.0,
-            "y": 1.0,
-            "z": 0.0
+            "x": 0.00557185523211956,
+            "y": 0.8142943978309631,
+            "z": -0.5804253220558167
         },
         "debugDraw": true,
         "wireFrame": 6914
     },
     "gameObjects": [
         {
-            "uuid": "d96f4394-6767-45db-9f31-a64f9a595696",
+            "uuid": "4051cf2d-0ee6-4f22-af50-d069f80cfc6c",
             "name": "root",
             "enabled": true,
+            "static": false,
             "components": []
         },
         {
-            "uuid": "6ffa1f8b-525c-4921-8f42-cb06c55141fb",
+            "uuid": "bf21374b-fa31-422d-b5bc-47f9c60e8882",
             "name": "GameObject",
-            "parent": "d96f4394-6767-45db-9f31-a64f9a595696",
+            "parent": "4051cf2d-0ee6-4f22-af50-d069f80cfc6c",
             "enabled": true,
+            "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "6ffa1f8b-525c-4921-8f42-cb06c55141fb",
-                    "uuid": "b4df0ea7-cff2-45be-b4cf-935eba2f17f8",
+                    "parentUuid": "bf21374b-fa31-422d-b5bc-47f9c60e8882",
+                    "uuid": "17bc6dab-4e73-4180-9632-ac13a5d55b28",
                     "position": {
+                        "x": -2.5999999046325685,
+                        "y": 0.0,
+                        "z": -0.10000000149011612
+                    },
+                    "rotation": {
                         "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "bf21374b-fa31-422d-b5bc-47f9c60e8882",
+                    "diffuseSelected": "",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "",
+                    "ambientK": 0.5,
+                    "specularSelected": "",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "bf21374b-fa31-422d-b5bc-47f9c60e8882",
+                    "currentMesh": "bakerhouse_1.head"
+                }
+            ]
+        },
+        {
+            "uuid": "c557aa67-d59a-4764-b680-b93edc232f4c",
+            "name": "GameObject",
+            "parent": "4051cf2d-0ee6-4f22-af50-d069f80cfc6c",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "c557aa67-d59a-4764-b680-b93edc232f4c",
+                    "uuid": "45b472a4-e919-4b9e-984e-9d1fa01463ff",
+                    "position": {
+                        "x": 2.700000047683716,
                         "y": 0.0,
                         "z": 0.0
                     },
@@ -93,8 +142,8 @@
                 },
                 {
                     "componentType": "MATERIAL",
-                    "parent": "6ffa1f8b-525c-4921-8f42-cb06c55141fb",
-                    "diffuseSelected": "baker_house.dds",
+                    "parent": "c557aa67-d59a-4764-b680-b93edc232f4c",
+                    "diffuseSelected": "",
                     "diffuseColor": {
                         "x": 1.0,
                         "y": 1.0,
@@ -102,7 +151,7 @@
                         "w": 1.0
                     },
                     "diffuseK": 1.0,
-                    "occlusionSelected": "baker_house.dds",
+                    "occlusionSelected": "",
                     "ambientK": 0.5,
                     "specularSelected": "",
                     "specularColor": {
@@ -123,65 +172,8 @@
                 },
                 {
                     "componentType": "MESH",
-                    "parent": "6ffa1f8b-525c-4921-8f42-cb06c55141fb",
+                    "parent": "c557aa67-d59a-4764-b680-b93edc232f4c",
                     "currentMesh": "bakerhouse_1.head"
-                }
-            ]
-        },
-        {
-            "uuid": "490b64db-1aff-4437-8b96-eaa83bae5576",
-            "name": "Camera",
-            "parent": "d96f4394-6767-45db-9f31-a64f9a595696",
-            "enabled": true,
-            "components": [
-                {
-                    "componentType": "TRANSFORM",
-                    "parentUuid": "490b64db-1aff-4437-8b96-eaa83bae5576",
-                    "uuid": "5dcfeea0-c4bb-43be-a92a-21e618b57c97",
-                    "position": {
-                        "x": 0.0,
-                        "y": 2.5,
-                        "z": 10.0
-                    },
-                    "rotation": {
-                        "x": 0.0,
-                        "y": -1.0,
-                        "z": 0.0,
-                        "w": -4.371138828673793e-8
-                    },
-                    "eulerRotation": {
-                        "x": -0.0,
-                        "y": -180.0,
-                        "z": -0.0
-                    },
-                    "scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
-                    }
-                },
-                {
-                    "componentType": "CAMERA",
-                    "goContainer": "490b64db-1aff-4437-8b96-eaa83bae5576",
-                    "frustum.nearPlaneDistance": 0.10000000149011612,
-                    "frustum.farPlaneDistance": 420.0,
-                    "frustum.pos": {
-                        "x": 0.0,
-                        "y": 2.5,
-                        "z": 10.0
-                    },
-                    "frustum.front": {
-                        "x": 8.742277657347586e-8,
-                        "y": 0.0,
-                        "z": -1.0
-                    },
-                    "frustum.up": {
-                        "x": 0.0,
-                        "y": 1.0,
-                        "z": 0.0
-                    },
-                    "debugDraw": true,
-                    "wireFrame": 6914
                 }
             ]
         }

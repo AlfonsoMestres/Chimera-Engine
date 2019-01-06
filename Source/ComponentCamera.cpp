@@ -64,7 +64,7 @@ void ComponentCamera::SetVerticalFOV(float fovYDegrees) {
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)screenWidth / (float)screenHeight));
 }
 
-void ComponentCamera::DrawProperties() {
+void ComponentCamera::DrawProperties(bool enabled) {
 
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Camera properties")) {

@@ -7,6 +7,7 @@
 #include "ComponentMesh.h"
 #include "ComponentLight.h"
 #include "ComponentCamera.h"
+#include "QuadTreeChimera.h"
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
 #include "ModuleFileSystem.h"
@@ -75,7 +76,7 @@ GameObject::GameObject(const GameObject& duplicateGameObject) {
 	strcpy(copyName, duplicateGameObject.name);
 	name = copyName;
 
-	filePath = duplicateGameObject.filePath;
+	staticGo = duplicateGameObject.staticGo;
 	bbox = duplicateGameObject.bbox;
 
 	for (const auto &component : duplicateGameObject.components) {
@@ -220,11 +221,20 @@ void GameObject::CleanUp() {
 void GameObject::DrawProperties() {
 	assert(name != nullptr);
 
-	ImGui::InputText("Name", (char*)name, 50.0f); ImGui::SameLine();
-
 	if (ImGui::Checkbox("Enabled", &enabled)) {
 		for (auto &component : components) {
 			component->enabled = enabled;
+		}
+	} ImGui::SameLine();
+
+	ImGui::InputText("Name", (char*)name, 50.0f); 
+
+	//TODO: display only if contains a mesh or his childs contains any mesh
+	if (ImGui::Checkbox("Static", &staticGo)) {
+		if (staticGo && GetComponent(ComponentType::MESH) != nullptr) {
+			App->scene->quadTree->Insert(this, true);
+		} else if (!staticGo) {
+			App->scene->quadTree->Remove(this);
 		}
 	}
 
@@ -236,7 +246,7 @@ void GameObject::DrawProperties() {
 	}
 
 	for (auto &component : components) {
-		component->DrawProperties();
+		component->DrawProperties(staticGo);
 	}
 
 }
@@ -484,6 +494,7 @@ bool GameObject::Save(Config* config) {
 	}
 
 	config->AddBool("enabled", enabled);
+	config->AddBool("static", staticGo);
 
 	config->StartArray("components");
 
@@ -501,6 +512,12 @@ bool GameObject::Save(Config* config) {
 void GameObject::Load(Config* config, rapidjson::Value& value) {
 	uuid = config->GetString("uuid", value);
 	enabled = config->GetBool("enabled", value);
+	staticGo = config->GetBool("static", value);
+
+	//TODO: if static, put it in the quadtree
+	if (staticGo) {
+		//put it in the quadtree
+	}
 
 	rapidjson::Value components = value["components"].GetArray();
 

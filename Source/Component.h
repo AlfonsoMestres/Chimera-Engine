@@ -24,7 +24,7 @@ class Component
 		virtual ~Component();
 
 		bool				DrawComponentState();
-		virtual void		DrawProperties() { };
+		virtual void		DrawProperties(bool enabled) { };
 		virtual Component*	Duplicate() { return nullptr; };
 
 		virtual void		Enable() { enabled = true; };

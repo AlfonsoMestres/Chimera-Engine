@@ -20,6 +20,7 @@ ModuleEditor::ModuleEditor() {
 	docks.push_back(camera = new DockCamera());
 	docks.push_back(light = new DockLight());
 	docks.push_back(assets = new DockAssets());
+	docks.push_back(quad = new DockQuad());
 }
 
 ModuleEditor::~ModuleEditor() { }
@@ -51,7 +52,6 @@ update_status ModuleEditor::PreUpdate() {
 
 update_status ModuleEditor::Update() {
 
-	ImGui::ShowDemoWindow();
 	if (ImGui::BeginMainMenuBar()) {
 
 		if (ImGui::BeginMenu("App")) {

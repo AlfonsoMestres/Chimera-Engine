@@ -151,7 +151,7 @@ void ModuleCamera::Move() {
 void ModuleCamera::DrawGUI() {
 
 	ImGui::Checkbox("Debug", &sceneCamera->debugDraw);
-	
+
 	float fov = math::RadToDeg(sceneCamera->frustum.verticalFov);
 	if (ImGui::SliderFloat("FOV", &fov, 40, 120)) {
 		sceneCamera->frustum.verticalFov = math::DegToRad(fov);
