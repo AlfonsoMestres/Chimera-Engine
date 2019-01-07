@@ -38,7 +38,10 @@ class QuadTreeChimera
 		void Remove(GameObject* gameObject);
 		void Clear(bool clearAllGameObjects);
 
+		void ExpandLimits(GameObject* gameObject);
+
 	public:
+		float					expansionValue = 0.0f;
 		math::AABB				quadLimits;
 		QuadTreeNode*			root = nullptr;
 		std::list<GameObject*>	allGO;

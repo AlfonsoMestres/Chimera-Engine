@@ -4,7 +4,7 @@
 #include "ComponentMesh.h"
 
 QuadTreeChimera::QuadTreeChimera() { 
-	quadLimits = math::AABB(float3(-20.0f, -0.1f, -20.0f), float3(20.0f, 0.1f, 20.0f));
+	quadLimits = math::AABB(math::float3(-20.0f, -20.0f, -20.0f), math::float3(20.0f, 20.0f, 20.0f));
 	InitQuadTree(quadLimits, true);
 }
 
@@ -18,13 +18,68 @@ void QuadTreeChimera::InitQuadTree(const math::AABB& aabb, bool clearAllGameObje
 }
 
 void QuadTreeChimera::Insert(GameObject* gameObject, bool addQuadList) {
-	if (root != nullptr && gameObject->bbox.Intersects(root->aabb)) {
+	assert(root != nullptr);
+
+	if (gameObject->bbox.Intersects(root->aabb)) {
 		if (addQuadList) {
 			allGO.push_back(gameObject);
 		}
 
 		root->Insert(gameObject);
+	} else {
+		ExpandLimits(gameObject);
 	}
+}
+
+void QuadTreeChimera::ExpandLimits(GameObject* gameObject) {
+
+	//TODO: check if extremepoint is correct
+	math::float3 extremePoint = gameObject->bbox.ExtremePoint(quadLimits.CenterPoint());
+	expansionValue = 0.0f;
+
+	if (extremePoint.x < 0.0f && extremePoint.z < 0.0f) {
+		//TOP LEFT
+		if (quadLimits.minPoint.x > extremePoint.x) {
+			expansionValue = quadLimits.minPoint.x - extremePoint.x;
+		}
+
+		if (quadLimits.minPoint.z > extremePoint.z) {
+			expansionValue = quadLimits.minPoint.z - extremePoint.z;
+		}
+	} else if (extremePoint.x > 0.0f && extremePoint.z < 0.0f) {
+		//TOP RIGHT
+		if (quadLimits.maxPoint.x < extremePoint.x) {
+			expansionValue = extremePoint.x - quadLimits.maxPoint.x;
+		}
+
+		if (quadLimits.minPoint.z > extremePoint.z) {
+			expansionValue = quadLimits.minPoint.z - extremePoint.z;
+		}
+	} else if (extremePoint.x > 0.0f && extremePoint.z > 0.0f) {
+		//BOTTOM RIGHT
+		if (quadLimits.minPoint.x < extremePoint.x) {
+			expansionValue = extremePoint.x - quadLimits.maxPoint.x;
+		}
+
+		if (quadLimits.maxPoint.z < extremePoint.z) {
+			expansionValue = extremePoint.z - quadLimits.minPoint.z;
+		}
+	} else {
+		if (quadLimits.minPoint.x > extremePoint.x) {
+			expansionValue = quadLimits.minPoint.x - extremePoint.x;
+		}
+
+		if (quadLimits.maxPoint.z < extremePoint.z) {
+			expansionValue = extremePoint.z - quadLimits.minPoint.z;
+		}
+	}
+
+	quadLimits.maxPoint.x += expansionValue;
+	quadLimits.maxPoint.z += expansionValue;
+	quadLimits.minPoint.x -= expansionValue;
+	quadLimits.minPoint.z -= expansionValue;
+
+	InitQuadTree(quadLimits, false);
 }
 
 void QuadTreeChimera::Remove(GameObject* gameObject) {
@@ -41,7 +96,7 @@ void QuadTreeChimera::Remove(GameObject* gameObject) {
 
 void QuadTreeChimera::Clear(bool clearAllGameObjects) {
 	if (clearAllGameObjects) {
-		allGO.clear();
+		allGO.clear(); //TODO: check this
 	}
 
 	delete root;
@@ -132,6 +187,7 @@ void QuadTreeNode::RecalculateSpace() {
 		if (intersects[0] && intersects[1] && intersects[2] && intersects[3]) {
 			++iterator;
 		} else {
+			// Not inside the box, expand limits
 			iterator = goList.erase(iterator);
 			for (int i = 0; i < 4; ++i) {
 				if (intersects[i]) {

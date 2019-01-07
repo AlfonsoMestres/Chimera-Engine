@@ -178,5 +178,8 @@ void ModuleRender::PrintQuadNode(QuadTreeNode* quadNode) const {
 		}
 	}
 
+	quadNode->aabb.minPoint.y = -0.1f;
+	quadNode->aabb.maxPoint.y = 0.1f;
+
 	dd::aabb(quadNode->aabb.minPoint, quadNode->aabb.maxPoint, dd::colors::Yellow);
 }
