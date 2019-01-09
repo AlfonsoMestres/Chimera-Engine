@@ -48,6 +48,8 @@ class GameObject
 		math::float4x4			GetGlobalTransform() const;
 		void					ModelTransform(unsigned shader) const;
 
+		void					UpdateStaticChilds(bool staticState);
+
 		bool Save(Config* config);
 		void Load(Config* config, rapidjson::Value& value);
 

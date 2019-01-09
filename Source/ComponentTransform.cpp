@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "imgui_internal.h"
 #include "ComponentTransform.h"
 
 ComponentTransform::ComponentTransform(GameObject* goContainer, const math::float4x4& transform) : Component(goContainer, ComponentType::TRANSFORM) {
@@ -62,14 +63,14 @@ void ComponentTransform::SetWorldToLocal(const math::float4x4& parentTrans) {
 	RotationToEuler();
 }
 
-void ComponentTransform::DrawProperties(bool enabled) {
+void ComponentTransform::DrawProperties(bool staticGo) {
 
 	if (ImGui::CollapsingHeader("Local Transform")) {
 
-		if (!enabled) {
-			//https://github.com/ocornut/imgui/issues/211
-			/*ImGui::PushItemFlag(ImGuiSelectableFlags_Disabled, true);
-			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);*/
+		// https://github.com/ocornut/imgui/issues/211
+		if (staticGo) {
+			ImGui::PushItemFlag({ ImGuiButtonFlags_Disabled | ImGuiItemFlags_Disabled | ImGuiSelectableFlags_Disabled }, true);
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 		}
 
 		if (ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f)) {
@@ -91,9 +92,9 @@ void ComponentTransform::DrawProperties(bool enabled) {
 			edited = false;
 		}
 
-		if (!enabled) {
-			/*ImGui::PopItemFlag();
-			ImGui::PopStyleVar();*/
+		if (staticGo) {
+			ImGui::PopItemFlag();
+			ImGui::PopStyleVar();
 		}
 
 		ImGui::Separator();

@@ -79,6 +79,19 @@ update_status ModuleRender::Update() {
 		DrawDebugData(App->camera->selectedCamera);
 	}
 
+	if (App->camera->quadCamera != nullptr) {
+		glBindFramebuffer(GL_FRAMEBUFFER, App->camera->quadCamera->fbo);
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		SetProjectionMatrix(App->camera->quadCamera);
+		SetViewMatrix(App->camera->quadCamera);
+
+		App->scene->Draw(App->camera->quadCamera->frustum);
+
+		DrawDebugData(App->camera->quadCamera);
+	}
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return UPDATE_CONTINUE;
 }
@@ -172,14 +185,12 @@ bool ModuleRender::CleanUp() {
 }
 
 void ModuleRender::PrintQuadNode(QuadTreeNode* quadNode) const {
+
 	if (quadNode->childs[0] != nullptr) {
 		for (int i = 0; i < 4; ++i) {
 			PrintQuadNode(quadNode->childs[i]);
 		}
 	}
-
-	quadNode->aabb.minPoint.y = -0.1f;
-	quadNode->aabb.maxPoint.y = 0.1f;
 
 	dd::aabb(quadNode->aabb.minPoint, quadNode->aabb.maxPoint, dd::colors::Yellow);
 }

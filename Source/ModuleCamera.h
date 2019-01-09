@@ -47,6 +47,7 @@ class ModuleCamera : public Module
 		void SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight);
 
 	public:
+		ComponentCamera* quadCamera = nullptr;
 		ComponentCamera* sceneCamera = nullptr;
 		ComponentCamera* selectedCamera = nullptr;
 		std::list<ComponentCamera*> gameCameras;

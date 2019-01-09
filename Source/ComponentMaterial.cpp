@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleProgram.h"
 #include "ModuleLibrary.h"
+#include "imgui_internal.h"
 #include "ModuleTextures.h"
 #include "ComponentMaterial.h"
 
@@ -29,9 +30,15 @@ void ComponentMaterial::DeleteTexture(unsigned id) {
 	}
 }
 
-void ComponentMaterial::DrawProperties(bool enabled) {
+void ComponentMaterial::DrawProperties(bool staticGo) {
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Material")) {
+
+		if (staticGo) {
+			ImGui::PushItemFlag({ ImGuiButtonFlags_Disabled | ImGuiItemFlags_Disabled | ImGuiSelectableFlags_Disabled }, true);
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+		}
+
 		bool removed = Component::DrawComponentState();
 		if (removed) {
 			ImGui::PopID();
@@ -87,6 +94,11 @@ void ComponentMaterial::DrawProperties(bool enabled) {
 			DrawComboBoxMaterials("EmissiveComboTextures", MaterialType::EMISSIVE_MAP, emissiveSelected);
 			ImGui::Text("Dimensions: %dx%d", material.emissiveWidth, material.emissiveHeight);
 			ImGui::Image((ImTextureID)material.emissiveMap, ImVec2(200, 200));
+		}
+
+		if (staticGo) {
+			ImGui::PopItemFlag();
+			ImGui::PopStyleVar();
 		}
 	}
 	ImGui::PopID();

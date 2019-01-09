@@ -16,9 +16,12 @@ ModuleCamera::~ModuleCamera() {
 
 bool ModuleCamera::Init() {
 	sceneCamera = new ComponentCamera(nullptr);
-	sceneCamera->cameraPosition = math::float3(0.0f, 20.0f, 30.0f);
 	sceneCamera->InitFrustum();
 	sceneCamera->debugDraw = true;
+
+	quadCamera = new ComponentCamera(nullptr);
+	quadCamera->InitFrustum(math::float3(0.0f, 20.0f, 0.0f), math::float3(0.0f, -10.0f, 0.0f), math::float3(0.0f, 0.0f, -1.0f));
+	quadCamera->debugDraw = true;
 
 	return true;
 }
@@ -68,6 +71,10 @@ update_status ModuleCamera::Update() {
 bool ModuleCamera::CleanUp() {
 	delete sceneCamera;
 	sceneCamera = nullptr;
+
+	delete quadCamera;
+	quadCamera = nullptr;
+
 	return true;
 }
 

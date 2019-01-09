@@ -1,5 +1,7 @@
 #include "DockQuad.h"
 #include "Application.h"
+#include "ModuleCamera.h"
+#include "ModuleWindow.h"
 #include "ModuleRender.h"
 
 DockQuad::DockQuad() { }
@@ -15,7 +17,15 @@ void DockQuad::Draw() {
 
 	ImGui::Checkbox("Draw", &App->renderer->showQuad);
 
-	//TODO: render a preview of the upper side from the quadtree
+	if (ImGui::Button("Enable camera")) {
+		App->camera->quadCamera->CreateFrameBuffer(ImGui::GetWindowWidth(), ImGui::GetWindowWidth());
+	}
+
+	if (App->renderer->showQuad) {
+		if (App->camera->quadCamera != nullptr) {
+			ImGui::Image((ImTextureID)App->camera->quadCamera->renderTexture, { ImGui::GetWindowWidth(), ImGui::GetWindowWidth() }, { 0,1 }, { 1,0 });
+		} 
+	}
 
 	focus = ImGui::IsWindowFocused();
 	ImGui::End();

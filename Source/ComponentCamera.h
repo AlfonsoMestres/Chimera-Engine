@@ -23,8 +23,8 @@ class ComponentCamera : public Component
 		Component*		Duplicate() override;
 		void			Update();
 
-		void			InitFrustum();
-		void			CreateFrameBuffer();
+		void			InitFrustum(math::float3 camPos = math::float3(0.0f, 3.0f, 10.0f), math::float3 camFront = math::float3(0.0f, 0.0f, -1.0f), math::float3 camUp = float3::unitY);
+		void			CreateFrameBuffer(float winWidth, float winHeight);
 
 		void			LookAt(math::float3 target);
 		math::float4x4	GetViewMatrix();
@@ -42,10 +42,6 @@ class ComponentCamera : public Component
 
 	public:
 		math::Frustum	frustum;
-
-		math::float3	cameraPosition = math::float3(0.0f, 3.0f, 20.0f);
-		math::float3	cameraFront = math::float3(0.0f, 0.0f, -1.0f);
-		math::float3	cameraUp = math::float3(0.0f, 1.0f, 0.0f);
 
 		// Camera specs
 		float			maxFov = 100.0f;

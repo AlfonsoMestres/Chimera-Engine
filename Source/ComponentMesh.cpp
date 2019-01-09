@@ -7,6 +7,7 @@
 #include "MeshImporter.h"
 #include "ComponentMesh.h"
 #include "ModuleLibrary.h"
+#include "imgui_internal.h"
 #include "ComponentMaterial.h"
 #include "Math/float3.h"
 #include "Math/float2.h"
@@ -96,32 +97,23 @@ void ComponentMesh::Draw(unsigned shaderProgram, const ComponentMaterial* materi
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void ComponentMesh::DrawProperties(bool enabled) {
+void ComponentMesh::DrawProperties(bool staticGo) {
 
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Mesh")) {
+
+		if (staticGo) {
+			ImGui::PushItemFlag({ ImGuiButtonFlags_Disabled | ImGuiItemFlags_Disabled | ImGuiSelectableFlags_Disabled }, true);
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+		}
 
 		bool removed = Component::DrawComponentState();
 		if (removed) {
 			ImGui::PopID();
 			return;
 		}
-
-		ImGui::Button("Mesh options");
-
-		if (ImGui::IsItemClicked(0)) {
-			ImGui::OpenPopup("MeshOptionsContextualMenu");
-		}
-
-		if (ImGui::BeginPopup("MeshOptionsContextualMenu")) {
-			ImGui::PopID();
-			ImGui::PushID("DeleteMesh");
-			if (ImGui::Button("Delete mesh")) {}
-			ImGui::PopID();
-			ImGui::EndPopup();
-		}
-
 		ImGui::Separator();
+
 
 		std::vector<std::string> fileMeshesList = App->library->fileMeshesList;
 		fileMeshesList.insert(fileMeshesList.begin(), "Select mesh");
@@ -147,6 +139,12 @@ void ComponentMesh::DrawProperties(bool enabled) {
 
 		ImGui::Text("Triangles count: %d", mesh.verticesNumber / 3);
 		ImGui::Text("Vertices count: %d", mesh.verticesNumber);
+
+		if (staticGo) {
+			ImGui::PopItemFlag();
+			ImGui::PopStyleVar();
+		}
+
 	}
 
 	ImGui::PopID();

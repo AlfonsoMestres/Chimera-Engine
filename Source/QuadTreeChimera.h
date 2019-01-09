@@ -36,7 +36,7 @@ class QuadTreeChimera
 		void InitQuadTree(const math::AABB& aabb, bool clearAllGameObjects = false);
 		void Insert(GameObject* gameObject, bool addToAllGameObjects = false);
 		void Remove(GameObject* gameObject);
-		void Clear(bool clearAllGameObjects);
+		void Clear();
 
 		void ExpandLimits(GameObject* gameObject);
 

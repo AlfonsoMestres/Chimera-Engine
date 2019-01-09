@@ -231,11 +231,7 @@ void GameObject::DrawProperties() {
 
 	//TODO: display only if contains a mesh or his childs contains any mesh
 	if (ImGui::Checkbox("Static", &staticGo)) {
-		if (staticGo && GetComponent(ComponentType::MESH) != nullptr) {
-			App->scene->quadTree->Insert(this, true);
-		} else if (!staticGo) {
-			App->scene->quadTree->Remove(this);
-		}
+		UpdateStaticChilds(staticGo);
 	}
 
 	if (ImGui::CollapsingHeader("Info")) {
@@ -468,6 +464,18 @@ void GameObject::ComputeBBox() {
 		bbox.TransformAsAABB(GetGlobalTransform());
 	}
 
+}
+
+void GameObject::UpdateStaticChilds(bool staticState) {
+	staticGo = staticState;
+	if (staticGo && GetComponent(ComponentType::MESH) != nullptr) {
+		App->scene->quadTree->Insert(this, true);
+	} else if (!staticGo) {
+		App->scene->quadTree->Remove(this);
+	}
+	for(auto &child : goChilds){
+		child->UpdateStaticChilds(staticState);
+	}
 }
 
 void GameObject::DrawBBox() const {
