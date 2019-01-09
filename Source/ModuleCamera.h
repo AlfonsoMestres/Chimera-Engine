@@ -3,8 +3,6 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include "Point.h"
-#include "MathGeoLib.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
@@ -36,6 +34,8 @@ class ModuleCamera : public Module
 		bool			CleanUp() override;
 		void			DrawGUI();
 
+		void			SelectGameObject();
+
 		// Scene camera movement
 		void			Move();
 		void			MovementSpeed();
@@ -53,6 +53,7 @@ class ModuleCamera : public Module
 		std::list<ComponentCamera*> gameCameras;
 		
 		GameObject* goSelected = nullptr;
+		std::vector<GameObject*> objectsPossiblePick;
 
 		// User attributes
 		float mouseSensitivity = 65.0f;

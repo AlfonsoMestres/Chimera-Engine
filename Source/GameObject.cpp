@@ -480,14 +480,14 @@ void GameObject::UpdateStaticChilds(bool staticState) {
 
 void GameObject::DrawBBox() const {
 
-	if (mesh != nullptr) {
-		dd::aabb(bbox.minPoint, bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
-	}
 
-	for (auto& child : goChilds) {
+		
+
+	//Not needed in the meshesList way
+	/*for (auto& child : goChilds) {
 		child->DrawBBox();
 	}
-
+*/
 }
 
 /* RapidJson storage */

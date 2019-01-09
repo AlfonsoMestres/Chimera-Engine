@@ -3,6 +3,7 @@
 
 #include "Geometry/AABB.h"
 #include <list>
+#include <vector>
 
 class GameObject;
 
@@ -17,6 +18,9 @@ class QuadTreeNode
 		void CreateChilds();
 		void RecalculateSpace();
 		bool IsLeaf() const;
+
+		template<typename TYPE>
+		void CollectIntersections(std::vector<GameObject*>& gameObjectList, const TYPE& primitive) const;
 
 	public:
 		math::AABB				aabb;
@@ -38,6 +42,9 @@ class QuadTreeChimera
 		void Remove(GameObject* gameObject);
 		void Clear();
 
+		template<typename TYPE>
+		void CollectIntersections(std::vector<GameObject*>& gameObjectList, const TYPE& primitive) const;
+
 		void ExpandLimits(GameObject* gameObject);
 
 	public:
@@ -47,5 +54,27 @@ class QuadTreeChimera
 		std::list<GameObject*>	allGO;
 
 };
+
+
+template<typename TYPE>
+inline void QuadTreeChimera::CollectIntersections(std::vector<GameObject*>& gameObject, const TYPE& primitive) const {
+	if (root != nullptr) {
+		root->CollectIntersections(gameObject, primitive);
+	}
+}
+
+template<typename TYPE>
+inline void QuadTreeNode::CollectIntersections(std::vector<GameObject*>& gameObject, const TYPE& primitive) const {
+	if (primitive.Intersects(aabb)) {
+		for (std::list<GameObject*>::const_iterator it = allGO.begin(); it != allGO.end(); ++it) {
+			if (primitive.Intersects(gameObject->bbox)) {
+				gameObject.push_back(*it);
+			}
+		}
+		for (int i = 0; i < 4; ++i) {
+			if (childs[i] != nullptr) childs[i]->CollectIntersections(gameObject, primitive);
+		}
+	}
+}
 
 #endif

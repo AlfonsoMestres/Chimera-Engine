@@ -9,6 +9,8 @@
 #include "ModuleDebugDraw.h"
 #include "QuadTreeChimera.h"
 #include "ComponentCamera.h"
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "debugdraw.h"
@@ -47,19 +49,20 @@ update_status ModuleRender::PreUpdate() {
 // Called every draw update
 update_status ModuleRender::Update() {
 
+	sceneViewportX = ImGui::GetCursorPosX() + ImGui::GetWindowPos().x;
+	sceneViewportY = ImGui::GetCursorPosY() + ImGui::GetWindowPos().y;
+
 	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->sceneCamera->fbo);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	glPolygonMode(GL_FRONT_AND_BACK, App->camera->sceneCamera->wireFrame);
-
 	SetProjectionMatrix(App->camera->sceneCamera);
 	SetViewMatrix(App->camera->sceneCamera);
 
-	if (cullingFromGameCamera && App->camera->selectedCamera != nullptr) {
-		App->scene->Draw(App->camera->selectedCamera->frustum);
+	if (frustCulling && App->camera->selectedCamera != nullptr) {
+		DrawMeshes(App->camera->selectedCamera);
 	} else {
-		App->scene->Draw(App->camera->sceneCamera->frustum);
+		DrawMeshes(App->camera->sceneCamera);
 	}
 
 	DrawDebugData(App->camera->sceneCamera);
@@ -68,27 +71,21 @@ update_status ModuleRender::Update() {
 		glBindFramebuffer(GL_FRAMEBUFFER, App->camera->selectedCamera->fbo);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		glPolygonMode(GL_FRONT_AND_BACK, App->camera->selectedCamera->wireFrame);
-
 		SetProjectionMatrix(App->camera->selectedCamera);
 		SetViewMatrix(App->camera->selectedCamera);
-
-		App->scene->Draw(App->camera->selectedCamera->frustum);
-
+		DrawMeshes(App->camera->selectedCamera);
 		DrawDebugData(App->camera->selectedCamera);
 	}
 
-	if (App->camera->quadCamera != nullptr) {
+ 	if (App->camera->quadCamera != nullptr) {
 		glBindFramebuffer(GL_FRAMEBUFFER, App->camera->quadCamera->fbo);
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		SetProjectionMatrix(App->camera->quadCamera);
 		SetViewMatrix(App->camera->quadCamera);
-
-		App->scene->Draw(App->camera->quadCamera->frustum);
-
+		DrawMeshes(App->camera->quadCamera);
 		DrawDebugData(App->camera->quadCamera);
 	}
 
@@ -108,20 +105,20 @@ void ModuleRender::DrawDebugData(ComponentCamera* camera) const {
 
 	if (camera->debugDraw == false) return;
 
+	//TODO: probably we can render every frustum and paint the active in green
 	if (App->camera->selectedCamera != nullptr) {
 		dd::frustum((App->camera->selectedCamera->frustum.ProjectionMatrix() * App->camera->selectedCamera->frustum.ViewMatrix()).Inverted(), dd::colors::Crimson);
 	}
 
-	//Grid
+	//Grid and axis debug
 	dd::xzSquareGrid(-1000.0f, 1000.0f, 0.0f, 1.0f, math::float3(0.65f, 0.65f, 0.65f));
-	//Axis
 	dd::axisTriad(math::float4x4::identity, 0.1f, 1.0f, 0, true);
 
 	if (showQuad) {
 		PrintQuadNode(App->scene->quadTree->root);
 	}
 
-	App->debug->Draw(camera, camera->fbo, App->window->height, App->window->width);
+	App->debug->Draw(camera, camera->fbo, camera->screenWidth, camera->screenHeight);
 }
 
 void ModuleRender::SetViewMatrix(ComponentCamera* camera) const {
@@ -177,6 +174,33 @@ void ModuleRender::InitOpenGL() const {
 	glClearDepth(1.0f);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glViewport(0, 0, App->window->width, App->window->height);
+}
+
+void ModuleRender::DrawMeshes(ComponentCamera* camera) {
+
+	for (std::list<ComponentMesh*>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
+
+		if (frustCulling && App->camera->selectedCamera != nullptr && !camera->frustum.Intersects((*it)->goContainer->bbox)) {
+			dd::aabb((*it)->goContainer->bbox.minPoint, (*it)->goContainer->bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
+		} else {
+			if ((*it)->enabled) {
+				if (App->scene->goSelected == (*it)->goContainer) {
+					dd::aabb((*it)->goContainer->bbox.minPoint, (*it)->goContainer->bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
+				}
+
+				unsigned program = App->program->blinnProgram;
+				ComponentMaterial* compMat = (ComponentMaterial*)(*it)->goContainer->GetComponent(ComponentType::MATERIAL);
+
+				glUseProgram(program);
+
+				(*it)->goContainer->ModelTransform(program);
+				(*it)->Draw(program, compMat);
+
+				glUseProgram(0);
+			}
+		}
+	}
+
 }
 
 bool ModuleRender::CleanUp() {

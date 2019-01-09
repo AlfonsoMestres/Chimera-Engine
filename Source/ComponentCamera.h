@@ -64,6 +64,7 @@ class ComponentCamera : public Component
 		//Camera debug settings
 		bool			debugDraw = true;
 		int				wireFrame = GL_FILL;
+
 };
 
 #endif

@@ -76,7 +76,7 @@ void ComponentCamera::DrawProperties(bool enabled) {
 
 		ImGui::Checkbox("Debug", &debugDraw);
 
-		ImGui::Checkbox("Frustum culling", &App->renderer->cullingFromGameCamera);
+		ImGui::Checkbox("Global Frustum culling", &App->renderer->frustCulling);
 
 		ImGui::RadioButton("Wireframe", &wireFrame, GL_LINE); ImGui::SameLine();
 		ImGui::RadioButton("Fill", &wireFrame, GL_FILL);
@@ -87,8 +87,8 @@ void ComponentCamera::DrawProperties(bool enabled) {
 			SetVerticalFOV(fovY);
 		}
 
-		ImGui::SliderFloat("zNear", &frustum.nearPlaneDistance, 5, 50);
-		ImGui::SliderFloat("zFar", &frustum.farPlaneDistance, 5, 50);
+		ImGui::SliderFloat("zNear", &frustum.nearPlaneDistance, 0.1f, frustum.farPlaneDistance);
+		ImGui::SliderFloat("zFar", &frustum.farPlaneDistance, frustum.nearPlaneDistance, 1000.0f);
 
 		if (App->camera->selectedCamera == this) {
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);

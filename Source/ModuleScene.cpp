@@ -43,7 +43,7 @@ update_status ModuleScene::Update() {
 }
 
 void ModuleScene::Draw(const math::Frustum& frustum) const {
-	root->Draw(frustum);
+	//root->Draw(frustum);
 }
 
 void ModuleScene::DrawHierarchy() {
@@ -232,5 +232,8 @@ void ModuleScene::LoadScene() {
 void ModuleScene::ClearScene() {
 	delete root;
 	root = nullptr;
+
+	quadTree->InitQuadTree(math::AABB(math::float3(-20.0f, -20.0f, -20.0f), math::float3(20.0f, 20.0f, 20.0f)), true);
+
 	Init();
 }

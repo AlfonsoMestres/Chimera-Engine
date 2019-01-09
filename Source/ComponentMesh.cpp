@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleRender.h"
 #include "MeshImporter.h"
 #include "ComponentMesh.h"
 #include "ModuleLibrary.h"
@@ -12,10 +13,13 @@
 #include "Math/float3.h"
 #include "Math/float2.h"
 
-ComponentMesh::ComponentMesh(GameObject* goContainer, Mesh* mesh) : Component(goContainer, ComponentType::MESH) { }
+ComponentMesh::ComponentMesh(GameObject* goContainer, Mesh* mesh) : Component(goContainer, ComponentType::MESH) { 
+	App->renderer->meshes.push_back(this);
+}
 
 ComponentMesh::ComponentMesh(const ComponentMesh& duplicatedComponent) : Component(duplicatedComponent) {
 	mesh = duplicatedComponent.mesh;
+	App->renderer->meshes.push_back(this);
 }
 
 ComponentMesh::~ComponentMesh() {
@@ -27,6 +31,9 @@ Component* ComponentMesh::Duplicate() {
 }
 
 void ComponentMesh::CleanUp() {
+
+	App->renderer->meshes.remove(this);
+
 	if (mesh.vbo != 0) {
 		glDeleteBuffers(1, &mesh.vbo);
 	}
