@@ -479,11 +479,6 @@ void GameObject::Load(Config* config, rapidjson::Value& value) {
 	enabled = config->GetBool("enabled", value);
 	staticGo = config->GetBool("static", value);
 
-	//TODO: if static, put it in the quadtree
-	if (staticGo) {
-		//put it in the quadtree
-	}
-
 	rapidjson::Value components = value["components"].GetArray();
 
 	for (rapidjson::Value::ValueIterator it = components.Begin(); it != components.End(); ++it) {
@@ -493,4 +488,9 @@ void GameObject::Load(Config* config, rapidjson::Value& value) {
 			component->Load(config, (*it));
 		}
 	}
+
+	if (staticGo) {
+		App->scene->quadTree->Insert(this, true);
+	}
+
 }

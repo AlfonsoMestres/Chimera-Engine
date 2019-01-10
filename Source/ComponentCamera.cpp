@@ -76,8 +76,6 @@ void ComponentCamera::DrawProperties(bool enabled) {
 
 		ImGui::Checkbox("Debug", &debugDraw);
 
-		ImGui::Checkbox("Global Frustum culling", &App->renderer->frustCulling);
-
 		ImGui::RadioButton("Wireframe", &wireFrame, GL_LINE); ImGui::SameLine();
 		ImGui::RadioButton("Fill", &wireFrame, GL_FILL);
 

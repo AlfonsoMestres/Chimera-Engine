@@ -1,4 +1,5 @@
 #include "Globals.h"
+#include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleRender.h"
@@ -177,29 +178,65 @@ void ModuleRender::InitOpenGL() const {
 }
 
 void ModuleRender::DrawMeshes(ComponentCamera* camera) {
-
 	for (std::list<ComponentMesh*>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
+		if (!(*it)->enabled) {
+			++it;
+		}
 
-		if (frustCulling && App->camera->selectedCamera != nullptr && !camera->frustum.Intersects((*it)->goContainer->bbox)) {
-			dd::aabb((*it)->goContainer->bbox.minPoint, (*it)->goContainer->bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
-		} else {
-			if ((*it)->enabled) {
-				if (App->scene->goSelected == (*it)->goContainer) {
-					dd::aabb((*it)->goContainer->bbox.minPoint, (*it)->goContainer->bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
-				}
-
-				unsigned program = App->program->blinnProgram;
-				ComponentMaterial* compMat = (ComponentMaterial*)(*it)->goContainer->GetComponent(ComponentType::MATERIAL);
-
-				glUseProgram(program);
-
-				(*it)->goContainer->ModelTransform(program);
-				(*it)->Draw(program, compMat);
-
-				glUseProgram(0);
+		if (frustCulling) {
+			if (frustumCullingType == 1) {
+				CullingFromQuadTree(camera, *it);
+			} else {
+				CullingFromFrustum(camera, *it);
 			}
+		} else {
+				DrawWithoutCulling(*it);
 		}
 	}
+}
+
+void ModuleRender::DrawWithoutCulling(ComponentMesh* mesh) const {
+	if (App->scene->goSelected == mesh->goContainer) {
+		dd::aabb(mesh->goContainer->bbox.minPoint, mesh->goContainer->bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
+	}
+
+	unsigned program = App->program->blinnProgram;
+	ComponentMaterial* compMat = (ComponentMaterial*)mesh->goContainer->GetComponent(ComponentType::MATERIAL);
+
+	glUseProgram(program);
+
+	mesh->goContainer->ModelTransform(program);
+	mesh->Draw(program, compMat);
+
+	glUseProgram(0);
+}
+
+void ModuleRender::CullingFromFrustum(ComponentCamera* camera, ComponentMesh* mesh) const {
+	if (App->camera->selectedCamera != nullptr && !camera->frustum.Intersects(mesh->goContainer->bbox)) {
+		dd::aabb(mesh->goContainer->bbox.minPoint, mesh->goContainer->bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
+	} else {
+		DrawWithoutCulling(mesh);
+	}
+}
+
+//TODO!
+void ModuleRender::CullingFromQuadTree(ComponentCamera* camera, ComponentMesh* mesh) {
+
+	//TODO!: solve the quad issue
+	quadGOCollided.clear();
+	/*App->scene->quadTree.CollectIntersections(quadGOCollided, camera->frustum);
+
+	for (std::list<ComponentMesh*>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
+		if (!(*it)->goContainer->staticGo && (*it)->mesh.verticesNumber > 0 && camera->frustum.Intersects((*it)->goContainer->bbox)) {
+			quadGOCollided.push_back((*it)->goContainer);
+		}
+	}
+
+	for (std::vector<GameObject*>::iterator it = quadGOCollided.begin(); it != quadGOCollided.end(); ++it){
+		if ((*it)->enabled) {
+			DrawWithoutCulling((ComponentMesh*)(*it)->GetComponent(ComponentType::MESH));
+		}
+	}*/
 
 }
 

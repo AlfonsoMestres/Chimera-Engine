@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "ComponentMesh.h"
 #include "ComponentLight.h"
@@ -159,6 +160,7 @@ void ModuleScene::SaveScene() {
 
 	config->AddFloat("ambientLight", ambientLight);
 	config->AddFloat3("ambientLightPosition", lightPosition);
+	config->AddBool("quadTreeEnabled", &App->renderer->showQuad);
 
 	config->EndObject();
 
@@ -213,6 +215,8 @@ void ModuleScene::LoadScene() {
 		for (rapidjson::Value::ValueIterator it = gameObjects.Begin(); it != gameObjects.End(); ++it) {
 			CreateGameObject(config, *it);
 		}
+
+		App->renderer->showQuad = config->GetBool("quadTreeEnabled", scene);
 
 		if (document.HasMember("selectedCamera")) {
 			rapidjson::Value& selectedCamera = document["selectedCamera"];

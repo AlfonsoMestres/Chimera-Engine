@@ -22,7 +22,7 @@ bool ModuleCamera::Init() {
 	sceneCamera->debugDraw = true;
 
 	quadCamera = new ComponentCamera(nullptr);
-	quadCamera->InitFrustum(math::float3(0.0f, 20.0f, 0.0f), math::float3(0.0f, -10.0f, 0.0f), math::float3(0.0f, 0.0f, -1.0f));
+	quadCamera->InitFrustum(math::float3(0.0f, 50.0f, 0.0f), math::float3(0.0f, -10.0f, 0.0f), math::float3(0.0f, 0.0f, -1.0f));
 	quadCamera->debugDraw = true;
 
 	return true;
@@ -220,7 +220,10 @@ void ModuleCamera::DrawGUI() {
 
 	ImGui::Checkbox("Debug", &sceneCamera->debugDraw);
 
-	ImGui::Checkbox("Frustum culling", &App->renderer->frustCulling);
+	if (ImGui::Checkbox("Frustum culling", &App->renderer->frustCulling)) {
+		ImGui::RadioButton("Frustum", &App->renderer->frustumCullingType, 0); ImGui::SameLine();
+		ImGui::RadioButton("QuadTree", &App->renderer->frustumCullingType, 1);
+	}
 
 	float fov = math::RadToDeg(sceneCamera->frustum.verticalFov);
 	if (ImGui::SliderFloat("FOV", &fov, 40, 120)) {

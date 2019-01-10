@@ -3,7 +3,9 @@
 
 #include "Module.h"
 #include <list>
+#include <vector>
 
+class GameObject;
 class QuadTreeNode;
 class ComponentMesh;
 class ComponentCamera;
@@ -31,17 +33,21 @@ class ModuleRender : public Module
 		void			DrawMeshes(ComponentCamera* camera);
 		void			DrawDebugData(ComponentCamera* camera) const;
 		void			PrintQuadNode(QuadTreeNode* quadNode) const;
+		void			DrawWithoutCulling(ComponentMesh* mesh) const;
+		void			CullingFromFrustum(ComponentCamera* camera, ComponentMesh* mesh) const;
+		void			CullingFromQuadTree(ComponentCamera* camera, ComponentMesh* mesh);
 
 	public:
 		float			sceneViewportX = 0.0f;
 		float			sceneViewportY = 0.0f;
 		bool			frustCulling = true;
+		int				frustumCullingType = 0;
 		bool			vsyncEnabled = false;
 		void*			context = nullptr;
 		unsigned		ubo = 0u;
 		bool			showQuad = false;
 		std::list<ComponentMesh*> meshes;
-
+		std::vector<GameObject*> quadGOCollided;
 };
 
 #endif
