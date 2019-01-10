@@ -31,7 +31,6 @@ class GameObject
 		~GameObject();
 
 		void					Update();
-		void					Draw(const math::Frustum& frustum) const;
 		void					CleanUp();
 		void					DrawProperties();
 		void					DrawHierarchy(GameObject* goSelected);

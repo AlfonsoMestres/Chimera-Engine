@@ -29,17 +29,16 @@ class ModuleScene : public Module
 		bool			Init() override;
 		bool			CleanUp() override;
 		update_status	Update() override;
-		void			Draw(const math::Frustum& frustum) const;
-		void			DrawHierarchy();
 
+		void			DrawHierarchy();
 		GameObject*		CreateGameObject(const char* goName = nullptr, GameObject* goParent = nullptr, const math::float4x4& transform = math::float4x4().identity);
 		GameObject*		CreateCamera(GameObject* goParent = nullptr, const math::float4x4& transform = math::float4x4().identity);
 		void			LoadGeometry(GameObject* goParent, GeometryType geometryType);
 
-		GameObject*		GetGameObjectByUUID(GameObject* gameObject, char uuidObjectName[37]);
 
 		void			CreateGameObject(Config* config, rapidjson::Value& value);
 		void			SaveScene();
+		GameObject*		GetGameObjectByUUID(GameObject* gameObject, char uuidObjectName[37]);
 		void			SaveGameObject(Config* config, GameObject* gameObject);
 		void			LoadScene();
 		void			ClearScene();

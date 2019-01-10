@@ -167,49 +167,6 @@ void GameObject::Update() {
 
 }
 
-void GameObject::Draw(const math::Frustum& frustum) const {
-
-	if (!enabled) return;
-
-	for (const auto &child : goChilds) {
-		child->Draw(frustum);
-	}
-
-	if (transform == nullptr) return;
-
-	if (App->scene->goSelected == this) {
-		DrawBBox();
-	}
-
-	// If GO does not contain any mesh, do not draw
-	if (mesh == nullptr || mesh != nullptr && !mesh->enabled || mesh != nullptr && mesh->mesh.vbo == 0) {
-		return;
-	}
-
-	if (!frustum.Intersects(bbox)) {
-		DrawBBox();
-		return;
-	}
-
-	unsigned program = App->program->blinnProgram;
-	//TODO: we should have at least one basic material and assign to the mesh when "removed" the current one
-	// WE ALWAYS need to have a material, its nonsense to have a mesh without material
-	if (material == nullptr) {
-		program = App->program->textureProgram;
-	} else if (!material->enabled) {
-		program = App->program->colorProgram;
-	}
-
-	glUseProgram(program);
-	ModelTransform(program);
-
-	if (material != nullptr) {
-		((ComponentMesh*)mesh)->Draw(program, material);
-	}
-
-	glUseProgram(0);
-}
-
 void GameObject::CleanUp() {
 
 	for (auto &child : goChilds) {

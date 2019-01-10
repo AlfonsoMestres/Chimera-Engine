@@ -42,10 +42,6 @@ update_status ModuleScene::Update() {
 	return ret;
 }
 
-void ModuleScene::Draw(const math::Frustum& frustum) const {
-	//root->Draw(frustum);
-}
-
 void ModuleScene::DrawHierarchy() {
 	for (auto &child : root->goChilds) {
 		child->DrawHierarchy(goSelected);
