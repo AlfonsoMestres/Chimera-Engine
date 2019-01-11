@@ -1,0 +1,228 @@
+{
+    "scene": {
+        "ambientLight": 0.30000001192092898,
+        "ambientLightPosition": {
+            "x": 0.0,
+            "y": 1000.0,
+            "z": 1000.0
+        },
+        "quadTreeEnabled": false
+    },
+    "sceneCamera": {
+        "componentType": "CAMERA",
+        "frustum.nearPlaneDistance": 10.0,
+        "frustum.farPlaneDistance": 42000.0,
+        "frustum.pos": {
+            "x": 0.0,
+            "y": 300.0,
+            "z": 1000.0
+        },
+        "frustum.front": {
+            "x": -0.09278050810098648,
+            "y": -0.2508769631385803,
+            "z": -0.9635624289512634
+        },
+        "frustum.up": {
+            "x": -0.024045493453741075,
+            "y": 0.9680190086364746,
+            "z": -0.2497219741344452
+        },
+        "debugDraw": true,
+        "wireFrame": 6914
+    },
+    "selectedCamera": {
+        "componentType": "CAMERA",
+        "goContainer": "a6955cc3-602f-4fad-9a36-bc2d42b47454",
+        "frustum.nearPlaneDistance": 10.0,
+        "frustum.farPlaneDistance": 42000.0,
+        "frustum.pos": {
+            "x": 0.0,
+            "y": 250.0,
+            "z": 1000.0
+        },
+        "frustum.front": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 1.0
+        },
+        "frustum.up": {
+            "x": 0.0,
+            "y": 1.0,
+            "z": 0.0
+        },
+        "debugDraw": true,
+        "wireFrame": 6914
+    },
+    "gameObjects": [
+        {
+            "uuid": "326eb6d7-b10e-4f65-9615-ea41fe189638",
+            "name": "root",
+            "enabled": true,
+            "static": false,
+            "components": []
+        },
+        {
+            "uuid": "c6fb652e-a928-4b65-82f2-e417ca0a06c3",
+            "name": "GameObject",
+            "parentUuid": "326eb6d7-b10e-4f65-9615-ea41fe189638",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "c6fb652e-a928-4b65-82f2-e417ca0a06c3",
+                    "uuid": "8c3148a0-80f1-4270-a5ce-d244566c4d17",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "bf0127b9-eaba-4cbe-b931-bb7de16def52",
+            "name": "GameObject",
+            "parentUuid": "c6fb652e-a928-4b65-82f2-e417ca0a06c3",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "bf0127b9-eaba-4cbe-b931-bb7de16def52",
+                    "uuid": "87d77506-1523-4a26-93d4-a0bfe34b0229",
+                    "position": {
+                        "x": -550.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "bf0127b9-eaba-4cbe-b931-bb7de16def52",
+                    "diffuseSelected": "zombunnydiffuse.dds",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "zombunnyocclusion.dds",
+                    "ambientK": 0.5,
+                    "specularSelected": "zombunnyspecular.dds",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "zombunnyemissive.dds",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "bf0127b9-eaba-4cbe-b931-bb7de16def52",
+                    "currentMesh": "zombunny_0.head"
+                }
+            ]
+        },
+        {
+            "uuid": "a6955cc3-602f-4fad-9a36-bc2d42b47454",
+            "name": "Camera",
+            "parentUuid": "326eb6d7-b10e-4f65-9615-ea41fe189638",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "a6955cc3-602f-4fad-9a36-bc2d42b47454",
+                    "uuid": "d5833796-7a06-4a47-a8bb-5613bb12272b",
+                    "position": {
+                        "x": 0.0,
+                        "y": 250.0,
+                        "z": 1000.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "CAMERA",
+                    "goContainer": "a6955cc3-602f-4fad-9a36-bc2d42b47454",
+                    "frustum.nearPlaneDistance": 10.0,
+                    "frustum.farPlaneDistance": 42000.0,
+                    "frustum.pos": {
+                        "x": 0.0,
+                        "y": 250.0,
+                        "z": 1000.0
+                    },
+                    "frustum.front": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 1.0
+                    },
+                    "frustum.up": {
+                        "x": 0.0,
+                        "y": 1.0,
+                        "z": 0.0
+                    },
+                    "debugDraw": true,
+                    "wireFrame": 6914
+                }
+            ]
+        }
+    ]
+}

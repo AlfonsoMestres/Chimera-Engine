@@ -6,7 +6,7 @@
 #include "ComponentMesh.h"
 
 QuadTreeChimera::QuadTreeChimera() { 
-	quadLimits = math::AABB(math::float3(-20.0f, -20.0f, -20.0f), math::float3(20.0f, 20.0f, 20.0f));
+	quadLimits = math::AABB(math::float3(-2000.0f, -2000.0f, -2000.0f), math::float3(2000.0f, 2000.0f, 2000.0f));
 	InitQuadTree(quadLimits, true);
 }
 
@@ -20,7 +20,7 @@ void QuadTreeChimera::InitQuadTree(const math::AABB& aabb, bool clearAllGameObje
 	}
 
 	App->camera->quadCamera->frustum.pos.y = aabb.maxPoint.y * 2.0f;
-	App->camera->quadCamera->frustum.farPlaneDistance = App->camera->quadCamera->frustum.pos.y + aabb.Size().y;
+	App->camera->quadCamera->frustum.farPlaneDistance = App->camera->quadCamera->frustum.pos.y + aabb.Size().y + 20000.0f;
 
 	root = new QuadTreeNode(aabb);
 }
@@ -30,7 +30,7 @@ void QuadTreeChimera::Insert(GameObject* gameObject, bool addQuadList) {
 
 	if (gameObject->bbox.Intersects(root->aabb)) {
 		if (addQuadList) {
-			allGO.push_back(gameObject);
+			goList.push_back(gameObject);
 		}
 
 		root->Insert(gameObject);
@@ -50,18 +50,18 @@ void QuadTreeChimera::ExpandLimits(GameObject* gameObject) {
 
 void QuadTreeChimera::Remove(GameObject* gameObject) {
 	if (root != nullptr) {
-		allGO.remove(gameObject);
+		goList.remove(gameObject);
 
 		InitQuadTree(quadLimits);
 
-		for (std::list<GameObject*>::iterator it = allGO.begin(); it != allGO.end(); ++it) {
+		for (std::list<GameObject*>::iterator it = goList.begin(); it != goList.end(); ++it) {
 			Insert(*it);
 		}
 	}
 }
 
 void QuadTreeChimera::Clear() {
-	allGO.clear(); 
+	goList.clear();
 
 	delete root;
 	root = nullptr;

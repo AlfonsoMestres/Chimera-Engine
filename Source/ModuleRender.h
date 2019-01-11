@@ -29,13 +29,14 @@ class ModuleRender : public Module
 		void			SetViewMatrix(ComponentCamera* camera) const;
 		void			SetProjectionMatrix(ComponentCamera* camera) const;
 		void			GenerateBlockUniforms();
+		void			GenerateFallBackMaterial();
 
 		void			DrawMeshes(ComponentCamera* camera);
 		void			DrawDebugData(ComponentCamera* camera) const;
 		void			PrintQuadNode(QuadTreeNode* quadNode) const;
 		void			DrawWithoutCulling(ComponentMesh* mesh) const;
-		void			CullingFromFrustum(ComponentCamera* camera, ComponentMesh* mesh) const;
 		void			CullingFromQuadTree(ComponentCamera* camera, ComponentMesh* mesh);
+		void			CullingFromFrustum(ComponentCamera* camera, ComponentMesh* mesh) const;
 
 	public:
 		float			sceneViewportX = 0.0f;
@@ -46,6 +47,7 @@ class ModuleRender : public Module
 		void*			context = nullptr;
 		unsigned		ubo = 0u;
 		bool			showQuad = false;
+		unsigned		fallback = 0u;
 		std::list<ComponentMesh*> meshes;
 		std::vector<GameObject*> quadGOCollided;
 };

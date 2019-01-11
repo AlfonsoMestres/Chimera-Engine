@@ -27,15 +27,8 @@ bool ModuleTextures::Init() {
 }
 
 bool ModuleTextures::CleanUp() {
-	for (std::list<ComponentMaterial*>::iterator iterator = materials.begin(); iterator != materials.end();) {
-		delete *iterator;
-		iterator = materials.erase(iterator);
-		*iterator = nullptr;
-	}
 
-	delete defaultTexture;
 	delete noCameraSelectedTexture;
-	defaultTexture = nullptr;
 	noCameraSelectedTexture = nullptr;
 
 	return true;
@@ -199,22 +192,7 @@ void ModuleTextures::Unload(unsigned id) {
 }
 
 void ModuleTextures::LoadDefaulTextures() {
-	//TODO: check if in assets folder, if not load this again
 	noCameraSelectedTexture = Load("nocamselected.jpg");
-	defaultTexture = Load("checkers.jpg");
-
-	//TODO: check if checkers is located in Library/Textures, if not, generate new checkers
-	if (!App->fileSystem->Exists("/Library/Textures/checkers.dds")) {
-		if (App->fileSystem->Exists("/Assets/Default/checkers.png")) {
-			MaterialImporter::Import("/Assets/Default/checkers.png");
-		} else {
-			LOG("Error: No default texture found");
-		}
-	} 
-	//TODO: This will be used when we code the materials list in the scene, not for now
-	/*ComponentMaterial* baseMaterial = (ComponentMaterial*)App->scene->root->AddComponent(ComponentType::MATERIAL);
-	App->textures->LoadMaterial("checkers.dds", baseMaterial, MaterialType::DIFFUSE_MAP);*/
-
 }
 
 void ModuleTextures::DrawGUI() {

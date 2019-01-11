@@ -10,8 +10,8 @@ Config::Config() {
 }
 
 Config::~Config() {
-	delete[] writer;
-	delete [] stringBuffer;
+	delete writer;
+	delete stringBuffer;
 
 	writer = nullptr;
 	stringBuffer = nullptr;
@@ -196,14 +196,14 @@ void Config::EndArray() {
 
 void Config::WriteToDisk() {
 	writer->EndObject();
-	App->fileSystem->Save("/Library/Scene/scene.json", stringBuffer->GetString(), strlen(stringBuffer->GetString()), false);
+	App->fileSystem->Save("/Library/Scenes/scene.json", stringBuffer->GetString(), strlen(stringBuffer->GetString()), false);
 }
 
 rapidjson::Document Config::LoadFromDisk() {
 	rapidjson::Document result = nullptr;
 
 	char* fileBuffer;
-	unsigned lenghBuffer = App->fileSystem->Load("/Library/Scene/scene.json", &fileBuffer);
+	unsigned lenghBuffer = App->fileSystem->Load("/Library/Scenes/scene.json", &fileBuffer);
 
 	if (fileBuffer) {
 		if (result.Parse<rapidjson::kParseStopWhenDoneFlag>(fileBuffer).HasParseError()) {

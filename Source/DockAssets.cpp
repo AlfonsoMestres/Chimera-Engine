@@ -88,7 +88,7 @@ void DockAssets::ClickBehaviour(const char* name) {
 					nameToRemove.insert(0, "/Library/Textures/");
 					App->library->removeHead = false;
 					App->library->toBeDeleted = true;
-				}
+				} 
 
 				App->fileSystem->Remove(nameToRemove.c_str());
 			}

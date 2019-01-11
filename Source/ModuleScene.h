@@ -48,7 +48,7 @@ class ModuleScene : public Module
 		GameObject*			goSelected = nullptr;
 		QuadTreeChimera*	quadTree = nullptr;
 
-		math::float3		lightPosition = math::float3(0.0f, 10.0f, 10.0f);
+		math::float3		lightPosition = math::float3(0.0f, 1000.0f, 1000.0f);
 		float				ambientLight = 0.3f;
 };
 

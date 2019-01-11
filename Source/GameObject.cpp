@@ -16,39 +16,39 @@
 
 /// CARE Creating this without father could lead to memory leak
 GameObject::GameObject() {
-	uuid = App->fileSystem->NewGuuid();
+	sprintf_s(uuid, App->fileSystem->NewGuuid());
 	transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
 }
 
 GameObject::GameObject(const char* goName, GameObject* goParent) {
-	uuid = App->fileSystem->NewGuuid();
+	sprintf_s(uuid, App->fileSystem->NewGuuid());
 	char* copyName = new char[strlen(goName)];
 	strcpy(copyName, goName);
 	name = copyName;
 
 	if (goParent != nullptr) {
 		parent = goParent;
-		parentUuid = goParent->uuid;
+		sprintf_s(parentUuid, goParent->uuid);
 		goParent->goChilds.push_back(this);
 	} 
 }
 
 GameObject::GameObject(const char* goName, const math::float4x4& parentTransform) {
-	uuid = App->fileSystem->NewGuuid();
+	sprintf_s(uuid, App->fileSystem->NewGuuid());
 
 	char* copyName = new char[strlen(goName)];
 	strcpy(copyName, goName);
 	name = copyName;
 
 	parent = App->scene->root;
-	parentUuid = App->scene->root->uuid;
+	sprintf_s(parentUuid, App->scene->root->uuid);
 	transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
 	transform->AddTransform(parentTransform);
 	App->scene->root->goChilds.push_back(this);
 }
 
 GameObject::GameObject(const char* goName, const math::float4x4& parentTransform, GameObject* goParent) {
-	uuid = App->fileSystem->NewGuuid();
+	sprintf_s(uuid, App->fileSystem->NewGuuid());
 
 	char* copyName = new char[strlen(goName)];
 	strcpy(copyName, goName);
@@ -56,11 +56,11 @@ GameObject::GameObject(const char* goName, const math::float4x4& parentTransform
 
 	if (goParent != nullptr) {
 		parent = goParent;
-		parentUuid = goParent->uuid;
+		sprintf_s(parentUuid, goParent->uuid);
 		goParent->goChilds.push_back(this);
 	} else {
 		parent = App->scene->root;
-		parentUuid = App->scene->root->uuid;
+		sprintf_s(parentUuid, App->scene->root->uuid);
 		App->scene->root->goChilds.push_back(this);
 	}
 
@@ -69,8 +69,8 @@ GameObject::GameObject(const char* goName, const math::float4x4& parentTransform
 }
 
 GameObject::GameObject(const GameObject& duplicateGameObject) {
-	uuid = App->fileSystem->NewGuuid();
-	parentUuid = duplicateGameObject.parentUuid;
+	sprintf_s(uuid, App->fileSystem->NewGuuid());
+	sprintf_s(uuid, duplicateGameObject.parentUuid);
 
 	char* copyName = new char[strlen(duplicateGameObject.name)];
 	strcpy(copyName, duplicateGameObject.name);
@@ -83,7 +83,8 @@ GameObject::GameObject(const GameObject& duplicateGameObject) {
 		Component* duplicatedComponent = component->Duplicate();
 		components.push_back(duplicatedComponent);
 		duplicatedComponent->goContainer = this;
-		duplicatedComponent->parentUuid = uuid;
+
+		sprintf_s(duplicatedComponent->parentUuid, uuid);
 		if (duplicatedComponent->componentType == ComponentType::TRANSFORM) {
 			transform = (ComponentTransform*)duplicatedComponent;
 		}
@@ -98,7 +99,7 @@ GameObject::GameObject(const GameObject& duplicateGameObject) {
 	for (const auto &child : duplicateGameObject.goChilds) {
 		GameObject* duplicatedChild = new GameObject(*child);
 		duplicatedChild->parent = this;
-		duplicatedChild->parentUuid = uuid;
+		sprintf_s(duplicatedChild->parentUuid, uuid);
 		goChilds.push_back(duplicatedChild);
 	}
 }
@@ -186,7 +187,6 @@ void GameObject::DrawProperties() {
 
 	ImGui::InputText("Name", (char*)name, 50.0f); 
 
-	//TODO: display only if contains a mesh or his childs contains any mesh
 	if (ImGui::Checkbox("Static", &staticGo)) {
 		UpdateStaticChilds(staticGo);
 	}
@@ -198,10 +198,16 @@ void GameObject::DrawProperties() {
 		ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, parentUuid);
 	}
 
-	for (auto &component : components) {
-		component->DrawProperties(staticGo);
+	if(components.size() > 0) {
+		for (std::list<Component*>::iterator it = components.begin(); it != components.end();) {
+			if (!(*it)->toBeDeleted) {
+				(*it)->DrawProperties(staticGo);
+				it++;
+			} else {
+				it = RemoveComponent(it);
+			}
+		}
 	}
-
 }
 
 void GameObject::DrawHierarchy(GameObject* goSelected) {
@@ -254,7 +260,7 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 					}
 					droppedGo->parent->goChilds.remove(droppedGo);
 					droppedGo->parent = this;
-					droppedGo->parentUuid = uuid;
+					sprintf_s(droppedGo->parentUuid, uuid);
 					if (droppedGo->transform != nullptr) {
 						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
 					}
@@ -353,17 +359,12 @@ Component* GameObject::AddComponent(ComponentType type) {
 	return component;
 }
 
-void GameObject::RemoveComponent(Component* component) {
-	assert(component != nullptr);
+std::list<Component*>::iterator GameObject::RemoveComponent(std::list<Component*>::iterator component) {
+	assert(*component != nullptr);
 
-	for (std::list<Component*>::iterator it = components.begin(); it != components.end(); ++it) {
-		if ((*it) == component) {
-			components.erase(it);
-			delete component;
-			component = nullptr;
-			return;
-		}
-	}
+	delete *component;
+	*component = nullptr;
+	return components.erase(component);
 }
 
 Component* GameObject::GetComponent(ComponentType type) const {
@@ -435,18 +436,6 @@ void GameObject::UpdateStaticChilds(bool staticState) {
 	}
 }
 
-void GameObject::DrawBBox() const {
-
-
-		
-
-	//Not needed in the meshesList way
-	/*for (auto& child : goChilds) {
-		child->DrawBBox();
-	}
-*/
-}
-
 /* RapidJson storage */
 bool GameObject::Save(Config* config) {
 	config->StartObject();
@@ -455,7 +444,7 @@ bool GameObject::Save(Config* config) {
 	config->AddString("name", name);
 
 	if (parent != nullptr) {
-		config->AddString("parent", parent->uuid);
+		config->AddString("parentUuid", parent->uuid);
 	}
 
 	config->AddBool("enabled", enabled);
@@ -475,10 +464,17 @@ bool GameObject::Save(Config* config) {
 }
 
 void GameObject::Load(Config* config, rapidjson::Value& value) {
-	uuid = config->GetString("uuid", value);
+	sprintf_s(uuid, config->GetString("uuid", value));
+
 	enabled = config->GetBool("enabled", value);
 	staticGo = config->GetBool("static", value);
 
+	if (parent != nullptr) {
+		sprintf_s(parentUuid, config->GetString("parentUuid", value));
+	} else {
+		sprintf_s(parentUuid, "");
+	}
+		 
 	rapidjson::Value components = value["components"].GetArray();
 
 	for (rapidjson::Value::ValueIterator it = components.Begin(); it != components.End(); ++it) {

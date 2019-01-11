@@ -34,9 +34,9 @@ bool ModuleRender::Init() {
 		LOG("Error: VSync couldn't be enabled \n %s", SDL_GetError());
 	}
 
-
 	App->program->LoadPrograms();
 	GenerateBlockUniforms();
+	GenerateFallBackMaterial();
 
 	return true;
 }
@@ -81,14 +81,17 @@ update_status ModuleRender::Update() {
 
  	if (App->camera->quadCamera != nullptr) {
 		glBindFramebuffer(GL_FRAMEBUFFER, App->camera->quadCamera->fbo);
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		SetProjectionMatrix(App->camera->quadCamera);
 		SetViewMatrix(App->camera->quadCamera);
-		DrawMeshes(App->camera->quadCamera);
+		/*DrawMeshes(App->camera->quadCamera);*/
 		DrawDebugData(App->camera->quadCamera);
 	}
+
+	//So we exclude the rest of the quad rendered background of the color selected
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return UPDATE_CONTINUE;
@@ -112,8 +115,8 @@ void ModuleRender::DrawDebugData(ComponentCamera* camera) const {
 	}
 
 	//Grid and axis debug
-	dd::xzSquareGrid(-1000.0f, 1000.0f, 0.0f, 1.0f, math::float3(0.65f, 0.65f, 0.65f));
-	dd::axisTriad(math::float4x4::identity, 0.1f, 1.0f, 0, true);
+	dd::xzSquareGrid(-100000.0f, 100000.0f, 0.0f, 100.0f, math::float3(0.65f, 0.65f, 0.65f));
+	dd::axisTriad(math::float4x4::identity, 10.0f, 100.0f, 0, true);
 
 	if (showQuad) {
 		PrintQuadNode(App->scene->quadTree->root);
@@ -177,25 +180,37 @@ void ModuleRender::InitOpenGL() const {
 	glViewport(0, 0, App->window->width, App->window->height);
 }
 
+void ModuleRender::GenerateFallBackMaterial() {
+	char fallbackImage[3] = { GLubyte(255), GLubyte(255), GLubyte(255) };
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &fallback);
+	glBindTexture(GL_TEXTURE_2D, fallback);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, fallbackImage);
+}
+
 void ModuleRender::DrawMeshes(ComponentCamera* camera) {
 	for (std::list<ComponentMesh*>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
-		if (!(*it)->enabled) {
-			++it;
-		}
-
-		if (frustCulling) {
-			if (frustumCullingType == 1) {
-				CullingFromQuadTree(camera, *it);
+		if ((*it)->enabled) {
+			if (frustCulling) {
+				if (frustumCullingType == 1) {
+					CullingFromQuadTree(camera, *it);
+				} else {
+					CullingFromFrustum(camera, *it);
+				}
 			} else {
-				CullingFromFrustum(camera, *it);
+					DrawWithoutCulling(*it);
 			}
-		} else {
-				DrawWithoutCulling(*it);
 		}
 	}
 }
 
 void ModuleRender::DrawWithoutCulling(ComponentMesh* mesh) const {
+
 	if (App->scene->goSelected == mesh->goContainer) {
 		dd::aabb(mesh->goContainer->bbox.minPoint, mesh->goContainer->bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
 	}
@@ -219,12 +234,9 @@ void ModuleRender::CullingFromFrustum(ComponentCamera* camera, ComponentMesh* me
 	}
 }
 
-//TODO!
 void ModuleRender::CullingFromQuadTree(ComponentCamera* camera, ComponentMesh* mesh) {
-
-	//TODO!: solve the quad issue
 	quadGOCollided.clear();
-	/*App->scene->quadTree.CollectIntersections(quadGOCollided, camera->frustum);
+	App->scene->quadTree->CollectIntersections(quadGOCollided, camera->frustum);
 
 	for (std::list<ComponentMesh*>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
 		if (!(*it)->goContainer->staticGo && (*it)->mesh.verticesNumber > 0 && camera->frustum.Intersects((*it)->goContainer->bbox)) {
@@ -236,8 +248,7 @@ void ModuleRender::CullingFromQuadTree(ComponentCamera* camera, ComponentMesh* m
 		if ((*it)->enabled) {
 			DrawWithoutCulling((ComponentMesh*)(*it)->GetComponent(ComponentType::MESH));
 		}
-	}*/
-
+	}
 }
 
 bool ModuleRender::CleanUp() {

@@ -51,7 +51,7 @@ class QuadTreeChimera
 		float					expansionValue = 0.0f;
 		math::AABB				quadLimits;
 		QuadTreeNode*			root = nullptr;
-		std::list<GameObject*>	allGO;
+		std::list<GameObject*>	goList;
 
 };
 
@@ -66,13 +66,15 @@ inline void QuadTreeChimera::CollectIntersections(std::vector<GameObject*>& game
 template<typename TYPE>
 inline void QuadTreeNode::CollectIntersections(std::vector<GameObject*>& gameObject, const TYPE& primitive) const {
 	if (primitive.Intersects(aabb)) {
-		for (std::list<GameObject*>::const_iterator it = allGO.begin(); it != allGO.end(); ++it) {
-			if (primitive.Intersects(gameObject->bbox)) {
+		for (std::list<GameObject*>::const_iterator it = goList.begin(); it != goList.end(); ++it) {
+			if (primitive.Intersects((*it)->bbox)) {
 				gameObject.push_back(*it);
 			}
 		}
 		for (int i = 0; i < 4; ++i) {
-			if (childs[i] != nullptr) childs[i]->CollectIntersections(gameObject, primitive);
+			if (childs[i] != nullptr) {
+				childs[i]->CollectIntersections(gameObject, primitive);
+			}
 		}
 	}
 }

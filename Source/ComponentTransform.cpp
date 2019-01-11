@@ -46,7 +46,7 @@ void ComponentTransform::RotationToEuler() {
 	eulerRotation.z = math::RadToDeg(eulerRotation.z);
 }
 
-void ComponentTransform::SetPosition(const float3& pos) {
+void ComponentTransform::SetPosition(const math::float3& pos) {
 	position = pos;
 }
 
@@ -73,15 +73,15 @@ void ComponentTransform::DrawProperties(bool staticGo) {
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 		}
 
-		if (ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f)) {
+		if (ImGui::DragFloat3("Position", (float*)&position, 10.0f, -100000.f, 100000.f)) {
 			edited = true;
 		}
 
-		if (ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180, 180.f)) {
+		if (ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -360, 360.f)) {
 			edited = true;
 		}
 
-		if (ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f)) {
+		if (ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.1f, 100.f)) {
 			edited = true;
 		}
 
@@ -117,7 +117,8 @@ void ComponentTransform::Save(Config* config) {
 }
 
 void ComponentTransform::Load(Config* config, rapidjson::Value& value) {
-	uuid = config->GetString("uuid", value);
+	sprintf_s(uuid, config->GetString("uuid", value));
+	sprintf_s(parentUuid, config->GetString("parentUuid", value));
 	position = config->GetFloat3("position", value);
 	eulerRotation = config->GetFloat3("eulerRotation", value);
 	scale = config->GetFloat3("scale", value);

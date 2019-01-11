@@ -26,8 +26,8 @@ bool ModuleFileSystem::Init() {
 	if (Exists("/Library/Meshes/")) {
 		PHYSFS_mkdir("/Library/Meshes/");
 	}
-	if (Exists("/Library/Scene/")) {
-		PHYSFS_mkdir("/Library/Scene/");
+	if (Exists("/Library/Scenes/")) {
+		PHYSFS_mkdir("/Library/Scenes/");
 	}
 	return true;
 }
@@ -49,7 +49,7 @@ unsigned ModuleFileSystem::Load(const char* pathAndFileName, char** buffer) cons
 			*buffer = new char[size];
 			unsigned readed = (unsigned)PHYSFS_read(fsFile, *buffer, 1, size);
 			if (readed != size) {
-				LOG("Error reading from file %s: %s\n", pathAndFileName, PHYSFS_getLastError());
+				LOG("Error: Reading from file %s: %s\n", pathAndFileName, PHYSFS_getLastError());
 				delete[] buffer;
 				buffer = nullptr;
 			} else {
@@ -58,13 +58,13 @@ unsigned ModuleFileSystem::Load(const char* pathAndFileName, char** buffer) cons
 		}
 
 		if (PHYSFS_close(fsFile) == 0) {
-			LOG("Error closing file %s: %s\n", pathAndFileName, PHYSFS_getLastError());
+			LOG("Error: File %s had an error closing: %s\n", pathAndFileName, PHYSFS_getLastError());
 		}
 	}
 	else
 	{
 		const char* error = PHYSFS_getLastError();
-		LOG("Error opening file %s: %s\n", pathAndFileName, error);
+		LOG("Error: File %s cannot be opened: %s\n", pathAndFileName, error);
 	}
 
 	return result;
@@ -73,8 +73,6 @@ unsigned ModuleFileSystem::Load(const char* pathAndFileName, char** buffer) cons
 unsigned ModuleFileSystem::Save(const char* pathAndFileName, const void* buffer, unsigned size, bool append) const {
 	unsigned result = 0u;
 
-	//TODO: overwrite if needed
-	bool overwrite = Exists(pathAndFileName);
 	PHYSFS_file* fsFile = (append) ? PHYSFS_openAppend(pathAndFileName) : PHYSFS_openWrite(pathAndFileName);
 
 	if (fsFile != nullptr) {
@@ -83,15 +81,15 @@ unsigned ModuleFileSystem::Save(const char* pathAndFileName, const void* buffer,
 			result = written;
 			LOG("File %s saved successfully", pathAndFileName);
 		} else {
-			LOG("Error while writing to file %s: %s", pathAndFileName, PHYSFS_getLastError());
+			LOG("Error: File %s had an error while writing: %s", pathAndFileName, PHYSFS_getLastError());
 		}
 
 		if (PHYSFS_close(fsFile) == 0) {
-			LOG("Error closing file %s: %s", pathAndFileName, PHYSFS_getLastError());
+			LOG("Error: File %s had an error closing: %s\n", pathAndFileName, PHYSFS_getLastError());
 		}
 
 	} else {
-		LOG("Error opening file %s: %s", pathAndFileName, PHYSFS_getLastError());
+		LOG("Error: File %s cannot be opened: %s\n", pathAndFileName, PHYSFS_getLastError());
 	}
 
 	return result;
@@ -122,7 +120,7 @@ bool ModuleFileSystem::AddPath(const char* path) {
 	bool result = false;
 
 	if (PHYSFS_mount(path, nullptr, 1) == 0) {
-		LOG("Error adding a path: %s\n", PHYSFS_getLastError());
+		LOG("Error: Cannot add a path: %s\n", PHYSFS_getLastError());
 	} else {
 		result = true;
 	}
@@ -154,7 +152,7 @@ bool ModuleFileSystem::Copy(const char* sourcePath, const char* destinationPath)
 
 		LOG("Copied file [%s] to [%s]", sourcePath, destinationPath);
 	} else {
-		LOG("Error while copy from [%s] to [%s]", sourcePath, destinationPath);
+		LOG("Error: Couldn't copy from [%s] to [%s]", sourcePath, destinationPath);
 	}
 
 	return result;
@@ -191,10 +189,10 @@ std::map<std::string, std::string> ModuleFileSystem::GetFilesFromDirectoryRecurs
 
 	PHYSFS_freeList(enumeratedFIles);
 
-	for (std::vector<std::string>::iterator iterator = directoryList.begin(); iterator != directoryList.end(); ++iterator) {
-		(*iterator).insert(0, directory);
-		(*iterator).append("/");
-		std::map<std::string, std::string> partialResult = GetFilesFromDirectoryRecursive((*iterator).c_str(), includeExtension);
+	for (std::vector<std::string>::iterator it = directoryList.begin(); it != directoryList.end(); ++it) {
+		(*it).insert(0, directory);
+		(*it).append("/");
+		std::map<std::string, std::string> partialResult = GetFilesFromDirectoryRecursive((*it).c_str(), includeExtension);
 		result.insert(partialResult.begin(), partialResult.end());
 	}
 

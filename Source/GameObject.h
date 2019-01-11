@@ -34,12 +34,11 @@ class GameObject
 		void					CleanUp();
 		void					DrawProperties();
 		void					DrawHierarchy(GameObject* goSelected);
-		void					DrawBBox() const;
 
-		Component*				AddComponent(ComponentType type);
-		void					RemoveComponent(Component* component);
-		Component*				GetComponent(ComponentType type) const;
-		std::vector<Component*> GetComponents(ComponentType type) const;
+		Component*						AddComponent(ComponentType type);
+		Component*						GetComponent(ComponentType type) const;
+		std::vector<Component*>			GetComponents(ComponentType type) const;
+		std::list<Component*>::iterator RemoveComponent(std::list<Component*>::iterator component);
 
 		void					ComputeBBox();
 
@@ -53,8 +52,8 @@ class GameObject
 		void Load(Config* config, rapidjson::Value& value);
 
 	public:
-		const char *			uuid = nullptr;
-		const char *			parentUuid = nullptr;
+		char uuid[37];
+		char parentUuid[37];
 		bool					enabled = true;
 		bool					drawGOBBox = false;
 		bool					duplicating = false;

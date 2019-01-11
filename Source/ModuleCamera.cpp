@@ -22,8 +22,9 @@ bool ModuleCamera::Init() {
 	sceneCamera->debugDraw = true;
 
 	quadCamera = new ComponentCamera(nullptr);
-	quadCamera->InitFrustum(math::float3(0.0f, 50.0f, 0.0f), math::float3(0.0f, -10.0f, 0.0f), math::float3(0.0f, 0.0f, -1.0f));
+	quadCamera->InitOrthographicFrustum(math::float3(0.0f, 8500.0f, 0.0f));
 	quadCamera->debugDraw = true;
+	quadCamera->LookAt(math::float3(0.0f, 0.0f, 0.0f));
 
 	return true;
 }
@@ -111,8 +112,8 @@ void ModuleCamera::FocusSelectedObject() {
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->goSelected != nullptr) {
 		math::AABB& bbox = App->scene->goSelected->bbox;
 		math::float3 HalfSize = bbox.HalfSize();
-		float distX = HalfSize.x / tanf(sceneCamera->frustum.horizontalFov*0.5f);
-		float distY = HalfSize.y / tanf(sceneCamera->frustum.verticalFov*0.5f);
+		float distX = HalfSize.x / tanf(sceneCamera->frustum.horizontalFov * 0.5f);
+		float distY = HalfSize.y / tanf(sceneCamera->frustum.verticalFov * 0.5f);
 		float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
 
 		math::float3 center = bbox.FaceCenterPoint(5);
@@ -135,7 +136,7 @@ void ModuleCamera::MovementSpeed() {
 
 void ModuleCamera::Move() {
 
-	float distance = 5.0f * App->time->realDeltaTime;
+	float distance = 500.0f * App->time->realDeltaTime;
 	float3 movement = float3::zero;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT)) {
 		distance *= 2;
@@ -220,7 +221,8 @@ void ModuleCamera::DrawGUI() {
 
 	ImGui::Checkbox("Debug", &sceneCamera->debugDraw);
 
-	if (ImGui::Checkbox("Frustum culling", &App->renderer->frustCulling)) {
+	ImGui::Checkbox("Frustum culling", &App->renderer->frustCulling);
+	if (App->renderer->frustCulling) {
 		ImGui::RadioButton("Frustum", &App->renderer->frustumCullingType, 0); ImGui::SameLine();
 		ImGui::RadioButton("QuadTree", &App->renderer->frustumCullingType, 1);
 	}
@@ -231,6 +233,6 @@ void ModuleCamera::DrawGUI() {
 		sceneCamera->frustum.horizontalFov = 2.f * atanf(tanf(sceneCamera->frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 	}
 
-	ImGui::InputFloat("zNear", &sceneCamera->frustum.nearPlaneDistance, 5, 50);
-	ImGui::InputFloat("zFar", &sceneCamera->frustum.farPlaneDistance, 5, 50);
+	ImGui::SliderFloat("zNear", &sceneCamera->frustum.nearPlaneDistance, 10.0f, sceneCamera->frustum.farPlaneDistance);
+	ImGui::SliderFloat("zFar", &sceneCamera->frustum.farPlaneDistance, sceneCamera->frustum.nearPlaneDistance, 100000.0f);
 }

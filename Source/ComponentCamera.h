@@ -23,7 +23,8 @@ class ComponentCamera : public Component
 		Component*		Duplicate() override;
 		void			Update();
 
-		void			InitFrustum(math::float3 camPos = math::float3(0.0f, 3.0f, 10.0f), math::float3 camFront = math::float3(0.0f, 0.0f, -1.0f), math::float3 camUp = float3::unitY);
+		void			InitFrustum(math::float3 camPos = math::float3(0.0f, 300.0f, 1000.0f), math::float3 camFront = math::float3(0.0f, 0.0f, -1.0f), math::float3 camUp = float3::unitY);
+		void			InitOrthographicFrustum(math::float3 camPos = math::float3(0.0f, 300.0f, 1000.0f), math::float3 camFront = math::float3(0.0f, 0.0f, -1.0f), math::float3 camUp = float3::unitY);
 		void			CreateFrameBuffer(float winWidth, float winHeight);
 
 		void			LookAt(math::float3 target);
@@ -48,8 +49,8 @@ class ComponentCamera : public Component
 		float			minFov = 10.0f;
 		float			fovY = 45.0f;
 		float			fovX = 45.0f;
-		float			cameraSpeed = 35.0f;
-		float			rotationSpeed = 65.0f;
+		float			cameraSpeed = 350.0f;
+		float			rotationSpeed = 650.0f;
 		float			mouseSensitivity = 0.2f;
 		float			zoomValue = 0.0f;
 

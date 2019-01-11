@@ -76,7 +76,7 @@ GameObject* ModuleScene::CreateCamera(GameObject* goParent, const math::float4x4
 
 	gameObject = new GameObject(DEFAULT_CAMERA_NAME, transform, goParent);
 	ComponentTransform* goTrans = (ComponentTransform*)gameObject->GetComponent(ComponentType::TRANSFORM);
-	goTrans->SetPosition(math::float3(0.0f, 2.5f, 10.0f));
+	goTrans->SetPosition(math::float3(0.0f, 250.0f, 1000.0f));
 	gameObject->AddComponent(ComponentType::CAMERA);
 
 	return gameObject;
@@ -101,7 +101,7 @@ void ModuleScene::LoadGeometry(GameObject* goParent, GeometryType geometryType) 
 	}
 
 	if (parMesh != nullptr) {
-		par_shapes_scale(parMesh, 5.0f, 5.0f, 5.0f);
+		par_shapes_scale(parMesh, 500.0f, 500.0f, 500.0f);
 
 		ComponentMesh* mesh = (ComponentMesh*)goParent->AddComponent(ComponentType::MESH);
 		mesh->ComputeMesh(parMesh);
@@ -139,8 +139,8 @@ GameObject* ModuleScene::GetGameObjectByUUID(GameObject* gameObject, char uuidOb
 
 /* RapidJson storage  */
 void ModuleScene::CreateGameObject(Config* config, rapidjson::Value& value) {
-	if (value.HasMember("parent")) {
-		const char* parentUuid = config->GetString("parent", value);
+	if (value.HasMember("parentUuid")) {
+		const char* parentUuid = config->GetString("parentUuid", value);
 		char uuidGameObjectParent[37];
 		sprintf_s(uuidGameObjectParent, parentUuid);
 
@@ -160,7 +160,7 @@ void ModuleScene::SaveScene() {
 
 	config->AddFloat("ambientLight", ambientLight);
 	config->AddFloat3("ambientLightPosition", lightPosition);
-	config->AddBool("quadTreeEnabled", &App->renderer->showQuad);
+	config->AddBool("quadTreeEnabled", App->renderer->showQuad);
 
 	config->EndObject();
 
@@ -178,9 +178,8 @@ void ModuleScene::SaveScene() {
 
 	config->WriteToDisk();
 
-	//TODO: check this config not being deleted
-	/*delete config;
-	config = nullptr;*/
+	delete config;
+	config = nullptr;
 }
 
 void ModuleScene::SaveGameObject(Config* config, GameObject* gameObject) {
@@ -233,7 +232,7 @@ void ModuleScene::ClearScene() {
 	delete root;
 	root = nullptr;
 
-	quadTree->InitQuadTree(math::AABB(math::float3(-20.0f, -20.0f, -20.0f), math::float3(20.0f, 20.0f, 20.0f)), true);
+	quadTree->InitQuadTree(math::AABB(math::float3(-2000.0f, -2000.0f, -2000.0f), math::float3(2000.0f, 2000.0f, 2000.0f)), true);
 
 	Init();
 }

@@ -17,10 +17,6 @@ void DockQuad::Draw() {
 
 	ImGui::Checkbox("Draw", &App->renderer->showQuad);
 
-	if (ImGui::Button("Enable camera")) {
-		App->camera->quadCamera->CreateFrameBuffer(ImGui::GetWindowWidth(), ImGui::GetWindowWidth());
-	}
-
 	if (App->renderer->showQuad) {
 		if (App->camera->quadCamera != nullptr) {
 			ImGui::Image((ImTextureID)App->camera->quadCamera->renderTexture, { ImGui::GetWindowWidth(), ImGui::GetWindowWidth() }, { 0,1 }, { 1,0 });

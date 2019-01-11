@@ -30,16 +30,16 @@ class Component
 		virtual void		Enable() { enabled = true; };
 		virtual void		Update();
 		virtual void		Disable() { enabled = false; };
-		void				Remove();
 
 		virtual void Save(Config* config) { };
 		virtual void Load(Config* config, rapidjson::Value& value) { };
 
 	public:
+		bool				toBeDeleted = false;
 		bool				enabled = true;
 		ComponentType		componentType = ComponentType::EMPTY;
-		const char*			uuid = "";
-		const char*			parentUuid = "";
+		char				uuid[37];
+		char				parentUuid[37];
 		GameObject*			goContainer = nullptr;
 
 };

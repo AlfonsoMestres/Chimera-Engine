@@ -18,8 +18,8 @@ out vec2 uv0;
 
 void main()
 {
-    position = (model*vec4(vertex_position, 1.0)).xyz;
-	normal = (model*vec4(vertex_normal, 0.0)).xyz;
-    gl_Position = proj*view*vec4(position, 1.0);
+    position = (model * vec4(vertex_position, 1.0f)).xyz;
+	normal = (model * vec4(vertex_normal, 0.0f)).xyz;
+    gl_Position = proj * view * vec4(position, 1.0f);
     uv0 = vertex_uv0;
 }

@@ -90,7 +90,6 @@ void ModuleLibrary::UpdateTexturesList() {
 	App->fileSystem->GetFilesFromDirectory("/Library/Textures/", fileTexturesList);
 }
 
-//TODO: check if this is working
 void ModuleLibrary::UpdateScenesList() {
 	fileScenesList.clear();
 	App->fileSystem->GetFilesFromDirectory("/Library/Scenes/", fileScenesList);

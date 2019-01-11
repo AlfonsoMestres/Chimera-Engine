@@ -88,11 +88,8 @@ class ModuleTextures : public Module
 		int			filterType = GL_LINEAR;
 		int			mipMapMode = GL_NEAREST_MIPMAP_NEAREST;
 		int			wrapMode = GL_CLAMP;
-		Texture*	defaultTexture = nullptr;
 		Texture*	noCameraSelectedTexture = nullptr;
 
-	private:
-		std::list<ComponentMaterial*> materials;
 };		   
 
 #endif

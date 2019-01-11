@@ -4,17 +4,17 @@
 #include "ModuleFileSystem.h"
 
 Component::Component(GameObject* gameObject, ComponentType type) {
-	uuid = App->fileSystem->NewGuuid();
+	sprintf_s(uuid, App->fileSystem->NewGuuid());
 	if (gameObject != nullptr) {
-		parentUuid = gameObject->uuid;
+		sprintf_s(parentUuid, gameObject->uuid);
 		goContainer = gameObject;
 	}
 	componentType = type;
 }
 
 Component::Component(const Component& duplicateComponent) {
-	uuid = App->fileSystem->NewGuuid();
-	parentUuid = duplicateComponent.parentUuid;
+	sprintf_s(uuid, App->fileSystem->NewGuuid());
+	sprintf_s(parentUuid, duplicateComponent.parentUuid);
 	goContainer = duplicateComponent.goContainer;
 	componentType = duplicateComponent.componentType;
 	enabled = duplicateComponent.enabled;
@@ -37,12 +37,10 @@ bool Component::DrawComponentState() {
 	/*ImGui::Text("Go UUID: "); ImGui::SameLine();
 	ImGui::TextColored({ 0.4f,0.4f,0.4f,1.0f }, parentUuid.c_str());*/
 
-	if (removed) Remove();
+	if (removed) {
+		toBeDeleted = true;
+	}
 
 	ImGui::PopStyleColor(3);
 	return removed;
-}
-
-void Component::Remove() {
-	goContainer->RemoveComponent(this);
 }

@@ -56,9 +56,9 @@ class ModuleCamera : public Module
 		std::vector<GameObject*> objectsPossiblePick;
 
 		// User attributes
-		float mouseSensitivity = 65.0f;
-		float rotationSpeed = 65.0f;
-		float cameraSpeed = 17.0f;
+		float mouseSensitivity = 0.5f;
+		float rotationSpeed = 0.5f;
+		float cameraSpeed = 1700.0f;
 		
 		// Mouse 
 		bool firstMouse = true;
