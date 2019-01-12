@@ -63,6 +63,18 @@ void ComponentTransform::SetWorldToLocal(const math::float4x4& parentTrans) {
 	RotationToEuler();
 }
 
+math::float4x4 ComponentTransform::GetLocalTransform() const {
+	return math::float4x4::FromTRS(position, rotation, scale);
+}
+
+math::float4x4 ComponentTransform::GetGlobalTransform() const {
+	if (goContainer->parent != nullptr && goContainer->parent->transform != nullptr) {
+		return goContainer->parent->transform->GetGlobalTransform() * goContainer->parent->transform->GetLocalTransform();
+	}
+
+	return GetLocalTransform();
+}
+
 void ComponentTransform::DrawProperties(bool staticGo) {
 
 	if (ImGui::CollapsingHeader("Local Transform")) {

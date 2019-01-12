@@ -23,9 +23,9 @@ class ModuleLibrary : public Module
 	public:
 		bool					 toBeDeleted = false;
 		bool			  		 removeHead = false;
-		std::vector<std::string> fileMeshesList;
-		std::vector<std::string> fileTexturesList;
-		std::vector<std::string> fileScenesList;
+		std::vector<std::string>* fileMeshesList = nullptr;
+		std::vector<std::string>* fileTexturesList = nullptr;
+		std::vector<std::string>* fileScenesList = nullptr;
 
 };
 

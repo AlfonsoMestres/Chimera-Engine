@@ -70,13 +70,16 @@ GameObject::GameObject(const char* goName, const math::float4x4& parentTransform
 
 GameObject::GameObject(const GameObject& duplicateGameObject) {
 	sprintf_s(uuid, App->fileSystem->NewGuuid());
-	sprintf_s(uuid, duplicateGameObject.parentUuid);
+	sprintf_s(parentUuid, duplicateGameObject.parentUuid);
 
 	char* copyName = new char[strlen(duplicateGameObject.name)];
 	strcpy(copyName, duplicateGameObject.name);
 	name = copyName;
 
 	staticGo = duplicateGameObject.staticGo;
+	if (staticGo) {
+		UpdateStaticChilds(staticGo);
+	}
 	bbox = duplicateGameObject.bbox;
 
 	for (const auto &component : duplicateGameObject.components) {
@@ -256,13 +259,13 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 					goChilds.push_back(droppedGo);
 
 					if (droppedGo->transform != nullptr) {
-						droppedGo->transform->SetLocalToWorld(droppedGo->GetGlobalTransform());
+						droppedGo->transform->SetLocalToWorld(droppedGo->transform->GetGlobalTransform());
 					}
 					droppedGo->parent->goChilds.remove(droppedGo);
 					droppedGo->parent = this;
 					sprintf_s(droppedGo->parentUuid, uuid);
 					if (droppedGo->transform != nullptr) {
-						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						droppedGo->transform->SetWorldToLocal(droppedGo->parent->transform->GetGlobalTransform());
 					}
 				}
 
@@ -388,24 +391,9 @@ std::vector<Component*> GameObject::GetComponents(ComponentType type) const {
 	return list;
 }
 
-math::float4x4 GameObject::GetLocalTransform() const {
-	if (transform == nullptr) {
-		return math::float4x4::identity;
-	}
-
-	return math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
-}
-
-math::float4x4 GameObject::GetGlobalTransform() const {
-	if (parent != nullptr) {
-		return parent->GetGlobalTransform() * GetLocalTransform();
-	}
-
-	return GetLocalTransform();
-}
-
 void GameObject::ModelTransform(unsigned shader) const {
-	glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, &GetGlobalTransform()[0][0]);
+	//TODO: we could probably check if GO have transfom if we want to generate GO without location as Scripts Components, etc.
+	glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, &transform->GetGlobalTransform()[0][0]);
 }
 
 void GameObject::ComputeBBox() {
@@ -416,10 +404,10 @@ void GameObject::ComputeBBox() {
 		}
 	}
 
-	if (mesh != nullptr) {
+	if (mesh != nullptr && transform != nullptr) {
 		bbox.SetNegativeInfinity();
 		bbox.Enclose(mesh->mesh.bbox);
-		bbox.TransformAsAABB(GetGlobalTransform());
+		bbox.TransformAsAABB(transform->GetGlobalTransform());
 	}
 
 }

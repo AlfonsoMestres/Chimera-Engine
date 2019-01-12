@@ -46,15 +46,15 @@ void DockAssets::DrawTreeNode(const char* name, bool isLeaf) {
 
 	if (resourceOpen) {
 		if (name == "Meshes") {
-			for (std::vector<std::string>::iterator iterator = App->library->fileMeshesList.begin(); iterator != App->library->fileMeshesList.end(); ++iterator) {
+			for (std::vector<std::string>::iterator iterator = App->library->fileMeshesList->begin(); iterator != App->library->fileMeshesList->end(); ++iterator) {
 				DrawTreeNode((*iterator).c_str(), true);
 			}
 		} else if (name == "Textures") {
-			for (std::vector<std::string>::iterator iterator = App->library->fileTexturesList.begin(); iterator != App->library->fileTexturesList.end(); ++iterator) {
+			for (std::vector<std::string>::iterator iterator = App->library->fileTexturesList->begin(); iterator != App->library->fileTexturesList->end(); ++iterator) {
 				DrawTreeNode((*iterator).c_str(), true);
 			}
 		} else if (name == "Scenes") {
-			for (std::vector<std::string>::iterator iterator = App->library->fileScenesList.begin(); iterator != App->library->fileScenesList.end(); ++iterator) {
+			for (std::vector<std::string>::iterator iterator = App->library->fileScenesList->begin(); iterator != App->library->fileScenesList->end(); ++iterator) {
 				DrawTreeNode((*iterator).c_str(), true);
 			}
 		}

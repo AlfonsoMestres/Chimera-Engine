@@ -122,6 +122,10 @@ void ModuleRender::DrawDebugData(ComponentCamera* camera) const {
 		PrintQuadNode(App->scene->quadTree->root);
 	}
 
+	if (showRayCast) {
+		PrintRayCast();
+	}
+
 	App->debug->Draw(camera, camera->fbo, camera->screenWidth, camera->screenHeight);
 }
 
@@ -210,20 +214,22 @@ void ModuleRender::DrawMeshes(ComponentCamera* camera) {
 }
 
 void ModuleRender::DrawWithoutCulling(ComponentMesh* mesh) const {
+	if (mesh->goContainer->transform != nullptr) {
+		if (App->scene->goSelected == mesh->goContainer) {
+			dd::aabb(mesh->goContainer->bbox.minPoint, mesh->goContainer->bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
+		}
 
-	if (App->scene->goSelected == mesh->goContainer) {
-		dd::aabb(mesh->goContainer->bbox.minPoint, mesh->goContainer->bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
+		unsigned program = App->program->blinnProgram;
+		ComponentMaterial* compMat = (ComponentMaterial*)mesh->goContainer->GetComponent(ComponentType::MATERIAL);
+
+		glUseProgram(program);
+
+		glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &mesh->goContainer->transform->GetGlobalTransform()[0][0]);
+	
+		mesh->Draw(program, compMat);
+
+		glUseProgram(0);
 	}
-
-	unsigned program = App->program->blinnProgram;
-	ComponentMaterial* compMat = (ComponentMaterial*)mesh->goContainer->GetComponent(ComponentType::MATERIAL);
-
-	glUseProgram(program);
-
-	mesh->goContainer->ModelTransform(program);
-	mesh->Draw(program, compMat);
-
-	glUseProgram(0);
 }
 
 void ModuleRender::CullingFromFrustum(ComponentCamera* camera, ComponentMesh* mesh) const {
@@ -265,4 +271,8 @@ void ModuleRender::PrintQuadNode(QuadTreeNode* quadNode) const {
 	}
 
 	dd::aabb(quadNode->aabb.minPoint, quadNode->aabb.maxPoint, dd::colors::Yellow);
+}
+
+void ModuleRender::PrintRayCast() const {
+	dd::line(App->camera->rayCast.a, App->camera->rayCast.b, math::float3(0.0f, 0.0f, 1.0f));
 }

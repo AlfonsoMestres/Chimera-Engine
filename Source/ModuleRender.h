@@ -34,6 +34,7 @@ class ModuleRender : public Module
 		void			DrawMeshes(ComponentCamera* camera);
 		void			DrawDebugData(ComponentCamera* camera) const;
 		void			PrintQuadNode(QuadTreeNode* quadNode) const;
+		void			PrintRayCast() const;
 		void			DrawWithoutCulling(ComponentMesh* mesh) const;
 		void			CullingFromQuadTree(ComponentCamera* camera, ComponentMesh* mesh);
 		void			CullingFromFrustum(ComponentCamera* camera, ComponentMesh* mesh) const;
@@ -47,6 +48,7 @@ class ModuleRender : public Module
 		void*			context = nullptr;
 		unsigned		ubo = 0u;
 		bool			showQuad = false;
+		bool			showRayCast = false;
 		unsigned		fallback = 0u;
 		std::list<ComponentMesh*> meshes;
 		std::vector<GameObject*> quadGOCollided;

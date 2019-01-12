@@ -50,7 +50,7 @@ class ComponentCamera : public Component
 		float			fovY = 45.0f;
 		float			fovX = 45.0f;
 		float			cameraSpeed = 350.0f;
-		float			rotationSpeed = 650.0f;
+		float			rotationSpeed = 450.0f;
 		float			mouseSensitivity = 0.2f;
 		float			zoomValue = 0.0f;
 

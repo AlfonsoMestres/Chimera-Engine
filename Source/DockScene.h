@@ -2,6 +2,7 @@
 #define __DOCKSCENE_H__
 
 #include "Dock.h"
+#include "Math/float2.h"
 
 class DockScene : public Dock
 {
@@ -14,6 +15,7 @@ class DockScene : public Dock
 
 	public:
 		bool focus = false;
+		math::float2 viewport = math::float2::zero;
 
 };
 

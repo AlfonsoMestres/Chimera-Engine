@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Globals.h"
+#include "MathGeoLib.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
@@ -54,6 +55,8 @@ class ModuleCamera : public Module
 		
 		GameObject* goSelected = nullptr;
 		std::vector<GameObject*> objectsPossiblePick;
+
+		math::LineSegment rayCast;
 
 		// User attributes
 		float mouseSensitivity = 0.5f;

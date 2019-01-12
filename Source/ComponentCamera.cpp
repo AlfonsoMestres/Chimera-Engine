@@ -58,7 +58,7 @@ void ComponentCamera::Update() {
 	if (goContainer == nullptr) return;
 	if (goContainer->transform == nullptr) return;
 
-	math::float4x4 transform = goContainer->GetGlobalTransform();
+	math::float4x4 transform = goContainer->transform->GetGlobalTransform();
 	frustum.pos = transform.TranslatePart();
 	frustum.front = transform.RotatePart().Mul(math::float3::unitZ).Normalized();
 	frustum.up = transform.RotatePart().Mul(math::float3::unitY).Normalized();

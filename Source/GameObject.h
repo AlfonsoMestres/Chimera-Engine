@@ -41,11 +41,7 @@ class GameObject
 		std::list<Component*>::iterator RemoveComponent(std::list<Component*>::iterator component);
 
 		void					ComputeBBox();
-
-		math::float4x4			GetLocalTransform() const;
-		math::float4x4			GetGlobalTransform() const;
 		void					ModelTransform(unsigned shader) const;
-
 		void					UpdateStaticChilds(bool staticState);
 
 		bool Save(Config* config);

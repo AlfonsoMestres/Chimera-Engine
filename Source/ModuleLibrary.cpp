@@ -13,6 +13,7 @@ ModuleLibrary::ModuleLibrary() { }
 ModuleLibrary::~ModuleLibrary() { }
 
 void LibraryWatcher() {
+	//TODO: MEM LEAKING
 	return;
 	std::map<std::string, std::string> oldFilesAssets;
 	std::map<std::string, std::string> currentFilesAssets;
@@ -44,13 +45,17 @@ void LibraryWatcher() {
 		} else if (oldFilesAssets.size() > currentFilesAssets.size()) {
 			oldFilesAssets = currentFilesAssets;
 		}
+		Sleep(1000);
 	}
-
-	Sleep(1000);
 }
 
 bool ModuleLibrary::Init() {
+
 	std::thread watcherThread(LibraryWatcher);
+
+	fileMeshesList = new std::vector<std::string>();
+	fileTexturesList = new std::vector<std::string>();
+	fileScenesList = new std::vector<std::string>();
 
 	watcherThread.detach();
 
@@ -81,16 +86,16 @@ bool ModuleLibrary::CleanUp() {
 }
 
 void ModuleLibrary::UpdateMeshesList() {
-	fileMeshesList.clear();
-	App->fileSystem->GetFilesFromDirectory("/Library/Meshes/", fileMeshesList);
+	fileMeshesList->clear();
+	App->fileSystem->GetFilesFromDirectory("/Library/Meshes/", *fileMeshesList);
 }
 
 void ModuleLibrary::UpdateTexturesList() {
-	fileTexturesList.clear();
-	App->fileSystem->GetFilesFromDirectory("/Library/Textures/", fileTexturesList);
+	fileTexturesList->clear();
+	App->fileSystem->GetFilesFromDirectory("/Library/Textures/", *fileTexturesList);
 }
 
 void ModuleLibrary::UpdateScenesList() {
-	fileScenesList.clear();
-	App->fileSystem->GetFilesFromDirectory("/Library/Scenes/", fileScenesList);
+	fileScenesList->clear();
+	App->fileSystem->GetFilesFromDirectory("/Library/Scenes/", *fileScenesList);
 }

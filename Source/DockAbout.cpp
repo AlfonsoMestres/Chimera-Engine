@@ -4,8 +4,6 @@
 #include "SDL_version.h"
 #include "IL/il.h"
 #include "assimp/version.h"
-#include "debug_draw.hpp"
-#include "mmgr/mmgr.h"
 #include "GL/glew.h"
 
 DockAbout::DockAbout() {
