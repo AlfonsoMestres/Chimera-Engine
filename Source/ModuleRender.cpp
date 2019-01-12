@@ -15,6 +15,7 @@
 #include "SDL.h"
 #include "GL/glew.h"
 #include "debugdraw.h"
+#include "imgui_internal.h"
 #include "Math/float4x4.h"
 
 ModuleRender::ModuleRender() { }
@@ -49,9 +50,6 @@ update_status ModuleRender::PreUpdate() {
 
 // Called every draw update
 update_status ModuleRender::Update() {
-
-	sceneViewportX = ImGui::GetCursorPosX() + ImGui::GetWindowPos().x;
-	sceneViewportY = ImGui::GetCursorPosY() + ImGui::GetWindowPos().y;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->sceneCamera->fbo);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -275,4 +273,39 @@ void ModuleRender::PrintQuadNode(QuadTreeNode* quadNode) const {
 
 void ModuleRender::PrintRayCast() const {
 	dd::line(App->camera->rayCast.a, App->camera->rayCast.b, math::float3(0.0f, 0.0f, 1.0f));
+}
+
+void ModuleRender::DrawImGuizmo(float width, float height, float winPosX, float winPosY) {
+	ImGuizmo::SetRect(winPosX, winPosY, width, height);
+	ImGuizmo::SetDrawlist();
+
+	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+	static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
+
+	ImGui::SetCursorPos({ 20,30 });
+
+	if (App->scene->goSelected != nullptr) {
+		mCurrentGizmoOperation = (ImGuizmo::OPERATION)imGuizmoOp;
+		mCurrentGizmoMode = (ImGuizmo::MODE)imGuizmoMode;
+
+		ImGuizmo::Enable(!App->scene->goSelected->staticGo);
+
+		ComponentTransform* transform = (ComponentTransform*)App->scene->goSelected->GetComponent(ComponentType::TRANSFORM);
+
+		math::float4x4 model = App->scene->goSelected->transform->GetGlobalTransform();
+		math::float4x4 viewScene = App->camera->sceneCamera->frustum.ViewMatrix();
+		math::float4x4 projectionScene = App->camera->sceneCamera->frustum.ProjectionMatrix();
+
+		ImGuizmo::SetOrthographic(false);
+
+		model.Transpose();
+		viewScene.Transpose();
+		projectionScene.Transpose();
+		ImGuizmo::Manipulate((float*)&viewScene, (float*)&projectionScene, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)&model, NULL, NULL, NULL, NULL);
+
+		if (ImGuizmo::IsUsing()) {
+			model.Transpose();
+			App->scene->goSelected->transform->SetGlobalTransform(model);
+		}
+	}
 }

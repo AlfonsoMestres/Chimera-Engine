@@ -27,6 +27,7 @@ game programming and development.
 * [DebugDraw](https://github.com/glampert/debug-draw)
 * [PhysicsFS](https://icculus.org/physfs/)
 * [RapidJson](https://github.com/Tencent/rapidjson)
+* [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo)
 
 ## License
 

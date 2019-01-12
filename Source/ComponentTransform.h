@@ -24,6 +24,8 @@ class ComponentTransform : public Component
 
 		void SetLocalToWorld(const math::float4x4& localTrans);
 		void SetWorldToLocal(const math::float4x4& parentTrans);
+		void SetGlobalTransform(const math::float4x4& global);
+
 
 		math::float4x4 GetLocalTransform() const;
 		math::float4x4 GetGlobalTransform() const;

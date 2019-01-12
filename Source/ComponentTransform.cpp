@@ -1,6 +1,7 @@
 #include "Config.h"
 #include "GameObject.h"
 #include "Application.h"
+#include "ModuleRender.h"
 #include "ModuleScene.h"
 #include "imgui_internal.h"
 #include "ComponentTransform.h"
@@ -75,6 +76,18 @@ math::float4x4 ComponentTransform::GetGlobalTransform() const {
 	return GetLocalTransform();
 }
 
+// something wrong here
+void ComponentTransform::SetGlobalTransform(const math::float4x4& global) {
+	SetLocalToWorld(global);	
+	math::float4x4 parentglobal = math::float4x4::identity;
+
+	if (goContainer->parent != nullptr && goContainer->parent->transform != nullptr) {
+		parentglobal = goContainer->parent->transform->GetGlobalTransform();
+	}
+	SetWorldToLocal(parentglobal);
+	goContainer->ComputeBBox();
+}
+
 void ComponentTransform::DrawProperties(bool staticGo) {
 
 	if (ImGui::CollapsingHeader("Local Transform")) {
@@ -98,6 +111,25 @@ void ComponentTransform::DrawProperties(bool staticGo) {
 		}
 
 		rotation = rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x), math::DegToRad(eulerRotation.y), math::DegToRad(eulerRotation.z));
+
+		ImGui::Text("Select one to edit the GO");
+		if (ImGui::Button("Trans")) {
+			App->renderer->imGuizmoOp = ImGuizmo::TRANSLATE;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Rotate")) {
+			App->renderer->imGuizmoOp = ImGuizmo::ROTATE;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Scale")) {
+			App->renderer->imGuizmoOp = ImGuizmo::SCALE;
+			App->renderer->imGuizmoMode = ImGuizmo::LOCAL;
+		}
+		
+		if (App->renderer->imGuizmoOp != ImGuizmo::SCALE) {
+			ImGui::RadioButton("Local", &App->renderer->imGuizmoMode, ImGuizmo::LOCAL); ImGui::SameLine();
+			ImGui::RadioButton("Global", &App->renderer->imGuizmoMode, ImGuizmo::WORLD);
+		}
 
 		if (edited) {
 			goContainer->ComputeBBox();

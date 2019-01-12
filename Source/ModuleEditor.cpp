@@ -5,6 +5,7 @@
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
 #include "ModuleEditor.h"
+#include "ImGuizmo/ImGuizmo.h"
 #include "ModuleScene.h"
 #include "GL/glew.h"
 #include "SDL.h"
@@ -45,6 +46,7 @@ update_status ModuleEditor::PreUpdate() {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
 
 	CreateDockSpace();
 	return UPDATE_CONTINUE;

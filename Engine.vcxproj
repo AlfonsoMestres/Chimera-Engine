@@ -107,6 +107,7 @@
     <ClInclude Include="Source\DockTime.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\Globals.h" />
+    <ClInclude Include="Source\ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="Source\MaterialImporter.h" />
     <ClInclude Include="Source\MathGeoLib\include\Algorithm\Random\LCG.h" />
     <ClInclude Include="Source\MathGeoLib\include\Geometry\AABB.h" />
@@ -228,6 +229,7 @@
     <ClCompile Include="Source\DockScene.cpp" />
     <ClCompile Include="Source\DockTime.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="Source\IMGUI\imgui.cpp" />
     <ClCompile Include="Source\IMGUI\imgui_demo.cpp" />
     <ClCompile Include="Source\IMGUI\imgui_draw.cpp" />

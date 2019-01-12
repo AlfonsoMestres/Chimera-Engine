@@ -235,6 +235,9 @@
     <ClCompile Include="Source\DockQuad.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ImGuizmo\ImGuizmo.cpp">
+      <Filter>Utils\ImGuizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ComponentMaterial.h">
@@ -600,6 +603,9 @@
     <ClInclude Include="Source\DockQuad.h">
       <Filter>Docks</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ImGuizmo\ImGuizmo.h">
+      <Filter>Utils\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -646,6 +652,9 @@
     </Filter>
     <Filter Include="Utils\QuadTree">
       <UniqueIdentifier>{f01b90de-90cf-4b9f-8ed2-2bfb1f03c04d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\ImGuizmo">
+      <UniqueIdentifier>{7bf7fe68-539e-4743-b1ca-9a7217fc0815}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
