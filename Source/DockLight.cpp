@@ -16,7 +16,7 @@ void DockLight::Draw() {
 	ImGui::Separator();
 	ImGui::SliderFloat("Intensity", &App->scene->ambientLight, 0.0f, 1.0f);
 	ImGui::Text("Position");
-	ImGui::DragFloat3("", (float*)&App->scene->lightPosition, 0.25f, -500.f, 500.f);
+	ImGui::DragFloat3("", (float*)&App->scene->lightPosition, 10.0f, -50000.f, 50000.f);
 
 	focus = ImGui::IsWindowFocused();
 	ImGui::End();

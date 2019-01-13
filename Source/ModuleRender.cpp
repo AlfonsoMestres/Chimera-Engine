@@ -43,6 +43,7 @@ bool ModuleRender::Init() {
 }
 
 update_status ModuleRender::PreUpdate() {
+	BROFILER_CATEGORY("RenderPreUpdate()", Profiler::Color::AliceBlue);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	return UPDATE_CONTINUE;
@@ -50,7 +51,7 @@ update_status ModuleRender::PreUpdate() {
 
 // Called every draw update
 update_status ModuleRender::Update() {
-
+	BROFILER_CATEGORY("RenderUpdate()", Profiler::Color::Aqua);
 	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->sceneCamera->fbo);
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -77,7 +78,7 @@ update_status ModuleRender::Update() {
 		DrawDebugData(App->camera->selectedCamera);
 	}
 
- 	if (App->camera->quadCamera != nullptr) {
+ 	if (showQuad && App->camera->quadCamera != nullptr) {
 		glBindFramebuffer(GL_FRAMEBUFFER, App->camera->quadCamera->fbo);
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -96,7 +97,7 @@ update_status ModuleRender::Update() {
 }
 
 update_status ModuleRender::PostUpdate() {
-
+	BROFILER_CATEGORY("RenderPostUpdate()", Profiler::Color::Orchid);
 	App->editor->RenderGUI();
 	SDL_GL_SwapWindow(App->window->window);
 
@@ -104,7 +105,7 @@ update_status ModuleRender::PostUpdate() {
 }
 
 void ModuleRender::DrawDebugData(ComponentCamera* camera) const {
-
+	BROFILER_CATEGORY("DrawDebugData()", Profiler::Color::Orange);
 	if (camera->debugDraw == false) return;
 
 	//TODO: probably we can render every frustum and paint the active in green
@@ -113,7 +114,7 @@ void ModuleRender::DrawDebugData(ComponentCamera* camera) const {
 	}
 
 	//Grid and axis debug
-	dd::xzSquareGrid(-100000.0f, 100000.0f, 0.0f, 100.0f, math::float3(0.65f, 0.65f, 0.65f));
+	dd::xzSquareGrid(-42000.0f, 42000.0f, 0.0f, 100.0f, math::float3(0.65f, 0.65f, 0.65f));
 	dd::axisTriad(math::float4x4::identity, 10.0f, 100.0f, 0, true);
 
 	if (showQuad) {
@@ -196,6 +197,7 @@ void ModuleRender::GenerateFallBackMaterial() {
 }
 
 void ModuleRender::DrawMeshes(ComponentCamera* camera) {
+	BROFILER_CATEGORY("DrawMeshes()", Profiler::Color::Gold);
 	for (std::list<ComponentMesh*>::iterator it = meshes.begin(); it != meshes.end(); ++it) {
 		if ((*it)->enabled) {
 			if (frustCulling) {
@@ -293,7 +295,6 @@ void ModuleRender::DrawImGuizmo(float width, float height, float winPosX, float 
 		ComponentTransform* transform = (ComponentTransform*)App->scene->goSelected->GetComponent(ComponentType::TRANSFORM);
 
 		math::float4x4 model = App->scene->goSelected->transform->GetGlobalTransform();
-		//math::float4x4 viewScene = App->camera->sceneCamera->frustum.ViewMatrix();
 		math::float4x4 viewScene = App->camera->sceneCamera->GetViewMatrix();
 		math::float4x4 projectionScene = App->camera->sceneCamera->GetProjectionMatrix();
 
@@ -304,7 +305,7 @@ void ModuleRender::DrawImGuizmo(float width, float height, float winPosX, float 
 
 		if (ImGuizmo::IsUsing()) {
 			model.Transpose();
-			//App->scene->goSelected->transform->SetGlobalTransform(model);
+			App->scene->goSelected->transform->SetGlobalTransform(model);
 		}
 	}
 }

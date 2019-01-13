@@ -158,17 +158,17 @@ bool ModuleFileSystem::Copy(const char* sourcePath, const char* destinationPath)
 	return result;
 }
 
-std::map<std::string, std::string> ModuleFileSystem::GetFilesFromDirectoryRecursive(const char* directory, const bool includeExtension) {
-	std::map<std::string, std::string> result;
+void ModuleFileSystem::GetFilesFromDirectoryRecursive(const char* directory, const bool includeExtension, std::map<std::string, std::string>& result) {
 	char **enumeratedFIles = PHYSFS_enumerateFiles(directory);
 	char **iterator;
 
 	std::string directoryString(directory);
-	std::vector<std::string> directoryList;
 
 	for (iterator = enumeratedFIles; *iterator != nullptr; iterator++) {
 		if (PHYSFS_isDirectory((directoryString + *iterator).c_str())) {
-			directoryList.push_back(*iterator);
+			std::string newDirectory(directoryString + *iterator);
+			newDirectory.append("/");
+			GetFilesFromDirectoryRecursive(newDirectory.c_str(), includeExtension, result);
 		} else {
 			if (includeExtension) {
 				result[(*iterator)] = directoryString;
@@ -188,15 +188,6 @@ std::map<std::string, std::string> ModuleFileSystem::GetFilesFromDirectoryRecurs
 	}
 
 	PHYSFS_freeList(enumeratedFIles);
-
-	for (std::vector<std::string>::iterator it = directoryList.begin(); it != directoryList.end(); ++it) {
-		(*it).insert(0, directory);
-		(*it).append("/");
-		std::map<std::string, std::string> partialResult = GetFilesFromDirectoryRecursive((*it).c_str(), includeExtension);
-		result.insert(partialResult.begin(), partialResult.end());
-	}
-
-	return result;
 }
 
 void ModuleFileSystem::GetFilesFromDirectory(const char* directory, std::vector<std::string>& fileList) const {

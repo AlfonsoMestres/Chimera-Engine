@@ -17,6 +17,10 @@ ComponentMaterial::ComponentMaterial(GameObject* goContainer, const aiMaterial* 
 }
 
 ComponentMaterial::ComponentMaterial(const ComponentMaterial& duplicatedComponent) : Component(duplicatedComponent) {
+	diffuseSelected = duplicatedComponent.diffuseSelected;
+	occlusionSelected = duplicatedComponent.occlusionSelected;
+	specularSelected = duplicatedComponent.specularSelected;
+	emissiveSelected = duplicatedComponent.emissiveSelected;
 	material = duplicatedComponent.material;
 }
 

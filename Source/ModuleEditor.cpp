@@ -43,6 +43,7 @@ bool ModuleEditor::Init() {
 }
 
 update_status ModuleEditor::PreUpdate() {
+	BROFILER_CATEGORY("EditorPreUpdate()", Profiler::Color::Azure);
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
@@ -53,7 +54,7 @@ update_status ModuleEditor::PreUpdate() {
 }
 
 update_status ModuleEditor::Update() {
-
+	BROFILER_CATEGORY("EditorUpdate()", Profiler::Color::Azure);
 	if (ImGui::BeginMainMenuBar()) {
 
 		if (ImGui::BeginMenu("App")) {

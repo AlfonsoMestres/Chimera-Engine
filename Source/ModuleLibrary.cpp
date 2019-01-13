@@ -10,17 +10,18 @@ bool stopWatcher = false;
 
 ModuleLibrary::ModuleLibrary() { }
 
-ModuleLibrary::~ModuleLibrary() { }
+ModuleLibrary::~ModuleLibrary() { 
+	CleanUp();
+}
 
 void LibraryWatcher() {
-	return;
 	std::map<std::string, std::string> oldFilesAssets;
 	std::map<std::string, std::string> currentFilesAssets;
 	std::map<std::string, std::string> currentFilesLibrary;
 	while (!stopWatcher) {
-		currentFilesAssets = App->fileSystem->GetFilesFromDirectoryRecursive("/Assets/", true);
+		App->fileSystem->GetFilesFromDirectoryRecursive("/Assets/", true, currentFilesAssets);
 		if ((oldFilesAssets.size() == 0 && oldFilesAssets.size() != currentFilesAssets.size()) || oldFilesAssets.size() < currentFilesAssets.size()) {
-			currentFilesLibrary = App->fileSystem->GetFilesFromDirectoryRecursive("/Library/", false);
+			App->fileSystem->GetFilesFromDirectoryRecursive("/Library/", false, currentFilesLibrary);
 			for (std::map<std::string, std::string>::iterator iterator = currentFilesAssets.begin(); iterator != currentFilesAssets.end(); ++iterator) {
 				std::string fileName = (*iterator).first;
 				App->fileSystem->ChangePathSlashes(fileName);
@@ -66,6 +67,7 @@ bool ModuleLibrary::Init() {
 }
 
 update_status ModuleLibrary::Update() {
+	BROFILER_CATEGORY("LibraryUpdate()", Profiler::Color::Coral);
 	if (toBeDeleted) {
 		toBeDeleted = false;
 		if (removeHead) {
@@ -80,6 +82,7 @@ update_status ModuleLibrary::Update() {
 
 bool ModuleLibrary::CleanUp() {
 	stopWatcher = true;
+	Sleep(1000);
 	return true;
 }
 

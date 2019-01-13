@@ -14,6 +14,7 @@ bool ModuleTime::Init() {
 }
 
 update_status ModuleTime::Update() {
+	BROFILER_CATEGORY("TimeUpdate()", Profiler::Color::LightPink);
 	++frameCount;
 	++realFrameCount;
 

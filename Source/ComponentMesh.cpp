@@ -19,6 +19,7 @@ ComponentMesh::ComponentMesh(GameObject* goContainer, Mesh* mesh) : Component(go
 
 ComponentMesh::ComponentMesh(const ComponentMesh& duplicatedComponent) : Component(duplicatedComponent) {
 	mesh = duplicatedComponent.mesh;
+	currentMesh = duplicatedComponent.currentMesh;
 	App->renderer->meshes.push_back(this);
 }
 

@@ -45,13 +45,13 @@ class ComponentCamera : public Component
 		math::Frustum	frustum;
 
 		// Camera specs
-		float			maxFov = 100.0f;
-		float			minFov = 10.0f;
+		float			maxFov = 80.0f;
+		float			minFov = 20.0f;
 		float			fovY = 45.0f;
 		float			fovX = 45.0f;
-		float			cameraSpeed = 350.0f;
+		float			cameraSpeed = 1000.0f;
 		float			rotationSpeed = 450.0f;
-		float			mouseSensitivity = 0.2f;
+		float			mouseSensitivity = 0.15f;
 		float			zoomValue = 0.0f;
 
 		unsigned		screenWidth = SCREEN_WIDTH;

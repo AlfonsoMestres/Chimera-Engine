@@ -153,6 +153,9 @@ void ModuleTextures::LoadMaterial(std::string path, unsigned& textureID, int& wi
 	}
 
 	ilDeleteImages(1, &imageID);
+	delete[] fileBuffer;
+	fileBuffer = nullptr;
+
 	LOG("Material creation successful.");
 }
 

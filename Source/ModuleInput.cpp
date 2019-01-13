@@ -38,6 +38,7 @@ bool ModuleInput::Init() {
 }
 
 update_status ModuleInput::PreUpdate() {
+	BROFILER_CATEGORY("InputPreUpdate()", Profiler::Color::Chocolate);
 	static SDL_Event event;
 
 	mouse_motion = { 0, 0 };
@@ -125,8 +126,8 @@ update_status ModuleInput::PreUpdate() {
 			case SDL_MOUSEMOTION:
 				mouse_motion.x = (float)event.motion.xrel / (float)App->window->width;
 				mouse_motion.y = (float)event.motion.yrel / (float)App->window->height;
-				mouse.x = (float)event.motion.x / (float)App->window->width;
-				mouse.y = (float)event.motion.y / (float)App->window->height;
+				mouse.x = (float)event.motion.x;
+				mouse.y = (float)event.motion.y;
 				break;
 
 			case SDL_MOUSEWHEEL:

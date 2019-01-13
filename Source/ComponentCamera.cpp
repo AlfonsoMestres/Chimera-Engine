@@ -35,7 +35,7 @@ void ComponentCamera::InitFrustum(math::float3 camPos, math::float3 camFront, ma
 	frustum.pos = camPos;
 	frustum.front = camFront;
 	frustum.up = camUp;
-	frustum.nearPlaneDistance = 10.0f;
+	frustum.nearPlaneDistance = 8.0f;
 	frustum.farPlaneDistance = 42000.0f;
 	frustum.verticalFov = math::pi / 2.0f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
@@ -47,7 +47,7 @@ void ComponentCamera::InitOrthographicFrustum(math::float3 camPos, math::float3 
 	frustum.pos = camPos;
 	frustum.front = camFront;
 	frustum.up = camUp;
-	frustum.nearPlaneDistance = 10.0f;
+	frustum.nearPlaneDistance = 8.0f;
 	frustum.farPlaneDistance = 42000.0f;
 	frustum.orthographicWidth = math::pi / 2.0f;
 	frustum.orthographicHeight = math::pi / 2.0f;
@@ -97,7 +97,7 @@ void ComponentCamera::DrawProperties(bool enabled) {
 			SetVerticalFOV(fovY);
 		}
 
-		ImGui::SliderFloat("zNear", &frustum.nearPlaneDistance, 10.0f, frustum.farPlaneDistance);
+		ImGui::SliderFloat("zNear", &frustum.nearPlaneDistance, 5.0f, frustum.farPlaneDistance);
 		ImGui::SliderFloat("zFar", &frustum.farPlaneDistance, frustum.nearPlaneDistance, 100000.0f);
 
 		if (App->camera->selectedCamera == this) {

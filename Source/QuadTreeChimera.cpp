@@ -82,6 +82,8 @@ QuadTreeNode::QuadTreeNode(const math::AABB& aabb) : aabb(aabb) {
 }
 
 QuadTreeNode::~QuadTreeNode() {
+	goList.clear();
+
 	delete childs[0];
 	childs[0] = nullptr;
 	delete childs[1];

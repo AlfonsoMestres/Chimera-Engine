@@ -53,15 +53,11 @@ class ModuleCamera : public Module
 		ComponentCamera* selectedCamera = nullptr;
 		std::list<ComponentCamera*> gameCameras;
 		
-		GameObject* goSelected = nullptr;
-		std::vector<GameObject*> objectsPossiblePick;
+		GameObject*					goSelected = nullptr;
+		std::vector<GameObject*>	objectsPossiblePick;
 
-		math::LineSegment rayCast;
-
-		// User attributes
-		float mouseSensitivity = 0.5f;
-		float rotationSpeed = 0.5f;
-		float cameraSpeed = 1700.0f;
+		math::LineSegment	rayCast;
+		bool				sceneFocused = false;
 		
 		// Mouse 
 		bool firstMouse = true;

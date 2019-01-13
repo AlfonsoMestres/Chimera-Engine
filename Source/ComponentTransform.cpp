@@ -70,7 +70,7 @@ math::float4x4 ComponentTransform::GetLocalTransform() const {
 
 math::float4x4 ComponentTransform::GetGlobalTransform() const {
 	if (goContainer->parent != nullptr && goContainer->parent->transform != nullptr) {
-		return goContainer->parent->transform->GetGlobalTransform() * goContainer->parent->transform->GetLocalTransform();
+		return goContainer->parent->transform->GetGlobalTransform() * goContainer->transform->GetLocalTransform();
 	}
 
 	return GetLocalTransform();

@@ -25,6 +25,9 @@ ModuleScene::~ModuleScene() {
 bool ModuleScene::CleanUp() {
 	delete root;
 	root = nullptr;
+	delete quadTree;
+	quadTree = nullptr;
+
 	return true;
 }
 
@@ -36,6 +39,7 @@ bool ModuleScene::Init() {
 }
 
 update_status ModuleScene::Update() {
+	BROFILER_CATEGORY("SceneUpdate()", Profiler::Color::DarkRed);
 	update_status ret = UPDATE_CONTINUE;
 
 	root->Update();
@@ -229,10 +233,6 @@ void ModuleScene::LoadScene() {
 }
 
 void ModuleScene::ClearScene() {
-	delete root;
-	root = nullptr;
-
-	quadTree->InitQuadTree(math::AABB(math::float3(-2000.0f, -2000.0f, -2000.0f), math::float3(2000.0f, 2000.0f, 2000.0f)), true);
-
+	CleanUp();
 	Init();
 }
