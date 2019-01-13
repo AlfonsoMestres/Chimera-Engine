@@ -293,19 +293,18 @@ void ModuleRender::DrawImGuizmo(float width, float height, float winPosX, float 
 		ComponentTransform* transform = (ComponentTransform*)App->scene->goSelected->GetComponent(ComponentType::TRANSFORM);
 
 		math::float4x4 model = App->scene->goSelected->transform->GetGlobalTransform();
-		math::float4x4 viewScene = App->camera->sceneCamera->frustum.ViewMatrix();
-		math::float4x4 projectionScene = App->camera->sceneCamera->frustum.ProjectionMatrix();
+		//math::float4x4 viewScene = App->camera->sceneCamera->frustum.ViewMatrix();
+		math::float4x4 viewScene = App->camera->sceneCamera->GetViewMatrix();
+		math::float4x4 projectionScene = App->camera->sceneCamera->GetProjectionMatrix();
 
 		ImGuizmo::SetOrthographic(false);
 
 		model.Transpose();
-		viewScene.Transpose();
-		projectionScene.Transpose();
 		ImGuizmo::Manipulate((float*)&viewScene, (float*)&projectionScene, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)&model, NULL, NULL, NULL, NULL);
 
 		if (ImGuizmo::IsUsing()) {
 			model.Transpose();
-			App->scene->goSelected->transform->SetGlobalTransform(model);
+			//App->scene->goSelected->transform->SetGlobalTransform(model);
 		}
 	}
 }

@@ -19,7 +19,7 @@ bool ModuleWindow::Init() {
 	} else {
 		int width = SCREEN_WIDTH;
 		int height = SCREEN_HEIGHT;
-		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
+		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED;
 
 		if(FULLSCREEN == true) {
 			flags |= SDL_WINDOW_FULLSCREEN;

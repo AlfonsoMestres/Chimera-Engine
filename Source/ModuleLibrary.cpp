@@ -13,7 +13,6 @@ ModuleLibrary::ModuleLibrary() { }
 ModuleLibrary::~ModuleLibrary() { }
 
 void LibraryWatcher() {
-	//TODO: MEM LEAKING
 	return;
 	std::map<std::string, std::string> oldFilesAssets;
 	std::map<std::string, std::string> currentFilesAssets;
@@ -80,7 +79,6 @@ update_status ModuleLibrary::Update() {
 }
 
 bool ModuleLibrary::CleanUp() {
-	//TODO: remove lists
 	stopWatcher = true;
 	return true;
 }

@@ -76,7 +76,6 @@ math::float4x4 ComponentTransform::GetGlobalTransform() const {
 	return GetLocalTransform();
 }
 
-// something wrong here
 void ComponentTransform::SetGlobalTransform(const math::float4x4& global) {
 	SetLocalToWorld(global);	
 	math::float4x4 parentglobal = math::float4x4::identity;

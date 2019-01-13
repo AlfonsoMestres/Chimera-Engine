@@ -134,6 +134,7 @@ math::float4x4 ComponentCamera::GetProjectionMatrix() {
 	return frustum.ProjectionMatrix().Transposed();
 }
 
+//TODO: fix this
 void ComponentCamera::SetScreenNewScreenSize(unsigned width, unsigned height) {
 	screenWidth = width;
 	screenHeight = height;

@@ -215,7 +215,17 @@ void ModuleCamera::SelectGameObject() {
 	}
 
 	if (gameObjectHit != nullptr) {
-		App->scene->goSelected = gameObjectHit;
+		if (App->renderer->selectAncestorOnClick) {
+			GameObject* inheritedTrasnform = gameObjectHit;
+			while (inheritedTrasnform->parent != App->scene->root) {
+				inheritedTrasnform = inheritedTrasnform->parent;
+			}
+			App->scene->goSelected = inheritedTrasnform;
+		} else {
+			App->scene->goSelected = gameObjectHit;
+		}
+	} else {
+		//App->scene->goSelected = nullptr;
 	}
 }
 
@@ -230,6 +240,8 @@ void ModuleCamera::DrawGUI() {
 	}
 
 	ImGui::Checkbox("Raycast drawing", &App->renderer->showRayCast);
+
+	ImGui::Checkbox("Select ancestor on click", &App->renderer->selectAncestorOnClick);
 
 	float fov = math::RadToDeg(sceneCamera->frustum.verticalFov);
 	if (ImGui::SliderFloat("FOV", &fov, 40, 120)) {

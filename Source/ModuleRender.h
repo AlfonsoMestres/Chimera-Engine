@@ -46,6 +46,7 @@ class ModuleRender : public Module
 		void			CullingFromFrustum(ComponentCamera* camera, ComponentMesh* mesh) const;
 
 	public:
+		bool			selectAncestorOnClick = true;
 		bool			frustCulling = true;
 		int				frustumCullingType = 0;
 		bool			vsyncEnabled = false;
