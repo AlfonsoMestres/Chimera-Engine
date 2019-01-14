@@ -13,7 +13,7 @@ void MeshImporter::ImportFBX(const char* filePath) {
 	std::string fileName;
 	App->fileSystem->SplitFilePath(filePath, nullptr, &fileName, nullptr);
 
-	if (scene->mMeshes != nullptr) {
+	if (scene != nullptr && scene->mMeshes != nullptr) {
 		for (int i = 0; i < scene->mNumMeshes; i++) {
 			std::string meshName = fileName;
 			meshName.append("_" + std::to_string(i));

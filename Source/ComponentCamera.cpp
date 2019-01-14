@@ -54,7 +54,6 @@ void ComponentCamera::InitOrthographicFrustum(math::float3 camPos, math::float3 
 }
 
 void ComponentCamera::Update() {
-	//TODO: Set up a bool to see if the transform is edited to recalculate the frustum
 	if (goContainer == nullptr) return;
 	if (goContainer->transform == nullptr) return;
 
@@ -134,7 +133,6 @@ math::float4x4 ComponentCamera::GetProjectionMatrix() {
 	return frustum.ProjectionMatrix().Transposed();
 }
 
-//TODO: fix this
 void ComponentCamera::SetScreenNewScreenSize(unsigned width, unsigned height) {
 	screenWidth = width;
 	screenHeight = height;
@@ -142,7 +140,6 @@ void ComponentCamera::SetScreenNewScreenSize(unsigned width, unsigned height) {
 
 	SetHorizontalFOV(fovX);
 	SetVerticalFOV(fovY);
-	CreateFrameBuffer(App->window->width, App->window->height);
 }
 
 void ComponentCamera::Rotate(float dx, float dy) {

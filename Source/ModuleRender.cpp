@@ -110,7 +110,11 @@ void ModuleRender::DrawDebugData(ComponentCamera* camera) const {
 
 	//TODO: probably we can render every frustum and paint the active in green
 	if (App->camera->selectedCamera != nullptr) {
-		dd::frustum((App->camera->selectedCamera->frustum.ProjectionMatrix() * App->camera->selectedCamera->frustum.ViewMatrix()).Inverted(), dd::colors::Crimson);
+		dd::frustum((App->camera->selectedCamera->frustum.ProjectionMatrix() * App->camera->selectedCamera->frustum.ViewMatrix()).Inverted(), dd::colors::GreenYellow);
+	}
+
+	for (auto& cam : App->camera->gameCameras) {
+		dd::frustum((cam->frustum.ProjectionMatrix() * cam->frustum.ViewMatrix()).Inverted(), dd::colors::IndianRed);
 	}
 
 	//Grid and axis debug

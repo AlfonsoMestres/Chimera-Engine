@@ -108,7 +108,7 @@ void ModuleCamera::SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight)
 	sceneCamera->SetScreenNewScreenSize(newWidth, newHeight);
 }
 
-//TODO: change this to frustum properties, also make the camera to remain in the same location
+//TODO: change this so the camera to remain in the same location
 void ModuleCamera::FocusSelectedObject() {
 
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && App->scene->goSelected != nullptr) {

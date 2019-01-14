@@ -10,10 +10,12 @@ DockScene::DockScene() { }
 DockScene::~DockScene() { }
 
 void DockScene::Draw() {
-
 	ImGui::Begin("Scene", &enabled, ImGuiWindowFlags_NoScrollbar);
 
 	winSize = ImGui::GetWindowSize();
+	
+	App->camera->sceneCamera->SetScreenNewScreenSize(winSize.x, winSize.y);
+
 	ImVec2 pos = ImGui::GetWindowPos();
 
 	viewport.x = ImGui::GetCursorPosX() + pos.x;

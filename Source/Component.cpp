@@ -1,6 +1,6 @@
-#include "Application.h"
 #include "Component.h"
 #include "GameObject.h"
+#include "Application.h"
 #include "ModuleFileSystem.h"
 
 Component::Component(GameObject* gameObject, ComponentType type) {

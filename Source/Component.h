@@ -2,7 +2,6 @@
 #define __COMPONENT_H__
 
 #include "document.h"
-#include "prettywriter.h"
 
 class Config;
 class GameObject;

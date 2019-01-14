@@ -49,7 +49,7 @@ class ModuleRender : public Module
 		bool			selectAncestorOnClick = true;
 		bool			frustCulling = true;
 		int				frustumCullingType = 0;
-		bool			vsyncEnabled = false;
+		bool			vsyncEnabled = true;
 		void*			context = nullptr;
 		unsigned		ubo = 0u;
 		bool			showQuad = false;
