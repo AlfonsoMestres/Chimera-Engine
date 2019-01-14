@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleScene.h"
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleTime.h"
@@ -21,8 +22,13 @@ void DockConfig::Draw() {
 	}
 
 	if (ImGui::CollapsingHeader("Application")) {
+
+		ImGui::DragInt("Scale factor", &App->scene->scaleFactor);
+
 		ImGui::PushItemWidth(200.0f);
 		static int framerateCap = App->time->maxFps;
+
+		// (ImGui::DragFloat3("Position", (float*)&position, 10.0f, -100000.f, 100000.f)
 		if (ImGui::SliderInt("MaxFPS", &framerateCap, 1, 120)) {
 			App->time->maxFps = framerateCap;
 		}

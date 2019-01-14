@@ -1,3 +1,5 @@
+#include "Application.h"
+#include "ModuleScene.h"
 #include "QuadTreeChimera.h"
 #include "Globals.h"
 #include "Application.h"
@@ -6,7 +8,7 @@
 #include "ComponentMesh.h"
 
 QuadTreeChimera::QuadTreeChimera() { 
-	quadLimits = math::AABB(math::float3(-2000.0f, -2000.0f, -2000.0f), math::float3(2000.0f, 2000.0f, 2000.0f));
+	quadLimits = math::AABB(math::float3(-2.0f * App->scene->scaleFactor, -2.0f * App->scene->scaleFactor, -2.0f * App->scene->scaleFactor), math::float3(2.0f * App->scene->scaleFactor, 2.0f * App->scene->scaleFactor, 2.0f * App->scene->scaleFactor));
 	InitQuadTree(quadLimits, true);
 }
 
@@ -19,8 +21,9 @@ void QuadTreeChimera::InitQuadTree(const math::AABB& aabb, bool clearAllGameObje
 		Clear();
 	}
 
-	App->camera->quadCamera->frustum.pos.y = aabb.maxPoint.y * 2.0f;
-	App->camera->quadCamera->frustum.farPlaneDistance = App->camera->quadCamera->frustum.pos.y + aabb.Size().y + 20000.0f;
+	if (App->camera->quadCamera != nullptr) {
+		App->camera->quadCamera->frustum.pos.y = aabb.maxPoint.y + 1.0f;
+	}
 
 	root = new QuadTreeNode(aabb);
 }

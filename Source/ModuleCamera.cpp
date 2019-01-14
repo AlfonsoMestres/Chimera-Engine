@@ -22,10 +22,15 @@ bool ModuleCamera::Init() {
 	sceneCamera->InitFrustum();
 	sceneCamera->debugDraw = true;
 
-	quadCamera = new ComponentCamera(nullptr);
-	quadCamera->InitOrthographicFrustum(math::float3(0.0f, 8500.0f, 0.0f));
-	quadCamera->debugDraw = true;
-	quadCamera->LookAt(math::float3(0.0f, 0.0f, 0.0f));
+	GameObject* quadCam = new GameObject("QuadGO", App->scene->root);
+	quadCam->AddComponent(ComponentType::TRANSFORM);
+	ComponentCamera* quadCamera1 = (ComponentCamera*)quadCam->AddComponent(ComponentType::CAMERA);
+
+
+	quadCamera1->InitOrthographicFrustum(math::float3(0.0f, 8.5f * App->scene->scaleFactor, 0.0f));
+	quadCamera1->debugDraw = true;
+	//quadCamera->LookAt(math::float3(0.0f, 0.0f, 0.0f));
+	quadCamera = quadCamera1;
 
 	return true;
 }
@@ -138,7 +143,7 @@ void ModuleCamera::MovementSpeed() {
 
 void ModuleCamera::Move() {
 
-	float distance = 500.0f * App->time->realDeltaTime;
+	float distance = 5.0f * App->scene->scaleFactor * App->time->realDeltaTime;
 	float3 movement = float3::zero;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT)) {
 		distance *= 2;
@@ -182,7 +187,7 @@ void ModuleCamera::SelectGameObject() {
 		}
 	}
 
-	float minDistance = -100.0f;
+	float minDistance = -.1f * App->scene->scaleFactor;
 	GameObject* gameObjectHit = nullptr;
 	if (objectsPossiblePick.size() > 0) {
 		for (std::vector<GameObject*>::iterator iterator = objectsPossiblePick.begin(); iterator != objectsPossiblePick.end(); ++iterator) {
@@ -196,18 +201,23 @@ void ModuleCamera::SelectGameObject() {
 
 				math::Triangle triangle;
 				for (unsigned i = 0u; i < mesh.indicesNumber; i += 3) {
-					triangle.a = { mesh.vertices[mesh.indices[i] * 3], mesh.vertices[mesh.indices[i] * 3 + 1], mesh.vertices[mesh.indices[i] * 3 + 2] };
-					triangle.b = { mesh.vertices[mesh.indices[i + 1] * 3], mesh.vertices[mesh.indices[i + 1] * 3 + 1], mesh.vertices[mesh.indices[i + 1] * 3 + 2] };
-					triangle.c = { mesh.vertices[mesh.indices[i + 2] * 3], mesh.vertices[mesh.indices[i + 2] * 3 + 1], mesh.vertices[mesh.indices[i + 2] * 3 + 2] };
+					//Only the parmesh meshes does not contains indices
+					if (mesh.indices != nullptr) {
+						triangle.a = { mesh.vertices[mesh.indices[i] * 3], mesh.vertices[mesh.indices[i] * 3 + 1], mesh.vertices[mesh.indices[i] * 3 + 2] };
+						triangle.b = { mesh.vertices[mesh.indices[i + 1] * 3], mesh.vertices[mesh.indices[i + 1] * 3 + 1], mesh.vertices[mesh.indices[i + 1] * 3 + 2] };
+						triangle.c = { mesh.vertices[mesh.indices[i + 2] * 3], mesh.vertices[mesh.indices[i + 2] * 3 + 1], mesh.vertices[mesh.indices[i + 2] * 3 + 2] };
 
-					float triangleDistance;
-					math::float3 hitPoint;
-					if (localTransformPikingLine.Intersects(triangle, &triangleDistance, &hitPoint)) {
-						if (minDistance == -100.0f || triangleDistance < minDistance) {
-							minDistance = triangleDistance;
-							gameObjectHit = *iterator;
+						float triangleDistance;
+						math::float3 hitPoint;
+						if (localTransformPikingLine.Intersects(triangle, &triangleDistance, &hitPoint)) {
+							//TODO: min distance compare same value
+							if (minDistance == -.1f * App->scene->scaleFactor || triangleDistance < minDistance) {
+								minDistance = triangleDistance;
+								gameObjectHit = *iterator;
+							}
 						}
 					}
+
 				}
 			}
 		}
@@ -248,6 +258,6 @@ void ModuleCamera::DrawGUI() {
 		sceneCamera->frustum.horizontalFov = 2.f * atanf(tanf(sceneCamera->frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 	}
 
-	ImGui::SliderFloat("zNear", &sceneCamera->frustum.nearPlaneDistance, 10.0f, sceneCamera->frustum.farPlaneDistance);
-	ImGui::SliderFloat("zFar", &sceneCamera->frustum.farPlaneDistance, sceneCamera->frustum.nearPlaneDistance, 100000.0f);
+	ImGui::SliderFloat("zNear", &sceneCamera->frustum.nearPlaneDistance, 0.01f * App->scene->scaleFactor, sceneCamera->frustum.farPlaneDistance);
+	ImGui::SliderFloat("zFar", &sceneCamera->frustum.farPlaneDistance, sceneCamera->frustum.nearPlaneDistance, 100.0f * App->scene->scaleFactor);
 }

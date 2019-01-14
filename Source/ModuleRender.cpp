@@ -85,8 +85,7 @@ update_status ModuleRender::Update() {
 
 		SetProjectionMatrix(App->camera->quadCamera);
 		SetViewMatrix(App->camera->quadCamera);
-		/*DrawMeshes(App->camera->quadCamera);*/
-		DrawDebugData(App->camera->quadCamera);
+		PrintQuadNode(App->scene->quadTree->root);
 	}
 
 	//So we exclude the rest of the quad rendered background of the color selected
@@ -113,13 +112,17 @@ void ModuleRender::DrawDebugData(ComponentCamera* camera) const {
 		dd::frustum((App->camera->selectedCamera->frustum.ProjectionMatrix() * App->camera->selectedCamera->frustum.ViewMatrix()).Inverted(), dd::colors::GreenYellow);
 	}
 
+	if (App->camera->quadCamera != nullptr) {
+		dd::frustum((App->camera->quadCamera->frustum.ProjectionMatrix() * App->camera->quadCamera->frustum.ViewMatrix()).Inverted(), dd::colors::HotPink);
+	}
+
 	for (auto& cam : App->camera->gameCameras) {
 		dd::frustum((cam->frustum.ProjectionMatrix() * cam->frustum.ViewMatrix()).Inverted(), dd::colors::IndianRed);
 	}
 
 	//Grid and axis debug
-	dd::xzSquareGrid(-42000.0f, 42000.0f, 0.0f, 100.0f, math::float3(0.65f, 0.65f, 0.65f));
-	dd::axisTriad(math::float4x4::identity, 10.0f, 100.0f, 0, true);
+	dd::xzSquareGrid(-42.0f * App->scene->scaleFactor, 42.0f * App->scene->scaleFactor, 0.0f, 0.1f * App->scene->scaleFactor, math::float3(0.65f, 0.65f, 0.65f));
+	dd::axisTriad(math::float4x4::identity, 0.01f * App->scene->scaleFactor, .1f * App->scene->scaleFactor, 0, true);
 
 	if (showQuad) {
 		PrintQuadNode(App->scene->quadTree->root);
@@ -237,7 +240,7 @@ void ModuleRender::DrawWithoutCulling(ComponentMesh* mesh) const {
 }
 
 void ModuleRender::CullingFromFrustum(ComponentCamera* camera, ComponentMesh* mesh) const {
-	if (App->camera->selectedCamera != nullptr && !camera->frustum.Intersects(mesh->goContainer->bbox)) {
+	if (!camera->frustum.Intersects(mesh->goContainer->bbox)) {
 		dd::aabb(mesh->goContainer->bbox.minPoint, mesh->goContainer->bbox.maxPoint, math::float3(0.0f, 1.0f, 0.0f), true);
 	} else {
 		DrawWithoutCulling(mesh);

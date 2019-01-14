@@ -81,7 +81,7 @@ GameObject* ModuleScene::CreateCamera(GameObject* goParent, const math::float4x4
 
 	gameObject = new GameObject(DEFAULT_CAMERA_NAME, transform, goParent);
 	ComponentTransform* goTrans = (ComponentTransform*)gameObject->GetComponent(ComponentType::TRANSFORM);
-	goTrans->SetPosition(math::float3(0.0f, 250.0f, 1000.0f));
+	goTrans->SetPosition(math::float3(0.0f, 2.5f * scaleFactor, 10.0f * scaleFactor));
 	gameObject->AddComponent(ComponentType::CAMERA);
 
 	return gameObject;
@@ -199,7 +199,6 @@ void ModuleScene::SaveGameObject(Config* config, GameObject* gameObject) {
 
 void ModuleScene::LoadScene() {
 	if (root->goChilds.size() >  0) {
-		//TODO: If current scene is not saved, prompt 'are you sure? Do you want to save actual scene before loading?'
 		ClearScene();
 	}
 

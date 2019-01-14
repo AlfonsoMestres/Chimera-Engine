@@ -20,6 +20,9 @@ void MeshImporter::ImportFBX(const char* filePath) {
 			Import(scene->mMeshes[i], meshName.c_str());
 		}
 	}
+
+	delete[] fileBuffer;
+	fileBuffer = nullptr;
 }
 
 bool MeshImporter::Import(const aiMesh* aiMesh, const char* meshName) {

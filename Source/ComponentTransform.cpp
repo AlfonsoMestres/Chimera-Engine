@@ -97,7 +97,7 @@ void ComponentTransform::DrawProperties(bool staticGo) {
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 		}
 
-		if (ImGui::DragFloat3("Position", (float*)&position, 10.0f, -100000.f, 100000.f)) {
+		if (ImGui::DragFloat3("Position", (float*)&position, 0.001f * App->scene->scaleFactor, -100.0f * App->scene->scaleFactor, 100.f * App->scene->scaleFactor)) {
 			edited = true;
 		}
 

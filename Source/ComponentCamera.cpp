@@ -10,6 +10,8 @@
 ComponentCamera::ComponentCamera(GameObject* goParent) : Component(goParent, ComponentType::CAMERA) {
 	InitFrustum();
 	CreateFrameBuffer(App->window->width, App->window->height);
+	cameraSpeed *= App->scene->scaleFactor;
+	rotationSpeed *= App->scene->scaleFactor;
 }
 
 ComponentCamera::~ComponentCamera() { 
@@ -48,9 +50,11 @@ void ComponentCamera::InitOrthographicFrustum(math::float3 camPos, math::float3 
 	frustum.front = camFront;
 	frustum.up = camUp;
 	frustum.nearPlaneDistance = 8.0f;
-	frustum.farPlaneDistance = 42000.0f;
-	frustum.orthographicWidth = math::pi / 2.0f;
-	frustum.orthographicHeight = math::pi / 2.0f;
+	frustum.farPlaneDistance = 1300.0f;
+	frustum.orthographicWidth = 2000.0f;
+	frustum.orthographicHeight = 2000.0f;
+	SetHorizontalFOV(fovX);
+	SetVerticalFOV(fovY);
 }
 
 void ComponentCamera::Update() {
@@ -100,9 +104,9 @@ void ComponentCamera::DrawProperties(bool enabled) {
 		ImGui::SliderFloat("zFar", &frustum.farPlaneDistance, frustum.nearPlaneDistance, 100000.0f);
 
 		if (App->camera->selectedCamera == this) {
-			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-			ImGui::Button("Current camera");
-			ImGui::PopStyleVar();
+			if (ImGui::Button("Deselect camera")) {
+				App->camera->selectedCamera = nullptr;
+			}
 		} else {
 			if (ImGui::Button("Set camera")) {
 				App->camera->selectedCamera = this;
