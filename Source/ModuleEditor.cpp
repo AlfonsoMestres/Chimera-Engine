@@ -1,12 +1,13 @@
 ﻿#include "Globals.h"
+#include "ModuleTime.h"
+#include "ModuleScene.h"
 #include "Application.h"
+#include "ModuleEditor.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
-#include "ModuleEditor.h"
 #include "ImGuizmo/ImGuizmo.h"
-#include "ModuleScene.h"
 #include "GL/glew.h"
 #include "SDL.h"
 
@@ -114,8 +115,6 @@ update_status ModuleEditor::Update() {
 		if (ImGui::BeginMenu("App")) {
 
 			if (ImGui::MenuItem("New scene")) {
-				//TODO: set up a basic scene to be loaded when chimera is loaded
-				//App->scene->LoadScene();
 				App->scene->ClearScene();
 			}
 

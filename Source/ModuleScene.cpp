@@ -23,6 +23,7 @@ ModuleScene::~ModuleScene() {
 }
 
 bool ModuleScene::CleanUp() {
+	App->scene->goSelected = nullptr;
 	delete root;
 	root = nullptr;
 	delete quadTree;

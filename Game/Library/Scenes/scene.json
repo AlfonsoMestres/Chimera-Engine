@@ -13,19 +13,19 @@
         "frustum.nearPlaneDistance": 10.0,
         "frustum.farPlaneDistance": 42000.0,
         "frustum.pos": {
-            "x": 76.42030334472656,
-            "y": 213.50784301757813,
-            "z": -348.2400817871094
+            "x": 2076.3017578125,
+            "y": 1270.8262939453126,
+            "z": -1433.072509765625
         },
         "frustum.front": {
-            "x": -0.5306965112686157,
-            "y": -0.16908231377601624,
-            "z": 0.8305253386497498
+            "x": -0.4813714921474457,
+            "y": -0.24461643397808076,
+            "z": 0.8416913151741028
         },
         "frustum.up": {
-            "x": -0.09104294329881668,
-            "y": 0.9856017231941223,
-            "z": 0.14247983694076539
+            "x": -0.1214442029595375,
+            "y": 0.9696186780929565,
+            "z": 0.21234621107578278
         },
         "debugDraw": true,
         "wireFrame": 6914
@@ -529,42 +529,42 @@
             ]
         },
         {
-            "uuid": "ae444d31-5502-4535-982b-6d39f38101e9",
-            "name": "Spinner",
+            "uuid": "753d3f5b-3382-44e5-865c-10971849ebb7",
+            "name": "Car",
             "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "ae444d31-5502-4535-982b-6d39f38101e9",
-                    "uuid": "e1e4498b-a928-467e-bb7a-799071b9b3cd",
+                    "parentUuid": "753d3f5b-3382-44e5-865c-10971849ebb7",
+                    "uuid": "63d5579d-8b78-4ce6-8f4c-9c96f4b4501f",
                     "position": {
-                        "x": 520.0,
-                        "y": 10.0,
-                        "z": 3240.0
+                        "x": 1272.97216796875,
+                        "y": 0.0,
+                        "z": 1445.3270263671876
                     },
                     "rotation": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 0.0,
-                        "w": 1.0
+                        "x": 0.0000012391221844154643,
+                        "y": -0.9209216833114624,
+                        "z": 0.000001302443024542299,
+                        "w": -0.3897477090358734
                     },
                     "eulerRotation": {
-                        "x": -0.0,
-                        "y": 0.0,
-                        "z": -0.0
+                        "x": 179.9998779296875,
+                        "y": 45.87760543823242,
+                        "z": 179.99989318847657
                     },
                     "scale": {
-                        "x": 1.0,
+                        "x": 1.0000057220458985,
                         "y": 1.0,
-                        "z": 1.0
+                        "z": 1.0000057220458985
                     }
                 },
                 {
                     "componentType": "MATERIAL",
-                    "parent": "ae444d31-5502-4535-982b-6d39f38101e9",
-                    "diffuseSelected": "spinningtopdiffuse.dds",
+                    "parent": "753d3f5b-3382-44e5-865c-10971849ebb7",
+                    "diffuseSelected": "hearsediffuse.dds",
                     "diffuseColor": {
                         "x": 1.0,
                         "y": 1.0,
@@ -572,9 +572,9 @@
                         "w": 1.0
                     },
                     "diffuseK": 1.0,
-                    "occlusionSelected": "spinningtopocclusion.dds",
+                    "occlusionSelected": "hearseocclusion.dds",
                     "ambientK": 0.5,
-                    "specularSelected": "",
+                    "specularSelected": "hearsespecular.dds",
                     "specularColor": {
                         "x": 1.0,
                         "y": 1.0,
@@ -593,26 +593,26 @@
                 },
                 {
                     "componentType": "MESH",
-                    "parent": "ae444d31-5502-4535-982b-6d39f38101e9",
-                    "currentMesh": "spinningtop_0.head"
+                    "parent": "753d3f5b-3382-44e5-865c-10971849ebb7",
+                    "currentMesh": "hearse_0.head"
                 }
             ]
         },
         {
-            "uuid": "17c2f160-f4fb-436e-a65e-fb7eebc59dc0",
-            "name": "Robot",
+            "uuid": "6e1ce730-9b0d-46ba-916f-a59169d31e2e",
+            "name": "RobotKiller",
             "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "17c2f160-f4fb-436e-a65e-fb7eebc59dc0",
-                    "uuid": "45036b1c-d24b-4d40-a420-5e9e3c8c21ca",
+                    "parentUuid": "6e1ce730-9b0d-46ba-916f-a59169d31e2e",
+                    "uuid": "058c4eaa-86b2-4cde-abfb-f39b77d84bae",
                     "position": {
-                        "x": -870.0,
-                        "y": 10.0,
-                        "z": 960.0
+                        "x": 0.0,
+                        "y": 537.9605102539063,
+                        "z": 0.0
                     },
                     "rotation": {
                         "x": 0.0,
@@ -629,6 +629,41 @@
                         "x": 1.0,
                         "y": 1.0,
                         "z": 1.0
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "17c2f160-f4fb-436e-a65e-fb7eebc59dc0",
+            "name": "Robot",
+            "parentUuid": "6e1ce730-9b0d-46ba-916f-a59169d31e2e",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "17c2f160-f4fb-436e-a65e-fb7eebc59dc0",
+                    "uuid": "45036b1c-d24b-4d40-a420-5e9e3c8c21ca",
+                    "position": {
+                        "x": 47.172550201416019,
+                        "y": 611.2748413085938,
+                        "z": 1936.0048828125
+                    },
+                    "rotation": {
+                        "x": 0.3445166349411011,
+                        "y": 0.6553407907485962,
+                        "z": -0.4835556149482727,
+                        "w": 0.46691617369651797
+                    },
+                    "eulerRotation": {
+                        "x": 95.75664520263672,
+                        "y": 16.18815040588379,
+                        "z": -109.88167572021485
+                    },
+                    "scale": {
+                        "x": 1.000011682510376,
+                        "y": 1.0000041723251343,
+                        "z": 1.0000114440917969
                     }
                 },
                 {
@@ -671,7 +706,7 @@
         {
             "uuid": "2b6fe7d2-8b13-4088-bb66-3af8199ce021",
             "name": "Car",
-            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "parentUuid": "6e1ce730-9b0d-46ba-916f-a59169d31e2e",
             "enabled": true,
             "static": false,
             "components": [
@@ -680,25 +715,25 @@
                     "parentUuid": "2b6fe7d2-8b13-4088-bb66-3af8199ce021",
                     "uuid": "d29ea226-92b6-4b02-b015-e515680760a3",
                     "position": {
-                        "x": 0.0,
-                        "y": 0.0,
-                        "z": 3090.0
+                        "x": 67.53971099853516,
+                        "y": -214.489501953125,
+                        "z": 2133.242919921875
                     },
                     "rotation": {
-                        "x": 0.0,
-                        "y": 1.0,
-                        "z": 0.0,
-                        "w": -4.371138828673793e-8
+                        "x": 0.33622467517852785,
+                        "y": 0.5447223782539368,
+                        "z": -0.5973973274230957,
+                        "w": 0.48306000232696535
                     },
                     "eulerRotation": {
-                        "x": -0.0,
-                        "y": 180.0,
-                        "z": -0.0
+                        "x": 79.5208740234375,
+                        "y": 7.154637813568115,
+                        "z": -108.03650665283203
                     },
                     "scale": {
-                        "x": 1.0,
-                        "y": 1.0,
-                        "z": 1.0
+                        "x": 1.0000369548797608,
+                        "y": 1.0000206232070923,
+                        "z": 1.0000256299972535
                     }
                 },
                 {
@@ -739,9 +774,254 @@
             ]
         },
         {
+            "uuid": "ae444d31-5502-4535-982b-6d39f38101e9",
+            "name": "Spinner",
+            "parentUuid": "6e1ce730-9b0d-46ba-916f-a59169d31e2e",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "ae444d31-5502-4535-982b-6d39f38101e9",
+                    "uuid": "e1e4498b-a928-467e-bb7a-799071b9b3cd",
+                    "position": {
+                        "x": 610.9725341796875,
+                        "y": 124.30584716796875,
+                        "z": 3156.443359375
+                    },
+                    "rotation": {
+                        "x": -0.1675684005022049,
+                        "y": 0.0250578373670578,
+                        "z": -0.9747040271759033,
+                        "w": 0.1457565277814865
+                    },
+                    "eulerRotation": {
+                        "x": -0.00002581467379059177,
+                        "y": 19.509544372558595,
+                        "z": -162.99009704589845
+                    },
+                    "scale": {
+                        "x": 1.0000425577163697,
+                        "y": 1.0000494718551636,
+                        "z": 0.9999984502792358
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "ae444d31-5502-4535-982b-6d39f38101e9",
+                    "diffuseSelected": "spinningtopdiffuse.dds",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "spinningtopocclusion.dds",
+                    "ambientK": 0.5,
+                    "specularSelected": "",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "ae444d31-5502-4535-982b-6d39f38101e9",
+                    "currentMesh": "spinningtop_0.head"
+                }
+            ]
+        },
+        {
+            "uuid": "62e1304d-a362-4a32-86c8-105ad29fadff",
+            "name": "Car",
+            "parentUuid": "6e1ce730-9b0d-46ba-916f-a59169d31e2e",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "62e1304d-a362-4a32-86c8-105ad29fadff",
+                    "uuid": "0d6626f4-910c-4808-bdfb-455780c0e538",
+                    "position": {
+                        "x": -70.39136505126953,
+                        "y": -188.4459228515625,
+                        "z": 1738.86474609375
+                    },
+                    "rotation": {
+                        "x": 0.4443574547767639,
+                        "y": 0.6271152496337891,
+                        "z": -0.5219915509223938,
+                        "w": 0.36986181139945986
+                    },
+                    "eulerRotation": {
+                        "x": 100.4544677734375,
+                        "y": -0.0005583679303526878,
+                        "z": -109.35968017578125
+                    },
+                    "scale": {
+                        "x": 1.0000334978103638,
+                        "y": 1.0000190734863282,
+                        "z": 1.000024437904358
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "62e1304d-a362-4a32-86c8-105ad29fadff",
+                    "diffuseSelected": "hearsediffuse.dds",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "hearseocclusion.dds",
+                    "ambientK": 0.5,
+                    "specularSelected": "hearsespecular.dds",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "62e1304d-a362-4a32-86c8-105ad29fadff",
+                    "currentMesh": "hearse_0.head"
+                }
+            ]
+        },
+        {
+            "uuid": "23b63279-9542-4988-9558-21e5d958f0cb",
+            "name": "Clock",
+            "parentUuid": "6e1ce730-9b0d-46ba-916f-a59169d31e2e",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "23b63279-9542-4988-9558-21e5d958f0cb",
+                    "uuid": "7b2b4ac6-2a7e-4758-aaa8-d94028170863",
+                    "position": {
+                        "x": -1579.24365234375,
+                        "y": 121.59051513671875,
+                        "z": 209.89486694335938
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": -0.5329803228378296,
+                        "z": 0.0,
+                        "w": 0.8461276292800903
+                    },
+                    "eulerRotation": {
+                        "x": 0.0,
+                        "y": -64.4140853881836,
+                        "z": 0.0
+                    },
+                    "scale": {
+                        "x": 1.0000007152557374,
+                        "y": 1.0,
+                        "z": 1.0000007152557374
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "23b63279-9542-4988-9558-21e5d958f0cb",
+                    "diffuseSelected": "clockdiffuse.dds",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "clockocclusion.dds",
+                    "ambientK": 0.5,
+                    "specularSelected": "clockspecular.dds",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "23b63279-9542-4988-9558-21e5d958f0cb",
+                    "currentMesh": "clock_0.head"
+                }
+            ]
+        },
+        {
+            "uuid": "e866e88e-ca5f-47bf-99fe-79396d6d5998",
+            "name": "HiddenMeme",
+            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "e866e88e-ca5f-47bf-99fe-79396d6d5998",
+                    "uuid": "75895f57-ccca-4c6c-b802-46e75ca82d53",
+                    "position": {
+                        "x": -1668.5360107421876,
+                        "y": 1393.266845703125,
+                        "z": 1687.36962890625
+                    },
+                    "rotation": {
+                        "x": -1.4261485148381326e-7,
+                        "y": -0.4509495496749878,
+                        "z": -0.000001151498395302042,
+                        "w": 0.892549455165863
+                    },
+                    "eulerRotation": {
+                        "x": -0.000124880374642089,
+                        "y": -53.60924530029297,
+                        "z": -0.0002109314373228699
+                    },
+                    "scale": {
+                        "x": 1.000002145767212,
+                        "y": 1.0,
+                        "z": 1.000002145767212
+                    }
+                }
+            ]
+        },
+        {
             "uuid": "8538e046-fde7-4379-b72c-f2fca0f71e18",
             "name": "Player",
-            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "parentUuid": "e866e88e-ca5f-47bf-99fe-79396d6d5998",
             "enabled": true,
             "static": false,
             "components": [
@@ -750,25 +1030,25 @@
                     "parentUuid": "8538e046-fde7-4379-b72c-f2fca0f71e18",
                     "uuid": "6135afaa-88d7-44e9-afb0-31469aa8fc1d",
                     "position": {
-                        "x": -159.0692901611328,
-                        "y": 46.794822692871097,
-                        "z": -34.00437545776367
+                        "x": -145.6544189453125,
+                        "y": 23.5745849609375,
+                        "z": -24.117431640625
                     },
                     "rotation": {
-                        "x": -6.097204163779679e-7,
-                        "y": 0.957727313041687,
-                        "z": 6.097204163779679e-7,
-                        "w": 0.2876775860786438
+                        "x": -6.097206437516434e-7,
+                        "y": 0.9577273726463318,
+                        "z": 6.097206437516434e-7,
+                        "w": 0.2876774072647095
                     },
                     "eulerRotation": {
                         "x": -179.99989318847657,
-                        "y": 33.43793487548828,
+                        "y": 33.43791580200195,
                         "z": 179.99989318847657
                     },
                     "scale": {
-                        "x": 0.800000011920929,
-                        "y": 0.800000011920929,
-                        "z": 0.8999999761581421
+                        "x": 1.0000001192092896,
+                        "y": 1.0,
+                        "z": 1.0000001192092896
                     }
                 }
             ]
@@ -916,7 +1196,7 @@
         {
             "uuid": "96835ebb-9d46-4645-806c-adc493b30800",
             "name": "ZomBunny",
-            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "parentUuid": "e866e88e-ca5f-47bf-99fe-79396d6d5998",
             "enabled": true,
             "static": false,
             "components": [
@@ -925,19 +1205,19 @@
                     "parentUuid": "96835ebb-9d46-4645-806c-adc493b30800",
                     "uuid": "f3665f46-b6a5-4891-8cab-8f574ccdd03c",
                     "position": {
-                        "x": -188.148681640625,
-                        "y": 9.99899673461914,
-                        "z": 188.3780975341797
+                        "x": 43.2314453125,
+                        "y": 10.316650390625,
+                        "z": 370.11181640625
                     },
                     "rotation": {
-                        "x": 0.000002284012225572951,
-                        "y": -0.9450995326042175,
-                        "z": 0.0000015469208847207483,
-                        "w": -0.32678264379501345
+                        "x": 0.0000022840119981992759,
+                        "y": -0.9450995922088623,
+                        "z": 0.0000015469204299733975,
+                        "w": -0.3267824351787567
                     },
                     "eulerRotation": {
                         "x": 179.99989318847657,
-                        "y": 38.147220611572269,
+                        "y": 38.14719772338867,
                         "z": 179.999755859375
                     },
                     "scale": {
@@ -1089,20 +1369,20 @@
             ]
         },
         {
-            "uuid": "2f75f9a2-8f86-4b27-829a-80b51a8cdb35",
+            "uuid": "cb024dbc-6408-4716-84c7-2dfdaa13caa0",
             "name": "ZomBunny",
-            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "parentUuid": "e866e88e-ca5f-47bf-99fe-79396d6d5998",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "2f75f9a2-8f86-4b27-829a-80b51a8cdb35",
-                    "uuid": "eb4cf7c7-6209-4c90-b976-886f0324ec5a",
+                    "parentUuid": "cb024dbc-6408-4716-84c7-2dfdaa13caa0",
+                    "uuid": "074d674d-ad6e-4cbb-9c92-e9f8324a73d6",
                     "position": {
-                        "x": -69.10820007324219,
-                        "y": 9.99980354309082,
-                        "z": 281.8762512207031
+                        "x": -188.148681640625,
+                        "y": 9.99899673461914,
+                        "z": 188.3780975341797
                     },
                     "rotation": {
                         "x": 0.000002284012225572951,
@@ -1124,16 +1404,16 @@
             ]
         },
         {
-            "uuid": "73e5fb1d-0e90-4841-a0ce-7dd6345f55b3",
+            "uuid": "3724b907-8405-4b9b-a6c9-eef77ccca5a4",
             "name": "Body",
-            "parentUuid": "2f75f9a2-8f86-4b27-829a-80b51a8cdb35",
+            "parentUuid": "cb024dbc-6408-4716-84c7-2dfdaa13caa0",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "73e5fb1d-0e90-4841-a0ce-7dd6345f55b3",
-                    "uuid": "744b1bab-6163-4d27-83c0-68261f6a4dba",
+                    "parentUuid": "3724b907-8405-4b9b-a6c9-eef77ccca5a4",
+                    "uuid": "8f41b81c-f614-475b-9428-a29363098224",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1158,8 +1438,8 @@
                 },
                 {
                     "componentType": "MATERIAL",
-                    "parent": "73e5fb1d-0e90-4841-a0ce-7dd6345f55b3",
-                    "diffuseSelected": "",
+                    "parent": "3724b907-8405-4b9b-a6c9-eef77ccca5a4",
+                    "diffuseSelected": "zombunnydiffuse.dds",
                     "diffuseColor": {
                         "x": 1.0,
                         "y": 1.0,
@@ -1167,9 +1447,9 @@
                         "w": 1.0
                     },
                     "diffuseK": 1.0,
-                    "occlusionSelected": "",
+                    "occlusionSelected": "zombunnyocclusion.dds",
                     "ambientK": 0.5,
-                    "specularSelected": "",
+                    "specularSelected": "zombunnyspecular.dds",
                     "specularColor": {
                         "x": 1.0,
                         "y": 1.0,
@@ -1178,7 +1458,7 @@
                     },
                     "specularK": 0.6000000238418579,
                     "shininess": 64.0,
-                    "emissiveSelected": "",
+                    "emissiveSelected": "zombunnyemissive.dds",
                     "emissiveColor": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1188,22 +1468,22 @@
                 },
                 {
                     "componentType": "MESH",
-                    "parent": "73e5fb1d-0e90-4841-a0ce-7dd6345f55b3",
-                    "currentMesh": ""
+                    "parent": "3724b907-8405-4b9b-a6c9-eef77ccca5a4",
+                    "currentMesh": "zombunny_0.head"
                 }
             ]
         },
         {
-            "uuid": "ba07dedc-e624-4da1-bb32-196214ed468b",
+            "uuid": "8985a3e6-51c3-45a3-b804-bc4aa733b54d",
             "name": "CrazyEyes",
-            "parentUuid": "2f75f9a2-8f86-4b27-829a-80b51a8cdb35",
+            "parentUuid": "cb024dbc-6408-4716-84c7-2dfdaa13caa0",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "ba07dedc-e624-4da1-bb32-196214ed468b",
-                    "uuid": "7b8221b4-dfff-4347-98bd-8877e1d53e3a",
+                    "parentUuid": "8985a3e6-51c3-45a3-b804-bc4aa733b54d",
+                    "uuid": "e736d12b-c0d3-44fb-8144-6e336a7c4a0d",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1228,7 +1508,7 @@
                 },
                 {
                     "componentType": "MATERIAL",
-                    "parent": "ba07dedc-e624-4da1-bb32-196214ed468b",
+                    "parent": "8985a3e6-51c3-45a3-b804-bc4aa733b54d",
                     "diffuseSelected": "",
                     "diffuseColor": {
                         "x": 0.06862747669219971,
@@ -1258,26 +1538,26 @@
                 },
                 {
                     "componentType": "MESH",
-                    "parent": "ba07dedc-e624-4da1-bb32-196214ed468b",
-                    "currentMesh": ""
+                    "parent": "8985a3e6-51c3-45a3-b804-bc4aa733b54d",
+                    "currentMesh": "zombunny_1.head"
                 }
             ]
         },
         {
-            "uuid": "f325057c-6c55-4698-abb1-49e520f17160",
+            "uuid": "57e0c5cc-5e95-411e-8ad3-358f6dce796b",
             "name": "ZomBunny",
-            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "parentUuid": "e866e88e-ca5f-47bf-99fe-79396d6d5998",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "f325057c-6c55-4698-abb1-49e520f17160",
-                    "uuid": "39164c3e-a2bd-4951-8646-a4b592dd8450",
+                    "parentUuid": "57e0c5cc-5e95-411e-8ad3-358f6dce796b",
+                    "uuid": "2117f415-e3ee-4c9a-9909-deb0c50e1b8c",
                     "position": {
-                        "x": 48.17253875732422,
-                        "y": 10.000601768493653,
-                        "z": 373.99224853515627
+                        "x": -306.11285400390627,
+                        "y": 9.998202323913575,
+                        "z": 95.72530364990235
                     },
                     "rotation": {
                         "x": 0.000002284012225572951,
@@ -1299,16 +1579,16 @@
             ]
         },
         {
-            "uuid": "291b4d4a-f74e-4210-91d4-3a0b312facd8",
+            "uuid": "b455e075-c1aa-47e7-9474-ea694cc19918",
             "name": "Body",
-            "parentUuid": "f325057c-6c55-4698-abb1-49e520f17160",
+            "parentUuid": "57e0c5cc-5e95-411e-8ad3-358f6dce796b",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "291b4d4a-f74e-4210-91d4-3a0b312facd8",
-                    "uuid": "bac53f48-9037-4c38-a9f0-5310fe6fc9bf",
+                    "parentUuid": "b455e075-c1aa-47e7-9474-ea694cc19918",
+                    "uuid": "b9971034-b4f9-4b0f-9c50-1608c956d6db",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1333,8 +1613,8 @@
                 },
                 {
                     "componentType": "MATERIAL",
-                    "parent": "291b4d4a-f74e-4210-91d4-3a0b312facd8",
-                    "diffuseSelected": "",
+                    "parent": "b455e075-c1aa-47e7-9474-ea694cc19918",
+                    "diffuseSelected": "zombunnydiffuse.dds",
                     "diffuseColor": {
                         "x": 1.0,
                         "y": 1.0,
@@ -1342,9 +1622,9 @@
                         "w": 1.0
                     },
                     "diffuseK": 1.0,
-                    "occlusionSelected": "",
+                    "occlusionSelected": "zombunnyocclusion.dds",
                     "ambientK": 0.5,
-                    "specularSelected": "",
+                    "specularSelected": "zombunnyspecular.dds",
                     "specularColor": {
                         "x": 1.0,
                         "y": 1.0,
@@ -1353,7 +1633,7 @@
                     },
                     "specularK": 0.6000000238418579,
                     "shininess": 64.0,
-                    "emissiveSelected": "",
+                    "emissiveSelected": "zombunnyemissive.dds",
                     "emissiveColor": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1363,22 +1643,22 @@
                 },
                 {
                     "componentType": "MESH",
-                    "parent": "291b4d4a-f74e-4210-91d4-3a0b312facd8",
-                    "currentMesh": ""
+                    "parent": "b455e075-c1aa-47e7-9474-ea694cc19918",
+                    "currentMesh": "zombunny_0.head"
                 }
             ]
         },
         {
-            "uuid": "f993c389-157b-4ff0-9332-b5a430464bc3",
+            "uuid": "514f4a78-897a-44cb-9795-e02a3661e033",
             "name": "CrazyEyes",
-            "parentUuid": "f325057c-6c55-4698-abb1-49e520f17160",
+            "parentUuid": "57e0c5cc-5e95-411e-8ad3-358f6dce796b",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "f993c389-157b-4ff0-9332-b5a430464bc3",
-                    "uuid": "deac391a-6f87-4ad1-b325-2331247b56da",
+                    "parentUuid": "514f4a78-897a-44cb-9795-e02a3661e033",
+                    "uuid": "a6ca896a-df18-4ff2-bddd-26e2b6c65976",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1403,7 +1683,7 @@
                 },
                 {
                     "componentType": "MATERIAL",
-                    "parent": "f993c389-157b-4ff0-9332-b5a430464bc3",
+                    "parent": "514f4a78-897a-44cb-9795-e02a3661e033",
                     "diffuseSelected": "",
                     "diffuseColor": {
                         "x": 0.06862747669219971,
@@ -1433,26 +1713,26 @@
                 },
                 {
                     "componentType": "MESH",
-                    "parent": "f993c389-157b-4ff0-9332-b5a430464bc3",
-                    "currentMesh": ""
+                    "parent": "514f4a78-897a-44cb-9795-e02a3661e033",
+                    "currentMesh": "zombunny_1.head"
                 }
             ]
         },
         {
-            "uuid": "e1116cfd-7655-4b9d-aba8-1b39f819bda4",
+            "uuid": "540513a3-ec43-497c-a778-45616a76f0f7",
             "name": "ZomBunny",
-            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "parentUuid": "e866e88e-ca5f-47bf-99fe-79396d6d5998",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "e1116cfd-7655-4b9d-aba8-1b39f819bda4",
-                    "uuid": "9625f487-138d-4534-ae47-d02fa8d71ac1",
+                    "parentUuid": "540513a3-ec43-497c-a778-45616a76f0f7",
+                    "uuid": "26b4f5d6-0422-41f6-8960-08ba381c64bc",
                     "position": {
-                        "x": -304.0087890625,
-                        "y": 9.998214721679688,
-                        "z": 97.3778076171875
+                        "x": -72.37159729003906,
+                        "y": 9.999788284301758,
+                        "z": 279.3131103515625
                     },
                     "rotation": {
                         "x": 0.000002284012225572951,
@@ -1474,16 +1754,16 @@
             ]
         },
         {
-            "uuid": "23610166-3471-4c7a-946f-0ef00fe7c263",
+            "uuid": "5bfd3649-9ce4-45ae-ae00-0b595f35a3ca",
             "name": "Body",
-            "parentUuid": "e1116cfd-7655-4b9d-aba8-1b39f819bda4",
+            "parentUuid": "540513a3-ec43-497c-a778-45616a76f0f7",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "23610166-3471-4c7a-946f-0ef00fe7c263",
-                    "uuid": "db04045f-398a-4e92-a6c8-05bf71bc9a47",
+                    "parentUuid": "5bfd3649-9ce4-45ae-ae00-0b595f35a3ca",
+                    "uuid": "48e8a97a-60d9-4c71-a398-f29f4a54306e",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1508,8 +1788,8 @@
                 },
                 {
                     "componentType": "MATERIAL",
-                    "parent": "23610166-3471-4c7a-946f-0ef00fe7c263",
-                    "diffuseSelected": "",
+                    "parent": "5bfd3649-9ce4-45ae-ae00-0b595f35a3ca",
+                    "diffuseSelected": "zombunnydiffuse.dds",
                     "diffuseColor": {
                         "x": 1.0,
                         "y": 1.0,
@@ -1517,9 +1797,9 @@
                         "w": 1.0
                     },
                     "diffuseK": 1.0,
-                    "occlusionSelected": "",
+                    "occlusionSelected": "zombunnyocclusion.dds",
                     "ambientK": 0.5,
-                    "specularSelected": "",
+                    "specularSelected": "zombunnyspecular.dds",
                     "specularColor": {
                         "x": 1.0,
                         "y": 1.0,
@@ -1528,7 +1808,7 @@
                     },
                     "specularK": 0.6000000238418579,
                     "shininess": 64.0,
-                    "emissiveSelected": "",
+                    "emissiveSelected": "zombunnyemissive.dds",
                     "emissiveColor": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1538,22 +1818,22 @@
                 },
                 {
                     "componentType": "MESH",
-                    "parent": "23610166-3471-4c7a-946f-0ef00fe7c263",
-                    "currentMesh": ""
+                    "parent": "5bfd3649-9ce4-45ae-ae00-0b595f35a3ca",
+                    "currentMesh": "zombunny_0.head"
                 }
             ]
         },
         {
-            "uuid": "2f5c323f-63af-4d47-9c60-84bc6fdb601e",
+            "uuid": "177cf725-c76a-4972-a894-a3c1e98f9b14",
             "name": "CrazyEyes",
-            "parentUuid": "e1116cfd-7655-4b9d-aba8-1b39f819bda4",
+            "parentUuid": "540513a3-ec43-497c-a778-45616a76f0f7",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "2f5c323f-63af-4d47-9c60-84bc6fdb601e",
-                    "uuid": "43d2937d-57e5-49c7-a35e-9f10fbed5c22",
+                    "parentUuid": "177cf725-c76a-4972-a894-a3c1e98f9b14",
+                    "uuid": "0b99d437-423c-45a0-b121-a39650279dad",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1578,7 +1858,7 @@
                 },
                 {
                     "componentType": "MATERIAL",
-                    "parent": "2f5c323f-63af-4d47-9c60-84bc6fdb601e",
+                    "parent": "177cf725-c76a-4972-a894-a3c1e98f9b14",
                     "diffuseSelected": "",
                     "diffuseColor": {
                         "x": 0.06862747669219971,
@@ -1608,26 +1888,26 @@
                 },
                 {
                     "componentType": "MESH",
-                    "parent": "2f5c323f-63af-4d47-9c60-84bc6fdb601e",
-                    "currentMesh": ""
+                    "parent": "177cf725-c76a-4972-a894-a3c1e98f9b14",
+                    "currentMesh": "zombunny_1.head"
                 }
             ]
         },
         {
-            "uuid": "c1503bd4-3b61-4fbd-a157-e254aa46b73e",
+            "uuid": "7010751f-0882-4541-9ade-27d5f7cc7a99",
             "name": "ZomBunny",
-            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "parentUuid": "e866e88e-ca5f-47bf-99fe-79396d6d5998",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "c1503bd4-3b61-4fbd-a157-e254aa46b73e",
-                    "uuid": "e0fd960d-5eb6-471d-af19-d25420fcb755",
+                    "parentUuid": "7010751f-0882-4541-9ade-27d5f7cc7a99",
+                    "uuid": "3489d1c4-3207-4360-a492-e38baa339846",
                     "position": {
-                        "x": -424.0646057128906,
-                        "y": 9.997401237487793,
-                        "z": 3.0822014808654787
+                        "x": -423.76593017578127,
+                        "y": 9.997405052185059,
+                        "z": 3.3168728351593019
                     },
                     "rotation": {
                         "x": 0.000002284012225572951,
@@ -1649,16 +1929,16 @@
             ]
         },
         {
-            "uuid": "85cfb9f6-aaa1-4b06-8a74-82f2268d80bd",
+            "uuid": "e1d826f8-c2f8-4496-be38-5315c1c6c3a9",
             "name": "Body",
-            "parentUuid": "c1503bd4-3b61-4fbd-a157-e254aa46b73e",
+            "parentUuid": "7010751f-0882-4541-9ade-27d5f7cc7a99",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "85cfb9f6-aaa1-4b06-8a74-82f2268d80bd",
-                    "uuid": "b147666c-4965-44dd-a976-fdc408ab340a",
+                    "parentUuid": "e1d826f8-c2f8-4496-be38-5315c1c6c3a9",
+                    "uuid": "08448102-6a38-4a78-865f-56d501530cdc",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1683,8 +1963,8 @@
                 },
                 {
                     "componentType": "MATERIAL",
-                    "parent": "85cfb9f6-aaa1-4b06-8a74-82f2268d80bd",
-                    "diffuseSelected": "",
+                    "parent": "e1d826f8-c2f8-4496-be38-5315c1c6c3a9",
+                    "diffuseSelected": "zombunnydiffuse.dds",
                     "diffuseColor": {
                         "x": 1.0,
                         "y": 1.0,
@@ -1692,9 +1972,9 @@
                         "w": 1.0
                     },
                     "diffuseK": 1.0,
-                    "occlusionSelected": "",
+                    "occlusionSelected": "zombunnyocclusion.dds",
                     "ambientK": 0.5,
-                    "specularSelected": "",
+                    "specularSelected": "zombunnyspecular.dds",
                     "specularColor": {
                         "x": 1.0,
                         "y": 1.0,
@@ -1703,7 +1983,7 @@
                     },
                     "specularK": 0.6000000238418579,
                     "shininess": 64.0,
-                    "emissiveSelected": "",
+                    "emissiveSelected": "zombunnyemissive.dds",
                     "emissiveColor": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1713,22 +1993,22 @@
                 },
                 {
                     "componentType": "MESH",
-                    "parent": "85cfb9f6-aaa1-4b06-8a74-82f2268d80bd",
-                    "currentMesh": ""
+                    "parent": "e1d826f8-c2f8-4496-be38-5315c1c6c3a9",
+                    "currentMesh": "zombunny_0.head"
                 }
             ]
         },
         {
-            "uuid": "be2ec076-a2ad-484d-8449-bd368710b99c",
+            "uuid": "33b5987c-7e00-4825-9a21-7e33741248d4",
             "name": "CrazyEyes",
-            "parentUuid": "c1503bd4-3b61-4fbd-a157-e254aa46b73e",
+            "parentUuid": "7010751f-0882-4541-9ade-27d5f7cc7a99",
             "enabled": true,
             "static": false,
             "components": [
                 {
                     "componentType": "TRANSFORM",
-                    "parentUuid": "be2ec076-a2ad-484d-8449-bd368710b99c",
-                    "uuid": "ef89cda3-9494-425d-b9da-a1a57b35eed1",
+                    "parentUuid": "33b5987c-7e00-4825-9a21-7e33741248d4",
+                    "uuid": "6dbfa556-1f76-47f2-9435-53ad03480aec",
                     "position": {
                         "x": 0.0,
                         "y": 0.0,
@@ -1753,7 +2033,7 @@
                 },
                 {
                     "componentType": "MATERIAL",
-                    "parent": "be2ec076-a2ad-484d-8449-bd368710b99c",
+                    "parent": "33b5987c-7e00-4825-9a21-7e33741248d4",
                     "diffuseSelected": "",
                     "diffuseColor": {
                         "x": 0.06862747669219971,
@@ -1783,15 +2063,15 @@
                 },
                 {
                     "componentType": "MESH",
-                    "parent": "be2ec076-a2ad-484d-8449-bd368710b99c",
-                    "currentMesh": ""
+                    "parent": "33b5987c-7e00-4825-9a21-7e33741248d4",
+                    "currentMesh": "zombunny_1.head"
                 }
             ]
         },
         {
             "uuid": "e258d771-dabf-4b93-90af-3ec03e5d5906",
             "name": "Sofa",
-            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "parentUuid": "e866e88e-ca5f-47bf-99fe-79396d6d5998",
             "enabled": true,
             "static": false,
             "components": [
@@ -1800,23 +2080,23 @@
                     "parentUuid": "e258d771-dabf-4b93-90af-3ec03e5d5906",
                     "uuid": "7bef0426-076a-44e9-878c-18dcf92dac65",
                     "position": {
-                        "x": -114.29865264892578,
-                        "y": -0.00025177001953125,
-                        "z": 18.932022094726564
+                        "x": -96.296142578125,
+                        "y": -15.2344970703125,
+                        "z": 31.0625
                     },
                     "rotation": {
                         "x": -0.6394383907318115,
-                        "y": 0.30186301469802859,
-                        "z": 0.30186256766319277,
-                        "w": 0.6394343376159668
+                        "y": 0.3018629252910614,
+                        "z": 0.30186253786087038,
+                        "w": 0.6394343972206116
                     },
                     "eulerRotation": {
-                        "x": -90.00031280517578,
-                        "y": -0.0001058679263223894,
-                        "z": 50.541778564453128
+                        "x": -90.00030517578125,
+                        "y": -0.0001075754698831588,
+                        "z": 50.54176330566406
                     },
                     "scale": {
-                        "x": 42.79999923706055,
+                        "x": 42.80000305175781,
                         "y": 77.19999694824219,
                         "z": 10.199999809265137
                     }
@@ -2170,6 +2450,951 @@
                     "componentType": "MESH",
                     "parent": "7fa8667b-f209-42f5-b2b3-90a67abc85ce",
                     "currentMesh": "sofa_1.head"
+                }
+            ]
+        },
+        {
+            "uuid": "af581387-dae1-4f14-ae02-6199e5c4b603",
+            "name": "ZomBunny",
+            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "af581387-dae1-4f14-ae02-6199e5c4b603",
+                    "uuid": "7e8db798-ebb9-4640-b770-946fa9e0a5a2",
+                    "position": {
+                        "x": -55.90570068359375,
+                        "y": 9.997406005859375,
+                        "z": 1264.3460693359376
+                    },
+                    "rotation": {
+                        "x": 0.000004780230028700316,
+                        "y": -0.9894903302192688,
+                        "z": 0.0000037730410440417474,
+                        "w": -0.14459918439388276
+                    },
+                    "eulerRotation": {
+                        "x": 179.9996337890625,
+                        "y": 16.628137588500978,
+                        "z": 179.99949645996095
+                    },
+                    "scale": {
+                        "x": 1.0000194311141968,
+                        "y": 1.0,
+                        "z": 1.0000194311141968
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "09bb1248-bf6a-4209-9a8d-4d776524d49d",
+            "name": "Body",
+            "parentUuid": "af581387-dae1-4f14-ae02-6199e5c4b603",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "09bb1248-bf6a-4209-9a8d-4d776524d49d",
+                    "uuid": "710b843e-cdc1-4bad-82a6-52cebf50e1c4",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "09bb1248-bf6a-4209-9a8d-4d776524d49d",
+                    "diffuseSelected": "zombunnydiffuse.dds",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "zombunnyocclusion.dds",
+                    "ambientK": 0.5,
+                    "specularSelected": "zombunnyspecular.dds",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "zombunnyemissive.dds",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "09bb1248-bf6a-4209-9a8d-4d776524d49d",
+                    "currentMesh": "zombunny_0.head"
+                }
+            ]
+        },
+        {
+            "uuid": "d724d4a7-6f03-4c58-8543-0351817ae189",
+            "name": "CrazyEyes",
+            "parentUuid": "af581387-dae1-4f14-ae02-6199e5c4b603",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "d724d4a7-6f03-4c58-8543-0351817ae189",
+                    "uuid": "44571b37-042a-44cf-9692-60a901669a4f",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "d724d4a7-6f03-4c58-8543-0351817ae189",
+                    "diffuseSelected": "",
+                    "diffuseColor": {
+                        "x": 0.06862747669219971,
+                        "y": 0.04978856444358826,
+                        "z": 0.04978856444358826,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "",
+                    "ambientK": 0.5,
+                    "specularSelected": "",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "d724d4a7-6f03-4c58-8543-0351817ae189",
+                    "currentMesh": "zombunny_1.head"
+                }
+            ]
+        },
+        {
+            "uuid": "fdb97a60-70a7-4442-b772-94b227b78c52",
+            "name": "Player",
+            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "fdb97a60-70a7-4442-b772-94b227b78c52",
+                    "uuid": "cdf25d63-404c-4cf1-a672-0a6086384e28",
+                    "position": {
+                        "x": 1180.592041015625,
+                        "y": 46.79481887817383,
+                        "z": 1281.2884521484376
+                    },
+                    "rotation": {
+                        "x": -0.000004720684955827892,
+                        "y": 0.7010412216186523,
+                        "z": -0.0000012419477570801974,
+                        "w": 0.7131207585334778
+                    },
+                    "eulerRotation": {
+                        "x": -0.016741983592510225,
+                        "y": 89.02120208740235,
+                        "z": 0.01625882275402546
+                    },
+                    "scale": {
+                        "x": 1.0000041723251343,
+                        "y": 1.0,
+                        "z": 1.0000041723251343
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "122d8c48-2f04-484a-93f5-1d28036b0ce5",
+            "name": "Weapon",
+            "parentUuid": "fdb97a60-70a7-4442-b772-94b227b78c52",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "122d8c48-2f04-484a-93f5-1d28036b0ce5",
+                    "uuid": "9d6ae702-dcfb-4bc8-8289-4cb4b509ff9b",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "122d8c48-2f04-484a-93f5-1d28036b0ce5",
+                    "diffuseSelected": "gundiffuse.dds",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "gunocclusion.dds",
+                    "ambientK": 0.5,
+                    "specularSelected": "gunspecular.dds",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "122d8c48-2f04-484a-93f5-1d28036b0ce5",
+                    "currentMesh": "player_0.head"
+                }
+            ]
+        },
+        {
+            "uuid": "1bef5f86-b2bc-4331-b148-650d2bbb4bc0",
+            "name": "Body",
+            "parentUuid": "fdb97a60-70a7-4442-b772-94b227b78c52",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "1bef5f86-b2bc-4331-b148-650d2bbb4bc0",
+                    "uuid": "80bac924-1b56-45af-9e00-68e26ec5475c",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "1bef5f86-b2bc-4331-b148-650d2bbb4bc0",
+                    "diffuseSelected": "playerdiffuse.dds",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "playerocclusion.dds",
+                    "ambientK": 0.5,
+                    "specularSelected": "playerspecular.dds",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "1bef5f86-b2bc-4331-b148-650d2bbb4bc0",
+                    "currentMesh": "player_1.head"
+                }
+            ]
+        },
+        {
+            "uuid": "b1863c18-0bcd-427b-85c4-6d4ea9843477",
+            "name": "Car",
+            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "b1863c18-0bcd-427b-85c4-6d4ea9843477",
+                    "uuid": "191708fa-7c95-45e0-b9eb-ebbca1f6df79",
+                    "position": {
+                        "x": -81.68736267089844,
+                        "y": 0.00009808992763282731,
+                        "z": 1095.745361328125
+                    },
+                    "rotation": {
+                        "x": 0.0000066093898567487489,
+                        "y": -0.8185104727745056,
+                        "z": 0.00000887835631147027,
+                        "w": -0.5744916200637817
+                    },
+                    "eulerRotation": {
+                        "x": 179.9988250732422,
+                        "y": 70.1280746459961,
+                        "z": 179.99989318847657
+                    },
+                    "scale": {
+                        "x": 1.0000053644180298,
+                        "y": 1.0,
+                        "z": 1.0000053644180298
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "b1863c18-0bcd-427b-85c4-6d4ea9843477",
+                    "diffuseSelected": "hearsediffuse.dds",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "hearseocclusion.dds",
+                    "ambientK": 0.5,
+                    "specularSelected": "hearsespecular.dds",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "b1863c18-0bcd-427b-85c4-6d4ea9843477",
+                    "currentMesh": "hearse_0.head"
+                }
+            ]
+        },
+        {
+            "uuid": "41d9cdcb-10d3-4a9b-abee-1bcfdba709cb",
+            "name": "ZomBunny",
+            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "41d9cdcb-10d3-4a9b-abee-1bcfdba709cb",
+                    "uuid": "e5c0876a-0056-42d9-abaf-deaa05a27c7f",
+                    "position": {
+                        "x": 506.92425537109377,
+                        "y": 882.8311767578125,
+                        "z": 2060.28076171875
+                    },
+                    "rotation": {
+                        "x": 0.46119824051856997,
+                        "y": 0.6936898827552795,
+                        "z": -0.3063138723373413,
+                        "w": 0.46071943640708926
+                    },
+                    "eulerRotation": {
+                        "x": 114.5267333984375,
+                        "y": 20.894601821899415,
+                        "z": -99.24352264404297
+                    },
+                    "scale": {
+                        "x": 1.0000228881835938,
+                        "y": 1.0000004768371583,
+                        "z": 1.0000241994857789
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "62d774e3-cb4d-442f-a5c9-a0adbfb9b078",
+            "name": "Body",
+            "parentUuid": "41d9cdcb-10d3-4a9b-abee-1bcfdba709cb",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "62d774e3-cb4d-442f-a5c9-a0adbfb9b078",
+                    "uuid": "a723f0d9-820e-4df0-b042-7b157807fc2b",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "62d774e3-cb4d-442f-a5c9-a0adbfb9b078",
+                    "diffuseSelected": "zombunnydiffuse.dds",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "zombunnyocclusion.dds",
+                    "ambientK": 0.5,
+                    "specularSelected": "zombunnyspecular.dds",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "zombunnyemissive.dds",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "62d774e3-cb4d-442f-a5c9-a0adbfb9b078",
+                    "currentMesh": "zombunny_0.head"
+                }
+            ]
+        },
+        {
+            "uuid": "42410e40-90ed-42c5-8a92-3c12d78229c3",
+            "name": "CrazyEyes",
+            "parentUuid": "41d9cdcb-10d3-4a9b-abee-1bcfdba709cb",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "42410e40-90ed-42c5-8a92-3c12d78229c3",
+                    "uuid": "ae9b98ca-223e-4853-bcc6-1e423e7d2dec",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "42410e40-90ed-42c5-8a92-3c12d78229c3",
+                    "diffuseSelected": "",
+                    "diffuseColor": {
+                        "x": 0.06862747669219971,
+                        "y": 0.04978856444358826,
+                        "z": 0.04978856444358826,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "",
+                    "ambientK": 0.5,
+                    "specularSelected": "",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "42410e40-90ed-42c5-8a92-3c12d78229c3",
+                    "currentMesh": "zombunny_1.head"
+                }
+            ]
+        },
+        {
+            "uuid": "315ce332-787a-4458-bfc7-cd0174258b2c",
+            "name": "ZomBunny",
+            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "315ce332-787a-4458-bfc7-cd0174258b2c",
+                    "uuid": "db563b3e-e680-43ca-875a-db3183d40bca",
+                    "position": {
+                        "x": 1414.6163330078126,
+                        "y": 511.983154296875,
+                        "z": 1473.8963623046876
+                    },
+                    "rotation": {
+                        "x": 0.17772525548934937,
+                        "y": 0.5552038550376892,
+                        "z": -0.8115578889846802,
+                        "w": -0.03919503837823868
+                    },
+                    "eulerRotation": {
+                        "x": 70.14839172363281,
+                        "y": -19.389673233032228,
+                        "z": -171.84970092773438
+                    },
+                    "scale": {
+                        "x": 1.0000598430633546,
+                        "y": 1.0000144243240357,
+                        "z": 1.0000351667404175
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "a94b0864-6e22-4394-9bce-9217cfeed8f4",
+            "name": "Body",
+            "parentUuid": "315ce332-787a-4458-bfc7-cd0174258b2c",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "a94b0864-6e22-4394-9bce-9217cfeed8f4",
+                    "uuid": "643bf4e4-8c18-44de-9d9f-174e6b52a4fc",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "a94b0864-6e22-4394-9bce-9217cfeed8f4",
+                    "diffuseSelected": "zombunnydiffuse.dds",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "zombunnyocclusion.dds",
+                    "ambientK": 0.5,
+                    "specularSelected": "zombunnyspecular.dds",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "zombunnyemissive.dds",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "a94b0864-6e22-4394-9bce-9217cfeed8f4",
+                    "currentMesh": "zombunny_0.head"
+                }
+            ]
+        },
+        {
+            "uuid": "912a5614-9295-40ee-8aa1-cdc0fd34a410",
+            "name": "CrazyEyes",
+            "parentUuid": "315ce332-787a-4458-bfc7-cd0174258b2c",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "912a5614-9295-40ee-8aa1-cdc0fd34a410",
+                    "uuid": "a6adbe27-da7f-4142-8d51-a8d5f77aba09",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "912a5614-9295-40ee-8aa1-cdc0fd34a410",
+                    "diffuseSelected": "",
+                    "diffuseColor": {
+                        "x": 0.06862747669219971,
+                        "y": 0.04978856444358826,
+                        "z": 0.04978856444358826,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "",
+                    "ambientK": 0.5,
+                    "specularSelected": "",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "912a5614-9295-40ee-8aa1-cdc0fd34a410",
+                    "currentMesh": "zombunny_1.head"
+                }
+            ]
+        },
+        {
+            "uuid": "02a08403-73bb-4261-90af-b7251d3e53d4",
+            "name": "ZomBunny",
+            "parentUuid": "c4ddc9ce-83de-44a0-8f9f-0ab94effa309",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "02a08403-73bb-4261-90af-b7251d3e53d4",
+                    "uuid": "4646ac82-a500-4331-bb49-bd7fac131f39",
+                    "position": {
+                        "x": 705.1091918945313,
+                        "y": 9.997408866882325,
+                        "z": 2135.407958984375
+                    },
+                    "rotation": {
+                        "x": -0.0000016580682995481766,
+                        "y": 0.8330125212669373,
+                        "z": -0.0000031343520277005156,
+                        "w": 0.5532541275024414
+                    },
+                    "eulerRotation": {
+                        "x": 179.99949645996095,
+                        "y": 67.18109130859375,
+                        "z": -179.99989318847657
+                    },
+                    "scale": {
+                        "x": 1.0000172853469849,
+                        "y": 1.0,
+                        "z": 1.0000172853469849
+                    }
+                }
+            ]
+        },
+        {
+            "uuid": "0f727dba-8a4d-4cf8-939c-bd8bdc083a92",
+            "name": "Body",
+            "parentUuid": "02a08403-73bb-4261-90af-b7251d3e53d4",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "0f727dba-8a4d-4cf8-939c-bd8bdc083a92",
+                    "uuid": "2fbf55bc-31f7-4fc2-9c69-5058491a7469",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "0f727dba-8a4d-4cf8-939c-bd8bdc083a92",
+                    "diffuseSelected": "zombunnydiffuse.dds",
+                    "diffuseColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "zombunnyocclusion.dds",
+                    "ambientK": 0.5,
+                    "specularSelected": "zombunnyspecular.dds",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "zombunnyemissive.dds",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "0f727dba-8a4d-4cf8-939c-bd8bdc083a92",
+                    "currentMesh": "zombunny_0.head"
+                }
+            ]
+        },
+        {
+            "uuid": "77440d3f-a19b-4d0c-b241-0bf77330da76",
+            "name": "CrazyEyes",
+            "parentUuid": "02a08403-73bb-4261-90af-b7251d3e53d4",
+            "enabled": true,
+            "static": false,
+            "components": [
+                {
+                    "componentType": "TRANSFORM",
+                    "parentUuid": "77440d3f-a19b-4d0c-b241-0bf77330da76",
+                    "uuid": "4291653d-1728-412f-a379-b7d2815b0272",
+                    "position": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0
+                    },
+                    "rotation": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 1.0
+                    },
+                    "eulerRotation": {
+                        "x": -0.0,
+                        "y": 0.0,
+                        "z": -0.0
+                    },
+                    "scale": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0
+                    }
+                },
+                {
+                    "componentType": "MATERIAL",
+                    "parent": "77440d3f-a19b-4d0c-b241-0bf77330da76",
+                    "diffuseSelected": "",
+                    "diffuseColor": {
+                        "x": 0.06862747669219971,
+                        "y": 0.04978856444358826,
+                        "z": 0.04978856444358826,
+                        "w": 1.0
+                    },
+                    "diffuseK": 1.0,
+                    "occlusionSelected": "",
+                    "ambientK": 0.5,
+                    "specularSelected": "",
+                    "specularColor": {
+                        "x": 1.0,
+                        "y": 1.0,
+                        "z": 1.0,
+                        "w": 1.0
+                    },
+                    "specularK": 0.6000000238418579,
+                    "shininess": 64.0,
+                    "emissiveSelected": "",
+                    "emissiveColor": {
+                        "x": 0.0,
+                        "y": 0.0,
+                        "z": 0.0,
+                        "w": 0.0
+                    }
+                },
+                {
+                    "componentType": "MESH",
+                    "parent": "77440d3f-a19b-4d0c-b241-0bf77330da76",
+                    "currentMesh": "zombunny_1.head"
                 }
             ]
         }

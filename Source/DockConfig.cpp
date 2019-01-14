@@ -69,8 +69,8 @@ void DockConfig::Draw() {
 		ImGui::SliderFloat("Time Scale", &App->time->gameTimeScale, 0.1f, 5.0f, "%0.1f");
 
 		ImGui::Separator();
-		ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "Time since App start: %f seconds", App->time->realTime);
-		ImGui::TextColored(ImVec4(1.0f, 0.0f, 1.0f, 1.0f), "Frames since App start: %u", App->time->realFrameCount);
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), "Time since App start: %f seconds", App->time->realTime);
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 1.0f), "Frames since App start: %u", App->time->realFrameCount);
 
 		if (App->time->gameState == GameState::STOP) {
 			ImGui::TextDisabled("Time since Game start: 0.0000000 seconds");
