@@ -49,12 +49,10 @@ void ComponentCamera::InitOrthographicFrustum(math::float3 camPos, math::float3 
 	frustum.pos = camPos;
 	frustum.front = camFront;
 	frustum.up = camUp;
-	frustum.nearPlaneDistance = 8.0f;
-	frustum.farPlaneDistance = 1300.0f;
-	frustum.orthographicWidth = 2000.0f;
-	frustum.orthographicHeight = 2000.0f;
-	SetHorizontalFOV(fovX);
-	SetVerticalFOV(fovY);
+	frustum.nearPlaneDistance = 10.0f;
+	frustum.farPlaneDistance = 10000.0f;
+	frustum.orthographicWidth = 4464.0f;
+	frustum.orthographicHeight = 4464.0f;
 }
 
 void ComponentCamera::Update() {

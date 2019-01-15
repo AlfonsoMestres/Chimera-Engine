@@ -14,6 +14,7 @@ class DockQuad : public Dock
 
 	public:
 		bool focus = false;
+		int	 maxNodes = 1;
 };
 
 #endif

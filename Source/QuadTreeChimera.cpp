@@ -22,7 +22,10 @@ void QuadTreeChimera::InitQuadTree(const math::AABB& aabb, bool clearAllGameObje
 	}
 
 	if (App->camera->quadCamera != nullptr) {
-		App->camera->quadCamera->frustum.pos.y = aabb.maxPoint.y + 1.0f;
+		App->camera->quadCamera->frustum.pos.y = aabb.maxPoint.y + 100.0f;
+		App->camera->quadCamera->frustum.farPlaneDistance = App->camera->quadCamera->frustum.pos.y + aabb.Size().y;
+		App->camera->quadCamera->frustum.orthographicHeight = aabb.Size().x + 500.0f;
+		App->camera->quadCamera->frustum.orthographicWidth = App->camera->quadCamera->frustum.orthographicHeight;
 	}
 
 	root = new QuadTreeNode(aabb);

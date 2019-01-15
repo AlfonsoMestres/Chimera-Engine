@@ -53,9 +53,9 @@ bool ModuleLibrary::Init() {
 
 	std::thread watcherThread(LibraryWatcher);
 
+	fileScenesList = new std::vector<std::string>();
 	fileMeshesList = new std::vector<std::string>();
 	fileTexturesList = new std::vector<std::string>();
-	fileScenesList = new std::vector<std::string>();
 
 	watcherThread.detach();
 

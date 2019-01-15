@@ -54,7 +54,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Source/glew-2.1.0/include;./Source/SDL/include;./Source/MathGeoLib/include;./Source/IMGUI;./Source/DevIL/include;./Source/Assimp/include;./Source/physicsFS/include;./Source/rapidjson-1.1.0/include/rapidjson;C:\Master\Chimera-Engine\Source\Brofiler\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Source/glew-2.1.0/include;./Source/SDL/include;./Source/MathGeoLib/include;./Source/IMGUI;./Source/DevIL/include;./Source/Assimp/include;./Source/physicsFS/include;./Source/rapidjson-1.1.0/include/rapidjson;./Source/Brofiler/include</AdditionalIncludeDirectories>
       <LanguageStandard>
       </LanguageStandard>
     </ClCompile>

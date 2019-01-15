@@ -85,7 +85,9 @@ update_status ModuleRender::Update() {
 
 		SetProjectionMatrix(App->camera->quadCamera);
 		SetViewMatrix(App->camera->quadCamera);
+		//DrawDebugData(App->camera->quadCamera);
 		PrintQuadNode(App->scene->quadTree->root);
+		App->debug->Draw(App->camera->quadCamera, App->camera->quadCamera->fbo, App->camera->quadCamera->screenWidth, App->camera->quadCamera->screenHeight);
 	}
 
 	//So we exclude the rest of the quad rendered background of the color selected

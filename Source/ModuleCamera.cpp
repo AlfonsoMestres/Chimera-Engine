@@ -22,15 +22,9 @@ bool ModuleCamera::Init() {
 	sceneCamera->InitFrustum();
 	sceneCamera->debugDraw = true;
 
-	GameObject* quadCam = new GameObject("QuadGO", App->scene->root);
-	quadCam->AddComponent(ComponentType::TRANSFORM);
-	ComponentCamera* quadCamera1 = (ComponentCamera*)quadCam->AddComponent(ComponentType::CAMERA);
-
-
-	quadCamera1->InitOrthographicFrustum(math::float3(0.0f, 8.5f * App->scene->scaleFactor, 0.0f));
-	quadCamera1->debugDraw = true;
-	//quadCamera->LookAt(math::float3(0.0f, 0.0f, 0.0f));
-	quadCamera = quadCamera1;
+	quadCamera = new ComponentCamera(nullptr);
+	quadCamera->InitOrthographicFrustum(math::float3(0.0f, 8.5f * App->scene->scaleFactor, 0.0f), math::float3(0.0f, -1.0f, 0.0f), math::float3(0.0f, 0.0f, 1.0f));
+	quadCamera->debugDraw = true;
 
 	return true;
 }
