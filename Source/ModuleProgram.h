@@ -13,7 +13,6 @@ class ModuleProgram : public Module
 
 		bool		CleanUp() override;
 		bool		LoadPrograms();
-		unsigned	LoadProgram(const char* vertShaderPath, const char* fragShaderPath);
 
 	public:
 		unsigned	colorProgram = 0u;
@@ -21,6 +20,7 @@ class ModuleProgram : public Module
 		unsigned	blinnProgram = 0u;
 
 	private:
+		unsigned	LoadProgram(const char* vertShaderPath, const char* fragShaderPath);
 		char*		ReadShaderFile(const char* shaderPath);
 		bool		CompileShader(unsigned shaderAddress, const char* shaderContent);
 		void		CompileProgram(unsigned programAddress);

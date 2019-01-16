@@ -149,10 +149,10 @@ update_status ModuleEditor::Update() {
 
 			if (ImGui::BeginMenu("Select camera in")) {
 				if (App->camera->gameCameras.size() == 0) {
-					ImGui::Text("No game cameras availables");
+					ImGui::Text("No game cameras available");
 				} else {
 					for (auto& camera : App->camera->gameCameras) {
-						if (ImGui::MenuItem(camera->goContainer->name, NULL, App->camera->selectedCamera == camera)) {
+						if (ImGui::MenuItem(camera->goContainer->name.c_str(), NULL, App->camera->selectedCamera == camera)) {
 							App->camera->selectedCamera = camera;
 						}
 					}

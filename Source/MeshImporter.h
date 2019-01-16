@@ -16,6 +16,7 @@ class MeshImporter
 		static bool Import(const aiMesh* aiMesh, const char* meshName);
 		static bool Load(Mesh* mesh, const char* meshName);
 		static bool Save(const Mesh& mesh, const char* meshName);
+		static void CleanUpStructMesh(Mesh* mesh);
 };
 
 #endif

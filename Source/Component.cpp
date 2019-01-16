@@ -4,7 +4,7 @@
 #include "ModuleFileSystem.h"
 
 Component::Component(GameObject* gameObject, ComponentType type) {
-	sprintf_s(uuid, App->fileSystem->NewGuuid());
+	sprintf_s(uuid, App->fileSystem->NewGuuid().str().c_str());
 	if (gameObject != nullptr) {
 		sprintf_s(parentUuid, gameObject->uuid);
 		goContainer = gameObject;
@@ -13,7 +13,7 @@ Component::Component(GameObject* gameObject, ComponentType type) {
 }
 
 Component::Component(const Component& duplicateComponent) {
-	sprintf_s(uuid, App->fileSystem->NewGuuid());
+	sprintf_s(uuid, App->fileSystem->NewGuuid().str().c_str());
 	sprintf_s(parentUuid, duplicateComponent.parentUuid);
 	goContainer = duplicateComponent.goContainer;
 	componentType = duplicateComponent.componentType;

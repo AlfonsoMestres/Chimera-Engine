@@ -35,6 +35,7 @@ void ComponentMesh::CleanUp() {
 
 	App->renderer->meshes.remove(this);
 
+
 	if (mesh.vbo != 0) {
 		glDeleteBuffers(1, &mesh.vbo);
 	}
@@ -42,6 +43,8 @@ void ComponentMesh::CleanUp() {
 	if (mesh.ibo != 0) {
 		glDeleteBuffers(1, &mesh.ibo);
 	}
+	
+	MeshImporter::CleanUpStructMesh(&mesh);
 }
 
 void ComponentMesh::Draw(unsigned shaderProgram, const ComponentMaterial* material) const {
@@ -308,6 +311,7 @@ void ComponentMesh::ComputeMesh(par_shapes_mesh_s* parMesh) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+/* RapidJson storage */
 void ComponentMesh::Save(Config* config) {
 	config->StartObject();
 

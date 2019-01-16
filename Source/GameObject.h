@@ -24,9 +24,9 @@ class GameObject
 {
 	public:
 		GameObject();
-		GameObject(const char* goName, GameObject* goParent);
-		GameObject(const char* goName, const math::float4x4& transform);
-		GameObject(const char* goName, const math::float4x4& transform, GameObject* goParent);
+		GameObject(std::string goName, GameObject* goParent);
+		GameObject(std::string goName, const math::float4x4& transform);
+		GameObject(std::string goName, const math::float4x4& transform, GameObject* goParent);
 		GameObject(const GameObject& duplicateGameObject);
 		~GameObject();
 
@@ -53,7 +53,7 @@ class GameObject
 		bool					enabled = true;
 		bool					drawGOBBox = false;
 		bool					duplicating = false;
-		const char*				name = DEFAULT_GO_NAME;
+		std::string				name = std::string(DEFAULT_GO_NAME);
 		GameObject*				parent = nullptr;
 		std::list<GameObject*>	goChilds;
 

@@ -27,12 +27,12 @@ class ComponentMesh : public Component
 		void		LoadMesh(const char* name);
 		Component*	Duplicate() override;
 
-		std::vector<std::string> fileMeshesList;
-
+	private:
 		void Save(Config* config) override;
 		void Load(Config* config, rapidjson::Value& value) override;
 
 	public:
+		std::vector<std::string> fileMeshesList;
 		Mesh			mesh;
 		const char*		name = nullptr;
 

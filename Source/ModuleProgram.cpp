@@ -14,9 +14,6 @@ bool ModuleProgram::LoadPrograms() {
 }
 
 unsigned ModuleProgram::LoadProgram(const char* vertShaderPath, const char* fragShaderPath) {
-	assert(vertShaderPath != nullptr);
-	assert(fragShaderPath != nullptr);
-
 	unsigned program = 0u;
 
 	// How to: https://badvertex.com/2012/11/20/how-to-load-a-glsl-shader-in-opengl-using-c.html
@@ -38,11 +35,11 @@ unsigned ModuleProgram::LoadProgram(const char* vertShaderPath, const char* frag
 		CompileProgram(program);
 	}
 	
-	delete[] vertShaderStr; 
-	delete[] fragShaderStr;
-	// Remove shaders, we wont need them anymore if they are loaded correctly into Program
 	glDeleteShader(vertShader);
 	glDeleteShader(fragShader);
+	// Remove shaders, we wont need them anymore if they are loaded correctly into Program
+	delete[] vertShaderStr; 
+	delete[] fragShaderStr;
 	vertShaderStr = nullptr;
 	fragShaderStr = nullptr;
 
@@ -93,7 +90,7 @@ bool ModuleProgram::CompileShader(unsigned shaderAddress, const char* shaderCont
 			LOG("Error: Shader compilation failed at %s", strInfoLog);
 
 			delete[] strInfoLog;
-			infoLogLength = 0;
+			strInfoLog = nullptr;
 		}
 
 		glDeleteShader(shaderAddress); // Don't leak the shader.
@@ -108,9 +105,8 @@ void ModuleProgram::CompileProgram(unsigned programAddress) {
 	glGetProgramiv(programAddress, GL_COMPILE_STATUS, &errorLength);
 
 	if (errorLength > 0) {
-		int written = 0;
 		GLchar* strInfoLog = new GLchar[errorLength + 1];
-		glGetProgramInfoLog(programAddress, errorLength, &written, strInfoLog);
+		glGetProgramInfoLog(programAddress, errorLength, NULL, strInfoLog);
 
 		LOG("Error: Program compilation failed at %s", strInfoLog);
 
@@ -125,7 +121,9 @@ void ModuleProgram::CompileProgram(unsigned programAddress) {
 bool ModuleProgram::CleanUp() {
 	glDeleteProgram(colorProgram);
 	glDeleteProgram(textureProgram);
+	glDeleteProgram(blinnProgram);
 	colorProgram = 0;
 	textureProgram = 0;
+	blinnProgram = 0;
 	return true;
 }

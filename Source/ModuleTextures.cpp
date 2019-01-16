@@ -27,7 +27,6 @@ bool ModuleTextures::Init() {
 }
 
 bool ModuleTextures::CleanUp() {
-
 	delete noCameraSelectedTexture;
 	noCameraSelectedTexture = nullptr;
 

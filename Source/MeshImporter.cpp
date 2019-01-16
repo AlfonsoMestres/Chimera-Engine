@@ -85,7 +85,8 @@ bool MeshImporter::Load(Mesh* meshStruct, const char* meshName) {
 	char* buffer;
 	std::string meshPath("/Library/Meshes/");
 	meshPath.append(meshName);
-	unsigned size = App->fileSystem->Load(meshPath.c_str(), &buffer);
+	unsigned size = 0u;
+	size = App->fileSystem->Load(meshPath.c_str(), &buffer);
 
 	if (buffer != nullptr && size > 0) {
 		char* cursor = buffer;
@@ -132,14 +133,18 @@ bool MeshImporter::Load(Mesh* meshStruct, const char* meshName) {
 			cursor += bytes;
 		}
 
-		delete[] buffer;
-		buffer = nullptr;
+		delete[] cursor;
+		cursor = nullptr;
 
 		result = true;
 	}
 
+	delete[] buffer;
+	buffer = nullptr;
+
 	return result;
 }
+
 
 bool MeshImporter::Save(const Mesh& mesh, const char* meshName) {
 	bool result = false;
@@ -210,4 +215,34 @@ bool MeshImporter::Save(const Mesh& mesh, const char* meshName) {
 	data = nullptr;
 
 	return result;
+}
+
+void MeshImporter::CleanUpStructMesh(Mesh* mesh) {
+	if (mesh != nullptr) {
+		if (mesh->indices != nullptr) {
+			delete[] mesh->indices;
+			mesh->indices = nullptr;
+		}
+
+		if (mesh->vertices != nullptr) {
+			delete[] mesh->vertices;
+			mesh->vertices = nullptr;
+		}
+
+		if (mesh->uvs != nullptr) {
+			delete[] mesh->uvs;
+			mesh->uvs = nullptr;
+		}
+
+		if (mesh->normals != nullptr) {
+			delete[] mesh->normals;
+			mesh->normals = nullptr;
+		}
+
+		if (mesh->colors != nullptr) {
+			delete[] mesh->colors;
+			mesh->colors = nullptr;
+		}
+
+	}
 }

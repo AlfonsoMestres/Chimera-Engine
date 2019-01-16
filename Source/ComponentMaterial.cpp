@@ -71,33 +71,53 @@ void ComponentMaterial::DrawProperties(bool staticGo) {
 
 		if (ImGui::CollapsingHeader("Diffuse")) {
 			ImGui::ColorEdit3("Diffuse color", (float*)&material.diffuseColor);
-			DrawComboBoxMaterials("DiffuseComboTextures", MaterialType::DIFFUSE_MAP, diffuseSelected);
-			ImGui::Text("Dimensions: %dx%d", material.diffuseWidth, material.diffuseHeight);
-			ImGui::Image((ImTextureID)material.diffuseMap, ImVec2(200, 200));
-			ImGui::SliderFloat("K diffuse", &material.diffuseK, 0.0f, 1.0f);
-		}
+			DrawComboBoxMaterials("DiffuseComboTextures", MaterialType::DIFFUSE_MAP, diffuseSelected); ImGui::SameLine();
+			if (ImGui::Button("Empty")) {
+				DeselectMap(material.diffuseMap, diffuseSelected);
+			}
+			if (diffuseSelected != "") {
+				ImGui::Text("Dimensions: %dx%d", material.diffuseWidth, material.diffuseHeight);
+				ImGui::Image((ImTextureID)material.diffuseMap, ImVec2(200, 200));
+				ImGui::SliderFloat("K diffuse", &material.diffuseK, 0.0f, 1.0f);
+			}
+		} 
 
 		if (ImGui::CollapsingHeader("Ambient")) {
-			DrawComboBoxMaterials("OcclusionComboTextures", MaterialType::OCCLUSION_MAP, occlusionSelected);
-			ImGui::Text("Dimensions: %dx%d", material.ambientWidth, material.ambientHeight);
-			ImGui::Image((ImTextureID)material.occlusionMap, ImVec2(200, 200));
-			ImGui::SliderFloat("K ambient", &material.ambientK, 0.0f, 1.0f);
+			DrawComboBoxMaterials("OcclusionComboTextures", MaterialType::OCCLUSION_MAP, occlusionSelected); ImGui::SameLine();
+			if (ImGui::Button("Empty")) {
+				DeselectMap(material.occlusionMap, occlusionSelected);
+			}
+			if (occlusionSelected != "") {
+				ImGui::Text("Dimensions: %dx%d", material.ambientWidth, material.ambientHeight);
+				ImGui::Image((ImTextureID)material.occlusionMap, ImVec2(200, 200));
+				ImGui::SliderFloat("K ambient", &material.ambientK, 0.0f, 1.0f);
+			}
 		}
 
 		if (ImGui::CollapsingHeader("Specular")) {
 			ImGui::ColorEdit3("Specular color", (float*)&material.specularColor);
-			DrawComboBoxMaterials("SpecularComboTextures", MaterialType::SPECULAR_MAP, specularSelected);
-			ImGui::Text("Dimensions: %dx%d", material.specularWidth, material.specularHeight);
-			ImGui::Image((ImTextureID)material.specularMap, ImVec2(200, 200));
-			ImGui::SliderFloat("K specular", &material.specularK, 0.0f, 1.0f);
-			ImGui::SliderFloat("K shininess", &material.shininess, 0.0f, 128.0f);
+			DrawComboBoxMaterials("SpecularComboTextures", MaterialType::SPECULAR_MAP, specularSelected); ImGui::SameLine();
+			if (ImGui::Button("Empty")) {
+				DeselectMap(material.specularMap, specularSelected);
+			}
+			if (specularSelected != "") {
+				ImGui::Text("Dimensions: %dx%d", material.specularWidth, material.specularHeight);
+				ImGui::Image((ImTextureID)material.specularMap, ImVec2(200, 200));
+				ImGui::SliderFloat("K specular", &material.specularK, 0.0f, 1.0f);
+				ImGui::SliderFloat("K shininess", &material.shininess, 0.0f, 128.0f);
+			}
 		}
 
 		if (ImGui::CollapsingHeader("Emissive")) {
 			ImGui::ColorEdit3("Emissive color", (float*)&material.emissiveColor);
-			DrawComboBoxMaterials("EmissiveComboTextures", MaterialType::EMISSIVE_MAP, emissiveSelected);
-			ImGui::Text("Dimensions: %dx%d", material.emissiveWidth, material.emissiveHeight);
-			ImGui::Image((ImTextureID)material.emissiveMap, ImVec2(200, 200));
+			DrawComboBoxMaterials("EmissiveComboTextures", MaterialType::EMISSIVE_MAP, emissiveSelected); ImGui::SameLine();
+			if (ImGui::Button("Empty")) {
+				DeselectMap(material.emissiveMap, emissiveSelected);
+			}
+			if (emissiveSelected != "") {
+				ImGui::Text("Dimensions: %dx%d", material.emissiveWidth, material.emissiveHeight);
+				ImGui::Image((ImTextureID)material.emissiveMap, ImVec2(200, 200));
+			}
 		}
 
 		if (staticGo) {
@@ -127,6 +147,12 @@ void ComponentMaterial::DrawComboBoxMaterials(const char* id, MaterialType matTy
 		}
 
 		ImGui::PopID();
+}
+
+void ComponentMaterial::DeselectMap(unsigned mapToDelete, std::string& mapSelected) {
+	DeleteTexture(mapToDelete);
+	mapToDelete = 0u;
+	mapSelected = "";
 }
 
 void ComponentMaterial::UnloadMaterial() {

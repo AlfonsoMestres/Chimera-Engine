@@ -106,7 +106,7 @@ void ModuleScene::LoadGeometry(GameObject* goParent, GeometryType geometryType) 
 	}
 
 	if (parMesh != nullptr) {
-		par_shapes_scale(parMesh, 500.0f, 500.0f, 500.0f);
+		par_shapes_scale(parMesh, 0.5f * App->scene->scaleFactor, 0.5f * App->scene->scaleFactor, 0.5f * App->scene->scaleFactor);
 
 		ComponentMesh* mesh = (ComponentMesh*)goParent->AddComponent(ComponentType::MESH);
 		mesh->ComputeMesh(parMesh);

@@ -37,8 +37,8 @@ void ComponentCamera::InitFrustum(math::float3 camPos, math::float3 camFront, ma
 	frustum.pos = camPos;
 	frustum.front = camFront;
 	frustum.up = camUp;
-	frustum.nearPlaneDistance = 8.0f;
-	frustum.farPlaneDistance = 42000.0f;
+	frustum.nearPlaneDistance = 0.008f * App->scene->scaleFactor;
+	frustum.farPlaneDistance = 42.0f * App->scene->scaleFactor;
 	frustum.verticalFov = math::pi / 2.0f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 }
@@ -49,10 +49,10 @@ void ComponentCamera::InitOrthographicFrustum(math::float3 camPos, math::float3 
 	frustum.pos = camPos;
 	frustum.front = camFront;
 	frustum.up = camUp;
-	frustum.nearPlaneDistance = 10.0f;
-	frustum.farPlaneDistance = 10000.0f;
-	frustum.orthographicWidth = 4464.0f;
-	frustum.orthographicHeight = 4464.0f;
+	frustum.nearPlaneDistance = 0.01f * App->scene->scaleFactor;
+	frustum.farPlaneDistance = 10.0f * App->scene->scaleFactor;
+	frustum.orthographicWidth = 4.464f * App->scene->scaleFactor;
+	frustum.orthographicHeight = 4.464f * App->scene->scaleFactor;
 }
 
 void ComponentCamera::Update() {

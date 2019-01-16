@@ -14,17 +14,20 @@
 #include "SDL/include/SDL_mouse.h"
 #include "debugdraw.h"
 
-/// CARE Creating this without father could lead to memory leak
+#define MAXNAME 64
+
 GameObject::GameObject() {
-	sprintf_s(uuid, App->fileSystem->NewGuuid());
+	sprintf_s(uuid, App->fileSystem->NewGuuid().str().c_str());
 	transform = (ComponentTransform*)AddComponent(ComponentType::TRANSFORM);
 }
 
-GameObject::GameObject(const char* goName, GameObject* goParent) {
-	sprintf_s(uuid, App->fileSystem->NewGuuid());
-	char* copyName = new char[strlen(goName)];
-	strcpy(copyName, goName);
-	name = copyName;
+GameObject::GameObject(std::string goName, GameObject* goParent) {
+	sprintf_s(uuid, App->fileSystem->NewGuuid().str().c_str());
+
+	char* newName = new char[MAXNAME];
+	strcpy(newName, goName.c_str());
+	name = newName;
+	delete[] newName;
 
 	if (goParent != nullptr) {
 		parent = goParent;
@@ -33,12 +36,13 @@ GameObject::GameObject(const char* goName, GameObject* goParent) {
 	} 
 }
 
-GameObject::GameObject(const char* goName, const math::float4x4& parentTransform) {
-	sprintf_s(uuid, App->fileSystem->NewGuuid());
+GameObject::GameObject(std::string goName, const math::float4x4& parentTransform) {
+	sprintf_s(uuid, App->fileSystem->NewGuuid().str().c_str());
 
-	char* copyName = new char[strlen(goName)];
-	strcpy(copyName, goName);
-	name = copyName;
+	char* newName = new char[MAXNAME];
+	strcpy(newName, goName.c_str());
+	name = newName;
+	delete[] newName;
 
 	parent = App->scene->root;
 	sprintf_s(parentUuid, App->scene->root->uuid);
@@ -47,12 +51,13 @@ GameObject::GameObject(const char* goName, const math::float4x4& parentTransform
 	App->scene->root->goChilds.push_back(this);
 }
 
-GameObject::GameObject(const char* goName, const math::float4x4& parentTransform, GameObject* goParent) {
-	sprintf_s(uuid, App->fileSystem->NewGuuid());
+GameObject::GameObject(std::string goName, const math::float4x4& parentTransform, GameObject* goParent) {
+	sprintf_s(uuid, App->fileSystem->NewGuuid().str().c_str());
 
-	char* copyName = new char[strlen(goName)];
-	strcpy(copyName, goName);
-	name = copyName;
+	char* newName = new char[MAXNAME];
+	strcpy(newName, goName.c_str());
+	name = newName;
+	delete[] newName;
 
 	if (goParent != nullptr) {
 		parent = goParent;
@@ -69,12 +74,13 @@ GameObject::GameObject(const char* goName, const math::float4x4& parentTransform
 }
 
 GameObject::GameObject(const GameObject& duplicateGameObject) {
-	sprintf_s(uuid, App->fileSystem->NewGuuid());
+	sprintf_s(uuid, App->fileSystem->NewGuuid().str().c_str());
 	sprintf_s(parentUuid, duplicateGameObject.parentUuid);
 
-	char* copyName = new char[strlen(duplicateGameObject.name)];
-	strcpy(copyName, duplicateGameObject.name);
-	name = copyName;
+	char* newName = new char[MAXNAME];
+	strcpy(newName, duplicateGameObject.name.c_str());
+	name = newName;
+	delete[] newName;
 
 	staticGo = duplicateGameObject.staticGo;
 	if (staticGo) {
@@ -109,6 +115,10 @@ GameObject::GameObject(const GameObject& duplicateGameObject) {
 
 GameObject::~GameObject() {
 
+	if (staticGo) {
+		App->scene->quadTree->Remove(this);
+	}
+
 	for (auto &component : components) {
 		delete component;
 		component = nullptr;
@@ -119,7 +129,7 @@ GameObject::~GameObject() {
 		delete child;
 		child = nullptr;
 	}
-	goChilds.clear();
+	goChilds.clear();	
 
 	parent = nullptr;
 	transform = nullptr;
@@ -180,7 +190,6 @@ void GameObject::CleanUp() {
 }
 
 void GameObject::DrawProperties() {
-	assert(name != nullptr);
 
 	if (ImGui::Checkbox("Enabled", &enabled)) {
 		for (auto &component : components) {
@@ -188,7 +197,12 @@ void GameObject::DrawProperties() {
 		}
 	} ImGui::SameLine();
 
-	ImGui::InputText("Name", (char*)name, 50.0f); 
+	char* newName = new char[MAXNAME];
+	strcpy(newName, name.c_str());
+	ImGui::InputText("Name", (char*)newName, MAXNAME);
+	name = newName;
+	delete[] newName;
+
 
 	if (ImGui::Checkbox("Static", &staticGo)) {
 		UpdateStaticChilds(staticGo);
@@ -221,7 +235,7 @@ void GameObject::DrawHierarchy(GameObject* goSelected) {
 		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
 
-	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name);
+	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name.c_str());
 
 	if (ImGui::IsItemClicked()) {
 		if (App->scene->goSelected != nullptr) {
@@ -429,7 +443,7 @@ bool GameObject::Save(Config* config) {
 	config->StartObject();
 
 	config->AddString("uuid", uuid);
-	config->AddString("name", name);
+	config->AddString("name", name.c_str());
 
 	if (parent != nullptr) {
 		config->AddString("parentUuid", parent->uuid);
