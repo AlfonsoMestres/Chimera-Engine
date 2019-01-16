@@ -23,7 +23,6 @@ class ModuleWindow : public Module
 		SDL_Surface*	screen_surface = nullptr;
 		int				width = SCREEN_WIDTH;
 		int				height = SCREEN_HEIGHT;
-		float			screenRatio = SCREEN_WIDTH / SCREEN_HEIGHT;
 
 		bool fullscreen = false;
 		bool resizable = true;

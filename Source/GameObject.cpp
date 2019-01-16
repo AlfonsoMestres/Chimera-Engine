@@ -349,7 +349,7 @@ Component* GameObject::AddComponent(ComponentType type) {
 			break;
 		case  ComponentType::MESH:
 			if (GetComponent(ComponentType::MESH) == nullptr) {
-				component = new ComponentMesh(this, nullptr);
+				component = new ComponentMesh(this);
 				mesh = (ComponentMesh*)component;
 				//We need to have a material to render a mesh, so we include one if not already added
 				AddComponent(ComponentType::MATERIAL);
@@ -430,7 +430,7 @@ void GameObject::UpdateStaticChilds(bool staticState) {
 	staticGo = staticState;
 	if (staticGo && GetComponent(ComponentType::MESH) != nullptr) {
 		App->scene->quadTree->Insert(this, true);
-	} else if (!staticGo) {
+	} else if (!staticGo && GetComponent(ComponentType::MESH) != nullptr) {
 		App->scene->quadTree->Remove(this);
 	}
 	for(auto &child : goChilds){

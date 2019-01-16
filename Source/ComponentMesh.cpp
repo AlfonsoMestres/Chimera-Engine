@@ -13,14 +13,14 @@
 #include "Math/float3.h"
 #include "Math/float2.h"
 
-ComponentMesh::ComponentMesh(GameObject* goContainer, Mesh* mesh) : Component(goContainer, ComponentType::MESH) { 
-	App->renderer->meshes.push_back(this);
-}
+ComponentMesh::ComponentMesh(GameObject* goContainer) : Component(goContainer, ComponentType::MESH) { }
 
 ComponentMesh::ComponentMesh(const ComponentMesh& duplicatedComponent) : Component(duplicatedComponent) {
 	mesh = duplicatedComponent.mesh;
 	currentMesh = duplicatedComponent.currentMesh;
-	App->renderer->meshes.push_back(this);
+	if (mesh.indicesNumber > 0) {
+		App->renderer->meshes.push_back(this);
+	}
 }
 
 ComponentMesh::~ComponentMesh() {
@@ -34,7 +34,6 @@ Component* ComponentMesh::Duplicate() {
 void ComponentMesh::CleanUp() {
 
 	App->renderer->meshes.remove(this);
-
 
 	if (mesh.vbo != 0) {
 		glDeleteBuffers(1, &mesh.vbo);
@@ -122,8 +121,6 @@ void ComponentMesh::DrawProperties(bool staticGo) {
 		}
 		ImGui::Separator();
 
-
-
 		if (ImGui::BeginCombo("##meshCombo", currentMesh.c_str())) {
 
 			for (std::vector<std::string>::iterator it = App->library->fileMeshesList->begin(); it != App->library->fileMeshesList->end(); ++it) {
@@ -138,6 +135,11 @@ void ComponentMesh::DrawProperties(bool staticGo) {
 				}
 			}
 			ImGui::EndCombo();
+		} ImGui::SameLine();
+		if (ImGui::Button("Empty")) {
+			App->renderer->meshes.remove(this);
+			MeshImporter::CleanUpStructMesh(&mesh);
+			currentMesh = "";
 		}
 
 		ImGui::Separator();
@@ -156,6 +158,8 @@ void ComponentMesh::DrawProperties(bool staticGo) {
 }
 
 void ComponentMesh::LoadMesh(const char* name) {
+	App->renderer->meshes.remove(this); 
+
 	if (mesh.vbo != 0) {
 		glDeleteBuffers(1, &mesh.vbo);
 	}
@@ -167,6 +171,7 @@ void ComponentMesh::LoadMesh(const char* name) {
 	MeshImporter::Load(&mesh, name);
 	ComputeMesh();
 	goContainer->ComputeBBox();
+	App->renderer->meshes.push_back(this);
 }
 
 void ComponentMesh::ComputeMesh() { 

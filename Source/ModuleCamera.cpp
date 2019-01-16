@@ -188,15 +188,15 @@ void ModuleCamera::SelectGameObject() {
 			ComponentMesh* componentMesh = (ComponentMesh*)(*iterator)->GetComponent(ComponentType::MESH);
 			ComponentTransform* componentTransform = (ComponentTransform*)(*iterator)->GetComponent(ComponentType::TRANSFORM);
 
-			if (componentMesh != nullptr && componentTransform != nullptr) {
+			if (componentTransform != nullptr && componentMesh != nullptr) {
 				Mesh mesh = componentMesh->mesh;
 				math::LineSegment localTransformPikingLine(rayCast);
 				localTransformPikingLine.Transform(componentTransform->GetGlobalTransform().Inverted());
 
 				math::Triangle triangle;
 				for (unsigned i = 0u; i < mesh.indicesNumber; i += 3) {
-					//Only the parmesh meshes does not contains indices
-					if (mesh.indices != nullptr) {
+					//Only the parmesh meshes does not contains indices, also we dont want to check triangles if GO has no mesh selected
+					if (mesh.indices != nullptr && mesh.verticesNumber > 0) {
 						triangle.a = { mesh.vertices[mesh.indices[i] * 3], mesh.vertices[mesh.indices[i] * 3 + 1], mesh.vertices[mesh.indices[i] * 3 + 2] };
 						triangle.b = { mesh.vertices[mesh.indices[i + 1] * 3], mesh.vertices[mesh.indices[i + 1] * 3 + 1], mesh.vertices[mesh.indices[i + 1] * 3 + 2] };
 						triangle.c = { mesh.vertices[mesh.indices[i + 2] * 3], mesh.vertices[mesh.indices[i + 2] * 3 + 1], mesh.vertices[mesh.indices[i + 2] * 3 + 2] };
@@ -204,7 +204,6 @@ void ModuleCamera::SelectGameObject() {
 						float triangleDistance;
 						math::float3 hitPoint;
 						if (localTransformPikingLine.Intersects(triangle, &triangleDistance, &hitPoint)) {
-							//TODO: min distance compare same value
 							if (minDistance == -.1f * App->scene->scaleFactor || triangleDistance < minDistance) {
 								minDistance = triangleDistance;
 								gameObjectHit = *iterator;

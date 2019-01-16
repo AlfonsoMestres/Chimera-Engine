@@ -21,11 +21,10 @@ class ComponentCamera : public Component
 
 		void			DrawProperties(bool enabled) override;
 		Component*		Duplicate() override;
-		void			Update();
+		void			Update() override;
 
 		void			InitFrustum(math::float3 camPos = math::float3(0.0f, 300.0f, 1000.0f), math::float3 camFront = math::float3(0.0f, 0.0f, -1.0f), math::float3 camUp = float3::unitY);
 		void			InitOrthographicFrustum(math::float3 camPos = math::float3(0.0f, 300.0f, 1000.0f), math::float3 camFront = math::float3(0.0f, 0.0f, -1.0f), math::float3 camUp = float3::unitY);
-		void			CreateFrameBuffer(float winWidth, float winHeight);
 
 		void			LookAt(math::float3 target);
 		math::float4x4	GetViewMatrix();
@@ -33,13 +32,15 @@ class ComponentCamera : public Component
 
 		void			Rotate(float dx, float dy);
 		void			Orbit(float dx, float dy);
-
 		void			SetScreenNewScreenSize(unsigned newWidth, unsigned newHeight);
+
+		void			Load(Config* config, rapidjson::Value& value) override;
+		void			Save(Config* config) override;
+
+	private:
+		void			CreateFrameBuffer(float winWidth, float winHeight);
 		void			SetHorizontalFOV(float fovXDegrees);
 		void			SetVerticalFOV(float fovYDegrees);
-
-		void Save(Config* config) override;
-		void Load(Config* config, rapidjson::Value& value) override;
 
 	public:
 		math::Frustum	frustum;
@@ -56,7 +57,6 @@ class ComponentCamera : public Component
 
 		unsigned		screenWidth = SCREEN_WIDTH;
 		unsigned		screenHeight = SCREEN_HEIGHT;
-		float			screenRatio = screenWidth / screenHeight;
 
 		unsigned		fbo = 0u;
 		unsigned		rbo = 0u;

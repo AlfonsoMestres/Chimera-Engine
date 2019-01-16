@@ -43,7 +43,6 @@ void ComponentCamera::InitFrustum(math::float3 camPos, math::float3 camFront, ma
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 }
 
-//TODO: Set up properly to enable quad tree superior list
 void ComponentCamera::InitOrthographicFrustum(math::float3 camPos, math::float3 camFront, math::float3 camUp) {
 	frustum.type = FrustumType::OrthographicFrustum;
 	frustum.pos = camPos;
@@ -138,7 +137,6 @@ math::float4x4 ComponentCamera::GetProjectionMatrix() {
 void ComponentCamera::SetScreenNewScreenSize(unsigned width, unsigned height) {
 	screenWidth = width;
 	screenHeight = height;
-	screenRatio = (float)screenWidth / (float)screenHeight;
 
 	SetHorizontalFOV(fovX);
 	SetVerticalFOV(fovY);

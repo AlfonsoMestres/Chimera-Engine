@@ -244,5 +244,17 @@ void MeshImporter::CleanUpStructMesh(Mesh* mesh) {
 			mesh->colors = nullptr;
 		}
 
+		mesh->vao = 0u;
+		mesh->vbo = 0u;
+		mesh->ibo = 0u;
+		mesh->verticesNumber = 0u;
+		mesh->indicesNumber = 0u;
+		mesh->normalsOffset = 0u;
+		mesh->texturesOffset = 0u;
+		mesh->vertexSize = 0u;
+		mesh->bbox = math::AABB();
+
+		delete mesh;
+		mesh = nullptr;
 	}
 }

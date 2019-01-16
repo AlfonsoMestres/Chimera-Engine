@@ -1,11 +1,11 @@
-#include "Application.h"
-#include "ModuleScene.h"
-#include "QuadTreeChimera.h"
 #include "Globals.h"
+#include "GameObject.h"
+#include "ModuleScene.h"
+#include "Application.h"
 #include "Application.h"
 #include "ModuleCamera.h"
-#include "GameObject.h"
 #include "ComponentMesh.h"
+#include "QuadTreeChimera.h"
 
 QuadTreeChimera::QuadTreeChimera() { 
 	quadLimits = math::AABB(math::float3(-2.0f * App->scene->scaleFactor, -2.0f * App->scene->scaleFactor, -2.0f * App->scene->scaleFactor), math::float3(2.0f * App->scene->scaleFactor, 2.0f * App->scene->scaleFactor, 2.0f * App->scene->scaleFactor));
@@ -22,9 +22,9 @@ void QuadTreeChimera::InitQuadTree(const math::AABB& aabb, bool clearAllGameObje
 	}
 
 	if (App->camera->quadCamera != nullptr) {
-		App->camera->quadCamera->frustum.pos.y = aabb.maxPoint.y + 100.0f;
+		App->camera->quadCamera->frustum.pos.y = aabb.maxPoint.y + 0.01f * App->scene->scaleFactor;
 		App->camera->quadCamera->frustum.farPlaneDistance = App->camera->quadCamera->frustum.pos.y + aabb.Size().y;
-		App->camera->quadCamera->frustum.orthographicHeight = aabb.Size().x + 500.0f;
+		App->camera->quadCamera->frustum.orthographicHeight = aabb.Size().x + 0.5f * App->scene->scaleFactor;
 		App->camera->quadCamera->frustum.orthographicWidth = App->camera->quadCamera->frustum.orthographicHeight;
 	}
 
@@ -32,8 +32,6 @@ void QuadTreeChimera::InitQuadTree(const math::AABB& aabb, bool clearAllGameObje
 }
 
 void QuadTreeChimera::Insert(GameObject* gameObject, bool addQuadList) {
-	assert(root != nullptr);
-
 	if (gameObject->bbox.Intersects(root->aabb)) {
 		if (addQuadList) {
 			goList.push_back(gameObject);
@@ -68,7 +66,6 @@ void QuadTreeChimera::Remove(GameObject* gameObject) {
 
 void QuadTreeChimera::Clear() {
 	goList.clear();
-
 	delete root;
 	root = nullptr;
 }

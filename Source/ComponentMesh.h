@@ -14,7 +14,7 @@ class GameObject;
 class ComponentMesh : public Component
 {
 	public:
-		ComponentMesh(GameObject* goContainer, Mesh* mesh);
+		ComponentMesh(GameObject* goContainer);
 		ComponentMesh(const ComponentMesh& duplicatedComponent);
 		~ComponentMesh();
 
@@ -28,13 +28,12 @@ class ComponentMesh : public Component
 		Component*	Duplicate() override;
 
 	private:
-		void Save(Config* config) override;
-		void Load(Config* config, rapidjson::Value& value) override;
+		void		Save(Config* config) override;
+		void		Load(Config* config, rapidjson::Value& value) override;
 
 	public:
+		Mesh					 mesh;
 		std::vector<std::string> fileMeshesList;
-		Mesh			mesh;
-		const char*		name = nullptr;
 
 	private:
 		std::string currentMesh;
