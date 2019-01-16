@@ -35,6 +35,8 @@ bool ModuleScene::Init() {
 	root = new GameObject("root", nullptr);
 	quadTree = new QuadTreeChimera();
 
+	LoadScene();
+
 	return true;
 }
 
@@ -110,8 +112,7 @@ void ModuleScene::LoadGeometry(GameObject* goParent, GeometryType geometryType) 
 		ComponentMesh* mesh = (ComponentMesh*)goParent->AddComponent(ComponentType::MESH);
 		mesh->ComputeMesh(parMesh);
 		par_shapes_free_mesh(parMesh);
-
-		ComponentMaterial* mat = (ComponentMaterial*)goParent->AddComponent(ComponentType::MATERIAL);
+		App->renderer->meshes.push_back(mesh);
 		goParent->ComputeBBox();
 	} else {
 		LOG("Error: error loading par_shapes mesh");

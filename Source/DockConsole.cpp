@@ -3,7 +3,6 @@
 DockConsole::DockConsole() { }
 
 DockConsole::~DockConsole() { 
-	ToggleEnabled();
 	Clear();
 }
 

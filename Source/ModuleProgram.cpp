@@ -2,7 +2,9 @@
 
 ModuleProgram::ModuleProgram() { }
 
-ModuleProgram::~ModuleProgram() { }
+ModuleProgram::~ModuleProgram() {
+	CleanUp();
+}
 
 bool ModuleProgram::LoadPrograms() {
 	// TODO: this should be pushed back to a vector
@@ -122,8 +124,8 @@ bool ModuleProgram::CleanUp() {
 	glDeleteProgram(colorProgram);
 	glDeleteProgram(textureProgram);
 	glDeleteProgram(blinnProgram);
-	colorProgram = 0;
-	textureProgram = 0;
-	blinnProgram = 0;
+	colorProgram = 0u;
+	textureProgram = 0u;
+	blinnProgram = 0u;
 	return true;
 }

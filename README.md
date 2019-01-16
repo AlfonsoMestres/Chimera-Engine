@@ -11,7 +11,8 @@ game programming and development.
 * Mouse wheel to zoom in/out.
 * F to center the camera into the last loaded object.
 * SHIFT + Movement to duplicate the movement speed.
-* Drag and drop .fbx.png.dds files to import them.
+* Drag and drop .fbx to import them and use it on the engine.
+* Drag and drop .png .tiff to import and use them as materials in meshes.
 
 ## Libraries
 
@@ -28,6 +29,7 @@ game programming and development.
 * [PhysicsFS](https://icculus.org/physfs/)
 * [RapidJson](https://github.com/Tencent/rapidjson)
 * [ImGuizmo](https://github.com/CedricGuillemet/ImGuizmo)
+* [Brofiler](https://github.com/bombomby/brofiler)
 
 ## License
 

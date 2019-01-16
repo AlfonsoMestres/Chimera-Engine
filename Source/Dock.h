@@ -7,7 +7,7 @@ class Dock
 {
 	public:
 		Dock();
-		~Dock();
+		virtual ~Dock();
 
 		virtual void Draw() { }
 

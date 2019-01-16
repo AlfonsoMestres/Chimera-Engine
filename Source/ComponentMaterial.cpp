@@ -49,24 +49,6 @@ void ComponentMaterial::DrawProperties(bool staticGo) {
 			return;
 		}
 
-		ImGui::Button("Material options");
-
-		if (ImGui::IsItemClicked(0)) {
-			ImGui::OpenPopup("MaterialOptionsContextualMenu");
-		}
-
-		if (ImGui::BeginPopup("MaterialOptionsContextualMenu")) {
-			ImGui::PushID("AddMaterial");
-			if (ImGui::MenuItem("Add material")) { }
-			ImGui::PopID();
-			ImGui::PushID("DeleteMaterial");
-			if (ImGui::MenuItem("Remove materials")) {
-				UnloadMaterial();
-			}
-			ImGui::PopID();
-			ImGui::EndPopup();
-		}
-
 		ImGui::Separator();
 
 		if (ImGui::CollapsingHeader("Diffuse")) {

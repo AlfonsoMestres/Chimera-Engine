@@ -49,8 +49,8 @@ void DockAbout::Draw() {
 		ImGui::BulletText("DebugDraw (version 2017)");
 		ImGui::BulletText("PhysicsFS (version 3.0.1)");
 		ImGui::BulletText("RapidJson (version 1.1.0)");
-		ImGui::BulletText("ImGuizmo (version 1.1.0)");
-		ImGui::Selectable("ImGuizmo (version 1.53)");
+		ImGui::BulletText("ImGuizmo (version 1.53)");
+		ImGui::BulletText("Brofiler (version 1.1.2)");
 		ImGui::TreePop();
 	}
 

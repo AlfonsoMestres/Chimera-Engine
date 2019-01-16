@@ -6,6 +6,7 @@
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
 #include "ComponentCamera.h"
+#include "ComponentTransform.h"
 
 ComponentCamera::ComponentCamera(GameObject* goParent) : Component(goParent, ComponentType::CAMERA) {
 	InitFrustum();
@@ -29,7 +30,6 @@ ComponentCamera::~ComponentCamera() {
 			return;
 		}
 	}
-
 }
 
 void ComponentCamera::InitFrustum(math::float3 camPos, math::float3 camFront, math::float3 camUp) {
@@ -40,7 +40,7 @@ void ComponentCamera::InitFrustum(math::float3 camPos, math::float3 camFront, ma
 	frustum.nearPlaneDistance = 0.008f * App->scene->scaleFactor;
 	frustum.farPlaneDistance = 42.0f * App->scene->scaleFactor;
 	frustum.verticalFov = math::pi / 2.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)screenWidth / (float)screenHeight));
 }
 
 void ComponentCamera::InitOrthographicFrustum(math::float3 camPos, math::float3 camFront, math::float3 camUp) {
@@ -223,7 +223,6 @@ void ComponentCamera::Save(Config* config) {
 		config->AddString("goContainer", goContainer->uuid);
 	}
 
-	//TODO: we are not moving the camera anymore, we are moving his goContainer
 	config->AddFloat("frustum.nearPlaneDistance", frustum.nearPlaneDistance);
 	config->AddFloat("frustum.farPlaneDistance", frustum.farPlaneDistance);
 	config->AddFloat3("frustum.pos", frustum.pos);

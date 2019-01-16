@@ -20,7 +20,9 @@ Component::Component(const Component& duplicateComponent) {
 	enabled = duplicateComponent.enabled;
 }
 
-Component::~Component() { }
+Component::~Component() { 
+	goContainer = nullptr;
+}
 
 void Component::Update() { }
 

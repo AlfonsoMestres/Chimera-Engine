@@ -4,7 +4,10 @@
 
 ModuleTime::ModuleTime() { }
 
-ModuleTime::~ModuleTime() { }
+ModuleTime::~ModuleTime() {
+	StopGameClock();
+	CleanUp();
+}
 
 bool ModuleTime::Init() {
 	gameDeltaTime = 0.0f;

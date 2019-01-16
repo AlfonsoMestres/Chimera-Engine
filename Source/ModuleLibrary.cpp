@@ -85,9 +85,14 @@ update_status ModuleLibrary::Update() {
 
 bool ModuleLibrary::CleanUp() {
 	stopWatcher = true;
-	fileScenesList->clear();
-	fileMeshesList->clear();
-	fileTexturesList->clear();
+
+	delete fileScenesList;
+	fileScenesList = nullptr;
+	delete fileMeshesList;
+	fileMeshesList = nullptr;
+	delete fileTexturesList;
+	fileTexturesList = nullptr;
+
 	Sleep(1000);
 	return true;
 }

@@ -10,6 +10,7 @@
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
 #include "QuadTreeChimera.h"
+#include "ComponentTransform.h"
 
 ModuleCamera::ModuleCamera() { }
 
@@ -78,6 +79,16 @@ update_status ModuleCamera::Update() {
 }
 
 bool ModuleCamera::CleanUp() {
+
+	for (auto& gameCam : gameCameras) {
+		delete gameCam;
+		gameCam = nullptr;
+	}
+
+	objectsPossiblePick.clear();
+
+	selectedCamera = nullptr;
+
 	delete sceneCamera;
 	sceneCamera = nullptr;
 
@@ -91,10 +102,10 @@ void ModuleCamera::Zoom() {
 
 	const int wheelSlide = App->input->GetMouseWheel();
 	if (wheelSlide != 0) {
-		float zoomValue = sceneCamera->frustum.verticalFov + -wheelSlide * 20.0f * App->time->realDeltaTime;
+		float zoomValue = sceneCamera->frustum.verticalFov + -wheelSlide * 0.02f * App->scene->scaleFactor * App->time->realDeltaTime;
 		float newAngleFov = math::Clamp(zoomValue, math::DegToRad(sceneCamera->minFov), math::DegToRad(sceneCamera->maxFov));
 		sceneCamera->frustum.verticalFov = newAngleFov;
-		sceneCamera->frustum.horizontalFov = 2.0f * atanf(tanf(newAngleFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
+		sceneCamera->frustum.horizontalFov = 2.0f * atanf(tanf(newAngleFov * 0.5f) * ((float)sceneCamera->screenWidth / (float)sceneCamera->screenHeight));
 	}
 }
 

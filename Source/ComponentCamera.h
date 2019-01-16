@@ -53,6 +53,7 @@ class ComponentCamera : public Component
 		float			cameraSpeed = 0.1f;
 		float			rotationSpeed = 0.5f;
 		float			mouseSensitivity = 0.15f;
+		float			zoomSpeed = 0.1f;
 		float			zoomValue = 0.0f;
 
 		unsigned		screenWidth = SCREEN_WIDTH;

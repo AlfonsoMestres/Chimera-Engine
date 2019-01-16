@@ -75,20 +75,22 @@ class ModuleTextures : public Module
 
 		bool			Init() override;
 		bool			CleanUp() override;
-		Texture* const  Load(const char* path);
-		void			LoadDefaulTextures();
 		void			DrawGUI();
 
 		void			LoadMaterial(std::string path, unsigned& textureID, int& width, int& height);
 		void			LoadMaterial(const char* path, ComponentMaterial* componentMaterial, MaterialType materialTypeSelected);
 		void			Unload(unsigned id);
 
+	private:
+		void			LoadDefaulTextures();
+		Texture* const  Load(const char* path);
+
 	public:
-		bool		mipmaping = false;
-		int			filterType = GL_LINEAR;
-		int			mipMapMode = GL_NEAREST_MIPMAP_NEAREST;
-		int			wrapMode = GL_CLAMP;
-		Texture*	noCameraSelectedTexture = nullptr;
+		bool			mipmaping = false;
+		int				filterType = GL_LINEAR;
+		int				mipMapMode = GL_NEAREST_MIPMAP_NEAREST;
+		int				wrapMode = GL_CLAMP;
+		Texture*		noCameraSelectedTexture = nullptr;
 
 };		   
 

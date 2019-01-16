@@ -11,6 +11,7 @@
 #include "QuadTreeChimera.h"
 #include "ComponentCamera.h"
 #include "ComponentMesh.h"
+#include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "SDL.h"
 #include "GL/glew.h"
@@ -21,7 +22,9 @@
 ModuleRender::ModuleRender() { }
 
 // Destructor
-ModuleRender::~ModuleRender() { }
+ModuleRender::~ModuleRender() { 
+	CleanUp();
+}
 
 // Called before render is available
 bool ModuleRender::Init() {
@@ -85,7 +88,6 @@ update_status ModuleRender::Update() {
 
 		SetProjectionMatrix(App->camera->quadCamera);
 		SetViewMatrix(App->camera->quadCamera);
-		//DrawDebugData(App->camera->quadCamera);
 		PrintQuadNode(App->scene->quadTree->root);
 		App->debug->Draw(App->camera->quadCamera, App->camera->quadCamera->fbo, App->camera->quadCamera->screenWidth, App->camera->quadCamera->screenHeight);
 	}
@@ -109,7 +111,6 @@ void ModuleRender::DrawDebugData(ComponentCamera* camera) const {
 	BROFILER_CATEGORY("DrawDebugData()", Profiler::Color::Orange);
 	if (camera->debugDraw == false) return;
 
-	//TODO: probably we can render every frustum and paint the active in green
 	if (App->camera->selectedCamera != nullptr) {
 		dd::frustum((App->camera->selectedCamera->frustum.ProjectionMatrix() * App->camera->selectedCamera->frustum.ViewMatrix()).Inverted(), dd::colors::GreenYellow);
 	}
@@ -267,6 +268,8 @@ void ModuleRender::CullingFromQuadTree(ComponentCamera* camera, ComponentMesh* m
 }
 
 bool ModuleRender::CleanUp() {
+	meshes.clear();
+	quadGOCollided.clear();
 	glDeleteBuffers(1, &ubo);
 	return true;
 }

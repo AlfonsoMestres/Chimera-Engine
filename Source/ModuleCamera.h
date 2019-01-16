@@ -5,7 +5,6 @@
 #include "Globals.h"
 #include "MathGeoLib.h"
 #include "ComponentMesh.h"
-#include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "GameObject.h"
 #include "GL/glew.h"

@@ -41,7 +41,6 @@ class ModuleEditor : public Module
 		bool				Init();
 		update_status		PreUpdate() override;
 		update_status		Update() override;
-		bool				CleanUp() override;
 
 		// ImgUI info
 		void				AddFPSCount(float fps, float ms) const;

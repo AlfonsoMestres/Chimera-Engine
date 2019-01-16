@@ -5,7 +5,9 @@
 
 DockAssets::DockAssets() { }
 
-DockAssets::~DockAssets() { }
+DockAssets::~DockAssets() { 
+
+}
  
 void DockAssets::Draw() {
 

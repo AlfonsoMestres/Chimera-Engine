@@ -11,6 +11,8 @@ class Module
 
 		Module() { }
 
+		virtual ~Module() { }
+
 		virtual bool Init() {
 			return true; 
 		}

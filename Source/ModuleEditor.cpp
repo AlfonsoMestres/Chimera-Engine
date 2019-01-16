@@ -25,7 +25,17 @@ ModuleEditor::ModuleEditor() {
 	docks.push_back(quad = new DockQuad());
 }
 
-ModuleEditor::~ModuleEditor() { }
+ModuleEditor::~ModuleEditor() { 
+	for (auto& dock : docks) {
+		delete dock;
+		dock = nullptr;
+	}
+	docks.clear();
+
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+}
 
 bool ModuleEditor::Init() {
 	const char* glsl_version = "#version 130"; 
@@ -139,12 +149,6 @@ update_status ModuleEditor::Update() {
 			ImGui::EndMenu();
 		}
 
-		/*bool result = false;
-		if (ImGui::BeginPopupModal(FilePickerID, WindowFlags.NoTitleBar)) {
-			result = DrawFolder(ref selected, true);
-			ImGui::EndPopup();
-		}*/
-
 		if (ImGui::BeginMenu("Elements")) {
 
 			if (ImGui::BeginMenu("Select camera in")) {
@@ -234,24 +238,6 @@ update_status ModuleEditor::Update() {
 	PrintDocks();
 
 	return UPDATE_CONTINUE;
-}
-
-bool ModuleEditor::CleanUp() {
-
-	// Bug fix, console ImGuivector not being freed in interator
-	delete console;
-	console = nullptr;
-
-	for (auto& dock : docks) {
-		delete dock;
-		dock = nullptr;
-	}
-	docks.clear();
-
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
-	return true;
 }
 
 void ModuleEditor::RenderGUI() const {

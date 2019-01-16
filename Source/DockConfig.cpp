@@ -13,7 +13,13 @@
 DockConfig::DockConfig() : fps(LOGSSIZE), ms(LOGSSIZE), mem(LOGSSIZE),
 gameFps(LOGSSIZE), gameMs(LOGSSIZE) { }
 
-DockConfig::~DockConfig() { }
+DockConfig::~DockConfig() {
+	fps.clear();
+	ms.clear();
+	mem.clear();
+	gameFps.clear();
+	gameMs.clear();
+}
 
 void DockConfig::Draw() {
 	if (!ImGui::Begin("Configuration", &enabled, ImGuiWindowFlags_NoFocusOnAppearing)) {
@@ -49,7 +55,7 @@ void DockConfig::Draw() {
 		sprintf_s(title, 25, "Milliseconds %0.1f", ms[ms.size() - 1]);
 		ImGui::PlotHistogram("##milliseconds", &ms[0], ms.size(), 0, title, 0.0f, 40.0f, ImVec2(0, 80));
 
-		sMStats stats = m_getMemoryStatistics();
+		/*sMStats stats = m_getMemoryStatistics();
 		AddMemory((float)stats.totalReportedMemory);
 
 		ImGui::PlotHistogram("##memory", &mem[0], mem.size(), 0, "Memory Consumption (Bytes)", 0.0f, (float)stats.peakReportedMemory * 1.2f, ImVec2(0, 80));
@@ -62,7 +68,7 @@ void DockConfig::Draw() {
 		ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
 		ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
 		ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
-		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+		ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);*/
 	}
 
 	if (ImGui::CollapsingHeader("Time")) {
@@ -89,10 +95,6 @@ void DockConfig::Draw() {
 
 	if (ImGui::CollapsingHeader("Camera")) {
 		App->camera->DrawGUI();
-	}
-
-	if (ImGui::CollapsingHeader("Input")) {
-		App->input->DrawGUI();
 	}
 
 	if (ImGui::CollapsingHeader("Textures")) {

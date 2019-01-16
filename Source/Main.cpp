@@ -16,7 +16,7 @@ enum main_states {
 	MAIN_EXIT
 };
 
-Application* App = NULL;
+Application* App = nullptr;
 
 int main(int argc, char** argv){
 	int main_return = EXIT_FAILURE;
@@ -80,5 +80,6 @@ int main(int argc, char** argv){
 	}
 
 	delete App;
+	App = nullptr;
 	return main_return;
 }
