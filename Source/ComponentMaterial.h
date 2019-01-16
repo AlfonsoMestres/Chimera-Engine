@@ -37,7 +37,7 @@ class ComponentMaterial : public Component
 
 	private:
 		void		DeleteTexture(unsigned id);
-		void		DeselectMap(unsigned mapToDelete, std::string& mapSelected);
+		void		DeselectMap(MaterialType matSelected, std::string& mapSelected);
 		void		DrawComboBoxMaterials(const char* id, MaterialType matType, static std::string& labelCurrentFileTextureSelected);
 
 	private:

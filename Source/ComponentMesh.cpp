@@ -168,7 +168,9 @@ void ComponentMesh::LoadMesh(const char* name) {
 		glDeleteBuffers(1, &mesh.ibo);
 	}
 
+	MeshImporter::CleanUpStructMesh(&mesh);
 	MeshImporter::Load(&mesh, name);
+
 	ComputeMesh();
 	goContainer->ComputeBBox();
 	App->renderer->meshes.push_back(this);

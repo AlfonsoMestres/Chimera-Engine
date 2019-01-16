@@ -73,7 +73,7 @@ void ComponentMaterial::DrawProperties(bool staticGo) {
 			ImGui::ColorEdit3("Diffuse color", (float*)&material.diffuseColor);
 			DrawComboBoxMaterials("DiffuseComboTextures", MaterialType::DIFFUSE_MAP, diffuseSelected); ImGui::SameLine();
 			if (ImGui::Button("Empty")) {
-				DeselectMap(material.diffuseMap, diffuseSelected);
+				DeselectMap(MaterialType::DIFFUSE_MAP, diffuseSelected);
 			}
 			if (diffuseSelected != "") {
 				ImGui::Text("Dimensions: %dx%d", material.diffuseWidth, material.diffuseHeight);
@@ -85,7 +85,7 @@ void ComponentMaterial::DrawProperties(bool staticGo) {
 		if (ImGui::CollapsingHeader("Ambient")) {
 			DrawComboBoxMaterials("OcclusionComboTextures", MaterialType::OCCLUSION_MAP, occlusionSelected); ImGui::SameLine();
 			if (ImGui::Button("Empty")) {
-				DeselectMap(material.occlusionMap, occlusionSelected);
+				DeselectMap(MaterialType::OCCLUSION_MAP, occlusionSelected);
 			}
 			if (occlusionSelected != "") {
 				ImGui::Text("Dimensions: %dx%d", material.ambientWidth, material.ambientHeight);
@@ -98,7 +98,7 @@ void ComponentMaterial::DrawProperties(bool staticGo) {
 			ImGui::ColorEdit3("Specular color", (float*)&material.specularColor);
 			DrawComboBoxMaterials("SpecularComboTextures", MaterialType::SPECULAR_MAP, specularSelected); ImGui::SameLine();
 			if (ImGui::Button("Empty")) {
-				DeselectMap(material.specularMap, specularSelected);
+				DeselectMap(MaterialType::SPECULAR_MAP, specularSelected);
 			}
 			if (specularSelected != "") {
 				ImGui::Text("Dimensions: %dx%d", material.specularWidth, material.specularHeight);
@@ -112,7 +112,7 @@ void ComponentMaterial::DrawProperties(bool staticGo) {
 			ImGui::ColorEdit3("Emissive color", (float*)&material.emissiveColor);
 			DrawComboBoxMaterials("EmissiveComboTextures", MaterialType::EMISSIVE_MAP, emissiveSelected); ImGui::SameLine();
 			if (ImGui::Button("Empty")) {
-				DeselectMap(material.emissiveMap, emissiveSelected);
+				DeselectMap(MaterialType::EMISSIVE_MAP, emissiveSelected);
 			}
 			if (emissiveSelected != "") {
 				ImGui::Text("Dimensions: %dx%d", material.emissiveWidth, material.emissiveHeight);
@@ -149,9 +149,26 @@ void ComponentMaterial::DrawComboBoxMaterials(const char* id, MaterialType matTy
 		ImGui::PopID();
 }
 
-void ComponentMaterial::DeselectMap(unsigned mapToDelete, std::string& mapSelected) {
-	DeleteTexture(mapToDelete);
-	mapToDelete = 0u;
+void ComponentMaterial::DeselectMap(MaterialType matSelected, std::string& mapSelected) {
+	switch (matSelected) {
+		case MaterialType::DIFFUSE_MAP:
+			DeleteTexture(material.diffuseMap);
+			material.diffuseMap = 0u;
+			break;
+		case MaterialType::EMISSIVE_MAP:
+			DeleteTexture(material.emissiveMap);
+			material.emissiveMap = 0u;
+			break;
+		case MaterialType::OCCLUSION_MAP:
+			DeleteTexture(material.occlusionMap);
+			material.occlusionMap = 0u;
+			break;
+		case MaterialType::SPECULAR_MAP:
+			DeleteTexture(material.specularMap);
+			material.specularMap = 0u;
+			break;
+	}
+
 	mapSelected = "";
 }
 

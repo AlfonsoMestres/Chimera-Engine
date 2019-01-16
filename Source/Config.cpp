@@ -210,6 +210,8 @@ rapidjson::Document Config::LoadFromDisk() {
 			result = nullptr;
 		}
 	}
+	
+	delete[] fileBuffer;
 
 	return result;
 }

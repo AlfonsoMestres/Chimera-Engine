@@ -230,6 +230,9 @@ void ModuleScene::LoadScene() {
 			App->camera->selectedCamera = (ComponentCamera*)gameObjecteCameraSelected->GetComponent(ComponentType::CAMERA);
 		}
 	}
+
+	delete config;
+	config = nullptr;
 }
 
 void ModuleScene::ClearScene() {
