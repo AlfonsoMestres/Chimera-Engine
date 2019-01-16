@@ -16,7 +16,9 @@ void log(const char file[], int line, const char* format, ...) {
 	OutputDebugString(tmpStr2);
 	if (App != nullptr) {
 		sprintf_s(tmpStr, 4096, "%s \n", tmpStr);
-		App->editor->console->AddLog(tmpStr);
+		if (App->editor->console != nullptr && App->editor->console->IsEnabled()) {
+			App->editor->console->AddLog(tmpStr);
+		}
 	}
 
 }

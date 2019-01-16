@@ -28,9 +28,9 @@ Application::Application() {
 }
 
 Application::~Application() {
-
-	for (std::list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it) {
+	for (std::list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend(); ++it) {
 		delete(*it);
+		*it = nullptr;
 	}
 	modules.clear();
 }

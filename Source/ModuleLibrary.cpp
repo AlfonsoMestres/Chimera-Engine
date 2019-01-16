@@ -47,6 +47,9 @@ void LibraryWatcher() {
 		}
 		Sleep(1000);
 	}
+	oldFilesAssets.clear();
+	currentFilesAssets.clear();
+	currentFilesLibrary.clear();
 }
 
 bool ModuleLibrary::Init() {
@@ -82,6 +85,9 @@ update_status ModuleLibrary::Update() {
 
 bool ModuleLibrary::CleanUp() {
 	stopWatcher = true;
+	fileScenesList->clear();
+	fileMeshesList->clear();
+	fileTexturesList->clear();
 	Sleep(1000);
 	return true;
 }

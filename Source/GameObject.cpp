@@ -5,7 +5,6 @@
 #include "ModuleCamera.h"
 #include "ModuleProgram.h"
 #include "ComponentMesh.h"
-#include "ComponentLight.h"
 #include "ComponentCamera.h"
 #include "QuadTreeChimera.h"
 #include "ComponentMaterial.h"
@@ -33,6 +32,7 @@ GameObject::GameObject(std::string goName, GameObject* goParent) {
 		parent = goParent;
 		sprintf_s(parentUuid, goParent->uuid);
 		goParent->goChilds.push_back(this);
+		staticGo = parent->staticGo;
 	} 
 }
 
@@ -63,6 +63,7 @@ GameObject::GameObject(std::string goName, const math::float4x4& parentTransform
 		parent = goParent;
 		sprintf_s(parentUuid, goParent->uuid);
 		goParent->goChilds.push_back(this);
+		staticGo = parent->staticGo;
 	} else {
 		parent = App->scene->root;
 		sprintf_s(parentUuid, App->scene->root->uuid);
@@ -169,7 +170,6 @@ void GameObject::Update() {
 
 		if ((*itChild)->toBeDeleted) {
 			(*itChild)->toBeDeleted = false;
-			(*itChild)->CleanUp();
 			LOG("Removed GO: %s", (*itChild)->name);
 			delete *itChild;
 			goChilds.erase(itChild++);
@@ -177,14 +177,6 @@ void GameObject::Update() {
 			++itChild;
 		}
 
-	}
-
-}
-
-void GameObject::CleanUp() {
-
-	for (auto &child : goChilds) {
-		child->CleanUp();
 	}
 
 }

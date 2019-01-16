@@ -6,7 +6,6 @@
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "ComponentMesh.h"
-#include "ComponentLight.h"
 #include "QuadTreeChimera.h"
 #include "ComponentCamera.h"
 #include "ComponentMaterial.h"

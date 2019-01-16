@@ -13,11 +13,16 @@ QuadTreeChimera::QuadTreeChimera() {
 }
 
 QuadTreeChimera::~QuadTreeChimera() {
+	goList.clear();
 	Clear();
 }
 
 void QuadTreeChimera::InitQuadTree(const math::AABB& aabb, bool clearAllGameObjects) {
+
 	if (clearAllGameObjects) {
+		goList.clear();
+		Clear();
+	} else {
 		Clear();
 	}
 
@@ -48,7 +53,7 @@ void QuadTreeChimera::ExpandLimits(GameObject* gameObject) {
 	quadLimits.maxPoint *= 2.0f;
 	quadLimits.minPoint *= 2.0f;
 
-	InitQuadTree(quadLimits, false);
+	InitQuadTree(quadLimits);
 	Insert(gameObject, true);
 }
 
@@ -65,19 +70,11 @@ void QuadTreeChimera::Remove(GameObject* gameObject) {
 }
 
 void QuadTreeChimera::Clear() {
-	goList.clear();
 	delete root;
 	root = nullptr;
 }
 
 QuadTreeNode::QuadTreeNode() {
-	childs[0] = nullptr;
-	childs[1] = nullptr;
-	childs[2] = nullptr;
-	childs[3] = nullptr;
-}
-
-QuadTreeNode::QuadTreeNode(const math::AABB& aabb) : aabb(aabb) {
 	childs[0] = nullptr;
 	childs[1] = nullptr;
 	childs[2] = nullptr;
@@ -94,6 +91,13 @@ QuadTreeNode::~QuadTreeNode() {
 	delete childs[2];
 	childs[2] = nullptr;
 	delete childs[3];
+	childs[3] = nullptr;
+}
+
+QuadTreeNode::QuadTreeNode(const math::AABB& aabb) : aabb(aabb) {
+	childs[0] = nullptr;
+	childs[1] = nullptr;
+	childs[2] = nullptr;
 	childs[3] = nullptr;
 }
 
@@ -156,7 +160,6 @@ void QuadTreeNode::RecalculateSpace() {
 		if (intersects[0] && intersects[1] && intersects[2] && intersects[3]) {
 			++iterator;
 		} else {
-			// Not inside the box, expand limits
 			iterator = goList.erase(iterator);
 			for (int i = 0; i < 4; ++i) {
 				if (intersects[i]) {

@@ -31,7 +31,6 @@ class GameObject
 		~GameObject();
 
 		void					Update();
-		void					CleanUp();
 		void					DrawProperties();
 		void					DrawHierarchy(GameObject* goSelected);
 

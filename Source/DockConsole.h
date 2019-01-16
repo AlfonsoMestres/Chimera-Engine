@@ -9,9 +9,9 @@ class DockConsole : public Dock
 		DockConsole();
 		~DockConsole();
 
-		void Clear() { buf.clear(); lineOffsets.clear(); }
-		void AddLog(const char* log);
-		void Draw() override;
+		void				Clear() { buf.clear(); lineOffsets.clear(); }
+		void				AddLog(const char* log);
+		void				Draw() override;
 
 	private:
 		ImGuiTextBuffer     buf;

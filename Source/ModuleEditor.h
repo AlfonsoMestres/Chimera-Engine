@@ -48,7 +48,7 @@ class ModuleEditor : public Module
 		void				AddGameFPSCount(float fps, float ms) const;
 		void				CreateDockSpace();
 		void				PrintDocks();
-		void				RenderGUI();
+		void				RenderGUI() const;
 		bool				SceneFocused() const;
 
 		// SDL events

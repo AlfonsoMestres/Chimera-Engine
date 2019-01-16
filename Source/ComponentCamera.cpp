@@ -125,12 +125,12 @@ void ComponentCamera::LookAt(math::float3 target) {
 	frustum.up = look.Mul(frustum.up).Normalized();
 }
 
-math::float4x4 ComponentCamera::GetViewMatrix() {
+math::float4x4 ComponentCamera::GetViewMatrix() const {
 	math::float4x4 view = frustum.ViewMatrix();
 	return view.Transposed();
 }
 
-math::float4x4 ComponentCamera::GetProjectionMatrix() {
+math::float4x4 ComponentCamera::GetProjectionMatrix() const {
 	return frustum.ProjectionMatrix().Transposed();
 }
 

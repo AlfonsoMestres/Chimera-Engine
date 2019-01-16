@@ -2,7 +2,10 @@
 
 DockConsole::DockConsole() { }
 
-DockConsole::~DockConsole() { }
+DockConsole::~DockConsole() { 
+	ToggleEnabled();
+	Clear();
+}
 
 void DockConsole::AddLog(const char* log) {
 	buf.appendf(log);

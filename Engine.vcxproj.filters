@@ -16,9 +16,6 @@
     <ClCompile Include="Source\ComponentCamera.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ComponentLight.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Source\DockConfig.cpp">
       <Filter>Docks</Filter>
     </ClCompile>
@@ -253,9 +250,6 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Source\ComponentCamera.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ComponentLight.h">
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Source\DockConfig.h">

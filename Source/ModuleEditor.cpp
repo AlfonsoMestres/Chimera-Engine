@@ -237,13 +237,24 @@ update_status ModuleEditor::Update() {
 }
 
 bool ModuleEditor::CleanUp() {
+
+	// Bug fix, console ImGuivector not being freed in interator
+	delete console;
+	console = nullptr;
+
+	for (auto& dock : docks) {
+		delete dock;
+		dock = nullptr;
+	}
+	docks.clear();
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 	return true;
 }
 
-void ModuleEditor::RenderGUI() {
+void ModuleEditor::RenderGUI() const {
 	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -251,10 +262,11 @@ void ModuleEditor::RenderGUI() {
 
 void ModuleEditor::PrintDocks() {
 	// Print docks like we do with module
-	for (std::list<Dock*>::iterator it = docks.begin(); it != docks.end(); ++it)
+	for (std::list<Dock*>::iterator it = docks.begin(); it != docks.end(); ++it) {
 		if ((*it)->IsEnabled()) {
 			(*it)->Draw();
 		}
+	}
 }
 
 void ModuleEditor::CreateDockSpace()

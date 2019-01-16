@@ -91,7 +91,6 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\ComponentCamera.h" />
-    <ClInclude Include="Source\ComponentLight.h" />
     <ClInclude Include="Source\ComponentMaterial.h" />
     <ClInclude Include="Source\ComponentMesh.h" />
     <ClInclude Include="Source\ComponentTransform.h" />
@@ -215,7 +214,6 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\ComponentCamera.cpp" />
-    <ClCompile Include="Source\ComponentLight.cpp" />
     <ClCompile Include="Source\ComponentMaterial.cpp" />
     <ClCompile Include="Source\ComponentMesh.cpp" />
     <ClCompile Include="Source\ComponentTransform.cpp" />

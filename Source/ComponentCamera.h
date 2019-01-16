@@ -27,8 +27,8 @@ class ComponentCamera : public Component
 		void			InitOrthographicFrustum(math::float3 camPos = math::float3(0.0f, 300.0f, 1000.0f), math::float3 camFront = math::float3(0.0f, 0.0f, -1.0f), math::float3 camUp = float3::unitY);
 
 		void			LookAt(math::float3 target);
-		math::float4x4	GetViewMatrix();
-		math::float4x4	GetProjectionMatrix();
+		math::float4x4	GetViewMatrix() const;
+		math::float4x4	GetProjectionMatrix() const;
 
 		void			Rotate(float dx, float dy);
 		void			Orbit(float dx, float dy);

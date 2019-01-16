@@ -95,8 +95,7 @@ unsigned ModuleFileSystem::Save(const char* pathAndFileName, const void* buffer,
 	return result;
 }
 
-bool ModuleFileSystem::Remove(const char* pathAndFileName)
-{
+bool ModuleFileSystem::Remove(const char* pathAndFileName) {
 	bool result = false;
 
 	if (pathAndFileName != nullptr) {
@@ -158,7 +157,7 @@ bool ModuleFileSystem::Copy(const char* sourcePath, const char* destinationPath)
 	return result;
 }
 
-void ModuleFileSystem::GetFilesFromDirectoryRecursive(const char* directory, const bool includeExtension, std::map<std::string, std::string>& result) {
+void ModuleFileSystem::GetFilesFromDirectoryRecursive(const char* directory, const bool includeExtension, std::map<std::string, std::string>& result) const {
 	char **enumeratedFIles = PHYSFS_enumerateFiles(directory);
 	char **iterator;
 
@@ -248,6 +247,6 @@ void ModuleFileSystem::SplitFilePath(const char* fullPath, std::string* path, st
 	}
 }
 
-const xg::Guid ModuleFileSystem::NewGuuid() {
+const xg::Guid ModuleFileSystem::NewGuuid() const {
 	return xg::newGuid();
 }
